@@ -1,0 +1,10 @@
+{
+  "readonly": false,
+  "baseUrl": "http://localhost/",
+  "rootPath": "/",
+  "port": 80,
+  "dataDir": "../data/",
+  "admins": ["valselob@gmail.com"],
+  "X-welcome": "Welcome to your <a href='http://www.terminologue.org/'>Terminologue</a> installation.",
+  "welcome": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro/'>Gentle introduction to Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div>"
+}

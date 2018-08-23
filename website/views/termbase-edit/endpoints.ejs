@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<script type="text/javascript" src="../../libs/jquery.js"></script>
+	</head>
+	<body>
+
+    <p>
+      <button id="butList">list</button>
+      facets <input name="facets" value=""/>
+      criteria <input name="criteria" value=""/>
+      searchtext <input name="searchtext" value=""/>
+      modifier <input name="modifier" value=""/>
+      howmany <input name="howmany" value="100"/>
+      <script type="text/javascript">
+      $("#butList").on("click", function(e){
+        $.ajax({url: "./list.json", dataType: "json", method: "POST", data: {
+          facets: $(e.delegateTarget).closest("p").find("input[name='facets']").val(),
+          criteria: $(e.delegateTarget).closest("p").find("input[name='criteria']").val(),
+          searchtext: $(e.delegateTarget).closest("p").find("input[name='searchtext']").val(),
+          modifier: $(e.delegateTarget).closest("p").find("input[name='modifier']").val(),
+          howmany: $(e.delegateTarget).closest("p").find("input[name='howmany']").val(),
+        }}).done(function(data){
+          console.log(data);
+        });
+      });
+      </script>
+    </p>
+
+    <p>
+      <button id="butCreate">create</button>
+      content <input name="content" value="something"/>
+      <script type="text/javascript">
+      $("#butCreate").on("click", function(e){
+        $.ajax({url: "./create.json", dataType: "json", method: "POST", data: {
+          content: $(e.delegateTarget).closest("p").find("input[name='content']").val(),
+        }}).done(function(data){
+          console.log(data);
+        });
+      });
+      </script>
+    </p>
+
+    <p>
+      <button id="butRead">read</button>
+      id <input name="id" value="1505"/>
+      <script type="text/javascript">
+      $("#butRead").on("click", function(e){
+        $.ajax({url: "./read.json", dataType: "json", method: "POST", data: {
+          id: $(e.delegateTarget).closest("p").find("input[name='id']").val(),
+        }}).done(function(data){
+          console.log(data);
+        });
+      });
+      </script>
+    </p>
+
+    <p>
+      <button id="butUpdate">update</button>
+      id <input name="id" value="1505"/>
+      content <input name="content" value="something"/>
+      <script type="text/javascript">
+      $("#butUpdate").on("click", function(e){
+        $.ajax({url: "./update.json", dataType: "json", method: "POST", data: {
+          id: $(e.delegateTarget).closest("p").find("input[name='id']").val(),
+          content: $(e.delegateTarget).closest("p").find("input[name='content']").val(),
+        }}).done(function(data){
+          console.log(data);
+        });
+      });
+      </script>
+    </p>
+
+
+	</body>
+</html>

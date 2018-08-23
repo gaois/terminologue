@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<script type="text/javascript" src="./libs/jquery.js"></script>
+	</head>
+	<body>
+
+		<p>
+			<button id="butLogin">login</button>
+      email <input name="email" value="valselob@gmail.com"/>
+      password <input name="password" value="radost"/>
+      <script type="text/javascript">
+      $("#butLogin").on("click", function(e){
+        $.ajax({url: "/login.json", dataType: "json", method: "POST", data: {
+          email: $(e.delegateTarget).closest("p").find("input[name='email']").val(),
+          password: $(e.delegateTarget).closest("p").find("input[name='password']").val()
+        }}).done(function(data){
+          console.log(data);
+        });
+      });
+      </script>
+    </p>
+
+	</body>
+</html>
