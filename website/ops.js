@@ -64,6 +64,26 @@ module.exports={
     });
   },
 
+  escalateConfigIdent: function(termbaseID, ident, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
+    db.run("delete from termbases where id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+      db.run("insert into termbases(id, title) values ($termbaseID, $title)", {$termbaseID: termbaseID, $title: ident.title}, function(err){
+        db.close();
+        callnext();
+      });
+    });
+  },
+  escalateConfigUsers: function(termbaseID, users, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
+    db.run("delete from user_termbase where termbase_id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+      for(var email in users){
+        db.run("insert into user_termbase(termbase_id, user_email) values ($termbaseID, $email)", {$termbaseID: termbaseID, $email: email}, function(err){});
+      }
+      db.close();
+      callnext();
+    });
+  },
+
   termbaseExists: function(termbaseID){
     return fs.existsSync(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"));
   },
@@ -208,6 +228,30 @@ module.exports={
     });
   },
 
+  configRead: function(db, termbaseID, configID, callnext){
+    db.get("select * from configs where id=$id", {$id: configID}, function(err, row){
+      config=row.json;
+      callnext(config);
+    });
+  },
+  configUpdate: function(db, termbaseID, configID, json, callnext){
+    db.run("update configs set json=$json where id=$id", {$id: configID, $json: json}, function(err){
+      afterwards();
+    });
+    var afterwards=function(){
+      if(configID=="ident"){
+        module.exports.escalateConfigIdent(termbaseID, JSON.parse(json), function(){
+          callnext(json, false);
+        });
+      } else if(configID=="users"){
+        module.exports.escalateConfigUsers(termbaseID, JSON.parse(json), function(){
+          callnext(json, false);
+        });
+      } else {
+        callnext(json, false);
+      }
+    };
+  },
 
   markdown: function(str){
     var tree=markdown.parse(str);

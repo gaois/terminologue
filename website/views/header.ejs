@@ -5,13 +5,13 @@
     <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%>">Edit</a>
 
     <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%>">Configuration</a>
-    <%if(sectionID=="config" && subsectionID && subsectionTitle){%>
-        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionTitle%></a>
+    <%if(sectionID=="config" && subsectionID){%>
+        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionID%></a>
     <%}%>
 
     <a href="<%-rootPath%><%=termbaseID%>/metadata/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%>">Metadata</a>
-    <%if(sectionID=="metadata" && subsectionID && subsectionTitle){%>
-        <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionTitle%></a>
+    <%if(sectionID=="metadata" && subsectionID){%>
+        <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionID%></a>
     <%}%>
 
     <a href="<%-rootPath%><%=termbaseID%>/download/" class="dicLink <%if(sectionID=='download'){%>current<%}%> disabled">Download</a>

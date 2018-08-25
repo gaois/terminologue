@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="icon" type="image/x-icon" href="../../../furniture/favicon.ico"/>
+    <title><%=termbaseConfigs.ident.title%></title>
+		<script type="text/javascript" src="../../../libs/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-theme-green.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful-loc-en.js"></script>
+		<script type="text/javascript" src="../../../libs/screenful/screenful-user.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-user.css" />
+		<script type="text/javascript">
+		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
+		Screenful.User.username="<%=user.email%>";
+		</script>
+		<script type="text/javascript">var rootPath="../../../";</script>
+		<script type="text/javascript" src="../../../furniture/screenful-user-config.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-editor.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful-editor.js"></script>
+		<script type="text/javascript">
+		Screenful.Editor.singleton=true;
+		Screenful.Editor.entryID="<%-configType%>";
+		Screenful.Editor.leaveUrl="../";
+		Screenful.Editor.readUrl="../read.json";
+		Screenful.Editor.updateUrl="../update.json";
+    </script>
+
+		<script type="text/javascript">
+		Screenful.Editor.editor=function(div, entry){
+			if(Screenful.Editor.entryID=="ident") {
+				var ident=JSON.parse(entry.content);
+				document.title=ident.title;
+				$("#header .dicTitle").html(ident.title);
+			}
+      $(div).html("<textarea style='padding: 10px; box-sizing: border-box; width: 100%; height: 400px; resize: vertical; border: 0px; box-shadow: inset 0px 0px 5px #999999; color: var(--link); border-radius: 4px; margin-top: 10px; font-size: 0.9rem;'></textarea>");
+			$(div).find("textarea").focus().val(JSON.stringify(JSON.parse(entry.content), null, "  "));
+		};
+		Screenful.Editor.harvester=function(div){
+      return $(div).find("textarea").val();
+		};
+    </script>
+
+		<script type="text/javascript">
+		Screenful.Editor.allowSourceCode=true;
+		Screenful.Editor.formatSourceCode=function(str){
+			return Screenful.formatJson(str);
+		};
+		Screenful.Editor.validateSourceCode=function(str){
+			return Screenful.isWellFormedJson(str);
+		};
+		Screenful.Editor.cleanupSourceCode=function(str){
+			return JSON.parse(str);
+		};
+		</script>
+		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
+	</head>
+	<body>
+    <%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "config", subsectionID: configType, rootPath: "../../../"})%>
+	</body>
+</html>

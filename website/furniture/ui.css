@@ -50,8 +50,8 @@ div.field > div.clear {clear: left;}
 div.dangerzone {position: absolute; bottom: 40px; left: 0px; right: 0px; color: #999999;}
 div.dangerzone > div.inside {max-width: 1200px; margin: 0px auto 0px auto; }
 @media(max-width: 1300px) {div.dangerzone {position: relative; bottom: auto; margin: 20px 20px;}}
-div.dangerzone a {text-decoration: none; color: #004f9b; display: inline-block; background-position: left center; background-repeat: no-repeat; padding-left: 25px; min-height: 16px; background-color: #ffffff; margin-right: 1em;}
-div.dangerzone a:hover {color: #006ed7;}
+div.dangerzone a {text-decoration: none; color: var(--link); display: inline-block; background-position: left center; background-repeat: no-repeat; padding-left: 25px; min-height: 16px; background-color: #ffffff; margin-right: 1em;}
+div.dangerzone a:hover {color: var(--link-hover);}
 div.dangerzone a.destroy {background-image: url(cross_bw.png); }
 div.dangerzone a.destroy:hover {background-image: url(cross.png);}
 div.dangerzone a.changeUrl {background-image: url(pencil_bw.png); }
