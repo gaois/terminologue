@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="icon" type="image/x-icon" href="../../furniture/favicon.ico"/>
+    <title><%=termbaseConfigs.ident.title%></title>
+		<script type="text/javascript" src="../../libs/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful-loc-en.js"></script>
+		<script type="text/javascript" src="../../libs/screenful/screenful-user.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-user.css" />
+		<script type="text/javascript">
+		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
+		Screenful.User.username="<%=user.email%>";
+		</script>
+		<script type="text/javascript">var rootPath="../../";</script>
+		<script type="text/javascript" src="../../furniture/screenful-user-config.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../furniture/ui.css" />
+	</head>
+	<body>
+    <%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "metadata", subsectionID: null, subsectionTitle: null, rootPath: "../../"})%>
+		<div id="pagebody">
+			<div class="field">
+				<div class="signposts">
+					<div class="title">Term-level metadata</div>
+					<div class="signpost"><a href="./ident/">Term annotations</a></div>
+					<div class="signpost"><a href="./features/">Inflected form labels</a></div>
+					<div class="signpost"><a href="./features/">Acceptability labels</a></div>
+					<div class="signpost"><a href="./langs/">Sources</a></div>
+        </div>
+        <div class="signposts">
+					<div class="title">Concept-level metadata</div>
+					<div class="signpost"><a href="./users/">Domains</a></div>
+					<div class="signpost"><a href="./publico/">Collections</a></div>
+				</div>
+        <div class="signposts">
+					<div class="title">Workflow metadata</div>
+					<div class="signpost"><a href="./extranets/">Tags</a></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</body>
+</html>

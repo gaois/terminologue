@@ -113,7 +113,7 @@ module.exports={
   entryList: function(db, termbaseID, facets, searchtext, modifier, howmany, callnext){
     var sql1=`select * from entries order by id limit $howmany`;
     var params1={$howmany: howmany};
-    var sql2=`select count(*) from entries`;
+    var sql2=`select count(*) as total from entries`;
     var params2={};
     db.all(sql1, params1, function(err, rows){
       if(err || !rows) rows=[];

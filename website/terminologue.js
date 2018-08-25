@@ -189,6 +189,41 @@ app.get(siteconfig.rootPath+":termbaseID/edit/editor.html", function(req, res){
   });
 });
 
+//Termbase metadata UI:
+app.get(siteconfig.rootPath+":termbaseID/metadata/", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+    } else {
+      ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+        db.close();
+        res.render("termbase-metadata/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs});
+      });
+    }
+  });
+});
+
+//Termbase config UI:
+app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+    } else {
+      ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+        db.close();
+        res.render("termbase-config/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs});
+      });
+    }
+  });
+});
+
+
 
 
 

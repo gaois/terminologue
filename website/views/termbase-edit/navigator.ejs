@@ -26,18 +26,26 @@
 		Screenful.Navigator.stepSize=1000;
 		Screenful.Navigator.editorUrl="./editor.html";
 		Screenful.Navigator.modifiers=[
+			{value: "smart", caption: "smart search"},
 			{value: "start", caption: "starts like this"},
 			{value: "wordstart", caption: "contains a word that starts like this"},
 			{value: "substring", caption: "contains this sequence of characters"},
 		];
-		Screenful.Navigator.renderer=function(div, entry, searchtext, modifier){
-			$(div).html(entry.id);
-		};
 		Screenful.Navigator.entryDeleteUrl="./delete.json";
 		</script>
+
+		<link type="text/css" rel="stylesheet" href="../../widgets/pretty.css" />
+		<script type="text/javascript" src="../../widgets/pretty.js"></script>
+		<script type="text/javascript">
+		Screenful.Navigator.renderer=function(div, entry, searchtext, modifier){
+			//$(div).html(entry.id);
+			$(div).html( Pretty.entry(JSON.parse(entry.json)) );
+		};
+		</script>
+
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
 	</head>
 	<body>
-		<%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, current: "edit", rootPath: "../../"})%>
+		<%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "edit", rootPath: "../../"})%>
 	</body>
 </html>

@@ -7,25 +7,38 @@
 		<script type="text/javascript" src="../../libs/jquery.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
     <link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful.css" />
-		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-editor.css" />
 		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
-		<script type="text/javascript" src="../../libs/screenful/screenful-editor.js"></script>
 		<script type="text/javascript" src="../../libs/screenful/screenful-loc-en.js"></script>
 		<script type="text/javascript" src="../../../libs/js.cookie.js"></script>
+
+		<script type="text/javascript" src="../../libs/screenful/screenful-editor.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-editor.css" />
 		<script type="text/javascript">
 		Screenful.Editor.createUrl="./create.json";
 		Screenful.Editor.readUrl="./read.json";
 		Screenful.Editor.updateUrl="./update.json";
 		Screenful.Editor.deleteUrl="./delete.json";
-		Screenful.Editor.viewer=function(div, entry){
-			$(div).html(entry.id);
-		};
+		</script>
+
+		<script type="text/javascript">
+		// Screenful.Editor.viewer=function(div, entry){
+		// 	$(div).html(entry.id);
+		// };
+		</script>
+
+		<script type="text/javascript">
 		Screenful.Editor.editor=function(div, entry, uneditable){
-      $(div).html(entry.content);
+			$(div).html("<textarea style='padding: 10px; box-sizing: border-box; width: 100%; height: 400px; resize: vertical; border: 0px; box-shadow: inset 0px 0px 5px #999999; color: var(--link); border-radius: 4px; margin-top: 10px; font-size: 0.9rem;'></textarea>");
+			$(div).find("textarea").focus().val(JSON.stringify(JSON.parse(entry.content), null, "  "));
+      //Editor.render($(div), JSON.parse(entry.content), uneditable);
 		};
 		Screenful.Editor.harvester=function(div){
-      return "bla bla";
+			return $(div).find("textarea").val();
+      //return Editor.harvest($(div));
 		};
+		</script>
+
+		<script type="text/javascript">
 		Screenful.Editor.allowSourceCode=true;
 		Screenful.Editor.formatSourceCode=function(str){
 			return Screenful.formatJson(str);
@@ -37,6 +50,7 @@
 			return str;
 		};
 		</script>
+
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-history.css" />
 		<script type="text/javascript" src="../../libs/screenful/screenful-history.js"></script>
 		<script type="text/javascript">

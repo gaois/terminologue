@@ -2,7 +2,21 @@
   <a href="<%-rootPath%><%=termbaseID%>/" class="dicTitle"><%=termbaseConfigs.ident.title%></a>
 
   <span class="dicLinks">
-    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(current=='edit'){%>current<%}%>">Edit</a>
+    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%>">Edit</a>
+
+    <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%>">Configuration</a>
+    <%if(sectionID=="config" && subsectionID && subsectionTitle){%>
+        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionTitle%></a>
+    <%}%>
+
+    <a href="<%-rootPath%><%=termbaseID%>/metadata/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%>">Metadata</a>
+    <%if(sectionID=="metadata" && subsectionID && subsectionTitle){%>
+        <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionTitle%></a>
+    <%}%>
+
+    <a href="<%-rootPath%><%=termbaseID%>/download/" class="dicLink <%if(sectionID=='download'){%>current<%}%> disabled">Download</a>
+
+    <a href="<%-rootPath%><%=termbaseID%>/upload/" class="dicLink <%if(sectionID=='upload'){%>current<%}%> disabled">Upload</a>
   </span>
 
   <div class="email ScreenfulUser"></div>

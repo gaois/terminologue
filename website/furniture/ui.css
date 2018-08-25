@@ -43,8 +43,8 @@ div.signposts div.title:first-child {margin-top: 0px;}
 @media(max-width: 1300px) {div.signposts div.title {padding-right: 0px;}}
 div.signposts div.signpost {background-image: url(signpost.png); background-position: 0px 0px; background-repeat: no-repeat; min-height: 30px; margin: 0px 30px 20px 0px;  }
 div.signposts div.signpost:hover {background-image: url(signpost-on.png);}
-div.signposts div.signpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: #004f9b}
-div.signposts div.signpost a:hover {color: #006ed7;}
+div.signposts div.signpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: var(--link)}
+div.signposts div.signpost a:hover {color: var(--link-hover);}
 div.field > div.clear {clear: left;}
 
 div.dangerzone {position: absolute; bottom: 40px; left: 0px; right: 0px; color: #999999;}
