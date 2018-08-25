@@ -228,6 +228,77 @@ module.exports={
     });
   },
 
+  metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
+    var sql1=`select * from metadata where type=$type order by id limit $howmany`;
+    var params1={$howmany: howmany, $type: type};
+    var sql2=`select count(*) as total from metadata where type=$type`;
+    var params2={$type: type};
+    db.all(sql1, params1, function(err, rows){
+      if(err || !rows) rows=[];
+      var entries=[];
+      for(var i=0; i<rows.length; i++){
+        var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+        entries.push(item);
+      }
+      db.get(sql2, params2, function(err, row){
+        var total=(!err && row) ? row.total : 0;
+        callnext(total, entries);
+      });
+    });
+  },
+  metadataRead: function(db, termbaseID, type, entryID, callnext){
+    db.get("select * from metadata where id=$id and type=$type", {$id: entryID, $type: type}, function(err, row){
+      if(!row) {
+        var entryID=0;
+        var json="";
+        var title="";
+        callnext(entryID, json, title);
+      } else {
+        var entryID=row.id;
+        var json=row.json;
+        var title=row.id;
+        callnext(entryID, json, title);
+      }
+    });
+  },
+  metadataDelete: function(db, termbaseID, type, entryID, callnext){
+    db.run("delete from metadata where id=$id and type=$type", {
+      $id: entryID, $type: type
+    }, function(err){
+      callnext();
+    });
+  },
+  metadataCreate: function(db, termbaseID, type, entryID, json, callnext){
+    var sql="insert into metadata(type, json) values($type, $json)";
+    var params={$json: json, $type: type};
+    if(entryID) {
+      sql="insert into metadata(id, type, json) values($id, $type, $json)";
+      params.$id=entryID;
+    }
+    db.run(sql, params, function(err){
+      if(!entryID) entryID=this.lastID;
+      callnext(entryID, json);
+    });
+  },
+  metadataUpdate: function(db, termbaseID, type, entryID, json, callnext){
+    db.get("select id, json from metadata where id=$id and type=$type", {$id: entryID, $type: type}, function(err, row){
+      var newJson=json;
+      var oldJson=(row?row.json:"");
+      if(!row) { //an entry with that ID does not exist: recreate it with that ID:
+        module.exports.metadataCreate(db, termbaseID, type, entryID, json, callnext);
+      } else if(oldJson==newJson) {
+        callnext(entryID, json, false);
+      } else {
+        //update me:
+        db.run("update metadata set json=$json where id=$id and type=$type", {
+          $id: entryID, $json: json, $type: type
+        }, function(err){
+          callnext(entryID, json, true);
+        });
+      }
+    });
+  },
+
   configRead: function(db, termbaseID, configID, callnext){
     db.get("select * from configs where id=$id", {$id: configID}, function(err, row){
       config=row.json;

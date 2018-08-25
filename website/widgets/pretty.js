@@ -31,3 +31,24 @@ Pretty.wording=function(str){
   $ret.append(str);
   return $ret;
 }
+
+Pretty.metadatum=function(metadatum, lingo){
+  var ret="";
+  var strings=[];
+  lingo.languages.map(lang => {
+    if(lang.role=="major" && metadatum.title[lang.abbr]){
+      var string=Pretty.clean4html(metadatum.title[lang.abbr]);
+      if(strings.indexOf(string)==-1){
+        if(strings.length>0) ret+="/"
+        ret+="<span>"+string+"</span>";
+        strings.push(string);
+      }
+    }
+  });
+  ret="<span class='prettyMetadatum'>"+ret+"</span>"
+  return ret;
+}
+
+Pretty.clean4html=function(str){
+  return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}

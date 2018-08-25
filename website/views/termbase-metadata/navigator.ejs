@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="icon" type="image/x-icon" href="../../../furniture/favicon.ico"/>
+		<title><%=termbaseConfigs.ident.title%></title>
+		<script type="text/javascript" src="../../../libs/jquery.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-theme-green.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful-loc-en.js"></script>
+		<script type="text/javascript" src="../../../libs/screenful/screenful-user.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-user.css" />
+		<script type="text/javascript">
+		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
+		Screenful.User.username="<%=user.email%>";
+		</script>
+		<script type="text/javascript">var rootPath="../../../";</script>
+    <script type="text/javascript">var metadataType="<%-metadataType%>";</script>
+    <script type="text/javascript">var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;</script>
+		<script type="text/javascript" src="../../../furniture/screenful-user-config.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-navigator.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful-navigator.js"></script>
+		<script type="text/javascript" src="../../../libs/js.cookie.js"></script>
+		<script type="text/javascript">
+		Screenful.Navigator.listUrl="./list.json";
+    //Screenful.Navigator.listByIdUrl="./list.json";
+		Screenful.Navigator.stepSize=1000;
+		Screenful.Navigator.editorUrl="./editor.html";
+		Screenful.Navigator.modifiers=[
+			{value: "start", caption: "starts like this"},
+			{value: "wordstart", caption: "contains a word that starts like this"},
+			{value: "substring", caption: "contains this sequence of characters"},
+		];
+		Screenful.Navigator.entryDeleteUrl="./delete.json";
+		</script>
+
+		<link type="text/css" rel="stylesheet" href="../../../widgets/pretty.css" />
+		<script type="text/javascript" src="../../../widgets/pretty.js"></script>
+		<script type="text/javascript">
+		Screenful.Navigator.renderer=function(div, entry, searchtext, modifier){
+			//$(div).html(entry.id);
+			$(div).html( Pretty.metadatum(JSON.parse(entry.json), termbaseConfigs.lingo) );
+		};
+		</script>
+
+		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
+	</head>
+	<body>
+		<%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "metadata", subsectionID: metadataType, rootPath: "../../../"})%>
+	</body>
+</html>

@@ -28,6 +28,12 @@
 
 		<script type="text/javascript">
 		Screenful.Editor.editor=function(div, entry, uneditable){
+			if(!entry) {
+				var json={
+					desigs: [{term: {lang: "", wording: ""}}],
+				};
+				entry={content: JSON.stringify(json)};
+			}
 			$(div).html("<textarea style='padding: 10px; box-sizing: border-box; width: 100%; height: 400px; resize: vertical; border: 0px; box-shadow: inset 0px 0px 5px #999999; color: var(--link); border-radius: 4px; margin-top: 10px; font-size: 0.9rem;'></textarea>");
 			$(div).find("textarea").focus().val(JSON.stringify(JSON.parse(entry.content), null, "  "));
       //Editor.render($(div), JSON.parse(entry.content), uneditable);

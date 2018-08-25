@@ -64,7 +64,7 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #dictfooter > div {margin: 10px 0px;}
 #dictfooter > div.right {float: right;}
 #dictfooter a {text-decoration: none; color: inherit; }
-#dictfooter a:hover {color: #2c7fba; }
+#dictfooter a:hover {color: var(--link); }
 #dictfooter a.lic {position: relative; top: 2px;}
 #dictfooter a.xml {margin-left: 10px;}
 

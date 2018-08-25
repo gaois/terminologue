@@ -3,3 +3,5 @@ div.prettyDesig {}
 span.prettyTerm {}
 span.prettyLang {font-weight: bold;}
 span.prettyWording {}
+span.prettyMetadatum {}
+span.prettyMetadatum > span:first-child {font-weight: bold;}

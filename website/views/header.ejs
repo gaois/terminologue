@@ -6,12 +6,31 @@
 
     <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%>">Configuration</a>
     <%if(sectionID=="config" && subsectionID){%>
-        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionID%></a>
+        <%
+          var subtitle=subsectionID;
+          if(subsectionID=="ident") subtitle="Name and description";
+          if(subsectionID=="features") subtitle="Features";
+          if(subsectionID=="lingo") subtitle="Languages";
+          if(subsectionID=="users") subtitle="Users";
+          if(subsectionID=="publico") subtitle="Publishing";
+          if(subsectionID=="extraneto") subtitle="Extranets";
+        %>
+        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>
 
     <a href="<%-rootPath%><%=termbaseID%>/metadata/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%>">Metadata</a>
     <%if(sectionID=="metadata" && subsectionID){%>
-        <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subsectionID%></a>
+        <%
+          var subtitle=subsectionID;
+          if(subsectionID=="termLabel") subtitle="Term labels";
+          if(subsectionID=="inflectLabel") subtitle="Inflection labels";
+          if(subsectionID=="acceptLabel") subtitle="Acceptability labels";
+          if(subsectionID=="source") subtitle="Sources";
+          if(subsectionID=="domain") subtitle="Domains";
+          if(subsectionID=="collection") subtitle="Collections";
+          if(subsectionID=="tag") subtitle="Tags";
+        %>
+        <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>
 
     <a href="<%-rootPath%><%=termbaseID%>/download/" class="dicLink <%if(sectionID=='download'){%>current<%}%> disabled">Download</a>
