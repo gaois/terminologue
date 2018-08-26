@@ -18,6 +18,7 @@ const ops=require("./ops");
  ops.siteconfig=siteconfig;
 
 //Paths to our static files:
+app.use(siteconfig.rootPath+"views", express.static(path.join(__dirname, "views")));
 app.use(siteconfig.rootPath+"widgets", express.static(path.join(__dirname, "widgets")));
 app.use(siteconfig.rootPath+"furniture", express.static(path.join(__dirname, "furniture")));
 app.use(siteconfig.rootPath+"libs", express.static(path.join(__dirname, "libs")));
