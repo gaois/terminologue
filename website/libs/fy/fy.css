@@ -34,8 +34,10 @@ span.fy_textbox select {display: inline-block; box-sizing: border-box; padding: 
 span.fy_textbox select:focus {background-color: #f1f1e0;}
 
 span.fy_adder {cursor: pointer; color: #666666; display: inline-block; margin-top: 5px;}
-span.fy_adder:first-child {margin-top: 0px;}
 span.fy_adder:hover {color: #333333; text-shadow: 1px 1px 0px #ffffff;}
+div.fy_lineabove > span.fy_adder {margin-top: 10px;}
+div.fy_lineabove > span.fy_adder:first-child {margin-top: 0px;}
+div.fy_box > div.fy_lineabove:last-child > span.fy_adder:last-child {margin-bottom: 2px;}
 
 span.fy_remover {float: right; color: #999999; display: block; box-sizing: border-box; padding: 2px 8px; border-radius: 20px; cursor: pointer; margin-right: 5px; margin-left: 10px;}
 span.fy_remover:hover {color: #c11c1c; background-color: #eeeeee;}
@@ -45,3 +47,9 @@ span.fy_downer:hover {color: #138b64; background-color: #eeeeee;}
 
 span.fy_upper {float: right; color: #999999; display: block; box-sizing: border-box; padding: 2px 8px; border-radius: 20px; cursor: pointer; margin-right: 5px;}
 span.fy_upper:hover {color: #138b64; background-color: #eeeeee;}
+
+button.fy_tinybutton {padding: 0px 2px !important; margin: 0px !important; border: 0px !important; box-shadow: 0px 0px 0px transparent !important}
+
+.fy_preview {font-weight: bold;}
+.fy_preview > .char {color: #cccccc;}
+.fy_preview > .on {color: #666666; background-color: #beeee9;}

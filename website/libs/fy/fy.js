@@ -4,6 +4,10 @@ Fy.render=function($insideme, data, spec, uneditable){
   var template=spec.templates[":top"]
   var $html=Fy.renderNode(data, template, spec, uneditable);
   $insideme.addClass("fy").html($html);
+  $insideme.find(".fy_node").each(function(){
+    var $this=$(this);
+    if($this.data("template").refresh) $this.data("template").refresh($this);
+  });
 };
 Fy.harvest=function($insideme){
   var $html=$insideme.find("*").first();
@@ -17,9 +21,10 @@ Fy.renderNode=function(data, template, spec, uneditable){
     var $adder=$(e.delegateTarget);
     var subtemplateName=$adder.attr("templateName");
     var subtemplate=spec.templates[subtemplateName];
-    $adder.before(
-      Fy.renderNode(subtemplate.blank, subtemplate, spec, uneditable).data("jsonName", ":item").hide().fadeIn()
-    );
+    var $node=Fy.renderNode(subtemplate.blank, subtemplate, spec, uneditable).data("jsonName", ":item").addClass("jsonName_item").hide();
+    $adder.before($node);
+    if(subtemplate.refresh) subtemplate.refresh($node);
+    $node.fadeIn();
   });
   $html.find(".fy_remover").html("×").on("click", function(e){
     var $adder=$(e.delegateTarget);
@@ -64,14 +69,14 @@ Fy.renderNode=function(data, template, spec, uneditable){
     var jsonName=$div.attr("jsonName");
     if(jsonName==":item" && $.isArray(data)){
       data.map(subdata => {
-        $div.before(
-          Fy.renderNode(subdata, subtemplate, spec, uneditable).data("jsonName", jsonName)
-        );
+        var $node=Fy.renderNode(subdata, subtemplate, spec, uneditable).data("jsonName", jsonName).addClass("jsonName_item");
+        $div.before($node);
       });
       $div.remove();
     } else {
       var subdata=data[jsonName] || [];
-      $div.replaceWith(Fy.renderNode(subdata, subtemplate, spec, uneditable).data("jsonName", jsonName));
+      var $node=Fy.renderNode(subdata, subtemplate, spec, uneditable).data("jsonName", jsonName).addClass("jsonName_"+jsonName);
+      $div.replaceWith($node);
     }
   });
   return $html;
