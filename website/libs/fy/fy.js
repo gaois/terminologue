@@ -1,5 +1,9 @@
 var Fy={};
 
+Fy.changed=function(){
+  Screenful.Editor.changed();
+}
+
 Fy.render=function($insideme, data, spec, uneditable){
   var template=spec.templates[":top"]
   var $html=Fy.renderNode(data, template, spec, uneditable);
@@ -25,6 +29,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $adder.before($node);
     if(subtemplate.refresh) subtemplate.refresh($node);
     $node.fadeIn();
+    Fy.changed();
   });
   $html.find(".fy_remover").html("×").on("click", function(e){
     var $adder=$(e.delegateTarget);
@@ -33,7 +38,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $adder.parents(".fy_node").each(function(){
       var $node=$(this);
       if(!found && $node.data("jsonName")==":item") {
-        $node.fadeOut(function(){ $(this).remove() })
+        $node.fadeOut(function(){ $(this).remove(); Fy.changed(); })
         found=true;
       }
     });
@@ -45,6 +50,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $adder.parents(".fy_node").each(function(){
       var $node=$(this);
       if(!found && $node.data("jsonName")==":item") {
+        if($node.next(".fy_node").length>0) Fy.changed();
         $node.next(".fy_node").after($node.hide().fadeIn());
         found=true;
       }
@@ -57,6 +63,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $adder.parents(".fy_node").each(function(){
       var $node=$(this);
       if(!found && $node.data("jsonName")==":item") {
+        if($node.prev(".fy_node").length>0) Fy.changed();
         $node.prev(".fy_node").before($node.hide().fadeIn());
         found=true;
       }
@@ -70,15 +77,37 @@ Fy.renderNode=function(data, template, spec, uneditable){
     if(jsonName==":item" && $.isArray(data)){
       data.map(subdata => {
         var $node=Fy.renderNode(subdata, subtemplate, spec, uneditable).data("jsonName", jsonName).addClass("jsonName_item");
+        if($div.hasClass("fy_hidable")) $node.addClass("fy_hidable");
         $div.before($node);
       });
       $div.remove();
     } else {
       var subdata=data[jsonName] || [];
       var $node=Fy.renderNode(subdata, subtemplate, spec, uneditable).data("jsonName", jsonName).addClass("jsonName_"+jsonName);
+      if($div.hasClass("fy_hidable")) $node.addClass("fy_hidable");
       $div.replaceWith($node);
     }
   });
+  if($html.hasClass("fy_collapsible")){
+    var $collapsor=$("<div class='collapsor'>+</div>");
+    $html.append($collapsor);
+    $collapsor.on("click", function(e){
+      if($collapsor.html()=="+") {
+        $html.find(".fy_hidable").slideDown();
+        $collapsor.html("–");
+      } else {
+        $html.find(".fy_hidable").each(function(){
+          var $this=$(this);
+          if(!$this.data("template") || $this.data("template").hidable==undefined || $this.data("template").hidable($this)) $this.slideUp();
+        });
+        $collapsor.html("+");
+      }
+    });
+    $html.find(".fy_hidable").each(function(){
+      var $this=$(this);
+      if(!$this.data("template") || $this.data("template").hidable==undefined || $this.data("template").hidable($this)) $this.hide();
+    });
+  }
   return $html;
 };
 Fy.harvestNode=function($html){

@@ -5,9 +5,9 @@ Spec.templates[":top"]={
   type: "object",
   html: `<div>
     <div class="fy_tabs">
-      <span class="tab" data-name="admin">ADMIN</span>
+      <span class="tab full" data-name="admin">ADMIN</span>
       <span class="tab full on" data-name="terms">TRM</span>
-      <span class="tab" data-name="domains">DOM</span>
+      <span class="tab full" data-name="domains">DOM</span>
       <span class="tab" data-name="definitions">DEF</span>
       <span class="tab" data-name="examples">XMPL</span>
       <span class="tab" data-name="relations">REL</span>
@@ -30,16 +30,20 @@ Spec.templates["desigs"]={
 Spec.templates["desig"]={
   type: "object",
   blank: {term: {lang: "", wording: "", inflects: [], annots: []}, clarif: "", accept: "", source: ""},
-  html: `<div class="fy_container">
+  html: `<div class="fy_container fy_collapsible">
     <div class="fy_replace" templateName="term" jsonName="term"></div>
-    <div class="fy_replace" templateName="accept" jsonName="accept"></div>
-    <div class="fy_replace" templateName="clarif" jsonName="clarif"></div>
-    <div class="fy_replace" templateName="sources" jsonName="sources"></div>
+    <div class="fy_replace fy_hidable" templateName="accept" jsonName="accept"></div>
+    <div class="fy_replace fy_hidable" templateName="clarif" jsonName="clarif"></div>
+    <div class="fy_replace fy_hidable" templateName="sources" jsonName="sources"></div>
   </div>`,
 };
 Spec.templates["term"]={
   type: "object",
   html: `<div class="fy_box">
+    <!-- <div class="fy_bubble fullon">2</div> -->
+    <!-- <div class="fy_bubble sublime">2</div> -->
+    <!-- <div class="fy_bubble fullon">2<span class="sublime">2</span></div> -->
+    <!-- <div class="fy_bubble invisible">2</div> -->
     <div class="fy_horizon">
       <span class="fy_remover"></span>
       <span class="fy_downer"></span>
@@ -47,14 +51,14 @@ Spec.templates["term"]={
       <span class="fy_replace" templateName="lang" jsonName="lang"></span>
       <span class="fy_replace" templateName="wording" jsonName="wording"></span>
     </div>
-    <div class="fy_replace" templateName="annots" jsonName="annots"></div>
-    <div class="fy_replace" templateName="inflects" jsonName="inflects"></div>
+    <div class="fy_replace fy_hidable" templateName="annots" jsonName="annots"></div>
+    <div class="fy_replace fy_hidable" templateName="inflects" jsonName="inflects"></div>
   </div>`,
 };
 Spec.templates["lang"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select style="font-weight: bold;">
+    <select style="font-weight: bold;" onchange="Fy.changed()">
       <option value="">(select)</option>
       <option value="ga" title="Gaeilge/Irish">GA</option>
       <option value="en" title="Béarla/English">EN</option>
@@ -70,7 +74,7 @@ Spec.templates["lang"]={
 Spec.templates["wording"]={
   type: "string",
   html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;">
-    <input style="font-weight: bold;" onkeyup="Spec.templates.wording.changed(this)" onchange="Spec.templates.wording.changed(this)"/>
+    <input style="font-weight: bold;" onkeyup="Spec.templates.wording.changed(this)" onchange="Fy.changed(); Spec.templates.wording.changed(this)"/>
   </span>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -89,21 +93,24 @@ Spec.templates["clarif"]={
   type: "string",
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">transfer comment</span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input/></span>
+    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>
   </div>`,
   set: function($me, data){
     $me.find("input").val(data);
   },
   get: function($me){
     return $me.find("input").val();
-  }
+  },
+  hidable: function($me){
+    return ($me.find("input").val()=="");
+  },
 };
 Spec.templates["accept"]={
   type: "string",
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">acceptability</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
-      <select>
+      <select onchange="Fy.changed()">
         <option value=""></option>
         <option value="123">dímholta/deprecated</option>
         <option value="234">molta/preferred</option>
@@ -115,7 +122,10 @@ Spec.templates["accept"]={
   },
   get: function($me){
     return $me.find("select").val();
-  }
+  },
+  hidable: function($me){
+    return !$me.find("select").val();
+  },
 };
 Spec.templates["sources"]={
   type: "array",
@@ -133,7 +143,7 @@ Spec.templates["source"]={
     <span class="fy_upper"></span>
     <span class="fy_label" style="width: 245px;">source</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
-      <select>
+      <select onchange="Fy.changed()">
         <option value="">(select)</option>
         <option value="123">some source</option>
         <option value="234">some other source</option>
@@ -168,7 +178,7 @@ Spec.templates["inflect"]={
 Spec.templates["inflectLabel"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select>
+    <select onchange="Fy.changed()">
       <option value="">(select)</option>
       <option value="123" title="ginideach uatha/genitive singular">gs.</option>
       <option value="234" title="ainmneach iolra/nominative plural">npl.</option>
@@ -184,7 +194,7 @@ Spec.templates["inflectLabel"]={
 };
 Spec.templates["inflectText"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;"><input/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;"><input onchange="Fy.changed()"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },
@@ -253,6 +263,7 @@ Spec.templates["annotPosition"]={
     if(val==0 && $(button).closest('.jsonName_stop')) val=$(button).closest(".jsonName_term").find(".jsonName_wording input").val().length;
     if(val>MIN) {
       $input.val(val-1);
+      Fy.changed();
       var $annot=$input.closest(".jsonName_annots > .fy_node");
       $annot.data("template").refresh($annot);
     }
@@ -266,6 +277,7 @@ Spec.templates["annotPosition"]={
     if(val==0 && $(button).closest('.jsonName_stop')) val=$(button).closest(".jsonName_term").find(".jsonName_wording input").val().length;
     if(val<MAX) {
       $input.val(val+1);
+      Fy.changed();
       var $annot=$input.closest(".jsonName_annots > .fy_node");
       $annot.data("template").refresh($annot);
     }
@@ -274,7 +286,7 @@ Spec.templates["annotPosition"]={
 Spec.templates["annotLabel"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select>
+    <select onchange="Fy.changed()">
       <option value="">(select)</option>
       <option value="123" title="ainmfhocal firinscneach/macho noun">nm.</option>
       <option value="234" title="ainmfhocal baininscneach/effeminate noun">nf.</option>
