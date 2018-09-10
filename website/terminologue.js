@@ -88,8 +88,10 @@ app.get(siteconfig.rootPath+":termbaseID/edit/", function(req, res){
       res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
-        db.close();
-        res.render("termbase-edit/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs});
+        ops.readTermbaseMetadata(db, req.params.dictID, function(metadata){
+          db.close();
+          res.render("termbase-edit/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, termbaseMetadata: metadata});
+        });
       });
     }
   });

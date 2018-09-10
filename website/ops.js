@@ -129,6 +129,19 @@ module.exports={
       });
     }
   },
+  readTermbaseMetadata: function(db, termbaseID, callnext){
+    var metadata={};
+    db.all("select * from metadata", {}, function(err, rows){
+      if(!err) for(var i=0; i<rows.length; i++) {
+        var type=rows[i].type;
+        if(!metadata[type]) metadata[type]=[];
+        var json=JSON.parse(rows[i].json);
+        json.id=rows[i].id;
+        metadata[type].push(json);
+      }
+      callnext(metadata);
+    });
+  },
 
   entryList: function(db, termbaseID, facets, searchtext, modifier, howmany, callnext){
     var sql1=`select * from entries order by id limit $howmany`;
