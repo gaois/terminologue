@@ -20,6 +20,7 @@ Spec.templates[":top"]={
     </div>
     <div class="fy_body" data-name="domains">
       <div class="title">DOMAINS</div>
+      <div class="fy_replace" templateName="domains" jsonName="domains"></div>
     </div>
   </div>`,
 };
@@ -297,6 +298,72 @@ Spec.templates["annotLabel"]={
       <option value="456" title="aidiacht/adjective">adj.</option>
     </select>
   </span>`,
+  set: function($me, data){
+    if(data.toString()) $me.find("select").val(data);
+  },
+  get: function($me){
+    return $me.find("select").val();
+  }
+};
+
+Spec.templates["domains"]={
+  type: "array",
+  html: `<div>
+    <div class="fy_replace" templateName="domain" jsonName=":item"></div>
+    <span class="fy_adder" templateName="domain">+ domain</span>
+  </div>`,
+};
+Spec.templates["domain"]={
+  type: "object",
+  blank: {superdomain: null, subdomain: null},
+  html: `<div class="fy_container">
+    <div class="fy_box">
+      <div class="fy_replace" templateName="superdomain" jsonName="superdomain"></div>
+      <div class="fy_replace" templateName="subdomain" jsonName="subdomain"></div>
+    </div>
+  </div>`,
+  refresh: function($me){
+    $me.find(".jsonName_subdomain").hide();
+    var superdomainID=$me.find(".jsonName_superdomain select").val();
+    if(superdomainID) $me.find(".jsonName_subdomain").show();
+  },
+};
+Spec.templates["superdomain"]={
+  type: "string",
+  blank: "",
+  html: `<div class="fy_horizon">
+    <span class="fy_remover"></span>
+    <span class="fy_downer"></span>
+    <span class="fy_upper"></span>
+    <span class="fy_label" style="width: 245px;">domain</span>
+    <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
+      <select style="font-weight: bold;" onchange="Fy.changed(); $(this).closest('.jsonName_item').data('template').refresh( $(this).closest('.jsonName_item') )">
+        <option value="">(select)</option>
+        <option value="123">Some superdomain</option>
+        <option value="234">Some other superdomain</option>
+      </select>
+    </span>
+  </div>`,
+  set: function($me, data){
+    if(data.toString()) $me.find("select").val(data);
+  },
+  get: function($me){
+    return $me.find("select").val();
+  }
+};
+Spec.templates["subdomain"]={
+  type: "string",
+  blank: "",
+  html: `<div class="fy_horizon">
+    <span class="fy_label" style="width: 245px;">subdomain</span>
+    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
+      <select onchange="Fy.changed()">
+        <option value="">(none)</option>
+        <option value="6">Some subdomain</option>
+        <option value="7">Some subdomain » Some subsubdomain</option>
+      </select>
+    </span>
+  </div>`,
   set: function($me, data){
     if(data.toString()) $me.find("select").val(data);
   },

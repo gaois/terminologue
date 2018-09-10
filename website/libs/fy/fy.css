@@ -30,6 +30,7 @@ div.fy_lineabove {border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; p
 div.fy_horizon {border-bottom: 1px solid #dddddd; min-height: 1rem; position: relative; padding: 4px 0px; background-color: #ffffff;}
 
 span.fy_label {background-color: #eeeeee; color: #666666; text-shadow: 1px 1px 0px #ffffff; padding: 2px 8px; box-sizing: border-box; display: inline-block;}
+div.fy_box span.fy_label {border-left: 4px solid #ffffff;}
 
 span.fy_textbox {display: inline-block; box-sizing: border-box;}
 span.fy_textbox input {display: inline-block; box-sizing: border-box; padding: 2px 8px; border: 0px; font: inherit; width: 100%; background-color: #ffffff}

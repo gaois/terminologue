@@ -133,7 +133,6 @@ Fy.changed=function(){
 }
 Fy.tab=function(tabName){
   if(!tabName) tabName=Cookies.get("entryEditorTab");
-  console.log(tabName);
   if(!tabName || $(".fy_tab[data-name='"+tabName+"']").length==0) tabName=$(".fy_tab.on").attr("data-name");
   if(!tabName) tabName=$(".fy_tab").attr("data-name");
   if(tabName) {
