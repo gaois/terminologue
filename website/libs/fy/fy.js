@@ -20,6 +20,7 @@ Fy.harvest=function($insideme){
 
 Fy.renderNode=function(data, template, spec, uneditable){
   var $html=$(template.html).addClass("fy_node").data("template", template);
+  if(template.populate) template.populate($html);
   if(template.set) template.set($html, data);
   $html.find(".fy_adder").on("click", function(e){
     var $adder=$(e.delegateTarget);
@@ -28,6 +29,10 @@ Fy.renderNode=function(data, template, spec, uneditable){
     var $node=Fy.renderNode(subtemplate.blank, subtemplate, spec, uneditable).data("jsonName", ":item").addClass("jsonName_item").hide();
     $adder.before($node);
     if(subtemplate.refresh) subtemplate.refresh($node);
+    $node.find(".fy_node").each(function(){
+      var $this=$(this);
+      if($this.data("template").refresh) $this.data("template").refresh($this);
+    });
     $node.fadeIn();
     Fy.changed();
   });

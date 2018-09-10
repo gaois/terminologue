@@ -1,6 +1,19 @@
 var Spec={
   templates: {},
 };
+Spec.title=function(title){
+  var ret="";
+  var done=[];
+  termbaseConfigs.lingo.languages.map(lang => {
+    if(lang.role=="major" && title[lang.abbr] && done.indexOf(title[lang.abbr])==-1) {
+      if(ret+="") ret+="/";
+      ret+=title[lang.abbr];
+      done.push(title[lang.abbr]);
+    }
+  });
+  return ret;
+};
+
 Spec.templates[":top"]={
   type: "object",
   html: `<div>
@@ -24,6 +37,7 @@ Spec.templates[":top"]={
     </div>
   </div>`,
 };
+
 Spec.templates["desigs"]={
   type: "array",
   html: `<div>
@@ -62,18 +76,27 @@ Spec.templates["term"]={
 Spec.templates["lang"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select style="font-weight: bold;" onchange="Fy.changed()">
-      <option value="">(select)</option>
-      <option value="ga" title="Gaeilge/Irish">GA</option>
-      <option value="en" title="Béarla/English">EN</option>
-    </select>
+    <select style="font-weight: bold;" onchange="Fy.changed(); Spec.templates.lang.changed(this)"></select>
   </span>`,
   set: function($me, data){
     if(data.toString()) $me.find("select").val(data);
   },
   get: function($me){
     return $me.find("select").val();
-  }
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    $select.html(`<option value="">(select)</option>`);
+    termbaseConfigs.lingo.languages.map(lang => {
+      $select.append(`<option value="${lang.abbr}" title="${Spec.title(lang.title)}">${lang.abbr.toUpperCase()}</option>`)
+    });
+  },
+  changed: function(select){
+    $(select).closest(".jsonName_term").find(".jsonName_label").each(function(){
+      var $label=$(this);
+      if($label.data("template").refresh) $label.data("template").refresh($label);
+    });
+  },
 };
 Spec.templates["wording"]={
   type: "string",
@@ -114,11 +137,7 @@ Spec.templates["accept"]={
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">acceptability</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
-      <select onchange="Fy.changed()">
-        <option value=""></option>
-        <option value="123">dímholta/deprecated</option>
-        <option value="234">molta/preferred</option>
-      </select>
+      <select onchange="Fy.changed()"></select>
     </span>
   </div>`,
   set: function($me, data){
@@ -129,6 +148,13 @@ Spec.templates["accept"]={
   },
   hidable: function($me){
     return !$me.find("select").val();
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    $select.html(`<option data-langs='"all"' value=""></option>`);
+    termbaseMetadata.acceptLabel.map(datum => {
+      $select.append(`<option value="${datum.id}" data-langs='${JSON.stringify(datum.langs)}'>${Spec.title(datum.title)}</option>`)
+    });
   },
 };
 Spec.templates["sources"]={
@@ -159,7 +185,14 @@ Spec.templates["source"]={
   },
   get: function($me){
     return $me.find("select").val();
-  }
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    $select.html(`<option data-langs='"all"' value="">(select)</option>`);
+    termbaseMetadata.source.map(datum => {
+      $select.append(`<option value="${datum.id}" data-langs='${JSON.stringify(datum.langs)}'>${Spec.title(datum.title)}</option>`)
+    });
+  },
 };
 Spec.templates["inflects"]={
   type: "array",
@@ -182,19 +215,36 @@ Spec.templates["inflect"]={
 Spec.templates["inflectLabel"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select onchange="Fy.changed()">
-      <option value="">(select)</option>
-      <option value="123" title="ginideach uatha/genitive singular">gs.</option>
-      <option value="234" title="ainmneach iolra/nominative plural">npl.</option>
-      <option value="345" title="ginideach iolra/genitive plural">gpl.</option>
-    </select>
+    <select onchange="Fy.changed()"></select>
   </span>`,
   set: function($me, data){
     if(data.toString()) $me.find("select").val(data);
   },
   get: function($me){
     return $me.find("select").val();
-  }
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    $select.html(`<option data-langs='"all"' value="">(select)</option>`);
+    termbaseMetadata.inflectLabel.map(datum => {
+      $select.append(`<option value="${datum.id}" title="${Spec.title(datum.title)}" data-langs='${JSON.stringify(datum.langs)}'>${datum.abbr}</option>`)
+    });
+  },
+  refresh: function($me){
+    var lang=$me.closest(".jsonName_term").find(".jsonName_lang select").val();
+    var val=$me.find("select").val();
+    $me.find("select option").each(function(){
+      var $option=$(this);
+      var langs=JSON.parse($option.attr("data-langs"));
+      if(langs=="all" || langs.indexOf(lang)>-1) {
+        $option.prop("disabled", false).show();
+      } else {
+        $option.prop("disabled", true).hide();
+        if($option.attr("value")==val) $me.find("select").val("");
+      }
+    });
+  },
+
 };
 Spec.templates["inflectText"]={
   type: "string",
@@ -290,20 +340,35 @@ Spec.templates["annotPosition"]={
 Spec.templates["annotLabel"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select onchange="Fy.changed()">
-      <option value="">(select)</option>
-      <option value="123" title="ainmfhocal firinscneach/macho noun">nm.</option>
-      <option value="234" title="ainmfhocal baininscneach/effeminate noun">nf.</option>
-      <option value="345" title="briathar/verb">v.</option>
-      <option value="456" title="aidiacht/adjective">adj.</option>
-    </select>
+    <select onchange="Fy.changed()"></select>
   </span>`,
   set: function($me, data){
     if(data.toString()) $me.find("select").val(data);
   },
   get: function($me){
     return $me.find("select").val();
-  }
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    $select.html(`<option data-langs='"all"' value="">(select)</option>`);
+    termbaseMetadata.termLabel.map(datum => {
+      $select.append(`<option value="${datum.id}" title="${Spec.title(datum.title)}" data-langs='${JSON.stringify(datum.langs)}'>${datum.abbr}</option>`)
+    });
+  },
+  refresh: function($me){
+    var lang=$me.closest(".jsonName_term").find(".jsonName_lang select").val();
+    var val=$me.find("select").val();
+    $me.find("select option").each(function(){
+      var $option=$(this);
+      var langs=JSON.parse($option.attr("data-langs"));
+      if(langs=="all" || langs.indexOf(lang)>-1) {
+        $option.prop("disabled", false).show();
+      } else {
+        $option.prop("disabled", true).hide();
+        if($option.attr("value")==val) $me.find("select").val("");
+      }
+    });
+  },
 };
 
 Spec.templates["domains"]={
