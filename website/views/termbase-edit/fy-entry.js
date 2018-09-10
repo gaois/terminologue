@@ -5,18 +5,21 @@ Spec.templates[":top"]={
   type: "object",
   html: `<div>
     <div class="fy_tabs">
-      <span class="tab full" data-name="admin">ADMIN</span>
-      <span class="tab full on" data-name="terms">TRM</span>
-      <span class="tab full" data-name="domains">DOM</span>
-      <span class="tab" data-name="definitions">DEF</span>
-      <span class="tab" data-name="examples">XMPL</span>
-      <span class="tab" data-name="relations">REL</span>
-      <span class="tab" data-name="collections">COLL</span>
+      <span class="fy_tab full" data-name="admin">ADMIN</span>
+      <span class="fy_tab full on" data-name="terms">TRM</span>
+      <span class="fy_tab full" data-name="domains">DOM</span>
+      <span class="fy_tab" data-name="definitions">DEF</span>
+      <span class="fy_tab" data-name="examples">XMPL</span>
+      <span class="fy_tab" data-name="relations">REL</span>
+      <span class="fy_tab" data-name="collections">COLL</span>
       <div class="clear"></div>
     </div>
     <div class="fy_body" data-name="terms">
       <div class="title">TERMS</div>
       <div class="fy_replace" templateName="desigs" jsonName="desigs"></div>
+    </div>
+    <div class="fy_body" data-name="domains">
+      <div class="title">DOMAINS</div>
     </div>
   </div>`,
 };

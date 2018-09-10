@@ -1,9 +1,5 @@
 var Fy={};
 
-Fy.changed=function(){
-  Screenful.Editor.changed();
-}
-
 Fy.render=function($insideme, data, spec, uneditable){
   var template=spec.templates[":top"]
   var $html=Fy.renderNode(data, template, spec, uneditable);
@@ -12,6 +8,10 @@ Fy.render=function($insideme, data, spec, uneditable){
     var $this=$(this);
     if($this.data("template").refresh) $this.data("template").refresh($this);
   });
+  $insideme.find(".fy_tab").on("click", function(e){
+    Fy.tab($(e.delegateTarget).attr("data-name"));
+  });
+  Fy.tab();
 };
 Fy.harvest=function($insideme){
   var $html=$insideme.find("*").first();
@@ -125,5 +125,22 @@ Fy.harvestNode=function($html){
       $subnodes.each(function(){ ret[$(this).data("jsonName")]=Fy.harvestNode($(this)) });
       return ret;
     }
+  }
+};
+
+Fy.changed=function(){
+  Screenful.Editor.changed();
+}
+Fy.tab=function(tabName){
+  if(!tabName) tabName=Cookies.get("entryEditorTab");
+  console.log(tabName);
+  if(!tabName || $(".fy_tab[data-name='"+tabName+"']").length==0) tabName=$(".fy_tab.on").attr("data-name");
+  if(!tabName) tabName=$(".fy_tab").attr("data-name");
+  if(tabName) {
+    $(".fy_tab").removeClass("on");
+    $(".fy_tab[data-name='"+tabName+"']").addClass("on");
+    $(".fy_body").hide();
+    $(".fy_body[data-name='"+tabName+"']").fadeIn();
+    Cookies.set("entryEditorTab", tabName);
   }
 };
