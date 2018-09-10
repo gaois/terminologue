@@ -11,6 +11,7 @@ Fy.render=function($insideme, data, spec, uneditable){
   $insideme.find(".fy_tab").on("click", function(e){
     Fy.tab($(e.delegateTarget).attr("data-name"));
   });
+  Fy.refreshTabs();
   Fy.tab();
 };
 Fy.harvest=function($insideme){
@@ -136,6 +137,18 @@ Fy.harvestNode=function($html){
 Fy.changed=function(){
   Screenful.Editor.changed();
 }
+Fy.refreshTabs=function(){
+  $(".fy_body").each(function(){
+    var $body=$(this);
+    var tabName=$body.attr("data-name");
+    $(".fy_tab[data-name='"+tabName+"']").removeClass("full");
+    $body.find(".fy_node").each(function(){
+      if($(this).data("template") && $(this).data("template").get && $(this).data("template").get($(this))) {
+        $(".fy_tab[data-name='"+tabName+"']").addClass("full");
+      }
+    });
+  });
+};
 Fy.tab=function(tabName){
   if(!tabName) tabName=Cookies.get("entryEditorTab");
   if(!tabName || $(".fy_tab[data-name='"+tabName+"']").length==0) tabName=$(".fy_tab.on").attr("data-name");

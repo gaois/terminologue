@@ -18,9 +18,9 @@ Spec.templates[":top"]={
   type: "object",
   html: `<div>
     <div class="fy_tabs">
-      <span class="fy_tab full" data-name="admin">ADMIN</span>
-      <span class="fy_tab full on" data-name="terms">TRM</span>
-      <span class="fy_tab full" data-name="domains">DOM</span>
+      <span class="fy_tab" data-name="admin">ADMIN</span>
+      <span class="fy_tab on" data-name="terms">TRM</span>
+      <span class="fy_tab" data-name="domains">DOM</span>
       <span class="fy_tab" data-name="definitions">DEF</span>
       <span class="fy_tab" data-name="examples">XMPL</span>
       <span class="fy_tab" data-name="relations">REL</span>
