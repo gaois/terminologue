@@ -136,6 +136,7 @@ Fy.harvestNode=function($html){
 
 Fy.changed=function(){
   Screenful.Editor.changed();
+  Fy.refreshTabs();
 }
 Fy.refreshTabs=function(){
   $(".fy_body").each(function(){

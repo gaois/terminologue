@@ -13,6 +13,11 @@ Spec.title=function(title){
   });
   return ret;
 };
+Spec.getDomain=function(id){
+  var ret=null;
+  termbaseMetadata.domain.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
 
 Spec.templates[":top"]={
   type: "object",
@@ -388,9 +393,12 @@ Spec.templates["domain"]={
     </div>
   </div>`,
   refresh: function($me){
-    $me.find(".jsonName_subdomain").hide();
+    $me.find(".jsonName_subdomain").hide().find("select").html("");
     var superdomainID=$me.find(".jsonName_superdomain select").val();
-    if(superdomainID) $me.find(".jsonName_subdomain").show();
+    if(superdomainID) {
+      $me.find(".jsonName_subdomain").show();
+      Spec.templates.subdomain.refresh($me.find(".jsonName_subdomain"));
+    }
   },
 };
 Spec.templates["superdomain"]={
@@ -402,11 +410,7 @@ Spec.templates["superdomain"]={
     <span class="fy_upper"></span>
     <span class="fy_label" style="width: 245px;">domain</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
-      <select style="font-weight: bold;" onchange="Fy.changed(); $(this).closest('.jsonName_item').data('template').refresh( $(this).closest('.jsonName_item') )">
-        <option value="">(select)</option>
-        <option value="123">Some superdomain</option>
-        <option value="234">Some other superdomain</option>
-      </select>
+      <select style="font-weight: bold;" onchange="Fy.changed(); $(this).closest('.jsonName_item').data('template').refresh( $(this).closest('.jsonName_item') )"></select>
     </span>
   </div>`,
   set: function($me, data){
@@ -414,7 +418,14 @@ Spec.templates["superdomain"]={
   },
   get: function($me){
     return $me.find("select").val();
-  }
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    $select.html(`<option value="">(select)</option>`);
+    termbaseMetadata.domain.map(datum => {
+      $select.append(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`)
+    });
+  },
 };
 Spec.templates["subdomain"]={
   type: "string",
@@ -422,17 +433,39 @@ Spec.templates["subdomain"]={
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">subdomain</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
-      <select onchange="Fy.changed()">
-        <option value="">(none)</option>
-        <option value="6">Some subdomain</option>
-        <option value="7">Some subdomain » Some subsubdomain</option>
-      </select>
+      <select onchange="Fy.changed()"></select>
     </span>
   </div>`,
   set: function($me, data){
-    if(data.toString()) $me.find("select").val(data);
+    if(data.toString()) $me.data("val", data);
   },
   get: function($me){
     return $me.find("select").val();
-  }
+  },
+  refresh: function($me){
+    var $select=$me.find("select");
+    var superdomainID=$me.closest(".jsonName_item").find(".jsonName_superdomain select").val();
+    var superdomain=Spec.getDomain(superdomainID);
+    if(superdomain && superdomain.subdomains && superdomain.subdomains.length>0){
+      $me.show();
+      $select.html(`<option value="">(none)</option>`);
+      superdomain.subdomains.map(subdomain => {
+        go(subdomain, "");
+      });
+    } else {
+      $me.hide();
+      $select.html("");
+    }
+    function go(datum, prefix){
+      var title=prefix;
+      if(title!="") title+=" » ";
+      title+=Spec.title(datum.title);
+      $select.append(`<option value="${datum.lid}">${title}</option>`);
+      if(datum.lid==$me.data("val")) $select.val(datum.lid);
+      if(datum.subdomains) datum.subdomains.map(subdomain => {
+        go(subdomain, title);
+      });
+    }
+  },
+
 };
