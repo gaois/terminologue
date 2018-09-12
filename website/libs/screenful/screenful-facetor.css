@@ -1,0 +1,8 @@
+#leftbox > div {padding: 20px 10px; text-shadow: 1px 1px 0px #ffffff;}
+
+#leftbox div.title:first-child {margin-top: 0px;}
+#leftbox div.title {font-weight: bold; border-bottom: 1px dotted #999999; padding: 4px 4px; margin: 20px 0px 5px 0px; }
+#leftbox div.subtitle {border-bottom: 1px dotted #999999; padding: 4px 4px; margin: 10px 0px 5px 0px; }
+
+#leftbox select {font: inherit; font-size: 0.9em; box-sizing: border-box; padding: 4px 4px; border: 1px inset #bbbbbb; background-color: #ffffff;}
+#leftbox select.fullwidth {width: 100%; display: block; margin: 5px 0px;}

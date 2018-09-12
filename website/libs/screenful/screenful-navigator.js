@@ -15,7 +15,7 @@ Screenful.Navigator={
         $("#envelope").removeClass("leftContainerExpanded").addClass("leftContainerCollapsed");
         var needReload=false;
         if(Screenful.Facetor) {
-          if(Screenful.Facetor.harvest()) needReload=true;
+          if(Screenful.Facetor.report()) needReload=true;
           Screenful.Facetor.hide();
         }
         e.stopPropagation();
@@ -176,7 +176,7 @@ Screenful.Navigator={
     Screenful.Navigator.lastStepSize=howmany;
     Screenful.status(Screenful.Loc.listing, "wait"); //"getting list of entries"
     var url=Screenful.Navigator.listUrl;
-    var facets=null; if(Screenful.Facetor && $("#envelope").hasClass("leftContainerExpanded")) facets=Screenful.Facetor.harvest();
+    var facets=null; if(Screenful.Facetor && $("#envelope").hasClass("leftContainerExpanded")) facets=Screenful.Facetor.report();
     var criteria=null; if(Screenful.Navigator.critHarvester) criteria=Screenful.Navigator.critHarvester(document.getElementById("editor"));
     var searchtext=$.trim($("#searchbox").val());
     var modifiers=[];
