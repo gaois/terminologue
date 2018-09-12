@@ -240,6 +240,26 @@ module.exports={
       }
     });
   },
+  entryHistory: function(db, termbaseID, entryID, callnext){
+    db.all("select * from history where entry_id=$entryID order by [when] desc", {$entryID: entryID}, function(err, rows){
+      var history=[];
+      for(var i=0; i<rows.length; i++) {
+        var row=rows[i];
+        history.push({
+          "entry_id": row.entry_id,
+          "revision_id": row.id,
+          "content": row.json,
+          "action": row.action,
+          "when": row.when,
+          "email": row.email,
+          "historiography": JSON.parse(row.historiography)
+        });
+      }
+      callnext(history);
+    });
+  },
+
+
 
   metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
     var sql1=`select * from metadata where type=$type order by id limit $howmany`;

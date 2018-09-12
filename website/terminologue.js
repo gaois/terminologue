@@ -189,6 +189,21 @@ app.post(siteconfig.rootPath+":termbaseID/edit/delete.json", function(req, res){
     }
   });
 });
+app.post(siteconfig.rootPath+":termbaseID/edit/history.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    ops.entryHistory(db, req.params.termbaseID, req.body.id, function(history){
+      if(!true) { //user can view history?
+        db.close();
+        res.json([]);
+      } else {
+        db.close();
+        res.json(history);
+      }
+    });
+  })
+});
 
 //Termbase config:
 app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
