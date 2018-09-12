@@ -314,6 +314,7 @@ Spec.templates["annotPosition"]={
     return $me.find("input").val();
   },
   clickLess: function(button){
+    if($(button).closest(".fy_uneditable").length>0) return;
     var MIN=1;
     if($(button).closest('.jsonName_stop').length>0) MIN=parseInt($(button).closest(".jsonName_item").find('.jsonName_start').find("input").val());
     if(!MIN) MIN=1;
@@ -328,6 +329,7 @@ Spec.templates["annotPosition"]={
     }
   },
   clickMore: function(button){
+    if($(button).closest(".fy_uneditable").length>0) return;
     var MAX=$(button).closest(".jsonName_term").find('.jsonName_wording input').val().length;
     if($(button).closest('.jsonName_start').length>0) MAX=parseInt($(button).closest(".jsonName_item").find('.jsonName_stop').find("input").val());
     if(!MAX) MAX=$(button).closest(".jsonName_term").find(".jsonName_wording input").val().length;

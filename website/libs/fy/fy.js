@@ -4,6 +4,7 @@ Fy.render=function($insideme, data, spec, uneditable){
   var template=spec.templates[":top"]
   var $html=Fy.renderNode(data, template, spec, uneditable);
   $insideme.addClass("fy").html($html);
+  if(uneditable) $insideme.addClass("fy_uneditable");
   $insideme.find(".fy_node").each(function(){
     var $this=$(this);
     if($this.data("template").refresh) $this.data("template").refresh($this);
@@ -23,7 +24,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
   var $html=$(template.html).addClass("fy_node").data("template", template);
   if(template.populate) template.populate($html);
   if(template.set) template.set($html, data);
-  $html.find(".fy_adder").on("click", function(e){
+  if(!uneditable) $html.find(".fy_adder").on("click", function(e){
     var $adder=$(e.delegateTarget);
     var subtemplateName=$adder.attr("templateName");
     var subtemplate=spec.templates[subtemplateName];
@@ -37,7 +38,8 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $node.fadeIn();
     Fy.changed();
   });
-  $html.find(".fy_remover").html("×").on("click", function(e){
+  $html.find(".fy_remover").html("×");
+  if(!uneditable) $html.find(".fy_remover").on("click", function(e){
     var $adder=$(e.delegateTarget);
     var jsonName=$adder.attr("jsonName");
     var found=false;
@@ -49,7 +51,8 @@ Fy.renderNode=function(data, template, spec, uneditable){
       }
     });
   });
-  $html.find(".fy_downer").html("▾").on("click", function(e){
+  $html.find(".fy_downer").html("▾")
+  if(!uneditable) $html.find(".fy_downer").on("click", function(e){
     var $adder=$(e.delegateTarget);
     var jsonName=$adder.attr("jsonName");
     var found=false;
@@ -62,7 +65,8 @@ Fy.renderNode=function(data, template, spec, uneditable){
       }
     });
   });
-  $html.find(".fy_upper").html("▴").on("click", function(e){
+  $html.find(".fy_upper").html("▴")
+  if(!uneditable) $html.find(".fy_upper").on("click", function(e){
     var $adder=$(e.delegateTarget);
     var jsonName=$adder.attr("jsonName");
     var found=false;
@@ -113,6 +117,10 @@ Fy.renderNode=function(data, template, spec, uneditable){
       var $this=$(this);
       if(!$this.data("template") || $this.data("template").hidable==undefined || $this.data("template").hidable($this)) $this.hide();
     });
+  }
+  if(uneditable) {
+    $html.find("input").prop("disabled", true);
+    $html.find("select").prop("disabled", true);
   }
   return $html;
 };
