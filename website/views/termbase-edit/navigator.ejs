@@ -26,10 +26,17 @@
 		Screenful.Navigator.stepSize=1000;
 		Screenful.Navigator.editorUrl="./editor.html";
 		Screenful.Navigator.modifiers=[
-			{value: "smart", caption: "smart search"},
-			{value: "start", caption: "starts like this"},
-			{value: "wordstart", caption: "contains a word that starts like this"},
-			{value: "substring", caption: "contains this sequence of characters"},
+			{position: "box", value: "*", abbr: "*", caption: "search in: all languages"},
+			{position: "box", value: "ga", abbr: "GA", caption: "search in: Irish"},
+			{position: "box", value: "en", abbr: "EN", caption: "search in: English"},
+
+			{position: "left", value: "smart", caption: "smart search"},
+			{position: "left", value: "start", caption: "starts like this"},
+			{position: "left", value: "wordstart", caption: "contains a word that starts like this"},
+			{position: "left", value: "substring", caption: "contains this sequence of characters"},
+
+			{position: "right", value: "ga", abbr: "GA", caption: "sort by: Irish"},
+			{position: "right", value: "en", abbr: "EN", caption: "sort by: English"},
 		];
 		Screenful.Navigator.entryDeleteUrl="./delete.json";
 		</script>
@@ -41,6 +48,28 @@
 			//$(div).html(entry.id);
 			$(div).html( Pretty.entry(JSON.parse(entry.json)) );
 		};
+		</script>
+
+		<script type="text/javascript">
+		Screenful.Navigator.critEditor=function(div, crits){ //optional
+			//div = an HTML element to render the criteria editor into
+			//crits = "..." or JSON,  the criteria to render; if undefined then render blank criteria
+			$(div).html(`<input class="focusme" style="font: inherit; width: 100%; box-sizing: border-box"/>`);
+		};
+		Screenful.Navigator.critHarvester=function(div){ //optional
+			//div = an HTML element to harvest the criteria from
+			//returns "..." or JSON
+			return $(div).find("input").val();
+		};
+		</script>
+
+		<script type="text/javascript">
+		Screenful.Navigator.enableLeftPanel=true;
+		</script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-facetor.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful-facetor.js"></script>
+		<script type="text/javascript">
+		//Screenful.Facetor.somesetting="somevalue";
 		</script>
 
 		<script type="text/javascript">
