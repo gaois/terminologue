@@ -18,6 +18,11 @@ Spec.getDomain=function(id){
   termbaseMetadata.domain.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
+Spec.getAcceptLabel=function(id){
+  var ret=null;
+  termbaseMetadata.acceptLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
 
 Spec.templates[":top"]={
   type: "object",

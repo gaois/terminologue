@@ -1,6 +1,8 @@
-div.prettyEntry {}
-div.prettyDesig {}
-span.prettyTerm {}
-span.prettyLang {font-weight: bold;}
-span.prettyWording {}
 span.prettyMetadatum {}
+
+div.prettyEntry {font-size: 1em;}
+div.prettyDesig {position: relative; padding-left: 2.5em; margin: 5px 0px;}
+span.prettyLang {display: block; width: 2.5em; background-color: #eeeeee; text-align: center; position: absolute; top: 0px; left: 0px; text-shadow: 1px 1px 0px #ffffff; border-radius: 4px; font-size: 0.8em;}
+span.prettyWording {font-weight: bold;}
+span.clarif {font-style: italic;}
+span.accept {font-style: italic; color: #947253;}

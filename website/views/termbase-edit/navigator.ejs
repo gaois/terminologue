@@ -12,6 +12,10 @@
 		<script type="text/javascript" src="../../libs/screenful/screenful-user.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-user.css" />
 		<script type="text/javascript">
+		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
+		var termbaseMetadata=<%-JSON.stringify(termbaseMetadata)%>;
+		</script>
+		<script type="text/javascript">
 		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
 		Screenful.User.username="<%=user.email%>";
 		</script>
@@ -26,18 +30,18 @@
 		Screenful.Navigator.stepSize=1000;
 		Screenful.Navigator.editorUrl="./editor.html";
 		Screenful.Navigator.modifiers=[
-			{position: "box", value: "*", abbr: "⁕", caption: "search in: all languages"},
-			{position: "box", value: "ga", abbr: "GA", caption: "search in: Irish"},
-			{position: "box", value: "en", abbr: "EN", caption: "search in: English"},
-
 			{position: "left", value: "smart", caption: "smart search"},
 			{position: "left", value: "start", caption: "starts like this"},
 			{position: "left", value: "wordstart", caption: "contains a word that starts like this"},
 			{position: "left", value: "substring", caption: "contains this sequence of characters"},
-
-			{position: "right", value: "ga", abbr: "GA", caption: "sort by: Irish"},
-			{position: "right", value: "en", abbr: "EN", caption: "sort by: English"},
+			{position: "box", value: "*", abbr: "⁕", caption: "search in all languages"},
 		];
+		termbaseConfigs.lingo.languages.map(lang => {
+			if(lang.role=="major") {
+				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "search in: "+lang.title.en},);
+				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "sort by: "+lang.title.en},);
+			}
+		});
 		Screenful.Navigator.entryDeleteUrl="./delete.json";
 		</script>
 
@@ -69,83 +73,7 @@
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-facetor.css" />
 		<script type="text/javascript" src="../../libs/screenful/screenful-facetor.js"></script>
 		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
-		<script type="text/javascript">
-		Screenful.Facetor.panes=[{
-			render: function(div){
-				var $inme=$(div);
-
-				$inme.append(`<div class="title">Status</div>`);
-				var $select=$(`<select class="fullwidth" id="facCStatus"></select>`).appendTo($inme);
-				$select.append(`<option value="">(any checking status)</option>`);
-				$select.append(`<option value="1">checked</option>`);
-				$select.append(`<option value="0">unchecked</option>`);
-				$select.on("change", Screenful.Facetor.change);
-
-				var $select=$(`<select class="fullwidth" id="facPStatus"></select>`).appendTo($inme);
-				$select.append(`<option value="">(any publishing status)</option>`);
-				$select.append(`<option value="1">public</option>`);
-				$select.append(`<option value="0">hidden</option>`);
-				$select.on("change", Screenful.Facetor.change);
-
-				$inme.append(`<div class="title">Domain</div>`);
-				var $select=$(`<select class="fullwidth" id="facSuperdomain"></select>`).appendTo($inme);
-				$select.append(`<option value="">(any domain or no domain)</option>`);
-				$select.append(`<option value="*">(any domain)</option>`);
-				$select.append(`<option value="-1">(no domain)</option>`);
-				termbaseMetadata.domain.map(datum => {
-					var $option=$(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
-					$option.data("datum", datum);
-					$option.appendTo($select);
-		    });
-				$select.on("change", Screenful.Facetor.change);
-				$select.on("change", function(){
-						var superdomain=$("#facSuperdomain option:selected").data("datum");
-						var $subselect=$("#facSubdomain").html("");
-						if(!superdomain || superdomain.subdomains.length==0){
-							$("#facSubdomainContainer").hide();
-							$subselect.append(`<option value="">(any subdomain or no subdomain)</option>`);
-						} else {
-							$("#facSubdomainContainer").show();
-							$subselect.append(`<option value="">(any subdomain or no subdomain)</option>`);
-							$subselect.append(`<option value="*">(any subdomain)</option>`);
-							$subselect.append(`<option value="-1">(no subdomain)</option>`);
-							superdomain.subdomains.map(subdomain => {
-				        go(subdomain, "");
-				      });
-							function go(datum, prefix){
-					      var title=prefix;
-					      if(title!="") title+=" » ";
-					      title+=Spec.title(datum.title);
-					      $subselect.append(`<option value="${datum.lid}">${title}</option>`);
-					      if(datum.subdomains) datum.subdomains.map(subdomain => {
-					        go(subdomain, title);
-					      });
-					    }
-						}
-				});
-
-				var $container=$(`<div id="facSubdomainContainer" style="display: none"></div>`).appendTo($inme);
-				$container.append(`<div class="subtitle">Subdomain</div>`);
-				var $select=$(`<select class="fullwidth" id="facSubdomain"></select>`).appendTo($container);
-				$select.append(`<option value="">(any subdomain or no subdomain)</option>`);
-				$select.on("change", Screenful.Facetor.change);
-			},
-			harvest: function(div){
-				var $inme=$(div);
-				var ret={};
-				ret.cStatus=$("#facCStatus").val();
-				ret.pStatus=$("#facPStatus").val();
-				ret.superdomain=$("#facSuperdomain").val();
-				ret.subdomain=$("#facSubdomain").val();
-		    return ret;
-			},
-		}];
-		</script>
-
-		<script type="text/javascript">
-		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
-		var termbaseMetadata=<%-JSON.stringify(termbaseMetadata)%>;
-		</script>
+		<script type="text/javascript" src="../../views/termbase-edit/facetor-settings.js"></script>
 
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
 	</head>

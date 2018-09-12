@@ -1,37 +1,5 @@
 var Pretty={};
 
-Pretty.entry=function(entry){
-  var $ret=$("<div class='prettyEntry'></div>");
-  entry.desigs.map(desig => { $ret.append(Pretty.desig(desig)) });
-  return $ret;
-}
-
-Pretty.desig=function(desig){
-  var $ret=$("<div class='prettyDesig'></div>");
-  $ret.append(Pretty.term(desig.term));
-  return $ret;
-}
-
-Pretty.term=function(term){
-  var $ret=$("<span class='prettyTerm'></span>");
-  $ret.append(Pretty.lang(term.lang));
-  $ret.append(" ");
-  $ret.append(Pretty.wording(term.wording));
-  return $ret;
-}
-
-Pretty.lang=function(str){
-  var $ret=$("<span class='prettyLang'></span>");
-  $ret.append(str.toUpperCase());
-  return $ret;
-}
-
-Pretty.wording=function(str){
-  var $ret=$("<span class='prettyWording'></span>");
-  $ret.append(str);
-  return $ret;
-}
-
 Pretty.metadatum=function(metadatum, lingo){
   var ret="";
   var strings=[];
@@ -48,6 +16,64 @@ Pretty.metadatum=function(metadatum, lingo){
   ret="<span class='prettyMetadatum'>"+ret+"</span>"
   return ret;
 }
+
+//---
+
+Pretty.entry=function(entry){
+  var $ret=$("<div class='prettyEntry'></div>");
+  var langs=[$(".lineModifiersRight .current").data("value")];
+  termbaseConfigs.lingo.languages.map(lang => { if(langs.indexOf(lang.abbr)==-1) langs.push(lang.abbr); });
+  var langsDone=[];
+  langs.map(lang => {
+    entry.desigs.map(desig => {
+      if(desig.term.lang==lang) {
+        $ret.append(Pretty.desig(desig, (langsDone.indexOf(lang)==-1)));
+        langsDone.push(lang);
+      }
+    });
+
+  });
+  return $ret;
+}
+
+Pretty.desig=function(desig, withLangLabel){
+  var $ret=$("<div class='prettyDesig'></div>");
+  if(withLangLabel) $ret.append(Pretty.lang(desig.term.lang));
+  $ret.append(Pretty.wording(desig.term.wording));
+  if(desig.accept) $ret.append(" ").append(Pretty.accept(desig.accept));
+  if(desig.clarif) $ret.append(" ").append(Pretty.clarif(desig.clarif));
+  return $ret;
+}
+
+Pretty.lang=function(str){
+  var $ret=$("<span class='prettyLang'></span>");
+  $ret.append(str.toUpperCase());
+  return $ret;
+}
+
+Pretty.wording=function(str){
+  var $ret=$("<span class='prettyWording'></span>");
+  $ret.append(str);
+  return $ret;
+}
+
+Pretty.clarif=function(str){
+  var $ret=$("<span class='clarif'></span>");
+  $ret.append("("+str+")");
+  return $ret;
+}
+
+Pretty.accept=function(str){
+  var label=Spec.getAcceptLabel(str);
+  if(!label) return $("");
+  var $ret=$("<span class='accept'></span>");
+  $ret.append(Spec.title(label.title));
+  return $ret;
+}
+
+
+
+//---
 
 Pretty.clean4html=function(str){
   return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
