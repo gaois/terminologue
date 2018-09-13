@@ -13,7 +13,8 @@ div.fy_tabs > span.fy_tab.on:hover {color: #333333;}
 
 div.fy_body {position: absolute; top: 40px; left: 0px; right: 0px; bottom: 0px; overflow-y: scroll; padding: 20px 15px; color: #333333;}
 div.fy_body > *:last-child {margin-bottom: 400px;}
-div.fy_body div.title {border-bottom: 1px solid #cccccc; padding: 0px 0px 5px 0px; margin-bottom: 15px;}
+div.fy_body div.title {border-bottom: 1px solid #cccccc; padding: 0px 0px 5px 0px; margin-bottom: 15px; margin-top: 25px;}
+div.fy_body div.title:first-child {margin-top: 0px;}
 
 
 div.fy_container {margin-top: 15px; margin-bottom: 20px;}
@@ -38,6 +39,9 @@ span.fy_textbox input {display: inline-block; box-sizing: border-box; padding: 2
 span.fy_textbox input:focus {background-color: #f1f1e0;}
 span.fy_textbox select {display: inline-block; box-sizing: border-box; padding: 2px 4px; border: 0px; font: inherit; width: 100%; background-color: #ffffff;}
 span.fy_textbox select:focus {background-color: #f1f1e0;}
+
+label {cursor: pointer;}
+label input {position: relative; top: 2px;}
 
 span.fy_adder {cursor: pointer; color: #666666; display: inline-block; margin-top: 5px;}
 span.fy_adder:hover {color: #333333; text-shadow: 1px 1px 0px #ffffff;}

@@ -144,20 +144,28 @@ module.exports={
   },
 
   entryList: function(db, termbaseID, facets, searchtext, modifier, howmany, callnext){
+    var modifiers=modifier.split(" ");
     var sql1=`select * from entries order by id limit $howmany`;
     var params1={$howmany: howmany};
     var sql2=`select count(*) as total from entries`;
     var params2={};
     db.all(sql1, params1, function(err, rows){
       if(err || !rows) rows=[];
+      var suggestions=null;
+      var primeEntries=null;
       var entries=[];
       for(var i=0; i<rows.length; i++){
         var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
         entries.push(item);
       }
+      if(modifiers.indexOf("smart")>-1 && searchtext!=""){
+        suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
+        primeEntries=[];
+        if(entries.length>0) primeEntries.push(entries.shift());
+      }
       db.get(sql2, params2, function(err, row){
         var total=(!err && row) ? row.total : 0;
-        callnext(total, entries);
+        callnext(total, primeEntries, entries, suggestions);
       });
     });
   },

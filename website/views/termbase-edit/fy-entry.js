@@ -37,6 +37,12 @@ Spec.templates[":top"]={
       <span class="fy_tab" data-name="collections">COLL</span>
       <div class="clear"></div>
     </div>
+    <div class="fy_body" data-name="admin">
+      <div class="title">CHECKING STATUS</div>
+      <div class="fy_replace" templateName="cStatus" jsonName="cStatus"></div>
+      <div class="title">PUBLISHING STATUS</div>
+      <div class="fy_replace" templateName="pStatus" jsonName="pStatus"></div>
+    </div>
     <div class="fy_body" data-name="terms">
       <div class="title">TERMS</div>
       <div class="fy_replace" templateName="desigs" jsonName="desigs"></div>
@@ -46,6 +52,33 @@ Spec.templates[":top"]={
       <div class="fy_replace" templateName="domains" jsonName="domains"></div>
     </div>
   </div>`,
+};
+
+Spec.templates["cStatus"]={
+  type: "string",
+  html: `<div class="fy_node">
+    <label><input type="radio" name="cStatus" value="1" onchange="Fy.changed()"/> checked</label>
+    <label><input type="radio" name="cStatus" value="0" onchange="Fy.changed()"/> not checked</label>
+  </div>`,
+  set: function($me, data){
+    $me.find("input[value='"+data+"']").prop("checked", true);
+  },
+  get: function($me){
+    return $me.find("input:checked").val();
+  },
+};
+Spec.templates["pStatus"]={
+  type: "string",
+  html: `<div class="fy_node">
+    <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed()"/> publishable</label>
+    <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed()"/> hidden</label>
+  </div>`,
+  set: function($me, data){
+    $me.find("input[value='"+data+"']").prop("checked", true);
+  },
+  get: function($me){
+    return $me.find("input:checked").val();
+  },
 };
 
 Spec.templates["desigs"]={

@@ -71,6 +71,13 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #critbox .buttons { position: absolute; left: 15px; right: 10px; bottom: 0px; text-align: right; }
 #critbox .buttons *:last-child {margin-right: 0px;}
 
+#listbox div.suggs {padding: 5px 15px; font-size: 0.9em; line-height: 2em;}
+#listbox span.sugg {color: var(--link); cursor: pointer; margin-right: 0.75em; white-space: nowrap;}
+#listbox span.sugg:hover {color: var(--link-hover);}
+
+#listbox div.intertitle {padding: 20px 5px 5px 5px; margin: 0px 10px; border-bottom: 1px solid #eeeeee; color: #999999;}
+#listbox div.intertitle:first-child {padding-top: 5px;}
+
 #listbox .entry { padding: 5px 5px; margin: 0px 10px; border-bottom: 1px solid #eeeeee; cursor: pointer; position: relative;}
 #listbox .entry > div.inside { display: inline; }
 #listbox .entry:first-child { border-top: 1px solid #eeeeee; }
