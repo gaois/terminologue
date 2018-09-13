@@ -31,12 +31,12 @@ div.fy_horizon { margin: 5px 0px; border: 1px inset #999999; border-radius: 4px;
 div.fy_horizon:first-child {margin-top: 0px;}
 div.fy_horizon:last-child {margin-bottom: 0px;}
 
-span.fy_label {background-color: #eeeeee; color: #666666; text-shadow: 1px 1px 0px #ffffff; margin: -6px 0px -7px 0px; padding: 2px 8px; box-sizing: border-box; display: inline-block; border-radius: 4px 0px 0px 4px;}
+span.fy_label {background-color: #eeeeee; color: #666666; text-shadow: 1px 1px 0px #ffffff; margin: -2px 0px -2px 0px; padding: 4px 8px; box-sizing: border-box; display: inline-block; border-radius: 4px 0px 0px 4px;}
 
 span.fy_textbox {display: inline-block; box-sizing: border-box;}
-span.fy_textbox input {display: inline-block; box-sizing: border-box; padding: 2px 8px; border: 0px; font: inherit; width: 100%; background-color: #ffffff}
+span.fy_textbox input {display: inline-block; box-sizing: border-box; padding: 2px 8px; border: 0px; font: inherit; width: 100%; background-color: #ffffff; border-right: 5px solid #ffffff;}
 span.fy_textbox input:focus {background-color: #f1f1e0;}
-span.fy_textbox select {display: inline-block; box-sizing: border-box; padding: 2px 4px; border: 0px; font: inherit; width: 100%; background-color: #ffffff}
+span.fy_textbox select {display: inline-block; box-sizing: border-box; padding: 2px 4px; border: 0px; font: inherit; width: 100%; background-color: #ffffff;}
 span.fy_textbox select:focus {background-color: #f1f1e0;}
 
 span.fy_adder {cursor: pointer; color: #666666; display: inline-block; margin-top: 5px;}

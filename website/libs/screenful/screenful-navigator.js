@@ -205,7 +205,6 @@ Screenful.Navigator={
           //entry title:
           Screenful.Navigator.renderer($item.find("div.inside").toArray()[0], entry, searchtext, modifier);
 
-
           //entry flag:
           if(Screenful.Navigator.flags && Screenful.Navigator.flags.length>0 && Screenful.Navigator.entryFlagUrl && Screenful.Navigator.extractEntryFlag){
             var $flagLink=$("<a class='entryFlagLink undecided'></a>").prependTo($item);

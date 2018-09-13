@@ -8,10 +8,9 @@ Screenful.Facetor.panes=[{
     $select.append(`<option value="1">checked</option>`);
     $select.append(`<option value="0">unchecked</option>`);
     $select.on("change", Screenful.Facetor.change);
-
     var $select=$(`<select class="fullwidth" id="facPStatus"></select>`).appendTo($inme);
     $select.append(`<option value="">(any publishing status)</option>`);
-    $select.append(`<option value="1">public</option>`);
+    $select.append(`<option value="1">publishable</option>`);
     $select.append(`<option value="0">hidden</option>`);
     $select.on("change", Screenful.Facetor.change);
 
@@ -30,31 +29,28 @@ Screenful.Facetor.panes=[{
         var superdomain=$("#facSuperdomain option:selected").data("datum");
         var $subselect=$("#facSubdomain").html("");
         if(!superdomain || superdomain.subdomains.length==0){
-          $("#facSubdomainContainer").hide();
-          $subselect.append(`<option value="">(any subdomain or no subdomain)</option>`);
+          $subselect.hide();
+          $subselect.append(`<option value="">»&nbsp; (any subdomain or no subdomain)</option>`);
         } else {
-          $("#facSubdomainContainer").show();
-          $subselect.append(`<option value="">(any subdomain or no subdomain)</option>`);
-          $subselect.append(`<option value="*">(any subdomain)</option>`);
-          $subselect.append(`<option value="-1">(no subdomain)</option>`);
+          $subselect.show();
+          $subselect.append(`<option value="">»&nbsp; (any subdomain or no subdomain)</option>`);
+          $subselect.append(`<option value="*">»&nbsp; (any subdomain)</option>`);
+          $subselect.append(`<option value="-1">»&nbsp; (no subdomain)</option>`);
           superdomain.subdomains.map(subdomain => {
             go(subdomain, "");
           });
           function go(datum, prefix){
             var title=prefix;
-            if(title!="") title+=" » ";
+            if(title!="") title+=" &nbsp;»&nbsp; ";
             title+=Spec.title(datum.title);
-            $subselect.append(`<option value="${datum.lid}">${title}</option>`);
+            $subselect.append(`<option value="${datum.lid}">»&nbsp; ${title}</option>`);
             if(datum.subdomains) datum.subdomains.map(subdomain => {
               go(subdomain, title);
             });
           }
         }
     });
-
-    var $container=$(`<div id="facSubdomainContainer" style="display: none"></div>`).appendTo($inme);
-    $container.append(`<div class="subtitle">Subdomain</div>`);
-    var $select=$(`<select class="fullwidth" id="facSubdomain"></select>`).appendTo($container);
+    var $select=$(`<select class="fullwidth" id="facSubdomain" style="display: none"></select>`).appendTo($inme);
     $select.append(`<option value="">(any subdomain or no subdomain)</option>`);
     $select.on("change", Screenful.Facetor.change);
   },
