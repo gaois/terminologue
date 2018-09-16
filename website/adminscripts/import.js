@@ -159,7 +159,6 @@ function doPosLabels(db, callnext){
       var xml=fs.readFileSync(dir+filename, "utf8");
       var doc=domParser.parseFromString(xml, 'text/xml');
       var json={
-        type: "pos",
         abbr: doc.documentElement.getAttribute("abbr"),
         title: {
           ga: doc.getElementsByTagName("nameGA")[0].getAttribute("default"),
@@ -172,18 +171,12 @@ function doPosLabels(db, callnext){
       if(isForGA && isForNonGA) json.isfor=["_all"];
         else if(isForGA) json.isfor=["ga"];
         else if(isForNonGA) json.isfor=["en", "_allminor"];
-      ops.metadataUpdate(db, "bnt", "termLabel", id, JSON.stringify(json), function(){
+      ops.metadataUpdate(db, "bnt", "posLabel", id, JSON.stringify(json), function(){
         doOne();
       })
     } else {
-      ops.metadataUpdate(db, "bnt", "termLabel", id, JSON.stringify({type: "symbol", abbr: "¶", title: {ga: "ainm dílis", en: "proper noun"}, isfor: ["_all"]}), function(){
-        ops.metadataUpdate(db, "bnt", "termLabel", id, JSON.stringify({type: "symbol", abbr: "®", title: {ga: "trádmharc cláraithe", en: "registered trademark"}, isfor: ["_all"]}), function(){
-          ops.metadataUpdate(db, "bnt", "termLabel", id, JSON.stringify({type: "symbol", abbr: "™", title: {ga: "trádmharc", en: "trademark"}, isfor: ["_all"]}), function(){
-            console.log("term labels done");
-            callnext();
-          });
-        });
-      });
+      console.log("pos labels done");
+      callnext();
     }
   };
 }
@@ -243,7 +236,7 @@ function doDomains(db, callnext){
 
 function doConcepts(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.concept/";
-  var filenames=fs.readdirSync(dir).slice(0, 1);
+  var filenames=fs.readdirSync(dir).slice(0, 10);
   var todo=0;
   var done=0;
   filenames.map((filename, filenameIndex) => {
@@ -265,7 +258,6 @@ function doConcepts(db, callnext){
         accept: el.getAttribute("acceptLabel") || null,
         sources: [],
       };
-      json.desigs.push(desig);
       //sources:
       var subels=el.getElementsByTagName("source");
       for(var ii=0; ii<subels.length; ii++) { var subel=subels[ii];
@@ -274,6 +266,7 @@ function doConcepts(db, callnext){
       //the term:
       var termID=el.getAttribute("default");
       desig.term=getTerm(termID);
+      if(desig.term) json.desigs.push(desig);
     }
     //domains:
     var els=doc.getElementsByTagName("domain");
@@ -284,11 +277,10 @@ function doConcepts(db, callnext){
     }
     //save it:
     todo++;
-    //console.log(JSON.stringify(json));
     console.log(`scheduling to save entry ID ${id}`);
     ops.entryCreate(db, "bnt", id, JSON.stringify(json), "", {}, function(){
       done++;
-      console.log(`entry ID ${id} saved: ${done} of ${todo} entries to go`);
+      console.log(`entry ID ${id} saved: ${done} of ${todo} entries done`);
       if(done>=filenames.length) callnext();
     });
   });
@@ -296,12 +288,53 @@ function doConcepts(db, callnext){
 
 function getTerm(termID){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.term/";
+  if(!fs.existsSync(dir+termID+".xml")) return null;
   var xml=fs.readFileSync(dir+termID+".xml", "utf8");
   var doc=domParser.parseFromString(xml, 'text/xml');
   var json={
     id: termID,
     lang: lang_id2abbr[ doc.getElementsByTagName("language")[0].getAttribute("default") ],
     wording: doc.getElementsByTagName("wording")[0].getAttribute("default"),
+    annots: [],
+    inflects: [],
   };
+  //annotations:
+  var els=doc.getElementsByTagName("annotation");
+  for(var i=0; i<els.length; i++) { el=els[i];
+    if(el.getAttribute("posLabel")){
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "posLabel", value: el.getAttribute("posLabel")}};
+      json.annots.push(annot);
+    }
+    if(el.getAttribute("inflectLabel")){
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "inflectLabel", value: el.getAttribute("inflectLabel")}};
+      json.annots.push(annot);
+    }
+    if(el.getAttribute("langLabel")){
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "langLabel", value: lang_id2abbr[el.getAttribute("inflectLabel")]}};
+      json.annots.push(annot);
+    }
+    if(el.getAttribute("tm")=="1"){
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "symbol", value: "tm"}};
+      json.annots.push(annot);
+    }
+    if(el.getAttribute("regTM")=="1"){
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "symbol", value: "regtm"}};
+      json.annots.push(annot);
+    }
+    if(el.getAttribute("proper")=="1"){
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "symbol", value: "proper"}};
+      json.annots.push(annot);
+    }
+    if(el.getAttribute("italic")=="1"){
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "formatting", value: "italic"}};
+      json.annots.push(annot);
+    }
+  }
+  //inflects:
+  var els=doc.getElementsByTagName("inflect");
+  for(var i=0; i<els.length; i++) { el=els[i];
+    var inflect={label: el.getAttribute("label"), text: el.getAttribute("text")};
+    json.inflects.push(inflect);
+  }
   return json;
 }

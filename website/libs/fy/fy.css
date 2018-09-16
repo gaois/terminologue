@@ -1,5 +1,6 @@
 #container {overflow-x: inherit; overflow-y: inherit;}
 div.fy {font-size: 0.92rem; margin: -5px -20px 0px -15px;}
+div.fy label {white-space: nowrap; margin-left: 0.5em;}
 
 div.fy_tabs { padding: 0px 10px; background-color: #03A491; color: #bbbbbb; height: 40px; overflow: hidden; font-size: 0.95em;}
 div.fy_tabs > div.clear {clear: left;}

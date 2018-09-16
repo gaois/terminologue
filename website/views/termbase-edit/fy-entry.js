@@ -23,6 +23,11 @@ Spec.getAcceptLabel=function(id){
   termbaseMetadata.acceptLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
+Spec.getLangRole=function(abbr){
+  var ret=null;
+  termbaseConfigs.lingo.languages.map(lang => { if(!ret && lang.abbr==abbr) ret=lang.role; });
+  return ret;
+};
 
 Spec.templates[":top"]={
   type: "object",
@@ -129,7 +134,7 @@ Spec.templates["lang"]={
   },
   populate: function($me){
     var $select=$me.find("select");
-    $select.html(`<option value="">(select)</option>`);
+    $select.html(`<option value=""></option>`);
     termbaseConfigs.lingo.languages.map(lang => {
       $select.append(`<option value="${lang.abbr}" title="${Spec.title(lang.title)}">${lang.abbr.toUpperCase()}</option>`)
     });
@@ -217,7 +222,7 @@ Spec.templates["source"]={
     <span class="fy_label" style="width: 245px;">source</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
       <select onchange="Fy.changed()">
-        <option value="">(select)</option>
+        <option value=""></option>
         <option value="123">some source</option>
         <option value="234">some other source</option>
       </select>
@@ -268,9 +273,9 @@ Spec.templates["inflectLabel"]={
   },
   populate: function($me){
     var $select=$me.find("select");
-    $select.html(`<option data-langs='"all"' value="">(select)</option>`);
+    $select.html(`<option data-isfor='["_all"]' value=""></option>`);
     termbaseMetadata.inflectLabel.map(datum => {
-      $select.append(`<option value="${datum.id}" title="${Spec.title(datum.title)}" data-langs='${JSON.stringify(datum.langs)}'>${datum.abbr}</option>`)
+      $select.append(`<option value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
     });
   },
   refresh: function($me){
@@ -278,8 +283,8 @@ Spec.templates["inflectLabel"]={
     var val=$me.find("select").val();
     $me.find("select option").each(function(){
       var $option=$(this);
-      var langs=JSON.parse($option.attr("data-langs"));
-      if(langs=="all" || langs.indexOf(lang)>-1) {
+      var isfor=JSON.parse($option.attr("data-isfor"));
+      if(isfor.indexOf(lang)>-1 || isfor.indexOf("_all")>-1 || (Spec.getLangRole(lang)=="major" && isfor.indexOf("_allmajor")>-1) || (Spec.getLangRole(lang)=="minor" && isfor.indexOf("_allminor")>-1)) {
         $option.prop("disabled", false).show();
       } else {
         $option.prop("disabled", true).hide();
@@ -308,7 +313,7 @@ Spec.templates["annots"]={
 };
 Spec.templates["annot"]={
   type: "object",
-  blank: {label: "", start: "1", stop: "0"},
+  blank: {start: "1", stop: "0", label: null},
   html: `<div class="fy_horizon">
     <span class="fy_remover"></span>
     <span class="fy_downer"></span>
@@ -383,34 +388,62 @@ Spec.templates["annotPosition"]={
   },
 };
 Spec.templates["annotLabel"]={
-  type: "string",
+  type: "object",
+  blank: {type: "", value: ""},
   html: `<span class="fy_textbox" style="width: 95px;">
     <select onchange="Fy.changed()"></select>
   </span>`,
   set: function($me, data){
-    if(data.toString()) $me.find("select").val(data);
+    if(data) $me.find("select").val(data.value);
   },
   get: function($me){
-    return $me.find("select").val();
+    return {
+      type: $me.find("select option:selected").attr("data-type"),
+      value: $me.find("select").val()
+    }
   },
   populate: function($me){
     var $select=$me.find("select");
-    $select.html(`<option data-langs='"all"' value="">(select)</option>`);
-    termbaseMetadata.termLabel.map(datum => {
-      $select.append(`<option value="${datum.id}" title="${Spec.title(datum.title)}" data-langs='${JSON.stringify(datum.langs)}'>${datum.abbr}</option>`)
+    $select.html(`<option data-isfor='["_all"]' value=""></option>`);
+    var $optgroup=$("<optgroup label='part of speech'></optgroup").appendTo($select);
+    termbaseMetadata.posLabel.map(datum => {
+      $optgroup.append(`<option data-type="posLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
     });
+    var $optgroup=$("<optgroup label='inflection'></optgroup").appendTo($select);
+    termbaseMetadata.inflectLabel.map(datum => {
+      $optgroup.append(`<option data-type="inflectLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
+    });
+    var $optgroup=$("<optgroup label='language of origin'></optgroup").appendTo($select);
+    termbaseConfigs.lingo.languages.map(lang => {
+      $optgroup.append(`<option data-type="langLabel" value="${lang.abbr}" title="${Spec.title(lang.title)}">${lang.abbr.toUpperCase()}</option>`)
+    });
+    var $optgroup=$("<optgroup label='symbol'></optgroup").appendTo($select);
+    $optgroup.append(`<option data-type="symbol" value="tm" title="trademark">TM</option>`);
+    $optgroup.append(`<option data-type="symbol" value="regtm" title="registered trademark">®</option>`);
+    $optgroup.append(`<option data-type="symbol" value="proper" title="proper noun">¶</option>`);
+    var $optgroup=$("<optgroup label='formatting'></optgroup").appendTo($select);
+    $optgroup.append(`<option data-type="formatting" value="italic">italic</option>`);
   },
   refresh: function($me){
     var lang=$me.closest(".jsonName_term").find(".jsonName_lang select").val();
     var val=$me.find("select").val();
     $me.find("select option").each(function(){
       var $option=$(this);
-      var langs=JSON.parse($option.attr("data-langs"));
-      if(langs=="all" || langs.indexOf(lang)>-1) {
-        $option.prop("disabled", false).show();
-      } else {
-        $option.prop("disabled", true).hide();
-        if($option.attr("value")==val) $me.find("select").val("");
+      if($option.attr("data-type")=="posLabel" || $option.attr("data-type")=="inflectLabel") {
+        var isfor=JSON.parse($option.attr("data-isfor"));
+        if(isfor.indexOf(lang)>-1 || isfor.indexOf("_all")>-1 || (Spec.getLangRole(lang)=="major" && isfor.indexOf("_allmajor")>-1) || (Spec.getLangRole(lang)=="minor" && isfor.indexOf("_allminor")>-1)) {
+          $option.prop("disabled", false).show();
+        } else {
+          $option.prop("disabled", true).hide();
+          if($option.attr("value")==val) $me.find("select").val("");
+        }
+      } else if($option.attr("data-type")=="langLabel") {
+        if($option.attr("value")!=lang){
+          $option.prop("disabled", false).show();
+        } else {
+          $option.prop("disabled", true).hide();
+          if($option.attr("value")==val) $me.find("select").val("");
+        }
       }
     });
   },
