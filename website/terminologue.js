@@ -137,9 +137,11 @@ app.post(siteconfig.rootPath+":termbaseID/edit/create.json", function(req, res){
       db.close();
       res.json({success: false});
     } else {
-      ops.entryCreate(db, req.params.termbaseID, null, req.body.content, user.email, {}, function(entryID, adjustedJson){
-        db.close();
-        res.json({success: true, id: entryID, content: adjustedJson});
+      ops.entrySave(db, req.params.termbaseID, null, req.body.content, user.email, {}, function(entryID){
+        ops.entryRead(db, req.params.termbaseID, entryID, function(adjustedEntryID, json){
+          db.close();
+          res.json({success: true, id:adjustedEntryID, content: json});
+        });
       });
     }
   });
@@ -167,9 +169,11 @@ app.post(siteconfig.rootPath+":termbaseID/edit/update.json", function(req, res){
       db.close();
       res.json({success: false});
     } else {
-      ops.entryUpdate(db, req.params.termbaseID, req.body.id, req.body.content, user.email, {}, function(adjustedEntryID, adjustedJson, changed){
-        db.close();
-        res.json({success: true, id: adjustedEntryID, content: adjustedJson});
+      ops.entrySave(db, req.params.termbaseID, req.body.id, req.body.content, user.email, {}, function(adjustedEntryID){
+        ops.entryRead(db, req.params.termbaseID, adjustedEntryID, function(adjustedEntryID, json){
+          db.close();
+          res.json({success: true, id:adjustedEntryID, content: json});
+        });
       });
     }
   });

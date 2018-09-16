@@ -11,7 +11,7 @@ var db=new sqlite3.Database(dbpath, sqlite3.OPEN_READWRITE);
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 
-db.exec("delete from entries; delete from history; delete from metadata; delete from sqlite_sequence", function(err){
+db.exec("delete from entries; delete from history; delete from metadata; delete from terms; delete from entry_term; delete from sqlite_sequence", function(err){
   console.log(`database emptied`);
   db.run("BEGIN TRANSACTION");
   doLanguages(db, function(){
@@ -278,7 +278,7 @@ function doConcepts(db, callnext){
     //save it:
     todo++;
     console.log(`scheduling to save entry ID ${id}`);
-    ops.entryCreate(db, "bnt", id, JSON.stringify(json), "", {}, function(){
+    ops.entrySave(db, "bnt", id, JSON.stringify(json), "", {}, function(){
       done++;
       console.log(`entry ID ${id} saved: ${done} of ${todo} entries done`);
       if(done>=filenames.length) callnext();

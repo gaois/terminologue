@@ -33,6 +33,7 @@ Pretty.entry=function(entry){
     });
 
   });
+  if($ret.text()=="") $ret.html("(empty entry)");
   return $ret;
 }
 

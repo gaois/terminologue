@@ -165,23 +165,10 @@ module.exports={
       }
       db.get(sql2, params2, function(err, row){
         var total=(!err && row) ? row.total : 0;
-        callnext(total, primeEntries, entries, suggestions);
+        module.exports.intractTermsOfEntries(db, termbaseID, entries.concat(primeEntries), function(){
+          callnext(total, primeEntries, entries, suggestions);
+        })
       });
-    });
-  },
-  entryRead: function(db, termbaseID, entryID, callnext){
-    db.get("select * from entries where id=$id", {$id: entryID}, function(err, row){
-      if(!row) {
-        var entryID=0;
-        var json="";
-        var title="";
-        callnext(entryID, json, title);
-      } else {
-        var entryID=row.id;
-        var json=row.json;
-        var title=row.id;
-        callnext(entryID, json, title);
-      }
     });
   },
   entryDelete: function(db, termbaseID, entryID, email, historiography, callnext){
@@ -198,54 +185,6 @@ module.exports={
         $historiography: JSON.stringify(historiography),
       }, function(err){});
       callnext();
-    });
-  },
-  entryCreate: function(db, termbaseID, entryID, json, email, historiography, callnext){
-    var sql="insert into entries(json) values($json)";
-    var params={$json: json};
-    if(entryID) {
-      sql="insert into entries(id, json) values($id, $json)";
-      params.$id=entryID;
-    }
-    db.run(sql, params, function(err){
-      if(!entryID) entryID=this.lastID;
-      db.run("insert into history(entry_id, action, [when], email, json, historiography) values($entry_id, $action, $when, $email, $json, $historiography)", {
-        $entry_id: entryID,
-        $action: "create",
-        $when: (new Date()).toISOString(),
-        $email: email,
-        $json: json,
-        $historiography: JSON.stringify(historiography),
-      }, function(err){});
-      callnext(entryID, json);
-    });
-  },
-  entryUpdate: function(db, termbaseID, entryID, json, email, historiography, callnext){
-    db.get("select id, json from entries where id=$id", {$id: entryID}, function(err, row){
-      var newJson=json;
-      var oldJson=(row?row.json:"");
-      if(!row) { //an entry with that ID does not exist: recreate it with that ID:
-        module.exports.entryCreate(db, termbaseID, entryID, json, email, historiography, callnext);
-      } else if(oldJson==newJson) {
-        callnext(entryID, json, false);
-      } else {
-        //update me:
-        db.run("update entries set json=$json where id=$id", {
-          $id: entryID,
-          $json: json,
-        }, function(err){
-          //tell history that I have been updated:
-          db.run("insert into history(entry_id, action, [when], email, json, historiography) values($entry_id, $action, $when, $email, $json, $historiography)", {
-            $entry_id: entryID,
-            $action: "update",
-            $when: (new Date()).toISOString(),
-            $email: email,
-            $json: json,
-            $historiography: JSON.stringify(historiography),
-          }, function(err){});
-          callnext(entryID, json, true);
-        });
-      }
     });
   },
   entryHistory: function(db, termbaseID, entryID, callnext){
@@ -266,8 +205,145 @@ module.exports={
       callnext(history);
     });
   },
+  entryRead: function(db, termbaseID, entryID, callnext){
+    db.get("select * from entries where id=$id", {$id: entryID}, function(err, row){
+      if(!row) {
+        var entryID=0;
+        var json="";
+        var title="";
+        callnext(entryID, json, title);
+      } else {
+        var entryID=row.id;
+        var json=row.json;
+        var title=row.id;
+        module.exports.intractTermsOfEntry(db, termbaseID, entryID, JSON.parse(json), function(fatJson){
+          callnext(entryID, JSON.stringify(fatJson), title);
+        });
+      }
+    });
+  },
+  entrySave: function(db, termbaseID, entryID, json, email, historiography, callnext){
+    //first of all, find out what we're supposed to do:
+    if(!entryID) go("create"); //this is a new entry
+    else db.get("select id, json from entries where id=$id", {$id: entryID}, function(err, row){
+      if(!row) go("recreate"); //an entry with that ID does not exist: recreate it with that ID
+      else go("change") //the entry has changed: update it
+    });
+    //now actually do it:
+    function go(dowhat){
+      var parsedJson=JSON.parse(json);
+      module.exports.extractTerms(db, termbaseID, parsedJson, function(slimJson){
+        var sql=""; var params={};
+        if(dowhat=="create"){ sql="insert into entries(json) values($json)"; params={$json: JSON.stringify(slimJson)}; }
+        if(dowhat=="recreate"){ sql="insert into entries(id, json) values($id, $json)"; params={$json: JSON.stringify(slimJson), $id: entryID}; }
+        if(dowhat=="change"){ sql="update entries set json=$json where id=$id"; params={$json: JSON.stringify(slimJson), $id: entryID}; }
+        //create or change me:
+        db.run(sql, params, function(err){
+          if(!entryID) entryID=this.lastID;
+          //delete any pre-existing connections between this entry and any term:
+          db.run("delete from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, row){
+            //save connections between entry and terms:
+            var termIDs=[]; slimJson.desigs.map(desig => { termIDs.push(desig.term) });
+            module.exports.saveTermConnections(db, termbaseID, entryID, termIDs, function(){
+              //delete orphaned terms:
+              db.run("delete from terms where id in (select t.id from terms as t left outer join entry_term as et on et.term_id=t.id where et.entry_id is null)", {}, function(err, row){
+                //tell history that I have been created or changed:
+                module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change" ? "update" : "create"), email, json, historiography, function(){
+                  callnext(entryID);
+                });
+              });
+            });
+          });
+        });
+      });
+    }
+  },
 
+  saveHistory: function(db, termbaseID, entryID, action, email, json, historiography, callnext){
+    db.run("insert into history(entry_id, action, [when], email, json, historiography) values($entry_id, $action, $when, $email, $json, $historiography)", {
+      $entry_id: entryID,
+      $action: action,
+      $when: (new Date()).toISOString(),
+      $email: email,
+      $json: json,
+      $historiography: JSON.stringify(historiography),
+    }, function(err){
+      callnext();
+    });
+  },
 
+  extractTerms: function(db, termbaseID, entry, callnext){
+    go();
+    function go(){
+      //find the first term that hasn't been extracted yet:
+      for(var i=0; i<entry.desigs.length; i++){
+        if(typeof(entry.desigs[i].term)=="object"){
+          module.exports.saveTerm(db, termbaseID, entry.desigs[i].term, function(termID){
+            entry.desigs[i].term=termID;
+            //recursively, go to the next term that hasn't been extracted yet:
+            go();
+          });
+          break;
+        }
+      }
+      //when all terms have been extracted, we're done:
+      if(i>=entry.desigs.length) callnext(entry);
+    }
+  },
+  saveTerm: function(db, termbaseID, term, callnext){
+    if(term.id && typeof(term.id)=="string") term.id=parseInt(term.id);
+    //delete the term (if it exists), (re)create the term:
+    var sql="insert into terms(id, json) values($id, $json)"; var params={$id: term.id, $json: JSON.stringify(term)};
+    if(!term.id){ sql="insert into terms(json) values($json)"; params={$json: JSON.stringify(term)}; }
+    db.run("delete from terms where id=$id", {$id: term.id}, function(err, row){
+      db.run(sql, params, function(err, row){
+        var termID=term.id || this.lastID;
+        callnext(termID); //return the ID of the term just saved
+      });
+    });
+  },
+  saveTermConnections: function(db, termbaseID, entryID, termIDs, callnext){
+    go();
+    function go(){
+      var termID=termIDs.pop();
+      if(termID) {
+        db.run("insert into entry_term(entry_id, term_id) values($entryID, $termID)", {$entryID: entryID, $termID: termID}, function(err, row){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  intractTermsOfEntry: function(db, termbaseID, entryID, entry, callnext){
+    db.all("select t.* from terms as t inner join entry_term as et on et.term_id=t.id where et.entry_id=$entryID", {$entryID: entryID}, function(err, rows){
+      var terms={}; //id --> {...}
+      rows.map(row => { terms[row["id"]]=JSON.parse(row["json"]) });
+      entry.desigs.map(desig => {
+        var termID=null; if(typeof(desig.term)=="number") termID=desig.term; else if(desig.term.id) termID=desig.term.id;
+        if(terms[termID]) { desig.term=terms[termID]; desig.term.id=termID.toString(); }
+      });
+      callnext(entry);
+    });
+  },
+  intractTermsOfEntries: function(db, termbaseID, entries, callnext){
+    var list=""; entries.map(entry=>{if(entry){ if(list!="") list+=","; list+=entry.id; }});
+    db.all("select t.* from terms as t inner join entry_term as et on et.term_id=t.id where et.entry_id in ("+list+")", {}, function(err, rows){
+      var terms={}; //id --> {...}
+      rows.map(row => { terms[row["id"]]=JSON.parse(row["json"]) });
+      entries.map(entry => {
+        if(entry) {
+          var parsedJson=JSON.parse(entry.json);
+          parsedJson.desigs.map(desig => {
+            var termID=null; if(typeof(desig.term)!="object") termID=desig.term; else if(desig.term.id) termID=desig.term.id;
+            if(terms[termID]) { desig.term=terms[termID]; desig.term.id=termID.toString(); }
+          });
+          entry.json=JSON.stringify(parsedJson);
+        }
+      });
+      callnext();
+    });
+  },
 
   metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
     var sql1=`select * from metadata where type=$type order by id limit $howmany`;

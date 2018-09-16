@@ -58,6 +58,16 @@ Spec.templates[":top"]={
     </div>
   </div>`,
 };
+Spec.templates["hiddenID"]={
+  type: "string",
+  html: `<input type="hidden"/>`,
+  set: function($me, data){
+    if(data.toString()) $me.val(data);
+  },
+  get: function($me){
+    return $me.val();
+  },
+};
 
 Spec.templates["cStatus"]={
   type: "string",
@@ -106,6 +116,7 @@ Spec.templates["desig"]={
 Spec.templates["term"]={
   type: "object",
   html: `<div class="fy_box">
+    <div class="fy_replace" templateName="hiddenID" jsonName="id"></div>
     <!-- <div class="fy_bubble fullon">2</div> -->
     <!-- <div class="fy_bubble sublime">2</div> -->
     <!-- <div class="fy_bubble fullon">2<span class="sublime">2</span></div> -->
