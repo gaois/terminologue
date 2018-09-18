@@ -165,9 +165,7 @@ module.exports={
       }
       db.get(sql2, params2, function(err, row){
         var total=(!err && row) ? row.total : 0;
-        module.exports.intractTermsOfEntries(db, termbaseID, entries.concat(primeEntries), function(){
-          callnext(total, primeEntries, entries, suggestions);
-        })
+        callnext(total, primeEntries, entries, suggestions);
       });
     });
   },
@@ -216,13 +214,12 @@ module.exports={
         var entryID=row.id;
         var json=row.json;
         var title=row.id;
-        module.exports.intractTermsOfEntry(db, termbaseID, entryID, JSON.parse(json), function(fatJson){
-          callnext(entryID, JSON.stringify(fatJson), title);
-        });
+        callnext(entryID, json, title);
       }
     });
   },
   entrySave: function(db, termbaseID, entryID, json, email, historiography, callnext){
+    entryID=parseInt(entryID);
     //first of all, find out what we're supposed to do:
     if(!entryID) go("create"); //this is a new entry
     else db.get("select id, json from entries where id=$id", {$id: entryID}, function(err, row){
@@ -231,31 +228,105 @@ module.exports={
     });
     //now actually do it:
     function go(dowhat){
-      var parsedJson=JSON.parse(json);
-      module.exports.extractTerms(db, termbaseID, parsedJson, function(slimJson){
+      var entry=JSON.parse(json);
+      module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
         var sql=""; var params={};
-        if(dowhat=="create"){ sql="insert into entries(json) values($json)"; params={$json: JSON.stringify(slimJson)}; }
-        if(dowhat=="recreate"){ sql="insert into entries(id, json) values($id, $json)"; params={$json: JSON.stringify(slimJson), $id: entryID}; }
-        if(dowhat=="change"){ sql="update entries set json=$json where id=$id"; params={$json: JSON.stringify(slimJson), $id: entryID}; }
-        //create or change me:
+        if(dowhat=="create"){ sql="insert into entries(json) values($json)"; params={$json: JSON.stringify(entry)}; }
+        if(dowhat=="recreate"){ sql="insert into entries(id, json) values($id, $json)"; params={$json: JSON.stringify(entry), $id: entryID}; }
+        if(dowhat=="change"){ sql="update entries set json=$json where id=$id"; params={$json: JSON.stringify(entry), $id: entryID}; }
+        //create or change the term:
         db.run(sql, params, function(err){
           if(!entryID) entryID=this.lastID;
-          //delete any pre-existing connections between this entry and any term:
-          db.run("delete from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, row){
-            //save connections between entry and terms:
-            var termIDs=[]; slimJson.desigs.map(desig => { termIDs.push(desig.term) });
-            module.exports.saveTermConnections(db, termbaseID, entryID, termIDs, function(){
-              //delete orphaned terms:
-              db.run("delete from terms where id in (select t.id from terms as t left outer join entry_term as et on et.term_id=t.id where et.entry_id is null)", {}, function(err, row){
-                //tell history that I have been created or changed:
-                module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change" ? "update" : "create"), email, json, historiography, function(){
-                  callnext(entryID);
-                });
+          //save connections between entry and terms:
+          var termIDs=[]; entry.desigs.map(desig => { termIDs.push(parseInt(desig.term.id)) });
+          module.exports.saveConnections(db, termbaseID, entryID, termIDs, function(){
+            //tell history that I have been created or changed:
+            var action=(dowhat=="change" ? "update" : "create");
+            module.exports.saveHistory(db, termbaseID, entryID, action, email, json, historiography, function(){
+              module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
+                callnext(entryID);
               });
             });
           });
         });
       });
+    }
+  },
+
+  saveTerms: function(db, termbaseID, entry, callnext){
+    var terms=[]; entry.desigs.map(desig => { terms.push(desig.term) });
+    var changedTerms=[];
+    go();
+    function go(){
+      var term=terms.pop();
+      if(term){
+        var termID=parseInt(term.id) || 0; var json=JSON.stringify(term);
+        db.get("select * from terms where id=$id", {$id: termID}, function(err, row){
+          var sql=""; var params={};
+          if(termID==0){ sql="insert into terms(json) values($json)"; params={$json: json}; }
+          else if(!row){ sql="insert into terms(id, json) values($id, $json)"; params={$id: termID, $json: json}; }
+          else if(row["json"]!=json){ sql="update terms set json=$json where id=$id"; params={$id: termID, $json: json}; changedTerms.push(term); }
+          if(sql==""){
+            go();
+          } else {
+            delete term.id;
+            db.run(sql, params, function(err){
+              term.id=(termID || this.lastID).toString();
+              go();
+            });
+          }
+        });
+      } else {
+        callnext(changedTerms);
+      }
+    }
+  },
+  saveConnections: function(db, termbaseID, entryID, termIDs, callnext){
+    //delete all pre-existing connections between this entry and any term:
+    db.run("delete from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, row){
+      go();
+    });
+    function go(){
+      var termID=termIDs.pop();
+      if(termID) {
+        db.run("insert into entry_term(entry_id, term_id) values($entryID, $termID)", {$entryID: entryID, $termID: termID}, function(err, row){
+          go();
+        });
+      } else {
+        //delete orphaned terms:
+        db.run("delete from terms where id in (select t.id from terms as t left outer join entry_term as et on et.term_id=t.id where et.entry_id is null)", {}, function(err, row){
+          callnext();
+        });
+      }
+    }
+  },
+  propagateTerms: function(db, termbaseID, originatorEntryID, changedTerms, email, historiography, callnext){
+    goTerm();
+    function goTerm(){
+      var changedTerm=changedTerms.pop();
+      if(changedTerm){
+        db.all("select e.* from entries as e inner join entry_term as et on et.entry_id=e.id where et.term_id=$changedTermID and e.id<>$originatorEntryID", {$changedTermID: changedTerm.id, $originatorEntryID: originatorEntryID}, function(err, rows){
+          goEntry();
+          function goEntry(){
+            var row=rows.pop();
+            if(row){
+              var entryID=row["id"];
+              var entry=JSON.parse(row["json"]);
+              entry.desigs.map(desig => { if(parseInt(desig.term.id)==changedTerm.id) desig.term=changedTerm; });
+              var json=JSON.stringify(entry);
+              db.run("update entries set json=$json where id=$id", {$id: entryID, $json: json}, function(err){
+                module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
+                  goEntry();
+                });
+              });
+            } else {
+              goTerm();
+            }
+          }
+        });
+      } else {
+        callnext();
+      }
     }
   },
 
@@ -268,79 +339,6 @@ module.exports={
       $json: json,
       $historiography: JSON.stringify(historiography),
     }, function(err){
-      callnext();
-    });
-  },
-
-  extractTerms: function(db, termbaseID, entry, callnext){
-    go();
-    function go(){
-      //find the first term that hasn't been extracted yet:
-      for(var i=0; i<entry.desigs.length; i++){
-        if(typeof(entry.desigs[i].term)=="object"){
-          module.exports.saveTerm(db, termbaseID, entry.desigs[i].term, function(termID){
-            entry.desigs[i].term=termID;
-            //recursively, go to the next term that hasn't been extracted yet:
-            go();
-          });
-          break;
-        }
-      }
-      //when all terms have been extracted, we're done:
-      if(i>=entry.desigs.length) callnext(entry);
-    }
-  },
-  saveTerm: function(db, termbaseID, term, callnext){
-    if(term.id && typeof(term.id)=="string") term.id=parseInt(term.id);
-    //delete the term (if it exists), (re)create the term:
-    var sql="insert into terms(id, json) values($id, $json)"; var params={$id: term.id, $json: JSON.stringify(term)};
-    if(!term.id){ sql="insert into terms(json) values($json)"; params={$json: JSON.stringify(term)}; }
-    db.run("delete from terms where id=$id", {$id: term.id}, function(err, row){
-      db.run(sql, params, function(err, row){
-        var termID=term.id || this.lastID;
-        callnext(termID); //return the ID of the term just saved
-      });
-    });
-  },
-  saveTermConnections: function(db, termbaseID, entryID, termIDs, callnext){
-    go();
-    function go(){
-      var termID=termIDs.pop();
-      if(termID) {
-        db.run("insert into entry_term(entry_id, term_id) values($entryID, $termID)", {$entryID: entryID, $termID: termID}, function(err, row){
-          go();
-        });
-      } else {
-        callnext();
-      }
-    }
-  },
-  intractTermsOfEntry: function(db, termbaseID, entryID, entry, callnext){
-    db.all("select t.* from terms as t inner join entry_term as et on et.term_id=t.id where et.entry_id=$entryID", {$entryID: entryID}, function(err, rows){
-      var terms={}; //id --> {...}
-      rows.map(row => { terms[row["id"]]=JSON.parse(row["json"]) });
-      entry.desigs.map(desig => {
-        var termID=null; if(typeof(desig.term)=="number") termID=desig.term; else if(desig.term.id) termID=desig.term.id;
-        if(terms[termID]) { desig.term=terms[termID]; desig.term.id=termID.toString(); }
-      });
-      callnext(entry);
-    });
-  },
-  intractTermsOfEntries: function(db, termbaseID, entries, callnext){
-    var list=""; entries.map(entry=>{if(entry){ if(list!="") list+=","; list+=entry.id; }});
-    db.all("select t.* from terms as t inner join entry_term as et on et.term_id=t.id where et.entry_id in ("+list+")", {}, function(err, rows){
-      var terms={}; //id --> {...}
-      rows.map(row => { terms[row["id"]]=JSON.parse(row["json"]) });
-      entries.map(entry => {
-        if(entry) {
-          var parsedJson=JSON.parse(entry.json);
-          parsedJson.desigs.map(desig => {
-            var termID=null; if(typeof(desig.term)!="object") termID=desig.term; else if(desig.term.id) termID=desig.term.id;
-            if(terms[termID]) { desig.term=terms[termID]; desig.term.id=termID.toString(); }
-          });
-          entry.json=JSON.stringify(parsedJson);
-        }
-      });
       callnext();
     });
   },
