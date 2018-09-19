@@ -143,6 +143,11 @@ module.exports={
     });
   },
 
+  wordSplit: function(wording, langOrNull){
+    var words=[]; wording.split(/[\s\.\,\(\)\[\]\{\}0-9]/).map(w => { if(w) words.push(w); });
+    return words;
+  },
+
   entryList: function(db, termbaseID, facets, searchtext, modifier, howmany, callnext){
     module.exports.composeSqlQueries(facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
@@ -159,7 +164,7 @@ module.exports={
             entries.push(item);
           }
         }
-        if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
+        //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
         db.get(sql2, params2, function(err, row){
           var total=(!err && row) ? row.total : 0;
           callnext(total, primeEntries, entries, suggestions);
@@ -189,9 +194,12 @@ module.exports={
         params.$searchtext=searchtext+"%";
       }
       else if(modifiers[1]=="smart"){
-        joins.push(`inner join words as w on w.term_id=t.id`);
-        where.push(`w.word=$searchtext`);
-        params.$searchtext=searchtext;
+        var words=module.exports.wordSplit(searchtext);
+        words.map((word, index) => {
+          joins.push(`inner join words as w${index} on w${index}.term_id=t.id`);
+          where.push(`w${index}.word=$word${index}`);
+          params[`$word${index}`]=word;
+        });
       }
       if(modifiers[0]!="*"){
         where.push(`t.lang=$searchlang`);
@@ -354,7 +362,7 @@ module.exports={
     }
   },
   saveWords: function(db, termbaseID, term, callnext){
-    var words=[]; term.wording.split(/[\s\.\,\(\)\[\]\{\}0-9]/).map(w => { if(w) words.push(w); });
+    var words=module.exports.wordSplit(term.wording, term.lang);
     db.run("delete from words where term_id=$termID", {$termID: parseInt(term.id)}, function(err){
       go();
     });
