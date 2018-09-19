@@ -144,31 +144,84 @@ module.exports={
   },
 
   entryList: function(db, termbaseID, facets, searchtext, modifier, howmany, callnext){
-    var modifiers=modifier.split(" ");
-    var sql1=`select * from entries order by id limit $howmany`;
-    var params1={$howmany: howmany};
-    var sql2=`select count(*) as total from entries`;
-    var params2={};
-    db.all(sql1, params1, function(err, rows){
-      if(err || !rows) rows=[];
-      var suggestions=null;
-      var primeEntries=null;
-      var entries=[];
-      for(var i=0; i<rows.length; i++){
-        var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
-        entries.push(item);
-      }
-      if(modifiers.indexOf("smart")>-1 && searchtext!=""){
-        suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
-        primeEntries=[];
-        if(entries.length>0) primeEntries.push(entries.shift());
-      }
-      db.get(sql2, params2, function(err, row){
-        var total=(!err && row) ? row.total : 0;
-        callnext(total, primeEntries, entries, suggestions);
+    module.exports.composeSqlQueries(facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
+      db.all(sql1, params1, function(err, rows){
+        if(err || !rows) rows=[];
+        var suggestions=null;
+        var primeEntries=null;
+        var entries=[];
+        for(var i=0; i<rows.length; i++){
+          var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+          entries.push(item);
+        }
+        if(modifier.indexOf(" smart ")>-1 && searchtext!=""){
+          suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
+          primeEntries=[];
+          if(entries.length>0) primeEntries.push(entries.shift());
+        }
+        db.get(sql2, params2, function(err, row){
+          var total=(!err && row) ? row.total : 0;
+          callnext(total, primeEntries, entries, suggestions);
+        });
       });
     });
   },
+  composeSqlQueries: function(facets, searchtext, modifier, howmany, callnext){
+    var modifiers=modifier.split(" ");
+    console.log();
+    console.log(modifiers);
+    var joins=[], where=[]; params={};
+    if(searchtext!="") {
+      joins.push(`inner join entry_term as et on et.entry_id=e.id`);
+      joins.push(`inner join terms as t on t.id=et.term_id`);
+      if(modifiers[1]=="start"){
+        where.push(`t.wording like $searchtext`);
+        params.$searchtext=searchtext+"%";
+      }
+      else if(modifiers[1]=="substring"){
+        where.push(`t.wording like $searchtext`);
+        params.$searchtext="%"+searchtext+"%";
+      }
+      else if(modifiers[1]=="wordstart"){
+        joins.push(`inner join words as w on w.term_id=t.id`);
+        where.push(`w.word like $searchtext`);
+        params.$searchtext=searchtext+"%";
+      }
+      else if(modifiers[1]=="smart"){
+        joins.push(`inner join words as w on w.term_id=t.id`);
+        where.push(`w.word=$searchtext`);
+        params.$searchtext=searchtext;
+      }
+      if(modifiers[0]!="*"){
+        where.push(`t.lang=$searchlang`);
+        params.$searchlang=modifiers[0];
+      }
+    }
+
+    var sql1=`select distinct e.* from entries as e\n`;
+    joins.map(s => {sql1+=" "+s+"\n"});
+    if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
+    sql1+=` order by id\n`;
+    sql1+=` limit $howmany`;
+    console.log(sql1);
+    var params1={}; for(var key in params) params1[key]=params[key]; params1.$howmany=parseInt(howmany);
+    console.log(params1);
+    //sql1=`select * from entries order by id limit $howmany`;
+    //var params1={$howmany: howmany};
+
+    var sql2=`select count(distinct e.id) as total from entries as e\n`;
+    joins.map(s => {sql2+=" "+s+"\n"});
+    if(where.length>0){ sql2+=" where "; where.map((s, i) => {if(i>0) sql2+=" and "; sql2+=s+"\n";}); }
+    sql2=sql2.trim();
+    console.log(sql2);
+    var params2=params;
+    console.log(params2);
+    //var sql2=`select count(*) as total from entries`;
+    //var params2={};
+
+    callnext(sql1, params1, sql2, params2);
+  },
+
   entryDelete: function(db, termbaseID, entryID, email, historiography, callnext){
     db.run("delete from entries where id=$id", {
       $id: entryID,
@@ -252,7 +305,6 @@ module.exports={
       });
     }
   },
-
   saveTerms: function(db, termbaseID, entry, callnext){
     var terms=[]; entry.desigs.map(desig => { terms.push(desig.term) });
     var changedTerms=[];
@@ -263,16 +315,26 @@ module.exports={
         var termID=parseInt(term.id) || 0; var json=JSON.stringify(term);
         db.get("select * from terms where id=$id", {$id: termID}, function(err, row){
           var sql=""; var params={};
-          if(termID==0){ sql="insert into terms(json) values($json)"; params={$json: json}; }
-          else if(!row){ sql="insert into terms(id, json) values($id, $json)"; params={$id: termID, $json: json}; }
-          else if(row["json"]!=json){ sql="update terms set json=$json where id=$id"; params={$id: termID, $json: json}; changedTerms.push(term); }
+          if(termID==0){
+            sql="insert into terms(json, lang, wording) values($json, $lang, $wording)";
+            params={$json: json, $lang: term.lang, $wording: term.wording};
+          } else if(!row){
+            sql="insert into terms(id, json, lang, wording) values($id, $json, $lang, $wording)";
+            params={$id: termID, $json: json, $lang: term.lang, $wording: term.wording};
+          } else if(row["json"]!=json){
+            sql="update terms set json=$json, lang=$lang, wording=$wording where id=$id";
+            params={$id: termID, $json: json, $lang: term.lang, $wording: term.wording};
+            changedTerms.push(term);
+          }
           if(sql==""){
             go();
           } else {
             delete term.id;
             db.run(sql, params, function(err){
               term.id=(termID || this.lastID).toString();
-              go();
+              module.exports.saveWords(db, termbaseID, term, function(){
+                go();
+              });
             });
           }
         });
@@ -281,10 +343,30 @@ module.exports={
       }
     }
   },
+  saveWords: function(db, termbaseID, term, callnext){
+    var words=[]; term.wording.split(/[\s\.\,\(\)\[\]\{\}0-9]/).map(w => { if(w) words.push(w); });
+    db.run("delete from words where term_id=$termID", {$termID: parseInt(term.id)}, function(err){
+      go();
+    });
+    function go(){
+      var word=words.pop();
+      if(word){
+        db.run("insert into words(term_id, word) values($termID, $word)", {$termID: parseInt(term.id), $word: word}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
   saveConnections: function(db, termbaseID, entryID, termIDs, callnext){
     //delete all pre-existing connections between this entry and any term:
-    db.run("delete from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, row){
-      go();
+    var previousTermIDs=[];
+    db.all("select term_id from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, rows){
+      if(rows) rows.map(row => {previousTermIDs.push(row["term_id"])});
+      db.run("delete from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, row){
+        go();
+      });
     });
     function go(){
       var termID=termIDs.pop();
@@ -294,7 +376,8 @@ module.exports={
         });
       } else {
         //delete orphaned terms:
-        db.run("delete from terms where id in (select t.id from terms as t left outer join entry_term as et on et.term_id=t.id where et.entry_id is null)", {}, function(err, row){
+        var ids=""; previousTermIDs.map(id => {if(ids!="") ids+=","; ids+=id;});
+        db.run("delete from terms where id in ("+ids+") and id in (select t.id from terms as t left outer join entry_term as et on et.term_id=t.id where et.entry_id is null)", {}, function(err, row){
           callnext();
         });
       }
