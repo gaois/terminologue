@@ -152,13 +152,14 @@ module.exports={
         var entries=[];
         for(var i=0; i<rows.length; i++){
           var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
-          entries.push(item);
+          if(rows[i].match_quality>0) {
+            if(!primeEntries) primeEntries=[];
+            primeEntries.push(item);
+          } else{
+            entries.push(item);
+          }
         }
-        if(modifier.indexOf(" smart ")>-1 && searchtext!=""){
-          suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
-          primeEntries=[];
-          if(entries.length>0) primeEntries.push(entries.shift());
-        }
+        if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
         db.get(sql2, params2, function(err, row){
           var total=(!err && row) ? row.total : 0;
           callnext(total, primeEntries, entries, suggestions);
@@ -198,24 +199,33 @@ module.exports={
       }
     }
 
-    var sql1=`select distinct e.* from entries as e\n`;
+    var params1={}; for(var key in params) params1[key]=params[key]; params1.$howmany=parseInt(howmany);
+    var sql1=`select e.id, e.json`;
+    if(searchtext!="" && modifiers[1]=="smart"){
+      sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
+      params1.$searchtext_matchquality=searchtext;
+    } else {
+      sql1+=`, 0`;
+    }
+    sql1+=` as match_quality\n`;
+    sql1+=`  from entries as e\n`;
     joins.map(s => {sql1+=" "+s+"\n"});
     if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
-    sql1+=` order by id\n`;
+    sql1+=` group by e.id\n`;
+    sql1+=` order by match_quality desc, e.id\n`;
     sql1+=` limit $howmany`;
-    console.log(sql1);
-    var params1={}; for(var key in params) params1[key]=params[key]; params1.$howmany=parseInt(howmany);
     console.log(params1);
+    console.log(sql1);
     //sql1=`select * from entries order by id limit $howmany`;
     //var params1={$howmany: howmany};
 
+    var params2=params;
     var sql2=`select count(distinct e.id) as total from entries as e\n`;
     joins.map(s => {sql2+=" "+s+"\n"});
     if(where.length>0){ sql2+=" where "; where.map((s, i) => {if(i>0) sql2+=" and "; sql2+=s+"\n";}); }
     sql2=sql2.trim();
-    console.log(sql2);
-    var params2=params;
     console.log(params2);
+    console.log(sql2);
     //var sql2=`select count(*) as total from entries`;
     //var params2={};
 

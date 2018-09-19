@@ -236,7 +236,7 @@ function doDomains(db, callnext){
 
 function doConcepts(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.concept/";
-  var filenames=fs.readdirSync(dir).slice(0, 10);
+  var filenames=fs.readdirSync(dir).slice(0, 1000);
   var todo=0;
   var done=0;
   filenames.map((filename, filenameIndex) => {
