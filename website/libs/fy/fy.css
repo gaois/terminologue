@@ -17,12 +17,11 @@ div.fy_body > *:last-child {margin-bottom: 400px;}
 div.fy_body div.title {border-bottom: 1px solid #cccccc; padding: 0px 0px 5px 0px; margin-bottom: 15px; margin-top: 25px;}
 div.fy_body div.title:first-child {margin-top: 0px;}
 
-
 div.fy_container {margin-top: 15px; margin-bottom: 20px;}
 div.fy_container:first-child {margin-top: 0px;}
 
 div.fy_collapsible {padding-left: 40px; position: relative;}
-div.fy_collapsible div.collapsor {position: absolute; left: 0px; top: 15px; color: #666666; border: 1px dotted #999999; font-weight: bold; padding: 1px 0px; box-sizing: border-box; width: 25px; text-align: center; cursor: pointer; font-size: 0.9em;}
+div.fy_collapsible div.collapsor {position: absolute; left: 0px; top: 20px; color: #666666; border: 1px dotted #999999; font-weight: bold; padding: 1px 0px; box-sizing: border-box; width: 25px; text-align: center; cursor: pointer; font-size: 0.9em;}
 div.fy_collapsible div.collapsor:hover {color: #333333;}
 
 div.fy_box {background-color: #dddddd; border: 3px solid #86d1c9; padding: 10px 10px 7px 10px; margin-left: -5px; margin-right: -5px; margin-bottom: 3px; border-radius: 4px; position: relative;}
