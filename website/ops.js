@@ -166,6 +166,7 @@ module.exports={
         }
         //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
         db.get(sql2, params2, function(err, row){
+          if(err) console.log(err);
           var total=(!err && row) ? row.total : 0;
           callnext(total, primeEntries, entries, suggestions);
         });
@@ -175,7 +176,7 @@ module.exports={
   composeSqlQueries: function(facets, searchtext, modifier, howmany, callnext){
     var modifiers=modifier.split(" ");
     console.log();
-    console.log(modifiers);
+    console.log(facets);
     var joins=[], where=[]; params={};
     if(searchtext!="") {
       joins.push(`inner join entry_term as et on et.entry_id=e.id`);
@@ -201,9 +202,49 @@ module.exports={
           params[`$word${index}`]=word;
         });
       }
+
       if(modifiers[0]!="*"){
         where.push(`t.lang=$searchlang`);
         params.$searchlang=modifiers[0];
+      }
+    }
+
+    if(facets.cStatus){
+      where.push(`e.cStatus=$fCStatus`);
+      params[`$fCStatus`]=parseInt(facets.cStatus);
+    }
+    if(facets.pStatus){
+      where.push(`e.pStatus=$fPStatus`);
+      params[`$fPStatus`]=parseInt(facets.pStatus);
+    }
+
+    if(facets.termLang || facets.accept){
+      joins.push(`inner join entry_term as f_et on f_et.entry_id=e.id`);
+      if(facets.termLang) {
+        joins.push(`inner join terms as f_t on f_t.id=f_et.term_id`);
+        where.push(`f_t.lang=$fTermLang`);
+        params[`$fTermLang`]=facets.termLang;
+      }
+      if(facets.accept){
+        if(facets.accept=="*") where.push(`f_et.accept>0`)
+        else if(facets.accept=="-1") where.push(`f_et.accept=0`)
+        else {where.push(`f_et.accept=$fAccept`); params[`$fAccept`]=parseInt(facets.accept);}
+      }
+    }
+
+    if(facets.superdomain && facets.superdomain=="-1"){
+      joins.push(`left outer join entry_domain as fDomain on fDomain.entry_id=e.id`);
+      where.push(`fDomain.superdomain is null`);
+    }
+    else if(facets.superdomain){
+      joins.push(`inner join entry_domain as fDomain on fDomain.entry_id=e.id`);
+      if(facets.superdomain=="*") where.push(`fDomain.superdomain>0`);
+      else { where.push(`fDomain.superdomain=$fSuperdomain`); params[`$fSuperdomain`]=parseInt(facets.superdomain); }
+
+      if(facets.subdomain){
+        if(facets.subdomain=="*") where.push(`fDomain.subdomain>0`);
+        else if(facets.subdomain=="-1") where.push(`fDomain.subdomain=0`);
+        else { where.push(`fDomain.subdomain=$fSubdomain`); params[`$fSubdomain`]=parseInt(facets.subdomain); }
       }
     }
 
@@ -216,7 +257,7 @@ module.exports={
       sql1+=`, 0`;
     }
     sql1+=` as match_quality\n`;
-    sql1+=`  from entries as e\n`;
+    sql1+=` from entries as e\n`;
     joins.map(s => {sql1+=" "+s+"\n"});
     if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
     sql1+=` group by e.id\n`;
@@ -241,19 +282,14 @@ module.exports={
   },
 
   entryDelete: function(db, termbaseID, entryID, email, historiography, callnext){
-    db.run("delete from entries where id=$id", {
-      $id: entryID,
-    }, function(err){
-      //tell history that have been deleted:
-      db.run("insert into history(entry_id, action, [when], email, json, historiography) values($entry_id, $action, $when, $email, $json, $historiography)", {
-        $entry_id: entryID,
-        $action: "delete",
-        $when: (new Date()).toISOString(),
-        $email: email,
-        $json: null,
-        $historiography: JSON.stringify(historiography),
-      }, function(err){});
-      callnext();
+    db.run("delete from entries where id=$id", {$id: entryID}, function(err){
+      //delete connections from this entry to any terms, and delete any thereby orphaned terms:
+      module.exports.saveConnections(db, termbaseID, entryID, null, function(){
+        //tell history that have been deleted:
+        module.exports.saveHistory(db, termbaseID, entryID, "delete", email, null, historiography, function(){
+          callnext();
+        });
+      });
     });
   },
   entryHistory: function(db, termbaseID, entryID, callnext){
@@ -302,20 +338,30 @@ module.exports={
       var entry=JSON.parse(json);
       module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
         var sql=""; var params={};
-        if(dowhat=="create"){ sql="insert into entries(json) values($json)"; params={$json: JSON.stringify(entry)}; }
-        if(dowhat=="recreate"){ sql="insert into entries(id, json) values($id, $json)"; params={$json: JSON.stringify(entry), $id: entryID}; }
-        if(dowhat=="change"){ sql="update entries set json=$json where id=$id"; params={$json: JSON.stringify(entry), $id: entryID}; }
-        //create or change the term:
-        db.run(sql, params, function(err){
-          if(!entryID) entryID=this.lastID;
-          //save connections between entry and terms:
-          var termIDs=[]; entry.desigs.map(desig => { termIDs.push(parseInt(desig.term.id)) });
-          module.exports.saveConnections(db, termbaseID, entryID, termIDs, function(){
+        if(dowhat=="create"){
+          sql="insert into entries(json, cStatus, pStatus) values($json, $cStatus, $pStatus)";
+          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus)};
+        }
+        if(dowhat=="recreate"){
+          sql="insert into entries(id, json, cStatus, pStatus) values($id, $json, $cStatus, $pStatus)";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus)};
+        }
+        if(dowhat=="change"){
+          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus where id=$id";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus)};
+        }
+        //create or change me:
+        db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;
+          //save connections between me and my terms, delete any terms orphaned by this:
+          module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
             //tell history that I have been created or changed:
-            var action=(dowhat=="change" ? "update" : "create");
-            module.exports.saveHistory(db, termbaseID, entryID, action, email, json, historiography, function(){
+            module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change"?"update":"create"), email, json, historiography, function(){
+              //propagate changes in my terms to other entries that share the terms:
               module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
-                callnext(entryID);
+                //index my domains:
+                module.exports.saveDomains(db, termbaseID, entryID, entry, function(){
+                  callnext(entryID);
+                });
               });
             });
           });
@@ -377,7 +423,13 @@ module.exports={
       }
     }
   },
-  saveConnections: function(db, termbaseID, entryID, termIDs, callnext){
+  saveConnections: function(db, termbaseID, entryID, entryOrNull, callnext){
+    var termAssigs=[]; if(entryOrNull){
+      entryOrNull.desigs.map(desig => { termAssigs.push({
+        termID: parseInt(desig.term.id),
+        accept: parseInt(desig.accept)||0})
+      });
+    }
     //delete all pre-existing connections between this entry and any term:
     var previousTermIDs=[];
     db.all("select term_id from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, rows){
@@ -387,9 +439,9 @@ module.exports={
       });
     });
     function go(){
-      var termID=termIDs.pop();
-      if(termID) {
-        db.run("insert into entry_term(entry_id, term_id) values($entryID, $termID)", {$entryID: entryID, $termID: termID}, function(err, row){
+      var termAssig=termAssigs.pop();
+      if(termAssig) {
+        db.run("insert into entry_term(entry_id, term_id, accept) values($entryID, $termID, $accept)", {$entryID: entryID, $termID: termAssig.termID, $accept: termAssig.accept}, function(err, row){
           go();
         });
       } else {
@@ -424,6 +476,27 @@ module.exports={
               goTerm();
             }
           }
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveDomains: function(db, termbaseID, entryID, entry, callnext){
+    var assigs=[]; entry.domains.map(obj => {
+      if(obj.superdomain) assigs.push({
+        superdomain: parseInt(obj.superdomain),
+        subdomain: parseInt(obj.subdomain) || 0,
+      });
+    });
+    db.run("delete from entry_domain where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var assig=assigs.pop();
+      if(assig){
+        db.run("insert into entry_domain(entry_id, superdomain, subdomain) values($entryID, $superdomain, $subdomain)", {$entryID: entryID, $superdomain: assig.superdomain, $subdomain: assig.subdomain}, function(err){
+          go();
         });
       } else {
         callnext();
