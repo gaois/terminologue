@@ -310,7 +310,7 @@ function getTerm(termID){
       json.annots.push(annot);
     }
     if(el.getAttribute("langLabel")){
-      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "langLabel", value: lang_id2abbr[el.getAttribute("inflectLabel")]}};
+      var annot={start: el.getAttribute("start"), stop: el.getAttribute("stop"), label: {type: "langLabel", value: lang_id2abbr[el.getAttribute("langLabel")]}};
       json.annots.push(annot);
     }
     if(el.getAttribute("tm")=="1"){

@@ -28,6 +28,16 @@ Spec.getLangRole=function(abbr){
   termbaseConfigs.lingo.languages.map(lang => { if(!ret && lang.abbr==abbr) ret=lang.role; });
   return ret;
 };
+Spec.getInflectLabel=function(id){
+  var ret=null;
+  termbaseMetadata.inflectLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
+Spec.getPosLabel=function(id){
+  var ret=null;
+  termbaseMetadata.posLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
 
 Spec.templates[":top"]={
   type: "object",
