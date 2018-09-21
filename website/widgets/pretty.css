@@ -16,8 +16,8 @@ div.prettyDesig div.inflects span.inflect span.wording {font-weight: bold;}
 div.prettyDesig span.prettyWording {font-weight: bold; color: #333333;}
 div.prettyDesig span.prettyWording span.char {}
 div.prettyDesig span.prettyWording span.char.on {background-color: #e4e3af; box-shadow: 0px 0px 5px #e4e3af;}
-div.prettyDesig span.prettyWording span.label.on {color: #6e6c20;}
-div.prettyDesig span.prettyWording span.label {font-style: italic; color: #536d94; font-weight: normal; margin-left: 0.4em; cursor: default;}
+div.prettyDesig span.prettyWording span.label.on {background-color: #e4e3af;}
+div.prettyDesig span.prettyWording span.label {font-style: italic; color: #536d94; font-weight: normal; padding-left: 0.4em; padding-right: 0.4em; margin-right: -0.3em; cursor: default;}
 div.prettyDesig span.prettyWording span.label.posLabel {}
 div.prettyDesig span.prettyWording span.label.inflectLabel {}
 div.prettyDesig span.prettyWording span.label.langLabel {}

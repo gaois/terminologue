@@ -517,6 +517,30 @@ module.exports={
     });
   },
 
+  sharEnquire: function(db, termbaseID, termID, lang, wording, callnext){
+    var data={sharedBy: [], similarTo: []};
+    //find out which entries share this term:
+    db.all("select e.id, e.json from entries as e inner join entry_term as et on e.id=et.entry_id where et.term_id=$termID", {$termID: termID}, function(err, rows){
+      rows.map(row => { data.sharedBy.push({entryID: row.id, json: row.json}) });
+
+      //find out which terms are similar to this term:
+      var sql="select id, json from terms where wording=$wording";
+      var params={$wording: wording};
+      if(lang){
+        sql+=" and lang=$lang";
+        params.$lang=lang;
+      }
+      if(termID){
+        sql+=" and id<>$termID";
+        params.$termID=termID;
+      }
+      db.all(sql, params, function(err, rows){
+        rows.map(row => { data.similarTo.push({termID: row.id, json: row.json}) });
+        callnext(data);
+      });
+    });
+  },
+
   metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
     var sql1=`select * from metadata where type=$type order by id limit $howmany`;
     var params1={$howmany: howmany, $type: type};

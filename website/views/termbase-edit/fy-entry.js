@@ -39,6 +39,17 @@ Spec.getPosLabel=function(id){
   return ret;
 };
 
+Spec.sharEnquire=function($term, termID, lang, wording){
+  var $bubble=$term.find(".fy_bubble").hide().removeClass("fullon").removeClass("sublime").removeClass("invisible").html("");
+  $.ajax({url: "./sharEnquire.json", dataType: "json", method: "POST", data: {termID: termID, lang: lang, wording: wording}}).done(function(data){
+    if(data.sharedBy.length>1){
+      $bubble.addClass("fullon").html(data.sharedBy.length).show();
+    } else if(data.similarTo.length>0){
+      $bubble.addClass("sublime").html(data.similarTo.length).show();
+    }
+  });
+};
+
 Spec.templates[":top"]={
   type: "object",
   html: `<div>
@@ -127,6 +138,7 @@ Spec.templates["term"]={
   type: "object",
   html: `<div class="fy_box">
     <div class="fy_replace" templateName="hiddenID" jsonName="id"></div>
+    <div class="fy_bubble" style="display: none;"></div>
     <!-- <div class="fy_bubble fullon">2</div> -->
     <!-- <div class="fy_bubble sublime">2</div> -->
     <!-- <div class="fy_bubble fullon">2<span class="sublime">2</span></div> -->
@@ -141,6 +153,12 @@ Spec.templates["term"]={
     <div class="fy_replace fy_hidable" templateName="annots" jsonName="annots"></div>
     <div class="fy_replace fy_hidable" templateName="inflects" jsonName="inflects"></div>
   </div>`,
+  refresh: function($me){
+    var termID=$me.find(".jsonName_id").first().val();
+    var lang=$me.find(".jsonName_lang").first().find("select").val();
+    var wording=$me.find(".jsonName_wording").first().find("input").val();
+    Spec.sharEnquire($me, termID, lang, wording);
+  },
 };
 Spec.templates["lang"]={
   type: "string",
@@ -165,12 +183,13 @@ Spec.templates["lang"]={
       var $label=$(this);
       if($label.data("template").refresh) $label.data("template").refresh($label);
     });
+    Spec.templates.term.refresh($(select).closest(".jsonName_term"));
   },
 };
 Spec.templates["wording"]={
   type: "string",
   html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;">
-    <input style="font-weight: bold;" onkeyup="Spec.templates.wording.changed(this)" onchange="Fy.changed(); Spec.templates.wording.changed(this)"/>
+    <input style="font-weight: bold;" onkeyup="Spec.templates.wording.changed(this, 'eager')" onchange="Fy.changed(); Spec.templates.wording.changed(this, 'lazy')"/>
   </span>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -178,11 +197,12 @@ Spec.templates["wording"]={
   get: function($me){
     return $me.find("input").val();
   },
-  changed: function(input){
+  changed: function(input, how){
     $(input).closest(".jsonName_term").find(".jsonName_annots > .fy_node").each(function(){
       var $annot=$(this);
       $annot.data("template").refresh($annot);
     });
+    if(!how || how=="lazy") Spec.templates.term.refresh($(input).closest(".jsonName_term"));
   },
 };
 Spec.templates["clarif"]={

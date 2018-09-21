@@ -7,23 +7,38 @@ const domParser=new xmldom.DOMParser();
 
 const dbpath="/home/mbm/terminologue/data/termbases/bnt.sqlite";
 var db=new sqlite3.Database(dbpath, sqlite3.OPEN_READWRITE);
+db.run('PRAGMA journal_mode=WAL');
+db.run('PRAGMA foreign_keys=on');
 
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 
-db.exec("delete from entries; delete from history; delete from metadata; delete from terms; delete from entry_term; delete from sqlite_sequence", function(err){
-  console.log(`database emptied`);
-  db.run("BEGIN TRANSACTION");
-  doLanguages(db, function(){
-    doAcceptLabels(db, function(){
-      doInflectLabels(db, function(){
-        doSources(db, function(){
-          doPosLabels(db, function(){
-            doDomains(db, function(){
-              doConcepts(db, function(){
-                db.run("COMMIT");
-                db.close();
-                console.log(`finito`);
+//deed(10000);
+//deedAgain(10000, 20000);
+//deedAgain(20000, 30000);
+//deedAgain(30000, 40000);
+//deedAgain(40000, 50000);
+//deedAgain(50000, 60000);
+//deedAgain(60000, 70000);
+//deedAgain(70000, 80000);
+//deedAgain(80000, 90000);
+//deedAgain(90000, 100000);
+
+function deed(stop){
+  db.exec("delete from entries; delete from history; delete from metadata; delete from terms; delete from entry_term; delete from sqlite_sequence", function(err){
+    console.log(`database emptied`);
+    db.run("BEGIN TRANSACTION");
+    doLanguages(db, function(){
+      doAcceptLabels(db, function(){
+        doInflectLabels(db, function(){
+          doSources(db, function(){
+            doPosLabels(db, function(){
+              doDomains(db, function(){
+                doConcepts(db, 0, stop, function(){
+                  db.run("COMMIT");
+                  db.close();
+                  console.log(`finito`);
+                });
               });
             });
           });
@@ -31,7 +46,30 @@ db.exec("delete from entries; delete from history; delete from metadata; delete 
       });
     });
   });
-});
+}
+function deedAgain(start, stop){
+  db.run("BEGIN TRANSACTION");
+  db.exec("delete from metadata", function(err){
+    console.log(`metadata emptied`);
+    doLanguages(db, function(){
+      doAcceptLabels(db, function(){
+        doInflectLabels(db, function(){
+          doSources(db, function(){
+            doPosLabels(db, function(){
+              doDomains(db, function(){
+                doConcepts(db, start, stop, function(){
+                  db.run("COMMIT");
+                  db.close();
+                  console.log(`finito`);
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+}
 
 function doLanguages(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.language/";
@@ -61,7 +99,6 @@ function doLanguages(db, callnext){
     callnext();
   });
 }
-
 function doAcceptLabels(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.acceptLabel/";
   var filenames=fs.readdirSync(dir);
@@ -88,7 +125,6 @@ function doAcceptLabels(db, callnext){
     }
   };
 }
-
 function doInflectLabels(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.inflectLabel/";
   var filenames=fs.readdirSync(dir);
@@ -121,7 +157,6 @@ function doInflectLabels(db, callnext){
     }
   };
 }
-
 function doSources(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.source/";
   var filenames=fs.readdirSync(dir);
@@ -147,7 +182,6 @@ function doSources(db, callnext){
     }
   };
 }
-
 function doPosLabels(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.posLabel/";
   var filenames=fs.readdirSync(dir);
@@ -180,7 +214,6 @@ function doPosLabels(db, callnext){
     }
   };
 }
-
 function doDomains(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.domain/";
   var filenames=fs.readdirSync(dir);
@@ -233,10 +266,9 @@ function doDomains(db, callnext){
     });
   }
 }
-
-function doConcepts(db, callnext){
+function doConcepts(db, start, stop, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.concept/";
-  var filenames=fs.readdirSync(dir).slice(0, 1000);
+  var filenames=fs.readdirSync(dir).slice(start, stop);
   var todo=0;
   var done=0;
   filenames.map((filename, filenameIndex) => {
@@ -285,7 +317,6 @@ function doConcepts(db, callnext){
     });
   });
 }
-
 function getTerm(termID){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.term/";
   if(!fs.existsSync(dir+termID+".xml")) return null;

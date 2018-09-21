@@ -64,10 +64,9 @@ button.fy_tinybutton {padding: 0px 2px !important; margin: 0px !important; borde
 .fy_preview > .char {color: #cccccc;}
 .fy_preview > .on {color: #666666; background-color: #beeee9;}
 
-div.fy_bubble {position: absolute; top: -16px; right: 125px; z-index: 10; border-radius: 40px; box-sizing: border-box; padding: 5px 15px; font-weight: bold; box-shadow: 0px 0px 2px #aaaaaa; cursor: pointer; white-space: nowrap; border: 1px solid #ffffff;}
+div.fy_bubble {position: absolute; top: -16px; right: 125px; z-index: 10; border-radius: 40px; box-sizing: border-box; padding: 2px 15px; font-weight: bold; box-shadow: 0px 0px 2px #aaaaaa; cursor: pointer; white-space: nowrap; border: 1px solid #ffffff;}
 div.fy_bubble:hover {color: #ffffff !important; border-width: 2px; top: -17px; right: 124px;}
 div.fy_bubble.fullon {background-color: #03A491; color: #dddddd;}
-div.fy_bubble.fullon span.sublime {background-color: #999999; padding: 6px 15px 6px 10px; margin: 0px -15px 0px 10px; border-radius: 0px 40px 40px 0px;}
 div.fy_bubble.sublime {background-color: #aaaaaa; color: #dddddd;}
 div.fy_bubble.invisible {background-color: #aaaaaa; color: #dddddd; opacity: 0;}
 div.fy_bubble.invisible:hover {opacity: 1;}

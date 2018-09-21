@@ -209,6 +209,18 @@ app.post(siteconfig.rootPath+":termbaseID/edit/history.json", function(req, res)
   })
 });
 
+//Term sharing:
+app.post(siteconfig.rootPath+":termbaseID/edit/sharEnquire.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    ops.sharEnquire(db, req.params.termbaseID, req.body.termID, req.body.lang, req.body.wording, function(data){
+      db.close();
+      res.json(data);
+    });
+  })
+});
+
 //Termbase config:
 app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }

@@ -3,11 +3,13 @@ Screenful.Facetor.panes=[{
     var $inme=$(div);
 
     $inme.append(`<div class="title"><span class="tab">ADMIN</span></div>`);
+
     var $select=$(`<select class="fullwidth" id="facCStatus"></select>`).appendTo($inme);
     $select.append(`<option value="">(any checking status)</option>`);
     $select.append(`<option value="1">checked</option>`);
     $select.append(`<option value="0">not checked</option>`);
     $select.on("change", Screenful.Facetor.change);
+
     var $select=$(`<select class="fullwidth" id="facPStatus"></select>`).appendTo($inme);
     $select.append(`<option value="">(any publishing status)</option>`);
     $select.append(`<option value="1">publishable</option>`);
@@ -15,6 +17,7 @@ Screenful.Facetor.panes=[{
     $select.on("change", Screenful.Facetor.change);
 
     $inme.append(`<div class="title"><span class="tab">TRM</span></div>`);
+
     var $select=$(`<select class="fullwidth" id="facTermLang"></select>`).appendTo($inme);
     $select.append(`<option value="">(any language)</option>`);
     termbaseConfigs.lingo.languages.map(datum => {
@@ -23,6 +26,7 @@ Screenful.Facetor.panes=[{
       $option.appendTo($select);
     });
     $select.on("change", Screenful.Facetor.change);
+
     var $select=$(`<select class="fullwidth" id="facAccept"></select>`).appendTo($inme);
     $select.append(`<option value="">(any acceptabilty or no acceptability)</option>`);
     $select.append(`<option value="*">(any acceptabilty)</option>`);
@@ -35,6 +39,7 @@ Screenful.Facetor.panes=[{
     $select.on("change", Screenful.Facetor.change);
 
     $inme.append(`<div class="title"><span class="tab">DOM</span></div>`);
+
     var $select=$(`<select class="fullwidth" id="facSuperdomain"></select>`).appendTo($inme);
     $select.append(`<option value="">(any domain or no domain)</option>`);
     $select.append(`<option value="*">(any domain)</option>`);
@@ -70,6 +75,7 @@ Screenful.Facetor.panes=[{
           }
         }
     });
+
     var $select=$(`<select class="fullwidth" id="facSubdomain" style="display: none"></select>`).appendTo($inme);
     $select.append(`<option value="">(any subdomain or no subdomain)</option>`);
     $select.on("change", Screenful.Facetor.change);
