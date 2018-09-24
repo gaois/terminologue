@@ -27,6 +27,41 @@ app.use(siteconfig.rootPath+"docs", express.static(path.join(__dirname, "docs"))
 //Path to our views:
 app.set('views', path.join(__dirname, "views")); app.set('view engine', 'ejs') //http://ejs.co/
 
+//Temporary: téarma.ie
+app.use(siteconfig.rootPath+"tearma/furniture", express.static(path.join(__dirname, "views/tearma/furniture")));
+app.get(siteconfig.rootPath+"tearma/", function(req, res){
+  var db=ops.getDB("bnt", true);
+  ops.readTermbaseMetadata(db, "bnt", function(metadata){
+    db.close();
+    res.render("tearma/home.ejs", {metadata: metadata});
+  });
+});
+app.get(siteconfig.rootPath+"tearma/s", function(req, res){
+  var db=ops.getDB("bnt", true);
+  ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+    ops.readTermbaseMetadata(db, "bnt", function(metadata){
+      ops.entryList(db, "bnt", {}, req.query.text, "* smart ga", 100, function(total, primeEntries, entries, suggestions){
+        db.close();
+        res.render("tearma/search.ejs", {text: req.query.text, primeEntries: primeEntries, entries: entries, suggestions: suggestions, metadata: metadata, configs: configs});
+      });
+    });
+  });
+});
+app.get(siteconfig.rootPath+"tearma/adv", function(req, res){
+  res.render("tearma/advsearch.ejs", {});
+});
+app.get(siteconfig.rootPath+"tearma/dom", function(req, res){
+  var db=ops.getDB("bnt", true);
+  ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+    ops.readTermbaseMetadata(db, "bnt", function(metadata){
+      ops.entryList(db, "bnt", {superdomain: req.query.superID, subdomain: req.query.subID}, "", "* smart ga", 100, function(total, primeEntries, entries, suggestions){
+        db.close();
+        res.render("tearma/domain.ejs", {metadata: metadata, superID: req.query.superID, subID: req.query.subID, entries: entries, metadata: metadata, configs: configs});
+      });
+    });
+  });
+});
+
 //Sitewide:
 app.get(siteconfig.rootPath, function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
@@ -405,10 +440,6 @@ app.post(siteconfig.rootPath+":termbaseID/metadata/:metadataType/delete.json", f
     }
   });
 });
-
-
-
-
 
 app.use(function(req, res){ res.status(404).render("404.ejs", {siteconfig: siteconfig}); });
 app.listen(PORT);
