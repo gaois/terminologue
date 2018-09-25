@@ -66,14 +66,14 @@ app.get(siteconfig.rootPath+"_tearma/dom", function(req, res){
 app.get(siteconfig.rootPath, function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     ops.getTermbasesByUser(user.email, function(termbases){
-      res.render("sitewide/home.ejs", {siteconfig: siteconfig, user: user, termbases: termbases});
+      res.render("sitewide/home.ejs", {siteconfig: siteconfig, user: user, termbases: termbases, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
     });
   });
 });
 app.get(siteconfig.rootPath+"login/", function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     if(/\/login\/$/.test(req.headers.referer)) req.headers.referer=null;
-    res.render("sitewide/login.ejs", {user: user, redirectUrl: req.headers.referer || siteconfig.baseUrl, siteconfig: siteconfig});
+    res.render("sitewide/login.ejs", {user: user, redirectUrl: req.headers.referer || siteconfig.baseUrl, siteconfig: siteconfig, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
   });
 });
 app.get(siteconfig.rootPath+"logout/", function(req, res){
@@ -88,7 +88,7 @@ app.get(siteconfig.rootPath+"endpoints.html", function(req, res){
   res.render("sitewide/endpoints.ejs", {siteconfig: siteconfig});
 });
 app.post(siteconfig.rootPath+"login.json", function(req, res){
-  ops.login(req.body.email, req.body.password, function(success, email, sessionkey){
+  ops.login(req.body.email, req.body.password, req.cookies.uilang || siteconfig.uilangDefault, function(success, email, sessionkey){
     if(success) {
       const oneday=86400000; //86,400,000 miliseconds = 24 hours
       res.cookie("email", email, {expires: new Date(Date.now() + oneday)});
@@ -96,6 +96,21 @@ app.post(siteconfig.rootPath+"login.json", function(req, res){
       res.json({success: true, sessionkey: sessionkey});
     } else {
       res.json({success: false});
+    }
+  });
+});
+app.get(siteconfig.rootPath+"uilang", function(req, res){
+  var redirTo=req.headers.referer || siteconfig.baseUrl;
+  const oneday=86400000; //86,400,000 miliseconds = 24 hours
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.loggedin){
+      res.cookie("uilang", req.query.lang, {expires: new Date(Date.now() + oneday)});
+      res.redirect(redirTo);
+    } else {
+      ops.saveUilang(req.cookies.email, req.query.lang, function(){
+        res.cookie("uilang", req.query.lang, {expires: new Date(Date.now() + oneday)});
+        res.redirect(redirTo);
+      });
     }
   });
 });
@@ -108,7 +123,7 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
     ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
       db.close();
       configs.ident.blurb=ops.markdown(configs.ident.blurb);
-      res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs});
+      res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
     });
   });
 });
@@ -125,7 +140,7 @@ app.get(siteconfig.rootPath+":termbaseID/edit/", function(req, res){
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         ops.readTermbaseMetadata(db, req.params.dictID, function(metadata){
           db.close();
-          res.render("termbase-edit/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, termbaseMetadata: metadata});
+          res.render("termbase-edit/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, termbaseMetadata: metadata, uilang: user.uilang, uilangs: siteconfig.uilangs});
         });
       });
     }
@@ -141,7 +156,7 @@ app.get(siteconfig.rootPath+":termbaseID/edit/editor.html", function(req, res){
     } else {
       ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
         db.close();
-        res.render("termbase-edit/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs});
+        res.render("termbase-edit/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs});
       });
     }
   });
@@ -267,7 +282,7 @@ app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-config/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs});
+        res.render("termbase-config/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs});
       });
     }
   });
@@ -282,7 +297,7 @@ app.get(siteconfig.rootPath+":termbaseID/config/:configType/", function(req, res
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-config/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: req.params.configType});
+        res.render("termbase-config/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: req.params.configType, uilang: user.uilang, uilangs: siteconfig.uilangs});
       });
     }
   });
@@ -330,7 +345,7 @@ app.get(siteconfig.rootPath+":termbaseID/metadata/", function(req, res){
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-metadata/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs});
+        res.render("termbase-metadata/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs});
       });
     }
   });
@@ -345,7 +360,7 @@ app.get(siteconfig.rootPath+":termbaseID/metadata/:metadataType/", function(req,
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-metadata/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadataType});
+        res.render("termbase-metadata/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadataType, uilang: user.uilang, uilangs: siteconfig.uilangs});
       });
     }
   });
@@ -360,7 +375,7 @@ app.get(siteconfig.rootPath+":termbaseID/metadata/:metadataType/editor.html", fu
     } else {
       ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
         db.close();
-        res.render("termbase-metadata/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadatType});
+        res.render("termbase-metadata/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadatType, uilang: user.uilang, uilangs: siteconfig.uilangs});
       });
     }
   });

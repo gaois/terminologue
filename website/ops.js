@@ -7,7 +7,7 @@ const markdown = require("markdown").markdown; //https://www.npmjs.com/package/m
 module.exports={
   siteconfig: {}, //populated by terminologue.js on startup
 
-  login: function(email, password, callnext){
+  login: function(email, password, uilang, callnext){
     if(module.exports.siteconfig.readonly){
       callnext(false, "", "");
     } else {
@@ -21,7 +21,7 @@ module.exports={
           email=row.email;
           var key=generateKey();
           var now=(new Date()).toISOString();
-          db.run("update users set sessionKey=$key, sessionLast=$now where email=$email", {$key: key, $now: now, $email: email}, function(err, row){
+          db.run("update users set sessionKey=$key, sessionLast=$now, uilang=$uilang where email=$email", {$key: key, $now: now, $uilang: uilang, $email: email}, function(err, row){
             db.close();
             callnext(true, email, key);
           });
@@ -39,16 +39,17 @@ module.exports={
   verifyLogin: function(email, sessionkey, callnext){
     var yesterday=(new Date()); yesterday.setHours(yesterday.getHours()-24); yesterday=yesterday.toISOString();
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
-    db.get("select email from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
+    db.get("select email, uilang from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
       if(!row || module.exports.siteconfig.readonly){
         db.close();
         callnext({loggedin: false, email: null});
       } else {
         email=row.email;
+        var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
         var now=(new Date()).toISOString();
         db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
           db.close();
-          callnext({loggedin: true, email: email, isAdmin: (module.exports.siteconfig.admins.indexOf(email)>-1)});
+          callnext({loggedin: true, email: email, uilang: uilang, isAdmin: (module.exports.siteconfig.admins.indexOf(email)>-1)});
         });
       }
     });
@@ -61,6 +62,13 @@ module.exports={
       if(rows) for(var i=0; i<rows.length; i++) termbases.push({id: rows[i].id, title: rows[i].title});
       db.close();
       callnext(termbases);
+    });
+  },
+  saveUilang: function(email, lang, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    db.run("update users set uilang=$lang where email=$email", {$lang: lang, $email: email}, function(err){
+      db.close();
+      callnext();
     });
   },
 
@@ -97,21 +105,22 @@ module.exports={
   verifyLoginAndTermbaseAccess: function(email, sessionkey, termbaseDB, termbaseID, callnext){
     var yesterday=(new Date()); yesterday.setHours(yesterday.getHours()-24); yesterday=yesterday.toISOString();
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
-    db.get("select email from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
+    db.get("select email, uilang from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
       if(!row || module.exports.siteconfig.readonly){
         db.close();
         callnext({loggedin: false, email: null});
       } else {
         email=row.email;
+        var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
         var now=(new Date()).toISOString();
         db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
           db.close();
           module.exports.readTermbaseConfigs(termbaseDB, termbaseID, function(configs){
             if(!configs.users[email] && module.exports.siteconfig.admins.indexOf(email)==-1){
-              callnext({loggedin: true, email: email, termbaseAccess: false, isAdmin: false});
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, isAdmin: false});
             } else {
               var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
-              callnext({loggedin: true, email: email, termbaseAccess: true, isAdmin: isAdmin});
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, isAdmin: isAdmin});
             }
           });
         });
