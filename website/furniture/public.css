@@ -4,9 +4,10 @@ body {background-image: url(header-back.gif); background-position: right top; ba
 #header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header.png); margin-top: 5px; margin-left: 4px; position: relative;}
 #header a.sitehome:hover {top: -1px;}
 #header a.sitehome span.readonly { display: inline-block; color: #bd6c73; font-size: 0.75rem; line-height: 1em; padding: 10px 2px; position: absolute; top: 18px; right: 0px; white-space: nowrap; text-shadow: 1px 1px 0px #ffffff;}
-#header div.email {display: inline-block; position: absolute; top: 18px; right: 20px; color: #666666;}
+#header div.topright {display: inline-block; position: absolute; top: 18px; right: 20px; color: #666666; z-index: 1;}
+#header div.topright > div.one {display: inline-block; margin-left: 1em;}
 @media (max-width: 800px){
-  #header div.email {display: none;}
+  #header div.topright {display: none;}
   #header a.sitehome span.readonly {display: none;}
 }
 
