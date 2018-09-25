@@ -40,16 +40,16 @@
 		Screenful.Navigator.stepSize=100;
 		Screenful.Navigator.editorUrl="./editor.html";
 		Screenful.Navigator.modifiers=[
-			{position: "left", value: "smart", caption: "smart search"},
-			{position: "left", value: "start", caption: "starts like this"},
-			{position: "left", value: "wordstart", caption: "contains a word that starts like this"},
-			{position: "left", value: "substring", caption: "contains this sequence of characters"},
-			{position: "box", value: "*", abbr: "⁕", caption: "search in all languages"},
+			{position: "left", value: "smart", caption: "<%=L("smart search")%>"},
+			{position: "left", value: "start", caption: "<%=L("starts like this")%>"},
+			{position: "left", value: "wordstart", caption: "<%=L("contains a word that starts like this")%>"},
+			{position: "left", value: "substring", caption: "<%=L("contains this sequence of characters")%>"},
+			{position: "box", value: "*", abbr: "⁕", caption: "<%=L("search in all languages")%>"},
 		];
 		termbaseConfigs.lingo.languages.map(lang => {
 			if(lang.role=="major") {
-				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "search in: "+lang.title.en},);
-				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "sort by: "+lang.title.en},);
+				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("search in:")%> "+(lang.title["<%-uilang%>"] ? lang.title["<%-uilang%>"] : lang.abbr)},);
+				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sort by:")%> "+(lang.title["<%-uilang%>"] ? lang.title["<%-uilang%>"] : lang.abbr)},);
 			}
 		});
 		Screenful.Navigator.entryDeleteUrl="./delete.json";
@@ -88,6 +88,6 @@
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
 	</head>
 	<body>
-		<%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "edit", rootPath: "../../"})%>
+		<%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "edit", rootPath: "../../", L: L})%>
 	</body>
 </html>

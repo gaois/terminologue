@@ -39,7 +39,7 @@
 	</head>
 	<body class="sitehome">
 		<div id="header">
-			<a class="sitehome" href=""><%if(siteconfig.readonly){%><span class="readonly">READ-ONLY</span><%}%></a>
+			<a class="sitehome" href=""><%if(siteconfig.readonly){%><span class="readonly"><%=L("READ-ONLY")%></span><%}%></a>
 			<div class="topright">
 		    <div class="one ScreenfulUilang"></div>
 		    <div class="one ScreenfulUser"></div>
@@ -55,22 +55,22 @@
 			<div class="rightie">
 				<%if(siteconfig.readonly){%>
 					<div class="readonly">
-						<div class="readonlyTitle">READ-ONLY</div>
-						Terminologue is undergoing maintenance and is currently in read-only mode.
-						Normal operation will resume as soon as possible.
-						Sorry for the inconvenience.
+						<div class="readonlyTitle"><%=L("READ-ONLY")%></div>
+						<%=L("Terminologue is undergoing maintenance and is currently in read-only mode.")%>
+						<%=L("Normal operation will resume as soon as possible.")%>
+						<%=L("Sorry for the inconvenience.")%>
 					</div>
 				<%}else{%>
 					<%if(!user.loggedin){%>
 						<div class="usertop">
-							<div class="title">Registered user login</div>
-							<div class="subtitle"><a href="signup/">Get an account</a> | <a href="forgotpwd/">Forgot your password?</a></div>
+							<div class="title"><%=L("Registered user login")%></div>
+							<div class="subtitle"><a href="signup/"><%=L("Get an account")%></a> | <a href="forgotpwd/"><%=L("Forgot your password?")%></a></div>
 						</div>
 						<form id="login" onsubmit="return false">
-							<div class="field email"><div class="label">E-mail address</div><input class="textbox email"/></div>
-							<div class="field password"><div class="label">Password</div><input class="textbox password" type="password"/></div>
-							<div class="field submit"><button>Log in</button></div>
-							<div class="error" style="display: none">Invalid e-mail address or password.</div>
+							<div class="field email"><div class="label"><%=L("E-mail address")%></div><input class="textbox email"/></div>
+							<div class="field password"><div class="label"><%=L("Password")%></div><input class="textbox password" type="password"/></div>
+							<div class="field submit"><button><%=L("Log in")%></button></div>
+							<div class="error" style="display: none"><%=L("Invalid e-mail address or password.")%></div>
 						</form>
 						<script type="text/javascript">
 						$(window).ready(function(){
@@ -90,11 +90,11 @@
 					<%}else{%>
 						<div class="usertop">
 							<div class="title"><%=user.email%></div>
-							<div class="subtitle"><a href="logout/">Log out</a> | <a href="changepwd/">Change your password</a></div>
+							<div class="subtitle"><a href="logout/"><%=L("Log out")%></a> | <a href="changepwd/"><%=L("Change your password")%></a></div>
 						</div>
-						<div class="yourdicts">Your termbases</div>
+						<div class="yourdicts"><%=L("Your termbases")%></div>
 						<%if(termbases.length==0){%>
-							<div class="nodicts">You have no termbases yet.</div>
+							<div class="nodicts"><%=L("You have no termbases yet.")%></div>
 						<%}else{%>
 							<%for(var i=0; i<termbases.length; i++){%>
 								<div class="dict">
@@ -103,10 +103,10 @@
 								</div>
 							<%}%>
 						<%}%>
-						<div class="createdict"><a href="make/">Create a termbase</a></div>
+						<div class="createdict"><a href="make/"><%=L("Create a termbase")%></a></div>
 						<%if(user.isAdmin){%>
-							<div class="yourdicts">Administration</div>
-							<div class="adminlink"><a href="users/">Users</a> <a href="termbases/">Termbases</a></div>
+							<div class="yourdicts"><%=L("Administration")%></div>
+							<div class="adminlink"><a href="users/"><%=L("Users")%></a> <a href="termbases/"><%=L("Termbases")%></a></div>
 						<%}%>
 					<%}%>
 				<%}%>
@@ -119,9 +119,9 @@
 		<div class="invelope bottom">
 			<div id="sitefooter">
 				<div class="right"><a href="https://github.com/dcufsg/terminologue" class="github" title="GitHub" target="_blank"></a></div>
-				<div>Terminologue &copy; <a href="https://www.dcu.ie/" target="_blank">Dublin City University</a> 2018</div>
+				<div>Terminologue &copy; <a href="https://www.dcu.ie/" target="_blank"><%=L("Dublin City University")%></a> 2018</div>
 				<div class="logolint">
-					<a class="dcu" target="_blank" href="https://www.dcu.ie/" title="Dublin City University"></a>
+					<a class="dcu" target="_blank" href="https://www.dcu.ie/" title="<%=L("Dublin City University")%>"></a>
 				</div>
 			</div>
 		</div>

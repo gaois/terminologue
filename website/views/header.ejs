@@ -2,9 +2,9 @@
   <a href="<%-rootPath%><%=termbaseID%>/" class="dicTitle"><%=termbaseConfigs.ident.title%></a>
 
   <span class="dicLinks">
-    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%>">Edit</a>
+    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%>"><%=L("Edit")%></a>
 
-    <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%>">Configuration</a>
+    <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%>"><%=L("Configuration")%></a>
     <%if(sectionID=="config" && subsectionID){%>
         <%
           var subtitle=subsectionID;
@@ -18,7 +18,7 @@
         <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>
 
-    <a href="<%-rootPath%><%=termbaseID%>/metadata/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%>">Metadata</a>
+    <a href="<%-rootPath%><%=termbaseID%>/metadata/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%>"><%=L("Metadata")%></a>
     <%if(sectionID=="metadata" && subsectionID){%>
         <%
           var subtitle=subsectionID;

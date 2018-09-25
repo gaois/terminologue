@@ -12,6 +12,10 @@ const cookieParser = require('cookie-parser');
 const url=require("url");
 const querystring=require("querystring");
 const PORT=process.env.PORT||siteconfig.port||80;
+const localizer={
+  en: require("./localizer/en.js"),
+  ga: require("./localizer/ga.js"),
+};
 
 //ops module:
 const ops=require("./ops");
@@ -66,7 +70,8 @@ app.get(siteconfig.rootPath+"_tearma/dom", function(req, res){
 app.get(siteconfig.rootPath, function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     ops.getTermbasesByUser(user.email, function(termbases){
-      res.render("sitewide/home.ejs", {siteconfig: siteconfig, user: user, termbases: termbases, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      res.render("sitewide/home.ejs", {siteconfig: siteconfig, user: user, termbases: termbases, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
     });
   });
 });
@@ -123,7 +128,8 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
     ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
       db.close();
       configs.ident.blurb=ops.markdown(configs.ident.blurb);
-      res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
     });
   });
 });
@@ -140,7 +146,8 @@ app.get(siteconfig.rootPath+":termbaseID/edit/", function(req, res){
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         ops.readTermbaseMetadata(db, req.params.dictID, function(metadata){
           db.close();
-          res.render("termbase-edit/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, termbaseMetadata: metadata, uilang: user.uilang, uilangs: siteconfig.uilangs});
+          var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+          res.render("termbase-edit/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, termbaseMetadata: metadata, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
         });
       });
     }
