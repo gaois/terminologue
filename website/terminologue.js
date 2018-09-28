@@ -27,6 +27,7 @@ app.use(siteconfig.rootPath+"widgets", express.static(path.join(__dirname, "widg
 app.use(siteconfig.rootPath+"furniture", express.static(path.join(__dirname, "furniture")));
 app.use(siteconfig.rootPath+"libs", express.static(path.join(__dirname, "libs")));
 app.use(siteconfig.rootPath+"docs", express.static(path.join(__dirname, "docs")));
+app.use(siteconfig.rootPath+"localizer", express.static(path.join(__dirname, "localizer")));
 
 //Path to our views:
 app.set('views', path.join(__dirname, "views")); app.set('view engine', 'ejs') //http://ejs.co/
@@ -289,7 +290,8 @@ app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-config/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs});
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-config/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
       });
     }
   });
@@ -304,7 +306,8 @@ app.get(siteconfig.rootPath+":termbaseID/config/:configType/", function(req, res
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-config/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: req.params.configType, uilang: user.uilang, uilangs: siteconfig.uilangs});
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-config/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: req.params.configType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
       });
     }
   });
@@ -352,7 +355,8 @@ app.get(siteconfig.rootPath+":termbaseID/metadata/", function(req, res){
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-metadata/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs});
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-metadata/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
       });
     }
   });
@@ -367,7 +371,8 @@ app.get(siteconfig.rootPath+":termbaseID/metadata/:metadataType/", function(req,
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
-        res.render("termbase-metadata/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadataType, uilang: user.uilang, uilangs: siteconfig.uilangs});
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-metadata/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadataType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
       });
     }
   });
@@ -382,7 +387,8 @@ app.get(siteconfig.rootPath+":termbaseID/metadata/:metadataType/editor.html", fu
     } else {
       ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
         db.close();
-        res.render("termbase-metadata/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadatType, uilang: user.uilang, uilangs: siteconfig.uilangs});
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-metadata/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadatType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
       });
     }
   });

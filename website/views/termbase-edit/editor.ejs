@@ -9,6 +9,7 @@
     <link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful.css" />
 		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
 		<script type="text/javascript" src="../../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+		<script type="text/javascript" src="../../localizer/<%-uilang%>.js"></script>
 		<script type="text/javascript" src="../../../libs/js.cookie.js"></script>
 
 		<script type="text/javascript" src="../../libs/screenful/screenful-editor.js"></script>
@@ -79,14 +80,14 @@
 			//actions: delete | create | update | purge
 			//historiography: {apikey: apikey} | {uploadStart: uploadStart, filename: filename}
 			content+="<div style='white-space: nowrap'>";
-				if(revision.action=="create") content+="<b>Created</b>";
-				else if(revision.action=="update") content+="<b>Changed</b>";
-				else if(revision.action=="delete") content+="<b>Deleted</b>";
-				else if(revision.action=="purge") content+="<b>Bulk-deleted</b>";
-				if(revision.historiography.uploadStart) content+=" while uploading";
+				if(revision.action=="create") content+=`<b>${L("Created")}</b>`;
+				else if(revision.action=="update") content+=`<b>${L("Changed")}</b>`;
+				else if(revision.action=="delete") content+=`<b>${L("Deleted")}</b>`;
+				else if(revision.action=="purge") content+=`<b>${L("Bulk-deleted")}</b>`;
+				if(revision.historiography.uploadStart) content+=` ${L("while uploading")}`;
 			content+="</div>";
-			if(revision.email) content+="<div style='white-space: nowrap'><b>By:</b> "+revision.email+"</div>";
-			content+="<div style='white-space: nowrap'><b>When:</b> "+revision.when+"</div>";
+			if(revision.email) content+=`<div style='white-space: nowrap'><b>${L("By")}:</b> ${revision.email}</div>`;
+			content+=`<div style='white-space: nowrap'><b>${L("When")}:</b> ${revision.when}</div>`;
 			return content;
 			//return revision.action+", "+revision.email+", "+revision.when+", "+JSON.stringify(revision.historiography, null, "<br/>");
 		};

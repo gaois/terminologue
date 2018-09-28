@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful.css" />
 		<script type="text/javascript" src="../../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+		<script type="text/javascript" src="../../localizer/<%-uilang%>.js"></script>
 
 		<script type="text/javascript" src="../../libs/screenful/screenful-uilang.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-uilang.css" />
@@ -34,6 +35,7 @@
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-navigator.css" />
 		<script type="text/javascript" src="../../libs/screenful/screenful-navigator.js"></script>
 		<script type="text/javascript" src="../../libs/js.cookie.js"></script>
+		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
 		<script type="text/javascript">
 		Screenful.Navigator.listUrl="./list.json";
     //Screenful.Navigator.listByIdUrl="./list.json";
@@ -48,8 +50,8 @@
 		];
 		termbaseConfigs.lingo.languages.map(lang => {
 			if(lang.role=="major") {
-				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("search in:")%> "+(lang.title["<%-uilang%>"] ? lang.title["<%-uilang%>"] : lang.abbr)},);
-				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sort by:")%> "+(lang.title["<%-uilang%>"] ? lang.title["<%-uilang%>"] : lang.abbr)},);
+				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("search in:")%> "+Spec.title(lang.title)},);
+				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sort by:")%> "+Spec.title(lang.title)},);
 			}
 		});
 		Screenful.Navigator.entryDeleteUrl="./delete.json";

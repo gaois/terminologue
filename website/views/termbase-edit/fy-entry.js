@@ -54,27 +54,27 @@ Spec.templates[":top"]={
   type: "object",
   html: `<div>
     <div class="fy_tabs">
-      <span class="fy_tab" data-name="admin">ADMIN</span>
-      <span class="fy_tab on" data-name="terms">TRM</span>
-      <span class="fy_tab" data-name="domains">DOM</span>
-      <span class="fy_tab" data-name="definitions">DEF</span>
-      <span class="fy_tab" data-name="examples">XMPL</span>
-      <span class="fy_tab" data-name="relations">REL</span>
-      <span class="fy_tab" data-name="collections">COLL</span>
+      <span class="fy_tab" data-name="admin">${L("ADMIN")}</span>
+      <span class="fy_tab on" data-name="terms">${L("TRM")}</span>
+      <span class="fy_tab" data-name="domains">${L("DOM")}</span>
+      <span class="fy_tab" data-name="definitions">${L("DEF")}</span>
+      <span class="fy_tab" data-name="examples">${L("XMPL")}</span>
+      <span class="fy_tab" data-name="relations">${L("REL")}</span>
+      <span class="fy_tab" data-name="collections">${L("COLL")}</span>
       <div class="clear"></div>
     </div>
     <div class="fy_body" data-name="admin">
-      <div class="title">CHECKING STATUS</div>
+      <div class="title">${L("CHECKING STATUS")}</div>
       <div class="fy_replace" templateName="cStatus" jsonName="cStatus"></div>
-      <div class="title">PUBLISHING STATUS</div>
+      <div class="title">${L("PUBLISHING STATUS")}</div>
       <div class="fy_replace" templateName="pStatus" jsonName="pStatus"></div>
     </div>
     <div class="fy_body" data-name="terms">
-      <div class="title">TERMS</div>
+      <div class="title">${L("TERMS")}</div>
       <div class="fy_replace" templateName="desigs" jsonName="desigs"></div>
     </div>
     <div class="fy_body" data-name="domains">
-      <div class="title">DOMAINS</div>
+      <div class="title">${L("DOMAINS")}</div>
       <div class="fy_replace" templateName="domains" jsonName="domains"></div>
     </div>
   </div>`,
@@ -93,8 +93,8 @@ Spec.templates["hiddenID"]={
 Spec.templates["cStatus"]={
   type: "string",
   html: `<div class="fy_node">
-    <label><input type="radio" name="cStatus" value="1" onchange="Fy.changed()"/> checked</label>
-    <label><input type="radio" name="cStatus" value="0" onchange="Fy.changed()"/> not checked</label>
+    <label><input type="radio" name="cStatus" value="1" onchange="Fy.changed()"/> ${L("checked")}</label>
+    <label><input type="radio" name="cStatus" value="0" onchange="Fy.changed()"/> ${L("not checked")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input[value='"+data+"']").prop("checked", true);
@@ -106,8 +106,8 @@ Spec.templates["cStatus"]={
 Spec.templates["pStatus"]={
   type: "string",
   html: `<div class="fy_node">
-    <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed()"/> publishable</label>
-    <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed()"/> hidden</label>
+    <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed()"/> ${L("publishable")}</label>
+    <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed()"/> ${L("hidden")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input[value='"+data+"']").prop("checked", true);
@@ -121,7 +121,7 @@ Spec.templates["desigs"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="desig" jsonName=":item"></div>
-    <span class="fy_adder" templateName="desig">+ term</span>
+    <span class="fy_adder" templateName="desig">+ ${L("term")}</span>
   </div>`,
 };
 Spec.templates["desig"]={
@@ -208,7 +208,7 @@ Spec.templates["wording"]={
 Spec.templates["clarif"]={
   type: "string",
   html: `<div class="fy_horizon">
-    <span class="fy_label" style="width: 245px;">transfer comment</span>
+    <span class="fy_label" style="width: 245px;">${L("clarification")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>
   </div>`,
   set: function($me, data){
@@ -224,7 +224,7 @@ Spec.templates["clarif"]={
 Spec.templates["accept"]={
   type: "string",
   html: `<div class="fy_horizon">
-    <span class="fy_label" style="width: 245px;">acceptability</span>
+    <span class="fy_label" style="width: 245px;">${L("acceptability")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
       <select onchange="Fy.changed()"></select>
     </span>
@@ -250,7 +250,7 @@ Spec.templates["sources"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="source" jsonName=":item"></div>
-    <span class="fy_adder" templateName="source">+ source</span>
+    <span class="fy_adder" templateName="source">+ ${L("source")}</span>
   </div>`,
 };
 Spec.templates["source"]={
@@ -262,11 +262,7 @@ Spec.templates["source"]={
     <span class="fy_upper"></span>
     <span class="fy_label" style="width: 245px;">source</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
-      <select onchange="Fy.changed()">
-        <option value=""></option>
-        <option value="123">some source</option>
-        <option value="234">some other source</option>
-      </select>
+      <select onchange="Fy.changed()"></select>
     </span>
   </div>`,
   set: function($me, data){
@@ -277,7 +273,7 @@ Spec.templates["source"]={
   },
   populate: function($me){
     var $select=$me.find("select");
-    $select.html(`<option data-langs='"all"' value="">(select)</option>`);
+    $select.html(`<option data-langs='"all"' value=""></option>`);
     termbaseMetadata.source.map(datum => {
       $select.append(`<option value="${datum.id}" data-langs='${JSON.stringify(datum.langs)}'>${Spec.title(datum.title)}</option>`)
     });
@@ -287,7 +283,7 @@ Spec.templates["inflects"]={
   type: "array",
   html: `<div class="fy_lineabove">
     <div class="fy_replace" templateName="inflect" jsonName=":item"></div>
-    <span class="fy_adder" templateName="inflect">+ inflected form</span>
+    <span class="fy_adder" templateName="inflect">+ ${L("inflected form")}</span>
   </div>`,
 };
 Spec.templates["inflect"]={
@@ -349,7 +345,7 @@ Spec.templates["annots"]={
   type: "array",
   html: `<div class="fy_lineabove">
     <div class="fy_replace" templateName="annot" jsonName=":item"></div>
-    <span class="fy_adder" templateName="annot">+ annotation</span>
+    <span class="fy_adder" templateName="annot">+ ${L("annotation")}</span>
   </div>`,
 };
 Spec.templates["annot"]={
@@ -446,24 +442,24 @@ Spec.templates["annotLabel"]={
   populate: function($me){
     var $select=$me.find("select");
     $select.html(`<option data-isfor='["_all"]' value=""></option>`);
-    var $optgroup=$("<optgroup label='part of speech'></optgroup").appendTo($select);
+    var $optgroup=$(`<optgroup label='${L("part of speech")}'></optgroup>`).appendTo($select);
     termbaseMetadata.posLabel.map(datum => {
       $optgroup.append(`<option data-type="posLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
     });
-    var $optgroup=$("<optgroup label='inflection'></optgroup").appendTo($select);
+    var $optgroup=$(`<optgroup label='${L("inflection")}'></optgroup>`).appendTo($select);
     termbaseMetadata.inflectLabel.map(datum => {
       $optgroup.append(`<option data-type="inflectLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
     });
-    var $optgroup=$("<optgroup label='language of origin'></optgroup").appendTo($select);
+    var $optgroup=$(`<optgroup label='${L("language of origin")}'></optgroup>`).appendTo($select);
     termbaseConfigs.lingo.languages.map(lang => {
       $optgroup.append(`<option data-type="langLabel" value="${lang.abbr}" title="${Spec.title(lang.title)}">${lang.abbr.toUpperCase()}</option>`)
     });
-    var $optgroup=$("<optgroup label='symbol'></optgroup").appendTo($select);
-    $optgroup.append(`<option data-type="symbol" value="tm" title="trademark">TM</option>`);
-    $optgroup.append(`<option data-type="symbol" value="regtm" title="registered trademark">®</option>`);
-    $optgroup.append(`<option data-type="symbol" value="proper" title="proper noun">¶</option>`);
-    var $optgroup=$("<optgroup label='formatting'></optgroup").appendTo($select);
-    $optgroup.append(`<option data-type="formatting" value="italic">italic</option>`);
+    var $optgroup=$(`<optgroup label='${L("symbol")}'></optgroup>`).appendTo($select);
+    $optgroup.append(`<option data-type="symbol" value="tm" title="${L("trademark")}">TM</option>`);
+    $optgroup.append(`<option data-type="symbol" value="regtm" title="${L("registered trademark")}">®</option>`);
+    $optgroup.append(`<option data-type="symbol" value="proper" title="${L("proper noun")}">¶</option>`);
+    var $optgroup=$(`<optgroup label='${L("formatting")}'></optgroup>`).appendTo($select);
+    $optgroup.append(`<option data-type="formatting" value="italic">${L("italic")}</option>`);
   },
   refresh: function($me){
     var lang=$me.closest(".jsonName_term").find(".jsonName_lang select").val();
@@ -494,7 +490,7 @@ Spec.templates["domains"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="domain" jsonName=":item"></div>
-    <span class="fy_adder" templateName="domain">+ domain</span>
+    <span class="fy_adder" templateName="domain">+ ${L("domain")}</span>
   </div>`,
 };
 Spec.templates["domain"]={
@@ -522,7 +518,7 @@ Spec.templates["superdomain"]={
     <span class="fy_remover"></span>
     <span class="fy_downer"></span>
     <span class="fy_upper"></span>
-    <span class="fy_label" style="width: 245px;">domain</span>
+    <span class="fy_label" style="width: 245px;">${L("domain")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
       <select style="font-weight: bold;" onchange="Fy.changed(); $(this).closest('.jsonName_item').data('template').refresh( $(this).closest('.jsonName_item') )"></select>
     </span>
@@ -535,7 +531,7 @@ Spec.templates["superdomain"]={
   },
   populate: function($me){
     var $select=$me.find("select");
-    $select.html(`<option value="">(select)</option>`);
+    $select.html(`<option value=""></option>`);
     termbaseMetadata.domain.map(datum => {
       $select.append(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`)
     });
@@ -545,7 +541,7 @@ Spec.templates["subdomain"]={
   type: "string",
   blank: "",
   html: `<div class="fy_horizon">
-    <span class="fy_label" style="width: 245px;">subdomain</span>
+    <span class="fy_label" style="width: 245px;">${L("subdomain")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
       <select onchange="Fy.changed()"></select>
     </span>
@@ -562,7 +558,7 @@ Spec.templates["subdomain"]={
     var superdomain=Spec.getDomain(superdomainID);
     if(superdomain && superdomain.subdomains && superdomain.subdomains.length>0){
       $me.show();
-      $select.html(`<option value="">(none)</option>`);
+      $select.html(`<option value="">(${L("none", "no subdomain")})</option>`);
       superdomain.subdomains.map(subdomain => {
         go(subdomain, "");
       });
