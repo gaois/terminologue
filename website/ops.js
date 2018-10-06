@@ -227,6 +227,23 @@ module.exports={
       params[`$fPStatus`]=parseInt(facets.pStatus);
     }
 
+    if(facets.dateStamp){
+      if(facets.dateStamp=="*") where.push("e.dateStamp<>''");
+      if(facets.dateStamp=="-1") where.push("(e.dateStamp='' or e.dateStamp is null)");
+      if(facets.dateStamp=="before" && facets.dateStampValue){
+        where.push("e.dateStamp<$fDateStamp");
+        params[`$fDateStamp`]=facets.dateStampValue;
+      }
+      if(facets.dateStamp=="on" && facets.dateStampValue){
+        where.push("e.dateStamp=$fDateStamp");
+        params[`$fDateStamp`]=facets.dateStampValue;
+      }
+      if(facets.dateStamp=="after" && facets.dateStampValue){
+        where.push("e.dateStamp>$fDateStamp");
+        params[`$fDateStamp`]=facets.dateStampValue;
+      }
+    }
+
     if(facets.termLang || facets.accept){
       joins.push(`inner join entry_term as f_et on f_et.entry_id=e.id`);
       if(facets.termLang) {
@@ -348,16 +365,16 @@ module.exports={
       module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
         var sql=""; var params={};
         if(dowhat=="create"){
-          sql="insert into entries(json, cStatus, pStatus) values($json, $cStatus, $pStatus)";
-          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus)};
+          sql="insert into entries(json, cStatus, pStatus, dateStamp) values($json, $cStatus, $pStatus, $dateStamp)";
+          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp};
         }
         if(dowhat=="recreate"){
-          sql="insert into entries(id, json, cStatus, pStatus) values($id, $json, $cStatus, $pStatus)";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus)};
+          sql="insert into entries(id, json, cStatus, pStatus, dateStamp) values($id, $json, $cStatus, $pStatus, $dateStamp)";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp};
         }
         if(dowhat=="change"){
-          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus where id=$id";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus)};
+          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus, dateStamp=$dateStamp where id=$id";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp};
         }
         //create or change me:
         db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;

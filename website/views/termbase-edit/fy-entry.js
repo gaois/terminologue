@@ -68,6 +68,8 @@ Spec.templates[":top"]={
       <div class="fy_replace" templateName="cStatus" jsonName="cStatus"></div>
       <div class="title">${L("PUBLISHING STATUS")}</div>
       <div class="fy_replace" templateName="pStatus" jsonName="pStatus"></div>
+      <div class="title">${L("DATESTAMP")} <span class="light">${L("LAST MAJOR UPDATE")}<span></div>
+      <div class="fy_replace" templateName="dateStamp" jsonName="dateStamp"></div>
     </div>
     <div class="fy_body" data-name="terms">
       <div class="title">${L("TERMS")}</div>
@@ -114,6 +116,21 @@ Spec.templates["pStatus"]={
   },
   get: function($me){
     return $me.find("input:checked").val();
+  },
+};
+Spec.templates["dateStamp"]={
+  type: "string",
+  html: `<div class="fy_node">
+    <div class="fy_horizon" style="width: 12em; display: inline-block; float: left;">
+      <span class="fy_textbox" style="width: 100%"><input type="date" onchange="Fy.changed()"/></span>
+    </div>
+    <button style="margin-top: 1px; margin-left: 1em;" onclick="$(this).closest('.fy_node').find('input').val((new Date()).toISOString().split('T')[0]); Fy.changed()">${L("set to today")}</button>
+  </div>`,
+  set: function($me, data){
+    $me.find("input").val(data);
+  },
+  get: function($me){
+    return $me.find("input").val();
   },
 };
 

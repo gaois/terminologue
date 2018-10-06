@@ -8,3 +8,6 @@
 
 #leftbox select {font: inherit; font-size: 0.9em; box-sizing: border-box; padding: 4px 4px; border: 1px inset #bbbbbb; background-color: #ffffff; border-radius: 4px;}
 #leftbox select.fullwidth {width: 100%; display: block; margin: 5px 0px;}
+
+#leftbox input {font: inherit; font-size: 0.9em; box-sizing: border-box; padding: 4px 4px; border: 1px inset #bbbbbb; background-color: #ffffff; border-radius: 4px;}
+#leftbox input.fullwidth {width: 99%; display: block; margin: 5px 0px;}

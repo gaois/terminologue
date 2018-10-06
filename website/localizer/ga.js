@@ -77,6 +77,15 @@ function L(s, gloss){
   if(s=="any subdomain or no subdomain") return "foréimse ar bith nó gan foréimse";
   if(s=="any subdomain") return "foréimse ar bith";
   if(s=="no subdomain") return "gan foréimse";
+  if(s=="DATESTAMP") return "DÁTSTAMPA";
+  if(s=="LAST MAJOR UPDATE") return "MÓR-ATHRÚ DEIREANACH";
+  if(s=="set to today") return "athraigh go inniu";
+  if(s=="any datestamp or no datestamp") return "dátstampa ar bith nó gan dátstampa";
+  if(s=="any datestamp") return "dátstampa ar bith";
+  if(s=="no datestamp") return "gan dátstampa";
+  if(s=="datestamp before...") return "dátstampa roimh...";
+  if(s=="datestamp on...") return "dátstampa ar...";
+  if(s=="datestamp after...") return "dátstampa tar éis...";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

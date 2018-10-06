@@ -278,6 +278,7 @@ function doConcepts(db, start, stop, callnext){
     var json={
       cStatus: (doc.documentElement.getAttribute("checked")=="0" ? "0" : "1"),
       pStatus: (doc.documentElement.getAttribute("hidden")=="1" ? "0" : "1"),
+      dateStamp: "",
       desigs: [],
       domains: [],
     };

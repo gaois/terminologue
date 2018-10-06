@@ -16,6 +16,7 @@ div.fy_body {position: absolute; top: 40px; left: 0px; right: 0px; bottom: 0px; 
 div.fy_body > *:last-child {margin-bottom: 400px;}
 div.fy_body div.title {border-bottom: 1px solid #cccccc; padding: 0px 0px 5px 0px; margin-bottom: 15px; margin-top: 25px;}
 div.fy_body div.title:first-child {margin-top: 0px;}
+div.fy_body div.title span.light {color: #aaaaaa; font-style: italic;}
 
 div.fy_container {margin-top: 15px; margin-bottom: 20px;}
 div.fy_container:first-child {margin-top: 0px;}
