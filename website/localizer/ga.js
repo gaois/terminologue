@@ -31,7 +31,6 @@ function L(s, gloss){
   if(s=="DEF") return "SAIN";
   if(s=="XMPL") return "SMPL"
   if(s=="REL") return "XTAG";
-  if(s=="COLL") return "BAIL";
   if(s=="CHECKING STATUS") return "STÁDAS SEICEÁLA";
   if(s=="PUBLISHING STATUS") return "STÁDAS FOILSITHE";
   if(s=="TERMS") return "TÉARMAÍ";

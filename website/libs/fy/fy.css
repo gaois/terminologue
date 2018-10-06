@@ -20,18 +20,21 @@ div.fy_body div.title span.light {color: #aaaaaa; font-style: italic;}
 
 div.fy_container {margin-top: 15px; margin-bottom: 20px;}
 div.fy_container:first-child {margin-top: 0px;}
+div.fy_container div.fy_container {margin-top: 0px; margin-bottom: 0px;}
 
 div.fy_collapsible {padding-left: 40px; position: relative;}
 div.fy_collapsible div.collapsor {position: absolute; left: 0px; top: 20px; color: #666666; border: 1px dotted #999999; font-weight: bold; padding: 1px 0px; box-sizing: border-box; width: 25px; text-align: center; cursor: pointer; font-size: 0.9em;}
 div.fy_collapsible div.collapsor:hover {color: #333333;}
 
 div.fy_box {background-color: #dddddd; border: 3px solid #86d1c9; padding: 10px 10px 7px 10px; margin-left: -5px; margin-right: -5px; margin-bottom: 3px; border-radius: 4px; position: relative;}
+div.fy_box div.fy_box {border: 0px; border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; padding: 10px 10px 0px 10px;}
 
 div.fy_lineabove {border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; padding: 10px 10px 0px 10px;}
 
 div.fy_horizon { margin: 5px 0px; border: 1px inset #999999; border-radius: 4px; min-height: 1rem; position: relative; padding: 4px 0px; background-color: #ffffff;}
 div.fy_horizon:first-child {margin-top: 0px;}
 div.fy_horizon:last-child {margin-bottom: 0px;}
+div.fy_box div.fy_box div.fy_horizon:last-child {margin-bottom: 5px;}
 
 span.fy_label {background-color: #eeeeee; color: #666666; text-shadow: 1px 1px 0px #ffffff; margin: -2px 0px -2px 0px; padding: 4px 8px; box-sizing: border-box; display: inline-block; border-radius: 4px 0px 0px 4px;}
 
@@ -41,6 +44,11 @@ span.fy_textbox input:focus {background-color: #f1f1e0;}
 span.fy_textbox select {display: inline-block; box-sizing: border-box; padding: 2px 4px; border: 0px; font: inherit; width: 100%; background-color: #ffffff;}
 span.fy_textbox select:focus {background-color: #f1f1e0;}
 
+div.fy_horizon.textarea {padding: 0px;}
+div.fy_horizon.textarea span.fy_textbox {width: 100%; display: block;}
+div.fy_horizon.textarea span.fy_textbox textarea {display: block; box-sizing: border-box; padding: 8px 8px; border: 0px; font: inherit; width: 100%; background-color: #ffffff; resize: vertical; min-height: 2em;}
+div.fy_horizon.textarea span.fy_textbox textarea:focus {background-color: #f1f1e0;}
+
 label {cursor: pointer;}
 label input {position: relative; top: 2px;}
 
@@ -49,6 +57,10 @@ span.fy_adder:hover {color: #333333; text-shadow: 1px 1px 0px #ffffff;}
 div.fy_lineabove > span.fy_adder {margin-top: 10px;}
 div.fy_lineabove > span.fy_adder:first-child {margin-top: 0px;}
 div.fy_box > div.fy_lineabove:last-child > span.fy_adder:last-child {margin-bottom: 2px;}
+
+div.fy_box div.fy_box > span.fy_adder {margin-top: 10px;}
+div.fy_box div.fy_box > span.fy_adder:first-child {margin-top: 0px;}
+
 
 span.fy_remover {float: right; color: #999999; display: block; box-sizing: border-box; padding: 2px 8px; border-radius: 20px; cursor: pointer; margin-right: 5px; margin-left: 10px;}
 span.fy_remover:hover {color: #c11c1c; background-color: #eeeeee;}

@@ -13,6 +13,7 @@ db.run('PRAGMA foreign_keys=on');
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 
+deed(1000);
 //deed(10000);
 //deedAgain(10000, 20000);
 //deedAgain(20000, 30000);
@@ -281,6 +282,7 @@ function doConcepts(db, start, stop, callnext){
       dateStamp: "",
       desigs: [],
       domains: [],
+      definitions: [],
     };
     //desigs:
     var els=doc.getElementsByTagName("term");
@@ -304,9 +306,32 @@ function doConcepts(db, start, stop, callnext){
     //domains:
     var els=doc.getElementsByTagName("domain");
     for(var i=0; i<els.length; i++) { el=els[i];
-      var domainID=el.getAttribute("default");
-      if(subdomain2superdomain[domainID]) json.domains.push({superdomain: subdomain2superdomain[domainID], subdomain: domainID});
-      else json.domains.push({superdomain: domainID, subdomain: null});
+      if(el.parentNode.nodeName=="concept"){
+        var domainID=el.getAttribute("default");
+        if(subdomain2superdomain[domainID]) json.domains.push({superdomain: subdomain2superdomain[domainID], subdomain: domainID});
+        else json.domains.push({superdomain: domainID, subdomain: null});
+      }
+    }
+    //definitions:
+    var els=doc.getElementsByTagName("definition");
+    for(var i=0; i<els.length; i++) { el=els[i];
+      var domains=[];
+      var domels=el.getElementsByTagName("domain");
+      for(var i=0; i<domels.length; i++) { domel=domels[i];
+        var domainID=domel.getAttribute("default");
+        if(subdomain2superdomain[domainID]) domains.push({superdomain: subdomain2superdomain[domainID], subdomain: domainID});
+        else domains.push({superdomain: domainID, subdomain: null});
+      }
+      var subels=doc.getElementsByTagName("textEN");
+      if(subels.length>0) {
+        var text=subels[0].getAttribute("default");
+        if(text!="") json.definitions.push({lang: "en", text: text, domains: domains});
+      }
+      subels=doc.getElementsByTagName("textGA");
+      if(subels.length>0) {
+        var text=subels[0].getAttribute("default");
+        if(text!="") json.definitions.push({lang: "ga", text: text, domains: domains});
+      }
     }
     //save it:
     todo++;

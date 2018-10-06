@@ -54,13 +54,15 @@ Spec.templates[":top"]={
   type: "object",
   html: `<div>
     <div class="fy_tabs">
-      <span class="fy_tab" data-name="admin">${L("ADMIN")}</span>
-      <span class="fy_tab on" data-name="terms">${L("TRM")}</span>
+      <span class="fy_tab" data-name="admin">${L("admin")}</span>
       <span class="fy_tab" data-name="domains">${L("DOM")}</span>
+      <span class="fy_tab on" data-name="terms">${L("TRM")}</span>
+      <span class="fy_tab" data-name="intros">${L("INTR")}</span>
       <span class="fy_tab" data-name="definitions">${L("DEF")}</span>
       <span class="fy_tab" data-name="examples">${L("XMPL")}</span>
       <span class="fy_tab" data-name="relations">${L("REL")}</span>
-      <span class="fy_tab" data-name="collections">${L("COLL")}</span>
+      <span class="fy_tab" data-name="notes">${L("discuss")}</span>
+      <span class="fy_tab" data-name="extranet">${L("extranet")}</span>
       <div class="clear"></div>
     </div>
     <div class="fy_body" data-name="admin">
@@ -70,6 +72,7 @@ Spec.templates[":top"]={
       <div class="fy_replace" templateName="pStatus" jsonName="pStatus"></div>
       <div class="title">${L("DATESTAMP")} <span class="light">${L("LAST MAJOR UPDATE")}<span></div>
       <div class="fy_replace" templateName="dateStamp" jsonName="dateStamp"></div>
+      <div class="title">${L("COLLECTIONS")}</div>
     </div>
     <div class="fy_body" data-name="terms">
       <div class="title">${L("TERMS")}</div>
@@ -78,6 +81,10 @@ Spec.templates[":top"]={
     <div class="fy_body" data-name="domains">
       <div class="title">${L("DOMAINS")}</div>
       <div class="fy_replace" templateName="domains" jsonName="domains"></div>
+    </div>
+    <div class="fy_body" data-name="definitions">
+      <div class="title">${L("DEFINITIONS")}</div>
+      <div class="fy_replace" templateName="definitions" jsonName="definitions"></div>
     </div>
   </div>`,
 };
@@ -143,7 +150,7 @@ Spec.templates["desigs"]={
 };
 Spec.templates["desig"]={
   type: "object",
-  blank: {term: {lang: "", wording: "", inflects: [], annots: []}, clarif: "", accept: "", source: ""},
+  blank: {term: {lang: "", wording: "", inflects: [], annots: []}, clarif: "", accept: "", sources: []},
   html: `<div class="fy_container fy_collapsible">
     <div class="fy_replace" templateName="term" jsonName="term"></div>
     <div class="fy_replace fy_hidable" templateName="accept" jsonName="accept"></div>
@@ -595,4 +602,70 @@ Spec.templates["subdomain"]={
     }
   },
 
+};
+
+Spec.templates["definitions"]={
+  type: "array",
+  html: `<div>
+    <div class="fy_replace" templateName="definition" jsonName=":item"></div>
+    <span class="fy_adder" templateName="definition">+ ${L("definition")}</span>
+  </div>`,
+};
+Spec.templates["definition"]={
+  type: "object",
+  blank: {lang: "", text: "", domains: [], source: null},
+  html: `<div class="fy_container">
+    <div class="fy_box">
+    <div class="fy_horizon">
+      <span class="fy_remover"></span>
+      <span class="fy_downer"></span>
+      <span class="fy_upper"></span>
+        <span class="fy_replace" templateName="defLang" jsonName="lang"></span>
+      </div>
+      <span class="fy_replace" templateName="defText" jsonName="text"></span>
+      <div class="fy_replace fy_hidable" templateName="sources" jsonName="sources"></div>
+      <div class="fy_replace" templateName="domains" jsonName="domains"></div>
+    </div>
+  </div>`,
+  refresh: function($me){
+    $me.find(".jsonName_subdomain").hide().find("select").html("");
+    var superdomainID=$me.find(".jsonName_superdomain select").val();
+    if(superdomainID) {
+      $me.find(".jsonName_subdomain").show();
+      Spec.templates.subdomain.refresh($me.find(".jsonName_subdomain"));
+    }
+  },
+};
+Spec.templates["defLang"]={
+  type: "string",
+  html: `
+    <span class="fy_textbox" style="width: 95px;">
+      <select style="font-weight: bold;" onchange="Fy.changed();"></select>
+    </span>
+  `,
+  set: function($me, data){
+    $me.find("select").val(data);
+  },
+  get: function($me){
+    return $me.find("select").val();
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    $select.html(`<option value=""></option>`);
+    termbaseConfigs.lingo.languages.map(lang => {
+      if(lang.role=="major") $select.append(`<option value="${lang.abbr}" title="${Spec.title(lang.title)}">${lang.abbr.toUpperCase()}</option>`)
+    });
+  },
+};
+Spec.templates["defText"]={
+  type: "string",
+  html: `<div class="fy_horizon textarea">
+    <span class="fy_textbox" style=""><textarea onchange="Fy.changed()"/></textarea></span>
+  </div>`,
+  set: function($me, data){
+    $me.find("textarea").val(data);
+  },
+  get: function($me){
+    return $me.find("textarea").val();
+  },
 };
