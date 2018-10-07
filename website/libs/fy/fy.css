@@ -31,18 +31,25 @@ div.fy_box div.fy_box {border: 0px; border-top: 1px solid #ffffff; margin: 10px 
 
 div.fy_lineabove {border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; padding: 10px 10px 0px 10px;}
 
-div.fy_horizon { margin: 5px 0px; border: 1px inset #999999; border-radius: 4px; min-height: 1rem; position: relative; padding: 4px 0px; background-color: #ffffff;}
+div.fy_horizon { margin: 5px 0px; border: 1px inset #999999; border-radius: 4px; min-height: 1.5rem; position: relative; padding: 4px 0px; background-color: #ffffff;}
 div.fy_horizon:first-child {margin-top: 0px;}
 div.fy_horizon:last-child {margin-bottom: 0px;}
 div.fy_box div.fy_box div.fy_horizon:last-child {margin-bottom: 5px;}
 
+div.fy_horizon.blind {border: 0px; background-color: transparent; position: absolute; top: 10px; right: 10px;}
+div.fy_horizon.blinder {border: 0px; background-color: transparent; position: absolute; top: 5px; right: 0px;}
+
 span.fy_label {background-color: #eeeeee; color: #666666; text-shadow: 1px 1px 0px #ffffff; margin: -2px 0px -2px 0px; padding: 4px 8px; box-sizing: border-box; display: inline-block; border-radius: 4px 0px 0px 4px;}
+div.fy_label {background-color: #eeeeee; color: #333333; text-shadow: 1px 1px 0px #ffffff; margin: 0px 0px 0px 0px; padding: 8px 8px; box-sizing: border-box; display: block; border-radius: 4px 4px 0px 4px; font-weight: bold;}
 
 span.fy_textbox {display: inline-block; box-sizing: border-box;}
 span.fy_textbox input {display: inline-block; box-sizing: border-box; padding: 2px 8px; border: 0px; font: inherit; width: 100%; background-color: #ffffff; border-right: 5px solid #ffffff;}
 span.fy_textbox input:focus {background-color: #f1f1e0;}
 span.fy_textbox select {display: inline-block; box-sizing: border-box; padding: 2px 4px; border: 0px; font: inherit; width: 100%; background-color: #ffffff;}
 span.fy_textbox select:focus {background-color: #f1f1e0;}
+
+span.fy_textbox.linebelow {border-bottom: 1px solid #cccccc;}
+div.fy_horizon span.fy_adder {margin: 10px;}
 
 div.fy_horizon.textarea {padding: 0px;}
 div.fy_horizon.textarea span.fy_textbox {width: 100%; display: block;}

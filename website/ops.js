@@ -274,6 +274,16 @@ module.exports={
       }
     }
 
+    if(facets.collection && facets.collection=="-1"){
+      joins.push(`left outer join entry_collection as fCollection on fCollection.entry_id=e.id`);
+      where.push(`fCollection.collection is null`);
+    }
+    else if(facets.collection){
+      joins.push(`inner join entry_collection as fCollection on fCollection.entry_id=e.id`);
+      if(facets.collection=="*") where.push(`fCollection.collection>0`);
+      else { where.push(`fCollection.collection=$fCollection`); params[`$fCollection`]=parseInt(facets.collection); }
+    }
+
     var params1={}; for(var key in params) params1[key]=params[key]; params1.$howmany=parseInt(howmany);
     var sql1=`select e.id, e.json`;
     if(searchtext!="" && modifiers[1]=="smart"){
@@ -386,7 +396,10 @@ module.exports={
               module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
                 //index my domains:
                 module.exports.saveDomains(db, termbaseID, entryID, entry, function(){
-                  callnext(entryID);
+                  //index my collections:
+                  module.exports.saveCollections(db, termbaseID, entryID, entry, function(){
+                    callnext(entryID);
+                  });
                 });
               });
             });
@@ -522,6 +535,24 @@ module.exports={
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_domain(entry_id, superdomain, subdomain) values($entryID, $superdomain, $subdomain)", {$entryID: entryID, $superdomain: assig.superdomain, $subdomain: assig.subdomain}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveCollections: function(db, termbaseID, entryID, entry, callnext){
+    var assigs=[]; entry.collections.map(obj => {
+      assigs.push(parseInt(obj));
+    });
+    db.run("delete from entry_collection where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var assig=assigs.pop();
+      if(assig){
+        db.run("insert into entry_collection(entry_id, collection) values($entryID, $collection)", {$entryID: entryID, $collection: assig}, function(err){
           go();
         });
       } else {

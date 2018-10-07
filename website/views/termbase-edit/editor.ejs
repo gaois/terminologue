@@ -21,10 +21,13 @@
 		Screenful.Editor.deleteUrl="./delete.json";
 		</script>
 
+		<link type="text/css" rel="stylesheet" href="../../widgets/pretty-large.css" />
+		<script type="text/javascript" src="../../widgets/pretty-large.js"></script>
 		<script type="text/javascript">
-		// Screenful.Editor.viewer=function(div, entry){
-		// 	$(div).html(entry.id);
-		// };
+		Screenful.Editor.viewer=function(div, entry){
+			$(div).html( Pretty.entry(JSON.parse(entry.content)) );
+			//$(div).html(entry.id);
+		};
 		</script>
 
 		<link type="text/css" rel="stylesheet" href="../../libs/fy/fy.css" />
@@ -53,7 +56,7 @@
 		</script>
 
 		<script type="text/javascript">
-		Screenful.Editor.allowSourceCode=true;
+		Screenful.Editor.allowSourceCode=false;
 		Screenful.Editor.formatSourceCode=function(str){
 			return Screenful.formatJson(str);
 		};

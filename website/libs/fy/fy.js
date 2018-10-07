@@ -21,7 +21,8 @@ Fy.harvest=function($insideme){
 };
 
 Fy.renderNode=function(data, template, spec, uneditable){
-  var $html=$(template.html).addClass("fy_node").data("template", template);
+  var $html=$(template.html); if(typeof(template.html)=="function") $html=$(template.html());
+  $html.addClass("fy_node").data("template", template);
   if(template.populate) template.populate($html);
   if(template.set) template.set($html, data);
   if(!uneditable) $html.find(".fy_adder").on("click", function(e){
@@ -120,6 +121,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
   }
   if(uneditable) {
     $html.find("input").prop("disabled", true);
+    $html.find("textarea").prop("disabled", true);
     $html.find("select").prop("disabled", true);
   }
   return $html;

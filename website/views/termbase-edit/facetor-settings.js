@@ -36,30 +36,6 @@ Screenful.Facetor.panes=[{
     var $input=$(`<input type="date" class="fullwidth" id="facDateStampValue" value="${(new Date()).toISOString().split('T')[0]}"/>`).hide().appendTo($inme);
     $input.on("change", Screenful.Facetor.change);
 
-    $inme.append(`<div class="title"><span class="tab">${L("TRM")}</span></div>`);
-
-    //term lang:
-    var $select=$(`<select class="fullwidth" id="facTermLang"></select>`).appendTo($inme);
-    $select.append(`<option value="">(${L("any language")})</option>`);
-    termbaseConfigs.lingo.languages.map(datum => {
-      var $option=$(`<option value="${datum.abbr}">${datum.abbr.toUpperCase()} ${Spec.title(datum.title)}</option>`);
-      $option.data("datum", datum);
-      $option.appendTo($select);
-    });
-    $select.on("change", Screenful.Facetor.change);
-
-    //acceptabilty:
-    var $select=$(`<select class="fullwidth" id="facAccept"></select>`).appendTo($inme);
-    $select.append(`<option value="">(${L("any acceptabilty or no acceptability")})</option>`);
-    $select.append(`<option value="*">(${L("any acceptabilty")})</option>`);
-    $select.append(`<option value="-1">(${L("no acceptability")})</option>`);
-    termbaseMetadata.acceptLabel.map(datum => {
-      var $option=$(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
-      $option.data("datum", datum);
-      $option.appendTo($select);
-    });
-    $select.on("change", Screenful.Facetor.change);
-
     $inme.append(`<div class="title"><span class="tab">${L("DOM")}</span></div>`);
 
     //domain:
@@ -101,6 +77,46 @@ Screenful.Facetor.panes=[{
     var $select=$(`<select class="fullwidth" id="facSubdomain" style="display: none"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("any subdomain or no subdomain")})</option>`);
     $select.on("change", Screenful.Facetor.change);
+
+    $inme.append(`<div class="title"><span class="tab">${L("TRM")}</span></div>`);
+
+    //term lang:
+    var $select=$(`<select class="fullwidth" id="facTermLang"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any language")})</option>`);
+    termbaseConfigs.lingo.languages.map(datum => {
+      var $option=$(`<option value="${datum.abbr}">${datum.abbr.toUpperCase()} ${Spec.title(datum.title)}</option>`);
+      $option.data("datum", datum);
+      $option.appendTo($select);
+    });
+    $select.on("change", Screenful.Facetor.change);
+
+    //acceptabilty:
+    var $select=$(`<select class="fullwidth" id="facAccept"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any acceptabilty or no acceptability")})</option>`);
+    $select.append(`<option value="*">(${L("any acceptabilty")})</option>`);
+    $select.append(`<option value="-1">(${L("no acceptability")})</option>`);
+    termbaseMetadata.acceptLabel.map(datum => {
+      var $option=$(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
+      $option.data("datum", datum);
+      $option.appendTo($select);
+    });
+    $select.on("change", Screenful.Facetor.change);
+
+    $inme.append(`<div class="title"><span class="tab">${L("COLL")}</span></div>`);
+
+    //collection:
+    var $select=$(`<select class="fullwidth" id="facCollection"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any collection or no collection")})</option>`);
+    $select.append(`<option value="*">(${L("any collection")})</option>`);
+    $select.append(`<option value="-1">(${L("no collection")})</option>`);
+    termbaseMetadata.collection.map(datum => {
+      var $option=$(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
+      $option.data("datum", datum);
+      $option.appendTo($select);
+    });
+    $select.on("change", Screenful.Facetor.change);
+
+
   },
 
   harvest: function(div){
@@ -114,6 +130,7 @@ Screenful.Facetor.panes=[{
     ret.accept=$("#facAccept").val();
     ret.superdomain=$("#facSuperdomain").val();
     ret.subdomain=$("#facSubdomain").val();
+    ret.collection=$("#facCollection").val();
     return ret;
   },
 }];

@@ -13,7 +13,9 @@ db.run('PRAGMA foreign_keys=on');
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 
-deed(1000);
+//deed(1000);
+//deedAgain(1000, 2000);
+
 //deed(10000);
 //deedAgain(10000, 20000);
 //deedAgain(20000, 30000);
@@ -35,10 +37,12 @@ function deed(stop){
           doSources(db, function(){
             doPosLabels(db, function(){
               doDomains(db, function(){
-                doConcepts(db, 0, stop, function(){
-                  db.run("COMMIT");
-                  db.close();
-                  console.log(`finito`);
+                doCollections(db, function(){
+                  doConcepts(db, 0, stop, function(){
+                    db.run("COMMIT");
+                    db.close();
+                    console.log(`finito`);
+                  });
                 });
               });
             });
@@ -58,10 +62,12 @@ function deedAgain(start, stop){
           doSources(db, function(){
             doPosLabels(db, function(){
               doDomains(db, function(){
-                doConcepts(db, start, stop, function(){
-                  db.run("COMMIT");
-                  db.close();
-                  console.log(`finito`);
+                doCollections(db, function(){
+                  doConcepts(db, start, stop, function(){
+                    db.run("COMMIT");
+                    db.close();
+                    console.log(`finito`);
+                  });
                 });
               });
             });
@@ -267,6 +273,31 @@ function doDomains(db, callnext){
     });
   }
 }
+function doCollections(db, callnext){
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.collection/";
+  var filenames=fs.readdirSync(dir);
+  doOne();
+  function doOne(){
+    if(filenames.length>0){
+      var filename=filenames.pop();
+      var id=filename.replace(/\.xml$/, "");
+      var xml=fs.readFileSync(dir+filename, "utf8");
+      var doc=domParser.parseFromString(xml, 'text/xml');
+      var json={
+        title: {
+          ga: doc.getElementsByTagName("nameGA")[0].getAttribute("default"),
+          en: doc.getElementsByTagName("nameEN").length>0 ? doc.getElementsByTagName("nameEN")[0].getAttribute("default") : doc.getElementsByTagName("nameGA")[0].getAttribute("default"),
+        },
+      };
+      ops.metadataUpdate(db, "bnt", "collection", id, JSON.stringify(json), function(){
+        doOne();
+      })
+    } else {
+      console.log("collections done");
+      callnext();
+    }
+  };
+}
 function doConcepts(db, start, stop, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.concept/";
   var filenames=fs.readdirSync(dir).slice(start, stop);
@@ -274,15 +305,19 @@ function doConcepts(db, start, stop, callnext){
   var done=0;
   filenames.map((filename, filenameIndex) => {
     var id=filename.replace(/\.xml$/, "");
+    console.log(`starting to process entry ID ${id}`);
     var xml=fs.readFileSync(dir+filename, "utf8");
     var doc=domParser.parseFromString(xml, 'text/xml');
     var json={
       cStatus: (doc.documentElement.getAttribute("checked")=="0" ? "0" : "1"),
       pStatus: (doc.documentElement.getAttribute("hidden")=="1" ? "0" : "1"),
       dateStamp: "",
-      desigs: [],
       domains: [],
+      desigs: [],
+      intros: {ga: "", en: ""},
       definitions: [],
+      examples: [],
+      collections: [],
     };
     //desigs:
     var els=doc.getElementsByTagName("term");
@@ -312,26 +347,44 @@ function doConcepts(db, start, stop, callnext){
         else json.domains.push({superdomain: domainID, subdomain: null});
       }
     }
+    //intros:
+    var els=doc.getElementsByTagName("introGA");
+    if(els.length>0 && els[0].getAttribute("default")!="") json.intros.ga=els[0].getAttribute("default");
+    var els=doc.getElementsByTagName("introEN");
+    if(els.length>0 && els[0].getAttribute("default")!="") json.intros.en=els[0].getAttribute("default");
     //definitions:
     var els=doc.getElementsByTagName("definition");
     for(var i=0; i<els.length; i++) { el=els[i];
       var domains=[];
       var domels=el.getElementsByTagName("domain");
-      for(var i=0; i<domels.length; i++) { domel=domels[i];
+      for(var ii=0; ii<domels.length; ii++) { domel=domels[ii];
         var domainID=domel.getAttribute("default");
         if(subdomain2superdomain[domainID]) domains.push({superdomain: subdomain2superdomain[domainID], subdomain: domainID});
         else domains.push({superdomain: domainID, subdomain: null});
       }
+      var obj={texts: {ga: "", en: ""}, domains: domains, sources: []};
       var subels=doc.getElementsByTagName("textEN");
       if(subels.length>0) {
         var text=subels[0].getAttribute("default");
-        if(text!="") json.definitions.push({lang: "en", text: text, domains: domains});
+        if(text!="") obj.texts["en"]=text;
       }
       subels=doc.getElementsByTagName("textGA");
       if(subels.length>0) {
         var text=subels[0].getAttribute("default");
-        if(text!="") json.definitions.push({lang: "ga", text: text, domains: domains});
+        if(text!="") obj.texts["ga"]=text;
       }
+      json.definitions.push(obj);
+    }
+    //examples:
+    var els=doc.getElementsByTagName("example");
+    for(var i=0; i<els.length; i++) { el=els[i];
+      var example=getExample(el.getAttribute("default"));
+      if(example) json.examples.push(example);
+    }
+    //collections:
+    var els=doc.getElementsByTagName("collection");
+    for(var i=0; i<els.length; i++) { el=els[i];
+      json.collections.push(el.getAttribute("default"));
     }
     //save it:
     todo++;
@@ -342,6 +395,7 @@ function doConcepts(db, start, stop, callnext){
       if(done>=filenames.length) callnext();
     });
   });
+  console.log(`finished scheduling to save entries`);
 }
 function getTerm(termID){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.term/";
@@ -392,6 +446,27 @@ function getTerm(termID){
   for(var i=0; i<els.length; i++) { el=els[i];
     var inflect={label: el.getAttribute("label"), text: el.getAttribute("text")};
     json.inflects.push(inflect);
+  }
+  return json;
+}
+function getExample(exampleID){
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.example/";
+  if(!fs.existsSync(dir+exampleID+".xml")) return null;
+  var xml=fs.readFileSync(dir+exampleID+".xml", "utf8");
+  var doc=domParser.parseFromString(xml, 'text/xml');
+  var json={
+    texts: {ga: [], en: []},
+    sources: []
+  };
+  //English phrases:
+  var els=doc.getElementsByTagName("phraseEN");
+  for(var i=0; i<els.length; i++) { el=els[i];
+    if(el.getAttribute("default")!="") json.texts.en.push(el.getAttribute("default"));
+  }
+  //Irish phrases:
+  var els=doc.getElementsByTagName("phraseGA");
+  for(var i=0; i<els.length; i++) { el=els[i];
+    if(el.getAttribute("default")!="") json.texts.ga.push(el.getAttribute("default"));
   }
   return json;
 }
