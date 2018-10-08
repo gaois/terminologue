@@ -43,6 +43,16 @@ Spec.getPosLabel=function(id){
   termbaseMetadata.posLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
+Spec.getCollection=function(id){
+  var ret=null;
+  termbaseMetadata.collection.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
+Spec.getSource=function(id){
+  var ret=null;
+  termbaseMetadata.source.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
 
 Spec.sharEnquire=function($term, termID, lang, wording){
   var $bubble=$term.find(".fy_bubble").hide().removeClass("fullon").removeClass("sublime").removeClass("invisible").html("");

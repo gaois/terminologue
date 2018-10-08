@@ -22,9 +22,10 @@ Pretty.metadatum=function(metadatum, lingo){
 Pretty.entry=function(entry){
   var $ret=$("<div class='prettyEntry'></div>");
 
-  var majorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="major") majorlangs.push(lang.abbr); });
+  //var startlang=window.parent.$(".lineModifiersRight .current").data("value");
+  var majorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="major" && majorlangs.indexOf(lang.abbr)==-1) majorlangs.push(lang.abbr); });
   var cellWidth=(100/majorlangs.length);
-  var minorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="minor") minorlangs.push(lang.abbr); });
+  var minorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="minor" && minorlangs.indexOf(lang.abbr)==-1) minorlangs.push(lang.abbr); });
 
   //domains:
   entry.domains.map(obj => {
@@ -77,6 +78,7 @@ Pretty.entry=function(entry){
       }
     });
     $("<div class='clear'></div>").appendTo($row);
+    $row.append(Pretty.sources(obj.sources));
   });
 
   //examples:
@@ -89,10 +91,30 @@ Pretty.entry=function(entry){
       }
     });
     $("<div class='clear'></div>").appendTo($row);
+    $row.append(Pretty.sources(obj.sources));
+  });
+
+  //collections:
+  var $group=$("<div class='collections'></div>").appendTo($ret);
+  entry.collections.map(obj => {
+    obj=Spec.getCollection(obj);
+    var $item=$("<div class='collection'></div>").appendTo($group);
+    $item.append(Pretty.title(obj.title));
   });
 
   return $ret;
 }
+
+Pretty.sources=function(sources){
+  var $group=$("<div class='prettySources'></div>");
+  sources.map(obj => {
+    obj=Spec.getSource(obj);
+    var $item=$("<div class='source'></div>").appendTo($group);
+    $item.append("— "+Pretty.title(obj.title));
+  });
+  if($group.text()!="") return $group;
+  return "";
+};
 
 Pretty.example=function(ex, lang){
   var $ret=$("<div class='prettyExample'></div>");
@@ -105,7 +127,6 @@ Pretty.example=function(ex, lang){
 
 Pretty.definition=function(def, lang){
   var $ret=$("<span class='prettyDefinition'></span>");
-  if(def.domains.length>0) $ret.addClass("hasDomains");
   def.domains.map(dom => {
     $("<span class='domain'></span>").html(Pretty.domain(dom, lang)).appendTo($ret);
     $ret.append(" ");
@@ -128,6 +149,7 @@ Pretty.desig=function(desig, withLangLabel){
       $inflects.append(Pretty.inflect(obj));
     });
   }
+  $ret.append(Pretty.sources(desig.sources));
   return $ret;
 };
 

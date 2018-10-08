@@ -2,21 +2,22 @@ span.prettyMetadatum {}
 
 div.prettyEntry {font-size: 1.15em; padding: 15px 10px; line-height: 1.25em; color: #333333;}
 div.prettyEntry .hintable {cursor: default;}
-div.prettyEntry .hintable:hover {border-bottom: 2px dotted #666666;}
+div.prettyEntry .hintable:hover {border-bottom: 2px dotted #666666 !important;}
 
 div.prettyRow {}
 div.prettyRow > div.clear {clear: left;}
 div.prettyCell {float: left; box-sizing: border-box; padding-left: 15px; min-height: 1em;}
 div.prettyCell:first-child {padding-left: 0px;}
 
-div.prettyRow.domain {font-size: 0.8em; position: relative; background: linear-gradient(to right, #eeeeee 0%, transparent 100%); padding: 5px 10px; margin: 0px 0px 5px 0px; border-radius: 4px;}
-div.prettyRow.majorTerms {border-top: 1px solid #eeeeee;}
-div.prettyRow.minorTerms {border-top: 1px solid #eeeeee; padding: 10px 0px;}
-div.prettyRow.definition {border-top: 1px solid #eeeeee; padding: 10px 0px;}
-div.prettyRow.example {border-top: 1px solid #eeeeee; padding: 10px 0px;}
+div.prettyRow.domain {font-size: 0.8em; position: relative; background: linear-gradient(to right, #bbe2de 0%, transparent 100%); padding: 2px 6px; margin: 0px 0px 8px 0px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
+div.prettyRow.majorTerms {border-top: 1px solid #eeeeee; padding: 3px 0px;}
+div.prettyRow.minorTerms {border-top: 1px solid #eeeeee; padding: 13px 0px;}
+div.prettyRow.definition {border-top: 1px solid #eeeeee; padding: 13px 0px;}
+div.prettyRow.example {border-top: 1px solid #eeeeee; padding: 13px 0px;}
+div.collections {border-top: 1px solid #eeeeee; padding: 10px 5px; font-size: 0.75em; color: #999999;}
 
 div.prettyDesig {position: relative; padding-left: 2.5em; margin: 10px 0px;}
-div.prettyDesig span.prettyLang {display: block; width: 2.5em; background-color: #eeeeee; text-align: center; position: absolute; top: 0px; left: 0px; text-shadow: 1px 1px 0px #ffffff; border-radius: 4px; font-size: 0.8em;}
+div.prettyDesig span.prettyLang {display: block; width: 2.5em; background-color: #eeeeee; text-align: center; position: absolute; top: 0px; left: 0px; text-shadow: 1px 1px 0px #ffffff; border-radius: 4px; font-size: 0.8em; border: 1px solid #86d1c9;}
 div.prettyDesig span.clarif {font-style: italic; font-size: 0.8em;}
 div.prettyDesig span.accept {font-style: italic; color: #947253; font-size: 0.8em;}
 div.prettyDesig div.inflects {font-size: 0.8em;}
@@ -41,18 +42,21 @@ div.prettyDesig.grey span.prettyWording span.label {color: #999999;}
 div.prettyDesig.grey span.clarif {color: #999999;}
 div.prettyDesig.grey span.accept {color: #999999;}
 
-.minorTerms div.prettyDesig {margin: 0px; margin-right: 1em; }
-.minorTerms div.prettyDesig span.prettyLang {font-size: 0.7em; width: auto; padding: 0px 8px;}
+.minorTerms div.prettyDesig {margin: 0px; margin-right: 0em; }
+.minorTerms div.prettyDesig span.prettyLang {font-size: 0.7em; width: 1.75em; padding: 0px 8px; border: 0px;}
 .minorTerms div.prettyDesig span.prettyWording {font-size: 0.8em; color: #666666; }
 
 div.prettyIntro {position: relative; padding-left: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em; color: #666666;}
 
 span.prettyDefinition {display: block; font-size: 0.8em; padding-left: 5px;}
-span.prettyDefinition.hasDomains {padding-left: 10px;}
-span.prettyDefinition span.domain {display: inline-block; background-color: #eeeeee; padding: 3px 10px; border-radius: 4px;}
-span.prettyDefinition span.domain:first-child {margin-left: -10px;}
+span.prettyDefinition span.domain {display: inline-block; background-color: #d7edeb; padding: 2px 6px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
+span.prettyDefinition span.domain:first-child {margin-left: -5px;}
 span.prettyDefinition span.text {}
 
 div.prettyExample {display: block; font-size: 0.8em; padding-left: 5px;}
 div.prettyExample div.sentence {font-weight: bold; color: #333333; margin-top: 5px;}
 div.prettyExample div.sentence:first-child {margin-top: 0px;}
+
+div.prettySources {padding: 5px 0px 0px 5px; font-size: 0.75em; color: #999999;}
+div.prettyDesig div.prettySources {padding-left: 0px;}
+div.prettySources div.source {}
