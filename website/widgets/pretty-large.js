@@ -22,23 +22,48 @@ Pretty.metadatum=function(metadatum, lingo){
 Pretty.entry=function(entry){
   var $ret=$("<div class='prettyEntry'></div>");
 
+  var majorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="major") majorlangs.push(lang.abbr); });
+  var cellWidth=(100/majorlangs.length);
+  var minorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="minor") minorlangs.push(lang.abbr); });
+
   entry.domains.map(obj => {
-    $ret.append(Pretty.domain(obj));
+    var $row=$("<div class='prettyRow domain'></div>").appendTo($ret);
+    majorlangs.map(lang => {
+      var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
+      $cell.append(Pretty.domain(obj, lang));
+    });
+    $("<div class='clear'></div>").appendTo($row);
   });
 
-  var langs=[$(".lineModifiersRight .current").data("value")];
-  termbaseConfigs.lingo.languages.map(lang => { if(langs.indexOf(lang.abbr)==-1) langs.push(lang.abbr); });
   var langsDone=[];
-  langs.map(lang => {
+  var $row=$("<div class='prettyRow majorTerms'></div>").appendTo($ret);
+  majorlangs.map(lang => {
+    var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
     entry.desigs.map(desig => {
       if(desig.term.lang==lang) {
-        $ret.append(Pretty.desig(desig, (langsDone.indexOf(lang)==-1)));
+        $cell.append(Pretty.desig(desig, (langsDone.indexOf(lang)==-1)));
         langsDone.push(lang);
       }
     });
-    if(entry.intros[lang]) $ret.append(Pretty.intro(entry.intros[lang], lang));
+    if(entry.intros[lang]) $cell.append(Pretty.intro(entry.intros[lang], lang));
   });
-  if($ret.text()=="") $ret.html("—");
+  $("<div class='clear'></div>").appendTo($row);
+
+  var langsDone=[];
+  var $row=$("<div class='prettyRow minorTerms'></div>");
+  minorlangs.map(lang => {
+    var $cell=$("<div class='prettyCell'></div>");
+    entry.desigs.map(desig => {
+      if(desig.term.lang==lang) {
+        $cell.append(Pretty.desig(desig, (langsDone.indexOf(lang)==-1)));
+        langsDone.push(lang);
+      }
+    });
+    if($cell.text()!="") $cell.appendTo($row);
+  });
+  $("<div class='clear'></div>").appendTo($row);
+  if($row.text()!="") $row.appendTo($ret);
+
   return $ret;
 }
 
@@ -60,16 +85,18 @@ Pretty.desig=function(desig, withLangLabel){
 };
 
 Pretty.inflect=function(obj){
+  var metadatum=Spec.getInflectLabel(obj.label);
   var $ret=$("<span class='inflect'></span>");
-  $ret.append("<span class='abbr'>"+Pretty.clean4html(Spec.getInflectLabel(obj.label).abbr)+":</span>")
+  $ret.append("<span class='abbr hintable' title='"+Pretty.clean4html(Pretty.title(metadatum.title))+"'>"+Pretty.clean4html(metadatum.abbr)+":</span>")
   $ret.append("&nbsp;")
   $ret.append("<span class='wording'>"+Pretty.clean4html(obj.text)+"</span>")
   return $ret;
 };
 
 Pretty.lang=function(str){
-  var $ret=$("<span class='prettyLang'></span>");
+  var $ret=$("<span class='prettyLang hintable'></span>");
   $ret.append(str.toUpperCase());
+  var lang=Spec.getLang(str); if(lang) $ret.attr("title", Pretty.title(lang.title));
   return $ret;
 }
 
@@ -84,29 +111,30 @@ Pretty.wording=function(str, annots){
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var label=Spec.getPosLabel(annot.label.value);
         var symbol=(label ? label.abbr : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Pretty.clean4html(Pretty.title(label.title))+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="inflectLabel"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var label=Spec.getInflectLabel(annot.label.value);
         var symbol=(label ? label.abbr : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Pretty.clean4html(Pretty.title(label.title))+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="langLabel"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
+        var label=Spec.getLang(annot.label.value);
         var symbol=(annot.label.value ? annot.label.value.toUpperCase() : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Pretty.clean4html(Pretty.title(label.title))+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="symbol"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
-        var symbol="???";
-        if(annot.label.value=="tm") symbol="<span style='position: relative; top: -5px; font-size: 0.5em'>TM</span>";
-        if(annot.label.value=="regtm") symbol="®";
-        if(annot.label.value=="proper") symbol="¶";
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        var symbol="???"; var title="";
+        if(annot.label.value=="tm") {symbol="<span style='position: relative; top: -5px; font-size:  0.5em'>TM</span>"; title=L("trademark");}
+        if(annot.label.value=="regtm") {symbol="®"; title=L("registered trademark");}
+        if(annot.label.value=="proper") {symbol="¶"; title=L("proper noun");}
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+title+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="formatting"){
         chars[i].markupBefore="<span style='font-style: italic'>"+chars[i].markupBefore;
@@ -140,19 +168,19 @@ Pretty.accept=function(str){
   return $ret;
 }
 
-Pretty.domain=function(obj){
-  var $ret=$("<div class='prettyDomain'></div>");
+Pretty.domain=function(obj, lang){
+  var $ret=$("<div></div>");
   var domain=Spec.getDomain(obj.superdomain);
   if(domain){
-    $ret.append("<span class='step'>"+Pretty.title(domain.title)+"</span>");
+    $ret.append("<span class='step'>"+Pretty.titleInLang(domain.title, lang)+"</span>");
     if(obj.subdomain){
-      var subdomain=Pretty.findSubdomain(domain, obj.subdomain);
+      var subdomain=Pretty.findSubdomain(domain, obj.subdomain, lang);
       subdomain._parents.map(d => {
         $ret.append("&nbsp; »&nbsp; ");
-        $ret.append("<span class='step'>"+Pretty.title(d.title)+"</span>");
+        $ret.append("<span class='step'>"+Pretty.titleInLang(d.title, lang)+"</span>");
       });
       $ret.append("&nbsp; »&nbsp; ");
-      $ret.append("<span class='step'>"+Pretty.title(subdomain.title)+"</span>");
+      $ret.append("<span class='step'>"+Pretty.titleInLang(subdomain.title, lang)+"</span>");
     }
   }
   return $ret;
@@ -177,10 +205,18 @@ Pretty.title=function(title){
   termbaseConfigs.lingo.languages.map(lang => {
     if(lang.role=="major" && title[lang.abbr] && done.indexOf(title[lang.abbr])==-1) {
       if(ret+="") ret+="/";
-      ret+="<span>"+title[lang.abbr]+"</span>";
+      ret+=title[lang.abbr];
       done.push(title[lang.abbr]);
     }
   });
+  return ret;
+};
+Pretty.titleInLang=function(title, lang){
+  var ret="";
+  var done=[];
+  if(title[lang]) ret+="<span>"+title[lang]+"</span>"; else {
+    for(var key in title) if(title[key]){ ret+="<span>"+title[key]+"</span>"; break; }
+  }
   return ret;
 };
 

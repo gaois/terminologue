@@ -28,6 +28,11 @@ Spec.getLangRole=function(abbr){
   termbaseConfigs.lingo.languages.map(lang => { if(!ret && lang.abbr==abbr) ret=lang.role; });
   return ret;
 };
+Spec.getLang=function(abbr){
+  var ret=null;
+  termbaseConfigs.lingo.languages.map(lang => { if(!ret && lang.abbr==abbr) ret=lang; });
+  return ret;
+};
 Spec.getInflectLabel=function(id){
   var ret=null;
   termbaseMetadata.inflectLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
