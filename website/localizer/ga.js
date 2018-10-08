@@ -84,6 +84,20 @@ function L(s, gloss){
   if(s=="datestamp before...") return "dátstampa roimh...";
   if(s=="datestamp on...") return "dátstampa ar...";
   if(s=="datestamp after...") return "dátstampa tar éis...";
+  if(s=="Invalid e-mail address or password.") return "Seoladh ríomhphoist mícheart nó pasfhocal mícheart.";
+  if(s=="INTR") return "INTR";
+  if(s=="COLL") return "BAIL";
+  if(s=="INTROS") return "INTREOIR";
+  if(s=="DEFINITIONS") return "SAINMHÍNITHE";
+  if(s=="EXAMPLES") return "SAMPLAÍ ÚSÁIDE";
+  if(s=="COLLECTIONS") return "BAILIÚCHÁIN";
+  if(s=="definition") return "sainmhíniú";
+  if(s=="example") return "sampla úsáide";
+  if(s=="sentence") return "abairt";
+  if(s=="collection") return "bailiúchán";
+  if(s=="any collection or no collection") return "bailiúchán ar bith nó gan bailiúchán";
+  if(s=="any collection") return "bailiúchán ar bith";
+  if(s=="no collection") return "gan bailiúchán";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
