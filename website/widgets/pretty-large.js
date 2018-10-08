@@ -26,6 +26,7 @@ Pretty.entry=function(entry){
   var cellWidth=(100/majorlangs.length);
   var minorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="minor") minorlangs.push(lang.abbr); });
 
+  //domains:
   entry.domains.map(obj => {
     var $row=$("<div class='prettyRow domain'></div>").appendTo($ret);
     majorlangs.map(lang => {
@@ -35,6 +36,7 @@ Pretty.entry=function(entry){
     $("<div class='clear'></div>").appendTo($row);
   });
 
+  //terms in major languages:
   var langsDone=[];
   var $row=$("<div class='prettyRow majorTerms'></div>").appendTo($ret);
   majorlangs.map(lang => {
@@ -49,6 +51,7 @@ Pretty.entry=function(entry){
   });
   $("<div class='clear'></div>").appendTo($row);
 
+  //terms in minor languages:
   var langsDone=[];
   var $row=$("<div class='prettyRow minorTerms'></div>");
   minorlangs.map(lang => {
@@ -64,8 +67,52 @@ Pretty.entry=function(entry){
   $("<div class='clear'></div>").appendTo($row);
   if($row.text()!="") $row.appendTo($ret);
 
+  //definitions:
+  entry.definitions.map(obj => {
+    var $row=$("<div class='prettyRow definition'></div>").appendTo($ret);
+    majorlangs.map(lang => {
+      var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
+      if(obj.texts[lang]) {
+        $cell.append(Pretty.definition(obj, lang));
+      }
+    });
+    $("<div class='clear'></div>").appendTo($row);
+  });
+
+  //examples:
+  entry.examples.map(obj => {
+    var $row=$("<div class='prettyRow example'></div>").appendTo($ret);
+    majorlangs.map(lang => {
+      var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
+      if(obj.texts[lang]) {
+        $cell.append(Pretty.example(obj, lang));
+      }
+    });
+    $("<div class='clear'></div>").appendTo($row);
+  });
+
   return $ret;
 }
+
+Pretty.example=function(ex, lang){
+  var $ret=$("<div class='prettyExample'></div>");
+  ex.texts[lang].map((sen, i) => {
+    $ret.append(" ");
+    $ret.append("<div class='sentence'>"+Pretty.clean4html(sen)+"</div>");
+  });
+  return $ret;
+};
+
+Pretty.definition=function(def, lang){
+  var $ret=$("<span class='prettyDefinition'></span>");
+  if(def.domains.length>0) $ret.addClass("hasDomains");
+  def.domains.map(dom => {
+    $("<span class='domain'></span>").html(Pretty.domain(dom, lang)).appendTo($ret);
+    $ret.append(" ");
+  });
+  $ret.append("<span class='text'>"+Pretty.clean4html(def.texts[lang])+"</span>");
+  return $ret;
+};
 
 Pretty.desig=function(desig, withLangLabel){
   var $ret=$("<div class='prettyDesig'></div>");
@@ -169,7 +216,7 @@ Pretty.accept=function(str){
 }
 
 Pretty.domain=function(obj, lang){
-  var $ret=$("<div></div>");
+  var $ret=$("<span></span>");
   var domain=Spec.getDomain(obj.superdomain);
   if(domain){
     $ret.append("<span class='step'>"+Pretty.titleInLang(domain.title, lang)+"</span>");
