@@ -82,4 +82,6 @@ Screenful.Loc={
 
   exactMatches: "Torthaí beachta",
   partialMatches: "Torthaí gaolmhara",
+
+  comments: "Nótaí tráchta",
 };

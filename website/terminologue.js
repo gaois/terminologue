@@ -469,6 +469,41 @@ app.post(siteconfig.rootPath+":termbaseID/metadata/:metadataType/delete.json", f
   });
 });
 
+//Extranet:
+app.get(siteconfig.rootPath+":termbaseID/x:xnetID/", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndXnetAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, req.params.xnetID, function(user){
+    if(!user.xnetAccess) {
+      db.close();
+      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+    } else {
+      ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+        ops.readTermbaseMetadata(db, req.params.dictID, function(metadata){
+          db.close();
+          var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+          res.render("xnet/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, termbaseMetadata: metadata, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+        });
+      });
+    }
+  });
+});
+app.get(siteconfig.rootPath+":termbaseID/x:xnetID/editor.html", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndXnetAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, req.params.xnetID, function(user){
+    if(!user.xnetAccess) {
+      db.close();
+      res.redirect("about:blank");
+    } else {
+      ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
+        db.close();
+        res.render("xnet/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs});
+      });
+    }
+  });
+});
+
 app.use(function(req, res){ res.status(404).render("404.ejs", {siteconfig: siteconfig}); });
 app.listen(PORT);
 console.log("Process ID "+process.pid+" is now listening on port number "+PORT+".");

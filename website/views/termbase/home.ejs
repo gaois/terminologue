@@ -50,6 +50,10 @@
 			<div id="dictheader">
 				<div class="titleContainer"><span class="dictTitle"><a class="dictTitle" href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title%></a><%if(user.termbaseAccess){%><a href="../<%=termbaseID%>/edit/" class="editLink"><%=L("Edit")%></a><%}%></span></div>
 			</div>
+			<div id="xnets">
+				<div class="yourdicts"><%=L("Your extranets")%></div>
+				<div class="xnet"><a class="xnetTitle" href="./x1/">Téarmaí nua le faomhadh</a></div>
+			</div>
 			<div id="dictblurb" class="<%if(termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "").length<300 && termbaseConfigs.ident.blurb.indexOf("\n")==-1){%>centered<%}%>">
 				<%-termbaseConfigs.ident.blurb%>
 			</div>

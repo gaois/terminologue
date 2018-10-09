@@ -82,4 +82,6 @@ Screenful.Loc={
 
   exactMatches: "Exact matches",
   partialMatches: "Partial matches",
+
+  comments: "Comments",
 };

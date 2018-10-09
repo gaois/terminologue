@@ -82,4 +82,6 @@ Screenful.Loc={
 
   exactMatches: "Přesné výsledky",
   partialMatches: "Přibližné výsledky",
+
+  comments: "Komentáře",
 };

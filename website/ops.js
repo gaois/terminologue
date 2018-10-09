@@ -127,6 +127,31 @@ module.exports={
       }
     });
   },
+  verifyLoginAndXnetAccess: function(email, sessionkey, termbaseDB, termbaseID, xnetID, callnext){
+    var yesterday=(new Date()); yesterday.setHours(yesterday.getHours()-24); yesterday=yesterday.toISOString();
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    db.get("select email, uilang from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
+      if(!row || module.exports.siteconfig.readonly){
+        db.close();
+        callnext({loggedin: false, email: null});
+      } else {
+        email=row.email;
+        var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
+        var now=(new Date()).toISOString();
+        db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
+          db.close();
+          module.exports.readTermbaseConfigs(termbaseDB, termbaseID, function(configs){
+            if(!configs.users[email] && module.exports.siteconfig.admins.indexOf(email)==-1){
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, xnetAccess: false, isAdmin: false});
+            } else {
+              var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, xnetAccess: true, isAdmin: isAdmin});
+            }
+          });
+        });
+      }
+    });
+  },
   readTermbaseConfigs: function(db, termbaseID, callnext){
     if(db.termbaseConfigs) callnext(db.termbaseConfigs); else {
       var configs={};

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="icon" type="image/x-icon" href="../../furniture/favicon.ico"/>
+		<title>Téarmaí nua le faomhadh</title>
+		<script type="text/javascript" src="../../libs/jquery.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+		<script type="text/javascript" src="../../localizer/<%-uilang%>.js"></script>
+
+		<script type="text/javascript" src="../../libs/screenful/screenful-uilang.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-uilang.css" />
+		<script type="text/javascript">
+		Screenful.Uilang.url="../../uilang?lang=$",
+		Screenful.Uilang.languages=<%-JSON.stringify(uilangs)%>;
+		Screenful.Uilang.current="<%-uilang%>";
+		</script>
+
+		<script type="text/javascript">var rootPath="../../";</script>
+		<script type="text/javascript" src="../../libs/screenful/screenful-user.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-user.css" />
+		<script type="text/javascript">
+		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
+		var termbaseMetadata=<%-JSON.stringify(termbaseMetadata)%>;
+		</script>
+		<script type="text/javascript">
+		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
+		Screenful.User.username="<%=user.email%>";
+		</script>
+		<script type="text/javascript" src="../../furniture/screenful-user-config.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-navigator.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful-navigator.js"></script>
+		<script type="text/javascript" src="../../libs/js.cookie.js"></script>
+		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
+		<script type="text/javascript">
+		Screenful.Navigator.listUrl="../edit/list.json";
+    //Screenful.Navigator.listByIdUrl="./list.json";
+		Screenful.Navigator.stepSize=100;
+		Screenful.Navigator.editorUrl="./editor.html";
+		Screenful.Navigator.modifiers=[
+			{position: "left", value: "smart", caption: "<%=L("smart search")%>"},
+			{position: "left", value: "start", caption: "<%=L("starts like this")%>"},
+			{position: "left", value: "wordstart", caption: "<%=L("contains a word that starts like this")%>"},
+			{position: "left", value: "substring", caption: "<%=L("contains this sequence of characters")%>"},
+			{position: "box", value: "*", abbr: "—", caption: "<%=L("search in all languages")%>"},
+		];
+		termbaseConfigs.lingo.languages.map(lang => {
+			if(lang.role=="major") {
+				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("search in:")%> "+Spec.title(lang.title)},);
+				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sort by:")%> "+Spec.title(lang.title)},);
+			}
+		});
+		</script>
+
+		<link type="text/css" rel="stylesheet" href="../../widgets/pretty-small.css" />
+		<script type="text/javascript" src="../../widgets/pretty-small.js"></script>
+		<script type="text/javascript">
+		Screenful.Navigator.renderer=function(div, entry, searchtext, modifier){
+			//$(div).html(entry.id);
+			$(div).html( Pretty.entry(JSON.parse(entry.json)) );
+		};
+		</script>
+
+		<script type="text/javascript">
+		Screenful.Navigator.enableLeftPanel=true;
+		</script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-facetor.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful-facetor.js"></script>
+		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
+		<script type="text/javascript" src="../../views/xnet/facetor-settings.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
+	</head>
+	<body>
+		<div id="header" style="padding: 10px 14px; height: 38px; border-bottom: 1px solid var(--border);">
+		  <a href="./" class="xnetTitle">Téarmaí nua le faomhadh</a>
+		  <a href="../" class="xnetDicTitle"><%=termbaseConfigs.ident.title%></a>
+			<div class="topright">
+		    <div class="one ScreenfulUilang"></div>
+		    <div class="one ScreenfulUser"></div>
+		  </div>
+		</div>
+	</body>
+</html>

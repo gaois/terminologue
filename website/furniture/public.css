@@ -159,6 +159,13 @@ div.dict a.dictAction {visibility: hidden; display: inline-block; color: #cccccc
 div.dict:hover a.dictAction {visibility: visible;}
 div.dict a.dictAction:hover {color: #2c7fba;}
 
+div#xnets {margin: 0px auto; max-width: 600px; text-align: center;}
+div.xnet {margin-top: 13px;}
+div.xnet a.xnetTitle {display: inline-block; font-size: 1.2rem; padding: 5px 10px; background-color: #c1f1ec; color: #026c60; border-radius: 4px; text-decoration: none; line-height: 1.5em;}
+div.xnet a.xnetTitle:hover {box-shadow: 0px 0px 2px #999999; color: #026c60;}
+div.xnet a.dictTitle {display: inline-block; font-size: 0.9rem; margin: 5px 0px 0px 5px; color: #999999; text-decoration: none;}
+div.xnet a.dictTitle:hover {color: #666666;}
+
 div.adminlink {margin-top: 15px; color: #999999;}
 div.adminlink a {text-decoration: none; color: #047063; background-image: url(cog.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px; margin-right: 0.75em;}
 div.adminlink a:hover {color: #059080;}

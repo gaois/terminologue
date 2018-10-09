@@ -98,6 +98,15 @@ function L(s, gloss){
   if(s=="any collection or no collection") return "bailiúchán ar bith nó gan bailiúchán";
   if(s=="any collection") return "bailiúchán ar bith";
   if(s=="no collection") return "gan bailiúchán";
+  if(s=="Your extranets") return "Do chuid eislíon";
+  if(s=="my comments") return "mo chuid nótaí";
+  if(s=="with or without my comments") return "le nó gan nótaí uaimse";
+  if(s=="with my comments") return "le nótaí uaimse";
+  if(s=="without my comments") return "gan nótaí uaimse";
+  if(s=="other people's comments") return "nótaí daoine eile";
+  if(s=="with or without other people's comments") return "le nó gan nótaí ó dhaoine eile";
+  if(s=="with other people's comments") return "le nótaí ó dhaoine eile";
+  if(s=="without other people's comments") return "gan nótaí ó dhaoine eile";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

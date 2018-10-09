@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Screenful Editor</title>
+		<script type="text/javascript">var rootPath="/../../";</script>
+		<script type="text/javascript" src="../../libs/jquery.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
+    <link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful.css" />
+		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
+		<script type="text/javascript" src="../../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+		<script type="text/javascript" src="../../localizer/<%-uilang%>.js"></script>
+		<script type="text/javascript" src="../../../libs/js.cookie.js"></script>
+
+		<script type="text/javascript" src="../../libs/screenful/screenful-editor.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-editor.css" />
+		<script type="text/javascript">
+		Screenful.Editor.readUrl="../edit/read.json";
+		</script>
+
+		<link type="text/css" rel="stylesheet" href="../../widgets/pretty-large.css" />
+		<script type="text/javascript" src="../../widgets/pretty-large.js"></script>
+		<script type="text/javascript">
+		Screenful.Editor.viewer=function(div, entry){
+			$(div).html( Pretty.entry(JSON.parse(entry.content)) );
+			//$(div).html(entry.id);
+		};
+		</script>
+
+		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
+
+		<script type="text/javascript">
+		var termbaseConfigs=window.parent.termbaseConfigs;
+		var termbaseMetadata=window.parent.termbaseMetadata;
+		</script>
+
+		<script type="text/javascript">
+		Screenful.Editor.allowCommenting=true;
+		Screenful.Editor.openCommenting=true;
+		</script>
+
+	</head>
+	<body>
+	</body>
+</html>

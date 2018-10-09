@@ -88,10 +88,12 @@
 						});
 						</script>
 					<%}else{%>
+
 						<div class="usertop">
 							<div class="title"><%=user.email%></div>
 							<div class="subtitle"><a href="logout/"><%=L("Log out")%></a> | <a href="changepwd/"><%=L("Change your password")%></a></div>
 						</div>
+
 						<div class="yourdicts"><%=L("Your termbases")%></div>
 						<%if(termbases.length==0){%>
 							<div class="nodicts"><%=L("You have no termbases yet.")%></div>
@@ -104,10 +106,18 @@
 							<%}%>
 						<%}%>
 						<div class="createdict"><a href="make/"><%=L("Create a termbase")%></a></div>
+
+						<div class="yourdicts"><%=L("Your extranets")%></div>
+						<div class="xnet">
+							<div><a class="xnetTitle" href="./bnt/x1/">Téarmaí nua le faomhadh</a></div>
+							<div><a class="dictTitle" href="./bnt/">Bunachar Náisiúnta Téarmaíochta</a></div>
+						</div>
+
 						<%if(user.isAdmin){%>
 							<div class="yourdicts"><%=L("Administration")%></div>
 							<div class="adminlink"><a href="users/"><%=L("Users")%></a> <a href="termbases/"><%=L("Termbases")%></a></div>
 						<%}%>
+
 					<%}%>
 				<%}%>
 			</div>
