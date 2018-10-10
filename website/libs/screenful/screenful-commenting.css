@@ -1,0 +1,15 @@
+div#commenting {background-color: #eeeeee; font-size: 0.85rem; box-shadow: inside 0px 0px 5px #666666; padding: 20px 20px; overflow: auto; overflow-x: hidden;}
+
+div#commenting div.comment {margin-bottom: 20px;}
+div#commenting div.comment div.header {padding: 0px 0px 0px 30px; background-image: url(homunculus.png); background-position: left; background-repeat: no-repeat; text-shadow: 1px 1px solid #ffffff; color: #333333;}
+div#commenting div.comment div.header button {float: right; margin-top: 5px;}
+div#commenting div.comment div.header div.userID {font-weight: bold;}
+div#commenting div.comment div.header div.when {}
+div#commenting div.comment div.text {margin: 5px 0px; border: 1px solid #999999; border-radius: 4px; padding: 10px; background-color: #ffffff; color: #330000; box-shadow: 1px 1px solid #ffffff;}
+
+div#commenting div.comment form {}
+div#commenting div.comment form textarea {margin: 5px 0px 0px 0px; border: 1px solid #999999; border-radius: 4px; padding: 10px; background-color: #ffffff; color: #330000; box-shadow: 1px 1px solid #ffffff; box-sizing: border-box; width: 100%; height: 12em; font: inherit; resize: vertical;}
+
+div#commenting button.butEdit {background-image: url(cut.png);}
+div#commenting button.butDelete {background-image: url(delete.png);}
+div#commenting button.butSave {background-image: url(disk.png);}

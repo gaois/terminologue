@@ -84,4 +84,5 @@ Screenful.Loc={
   partialMatches: "Torthaí gaolmhara",
 
   comments: "Nótaí tráchta",
+  newComment: "nóta nua",
 };

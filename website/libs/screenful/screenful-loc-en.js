@@ -84,4 +84,5 @@ Screenful.Loc={
   partialMatches: "Partial matches",
 
   comments: "Comments",
+  newComment: "new comment",
 };

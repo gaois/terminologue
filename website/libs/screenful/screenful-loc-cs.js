@@ -84,4 +84,5 @@ Screenful.Loc={
   partialMatches: "Přibližné výsledky",
 
   comments: "Komentáře",
+  newComment: "nový komentář",
 };

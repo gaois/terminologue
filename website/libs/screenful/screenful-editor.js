@@ -217,6 +217,7 @@ Screenful.Editor={
             Screenful.status(Screenful.Loc.ready);
             Screenful.Editor.updateToolbar();
             if(window.parent!=window && window.parent.Screenful && window.parent.Screenful.Navigator) window.parent.Screenful.Navigator.setEntryAsCurrent(data.id);
+            if(Screenful.Editor.openCommenting) Screenful.Editor.commenting();
           }
       	});
       }
@@ -249,6 +250,7 @@ Screenful.Editor={
       			  Screenful.status(Screenful.Loc.ready);
       			  Screenful.Editor.updateToolbar();
       			  if(window.parent!=window && window.parent.Screenful && window.parent.Screenful.Navigator) window.parent.Screenful.Navigator.setEntryAsCurrent(data.id);
+              if(Screenful.Editor.openCommenting) Screenful.Editor.commenting();
       			}
     			});
     		}
@@ -274,7 +276,7 @@ Screenful.Editor={
       } else {
         if($("#editor").length>0 && Screenful.Editor.entryID) Screenful.Editor.edit(event, id);
         else Screenful.Editor.view(event, id);
-        Screenful.Editor.hideHCommenting(); if(Screenful.Editor.openCommenting) Screenful.Editor.commenting();
+        Screenful.Editor.hideHCommenting();
       }
     }
   },
@@ -470,7 +472,7 @@ Screenful.Editor={
       $("#container").removeClass("withSourceCode").removeClass("withHistory").addClass("withCommenting");
       $("#commenting").show();
       Screenful.Editor.updateToolbar();
-      //Screenful.Commenting.go(id);
+      Screenful.Commenting.go();
     }
   },
   hideHCommenting: function(){
