@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<link rel="icon" type="image/x-icon" href="../../../furniture/favicon.ico"/>
-		<title><%=termbaseConfigs.ident.title%></title>
+		<title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
 		<script type="text/javascript" src="../../../libs/jquery.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-theme-green.css" />
 		<script type="text/javascript" src="../../../libs/screenful/screenful.js"></script>
@@ -46,8 +46,8 @@
 		Screenful.Navigator.entryDeleteUrl="./delete.json";
 		</script>
 
-		<link type="text/css" rel="stylesheet" href="../../../widgets/pretty.css" />
-		<script type="text/javascript" src="../../../widgets/pretty.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../widgets/pretty-small.css" />
+		<script type="text/javascript" src="../../../widgets/pretty-small.js"></script>
 		<script type="text/javascript">
 		Screenful.Navigator.renderer=function(div, entry, searchtext, modifier){
 			//$(div).html(entry.id);

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<link rel="icon" type="image/x-icon" href="../../furniture/favicon.ico"/>
-		<title>Téarmaí nua le faomhadh</title>
+		<title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
 		<script type="text/javascript" src="../../libs/jquery.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
 		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
@@ -38,7 +38,6 @@
 		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
 		<script type="text/javascript">
 		Screenful.Navigator.listUrl="../edit/list.json";
-    //Screenful.Navigator.listByIdUrl="./list.json";
 		Screenful.Navigator.stepSize=100;
 		Screenful.Navigator.editorUrl="./editor.html";
 		Screenful.Navigator.modifiers=[
@@ -76,9 +75,10 @@
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
 	</head>
 	<body>
-		<div id="header" style="padding: 10px 14px; height: 38px; border-bottom: 1px solid var(--border);">
-		  <a href="./" class="xnetTitle">Téarmaí nua le faomhadh</a>
-		  <a href="../" class="xnetDicTitle"><%=termbaseConfigs.ident.title%></a>
+		<div id="header">
+		  <span class="xnetTitleContainer">
+				<a href="../" class="dic"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a><a href="./" class="xnet"><span class="label"><%=L("EXTRANET")%></span> <%=xnet.title[uilang] || xnet.title.$%></a>
+			</span>
 			<div class="topright">
 		    <div class="one ScreenfulUilang"></div>
 		    <div class="one ScreenfulUser"></div>

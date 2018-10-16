@@ -2,6 +2,7 @@ var Spec={
   templates: {},
 };
 Spec.title=function(title){
+  if(title.$) return title.$;
   var ret="";
   var done=[];
   termbaseConfigs.lingo.languages.map(lang => {
@@ -53,6 +54,11 @@ Spec.getSource=function(id){
   termbaseMetadata.source.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
+Spec.getExtranet=function(id){
+  var ret=null;
+  termbaseMetadata.extranet.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
 
 Spec.sharEnquire=function($term, termID, lang, wording){
   var $bubble=$term.find(".fy_bubble").hide().removeClass("fullon").removeClass("sublime").removeClass("invisible").html("");
@@ -76,6 +82,7 @@ Spec.templates[":top"]={
       <span class="fy_tab" data-name="definitions">${L("DEF")}</span>
       <span class="fy_tab" data-name="examples">${L("XMPL")}</span>
       <span class="fy_tab" data-name="collections">${L("COLL")}</span>
+      <span class="fy_tab" data-name="extranets">${L("EXT")}</span>
       <div class="clear"></div>
     </div>
     <div class="fy_body" data-name="admin">
@@ -109,6 +116,10 @@ Spec.templates[":top"]={
     <div class="fy_body" data-name="collections">
       <div class="title">${L("COLLECTIONS")}</div>
       <div class="fy_replace" templateName="collections" jsonName="collections"></div>
+    </div>
+    <div class="fy_body" data-name="extranets">
+      <div class="title">${L("EXTRANETS")}</div>
+      <div class="fy_replace" templateName="extranets" jsonName="extranets"></div>
     </div>
   </div>`,
 };
@@ -807,6 +818,42 @@ Spec.templates["collection"]={
   populate: function($me){
     var $select=$me.find("select");
     termbaseMetadata.collection.map(datum => {
+      $select.append(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`)
+    });
+  },
+};
+
+Spec.templates["extranets"]={
+  type: "array",
+  html: `<div>
+    <div class="fy_replace" templateName="extranet" jsonName=":item"></div>
+    <span class="fy_adder" templateName="extranet">+ ${L("extranet")}</span>
+  </div>`,
+};
+Spec.templates["extranet"]={
+  type: "object",
+  blank: "",
+  html: `<div class="fy_container">
+    <div class="fy_box">
+      <div class="fy_horizon">
+        <span class="fy_remover"></span>
+        <span class="fy_downer"></span>
+        <span class="fy_upper"></span>
+        <span class="fy_textbox" style="position: absolute; left: 0px; right: 125px;">
+          <select onchange="Fy.changed();"></select>
+        </span>
+      </div>
+    </div>
+  </div>`,
+  set: function($me, data){
+    if(data.toString()) $me.find("select").val(data);
+  },
+  get: function($me){
+    return $me.find("select").val();
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    termbaseMetadata.extranet.map(datum => {
       $select.append(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`)
     });
   },

@@ -13,7 +13,7 @@ db.run('PRAGMA foreign_keys=on');
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 
-//deed(1000);
+deed(1000);
 //deedAgain(1000, 2000);
 
 //deed(10000);
@@ -318,6 +318,7 @@ function doConcepts(db, start, stop, callnext){
       definitions: [],
       examples: [],
       collections: [],
+      extranets: [],
     };
     //desigs:
     var els=doc.getElementsByTagName("term");

@@ -1,24 +1,11 @@
-<div id="header" style="padding: 10px 14px; height: 38px; border-bottom: 1px solid var(--border);">
-  <a href="<%-rootPath%><%=termbaseID%>/" class="dicTitle"><%=termbaseConfigs.ident.title%></a>
+<div id="header" style="padding: 10px 10px; height: 38px; border-bottom: 1px solid var(--border);">
+  <a href="<%-rootPath%><%=termbaseID%>/" class="dicTitle"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a>
 
   <span class="dicLinks">
-    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%>"><%=L("Edit")%></a>
 
-    <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%>"><%=L("Configuration")%></a>
-    <%if(sectionID=="config" && subsectionID){%>
-        <%
-          var subtitle=subsectionID;
-          if(subsectionID=="ident") subtitle="Name and description";
-          if(subsectionID=="features") subtitle="Features";
-          if(subsectionID=="lingo") subtitle="Languages";
-          if(subsectionID=="users") subtitle="Users";
-          if(subsectionID=="publico") subtitle="Publishing";
-          if(subsectionID=="extraneto") subtitle="Extranets";
-        %>
-        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
-    <%}%>
+    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%> <%if(user.level<1 && !user.isAdmin){%>disabled<%}%>"><%=L("Editing")%></a>
 
-    <a href="<%-rootPath%><%=termbaseID%>/metadata/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%>"><%=L("Metadata")%></a>
+    <a href="<%-rootPath%><%=termbaseID%>/admin/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%> <%if(user.level<4 && !user.isAdmin){%>disabled<%}%>"><%=L("Administration")%></a>
     <%if(sectionID=="metadata" && subsectionID){%>
         <%
           var subtitle=subsectionID;
@@ -29,13 +16,24 @@
           if(subsectionID=="domain") subtitle="Domains";
           if(subsectionID=="collection") subtitle="Collections";
           if(subsectionID=="tag") subtitle="Tags";
+          if(subsectionID=="extraneto") subtitle="Extranets";
         %>
         <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>
 
-    <a href="<%-rootPath%><%=termbaseID%>/download/" class="dicLink <%if(sectionID=='download'){%>current<%}%> disabled">Download</a>
+    <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%> <%if(user.level<5 && !user.isAdmin){%>disabled<%}%>"><%=L("Configuration")%></a>
+    <%if(sectionID=="config" && subsectionID){%>
+        <%
+          var subtitle=subsectionID;
+          if(subsectionID=="ident") subtitle="Name and description";
+          if(subsectionID=="features") subtitle="Features";
+          if(subsectionID=="lingo") subtitle="Languages";
+          if(subsectionID=="users") subtitle="Users";
+          if(subsectionID=="publico") subtitle="Publishing";
+        %>
+        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
+    <%}%>
 
-    <a href="<%-rootPath%><%=termbaseID%>/upload/" class="dicLink <%if(sectionID=='upload'){%>current<%}%> disabled">Upload</a>
   </span>
 
   <div class="topright">

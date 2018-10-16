@@ -27,9 +27,11 @@ body.entrypage #dictheader {margin-top: -10px;}
 body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-size: 25px;}
 @media (max-width: 800px) { body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-size: 23px; padding: 5px 10px;} }
 #dictheader div.titleContainer span.dictTitle a.dictTitle:hover {box-shadow: 0px 0px 2px #999999; color: #eeeeee;}
-#dictheader div.titleContainer span.dictTitle a.editLink {font-size: 16px; border: 1px solid transparent; border-radius: 100px; border-color: #666666; color: #666666; background-color: #ffffff; padding: 5px 10px; text-decoration: none; position: absolute; top: -15px; right: -25px;}
-@media (max-width: 800px){ #dictheader div.titleContainer span.dictTitle a.editLink {display: none;} }
-#dictheader div.titleContainer span.dictTitle a.editLink:hover {color: #666666; box-shadow: 0px 0px 2px #999999;}
+
+#dictheader div.titleContainer div.editLinks {margin-top: -5px; position: relative;}
+#dictheader div.titleContainer div.editLinks a.editLink {font-size: 16px; border: 1px solid transparent; border-radius: 100px; border-color: #666666; color: #666666; background-color: #ffffff; padding: 5px 10px; text-decoration: none; }
+#dictheader div.titleContainer div.editLinks a.editLink:hover {color: #666666; box-shadow: 0px 0px 2px #999999;}
+
 #dictheader form.searchContainer {margin-top: 20px;}
 @media (max-width: 800px) { body.entrypage #dictheader form.searchContainer {margin-top: 15px;} }
 #dictheader form.searchContainer span.searchbox {position: relative; display: inline-block; width: 90%; padding: 0px 10px; max-width: 400px; border: 1px inset #cccccc; box-shadow: 0px 0px 4px #999999; text-align: left;}
@@ -159,12 +161,12 @@ div.dict a.dictAction {visibility: hidden; display: inline-block; color: #cccccc
 div.dict:hover a.dictAction {visibility: visible;}
 div.dict a.dictAction:hover {color: #2c7fba;}
 
-div#xnets {margin: 0px auto; max-width: 600px; text-align: center;}
-div.xnet {margin-top: 13px;}
-div.xnet a.xnetTitle {display: inline-block; font-size: 1.2rem; padding: 5px 10px; background-color: #c1f1ec; color: #026c60; border-radius: 4px; text-decoration: none; line-height: 1.5em;}
-div.xnet a.xnetTitle:hover {box-shadow: 0px 0px 2px #999999; color: #026c60;}
-div.xnet a.dictTitle {display: inline-block; font-size: 0.9rem; margin: 5px 0px 0px 5px; color: #999999; text-decoration: none;}
-div.xnet a.dictTitle:hover {color: #666666;}
+div#xnets {margin: 0px auto; text-align: center; line-height: 3em;}
+body.homepage div#xnets {margin-top: -50px; margin-bottom: 100px; min-height: 200px;}
+div.xnet {display: inline-block; margin: 0px 2px;}
+div.xnet a.xnetTitle {display: inline-block; font-size: 1.1rem; padding: 5px 15px 5px 10px; background-color: #c1f1ec; color: #026c60; border-radius: 4px; text-decoration: none; line-height: 1.5em; border: 2px solid #03A491;}
+div.xnet a.xnetTitle span.label {display: inline-block; font-size: 16px; color: #999999; padding: 0px 5px; font-weight: bold;}
+div.xnet a.xnetTitle:hover {box-shadow: 0px 0px 2px #999999; color: #026c60; text-shadow: 0px 0px 2px #ffffff;}
 
 div.adminlink {margin-top: 15px; color: #999999;}
 div.adminlink a {text-decoration: none; color: #047063; background-image: url(cog.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px; margin-right: 0.75em;}

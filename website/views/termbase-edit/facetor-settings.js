@@ -116,6 +116,20 @@ Screenful.Facetor.panes=[{
     });
     $select.on("change", Screenful.Facetor.change);
 
+    $inme.append(`<div class="title"><span class="tab">${L("EXT")}</span></div>`);
+
+    //extranet:
+    var $select=$(`<select class="fullwidth" id="facExtranet"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any extranet or no extranet")})</option>`);
+    $select.append(`<option value="*">(${L("any extranet")})</option>`);
+    $select.append(`<option value="-1">(${L("no extranet")})</option>`);
+    termbaseMetadata.extranet.map(datum => {
+      var $option=$(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
+      $option.data("datum", datum);
+      $option.appendTo($select);
+    });
+    $select.on("change", Screenful.Facetor.change);
+
 
   },
 
@@ -131,6 +145,7 @@ Screenful.Facetor.panes=[{
     ret.superdomain=$("#facSuperdomain").val();
     ret.subdomain=$("#facSubdomain").val();
     ret.collection=$("#facCollection").val();
+    ret.extranet=$("#facExtranet").val();
     return ret;
   },
 }];

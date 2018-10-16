@@ -98,20 +98,14 @@
 						<%if(termbases.length==0){%>
 							<div class="nodicts"><%=L("You have no termbases yet.")%></div>
 						<%}else{%>
-							<%for(var i=0; i<termbases.length; i++){%>
+							<%for(var i=0; i<termbases.length; i++){ termbases[i].title=JSON.parse(termbases[i].title); %>
 								<div class="dict">
-									<a class="dictTitle" href="<%-termbases[i].id%>/"><%=termbases[i].title%></a>
+									<a class="dictTitle" href="<%-termbases[i].id%>/"><%=termbases[i].title[uilang] || termbases[i].title.$%></a>
 									<!--<a class="dictAction" href="<%-termbases[i].id%>/">Delete</a>-->
 								</div>
 							<%}%>
 						<%}%>
 						<div class="createdict"><a href="make/"><%=L("Create a termbase")%></a></div>
-
-						<div class="yourdicts"><%=L("Your extranets")%></div>
-						<div class="xnet">
-							<div><a class="xnetTitle" href="./bnt/x1/">Téarmaí nua le faomhadh</a></div>
-							<div><a class="dictTitle" href="./bnt/">Bunachar Náisiúnta Téarmaíochta</a></div>
-						</div>
 
 						<%if(user.isAdmin){%>
 							<div class="yourdicts"><%=L("Administration")%></div>

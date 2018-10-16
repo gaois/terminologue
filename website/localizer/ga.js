@@ -1,6 +1,6 @@
 function L(s, gloss){
   if(s=="READ-ONLY") return "LÉAMH AMHÁIN";
-  if(s=="Edit") return "Eagarthóireacht";
+  if(s=="Editing") return "Eagarthóireacht";
   if(s=="Dublin City University") return "Ollscoil Chathair Bhaile Átha Cliath";
   if(s=="Log out") return "Logáil amach";
   if(s=="Change your password") return "Athraigh do phasfhocal";
@@ -24,7 +24,6 @@ function L(s, gloss){
   if(s=="search in:") return "cuardaigh i:";
   if(s=="sort by:") return "sórtáil de réir:";
   if(s=="Configuration") return "Cumrú";
-  if(s=="Metadata") return "Meiteashonraí";
   if(s=="ADMIN") return "RIAR";
   if(s=="TRM") return "TRM";
   if(s=="DOM") return "RÉIM";
@@ -98,7 +97,6 @@ function L(s, gloss){
   if(s=="any collection or no collection") return "bailiúchán ar bith nó gan bailiúchán";
   if(s=="any collection") return "bailiúchán ar bith";
   if(s=="no collection") return "gan bailiúchán";
-  if(s=="Your extranets") return "Do chuid eislíon";
   if(s=="my comments") return "mo chuid nótaí";
   if(s=="with or without my comments") return "le nó gan nótaí uaimse";
   if(s=="with my comments") return "le nótaí uaimse";
@@ -107,6 +105,13 @@ function L(s, gloss){
   if(s=="with or without other people's comments") return "le nó gan nótaí ó dhaoine eile";
   if(s=="with other people's comments") return "le nótaí ó dhaoine eile";
   if(s=="without other people's comments") return "gan nótaí ó dhaoine eile";
+  if(s=="EXTRANET") return "EISLÍON";
+  if(s=="EXT") return "EIS";
+  if(s=="EXTRANETS") return "EISLÍONTA";
+  if(s=="extranet") return "eislíon";
+  if(s=="any extranet or no extranet") return "eislíon ar bith nó gan eislíon";
+  if(s=="any extranet") return "eislíon ar bith";
+  if(s=="no extranet") return "gan eislíon";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

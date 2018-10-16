@@ -75,7 +75,7 @@ module.exports={
   escalateConfigIdent: function(termbaseID, ident, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
     db.run("delete from termbases where id=$termbaseID", {$termbaseID: termbaseID}, function(err){
-      db.run("insert into termbases(id, title) values ($termbaseID, $title)", {$termbaseID: termbaseID, $title: ident.title}, function(err){
+      db.run("insert into termbases(id, title) values ($termbaseID, $title)", {$termbaseID: termbaseID, $title: JSON.stringify(ident.title)}, function(err){
         db.close();
         callnext();
       });
@@ -117,10 +117,10 @@ module.exports={
           db.close();
           module.exports.readTermbaseConfigs(termbaseDB, termbaseID, function(configs){
             if(!configs.users[email] && module.exports.siteconfig.admins.indexOf(email)==-1){
-              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, isAdmin: false});
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, isAdmin: false, level: configs.users[email].level});
             } else {
               var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
-              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, isAdmin: isAdmin});
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, isAdmin: isAdmin, level: configs.users[email].level});
             }
           });
         });
@@ -139,13 +139,17 @@ module.exports={
         var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
         var now=(new Date()).toISOString();
         db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
-          db.close();
           module.exports.readTermbaseConfigs(termbaseDB, termbaseID, function(configs){
             if(!configs.users[email] && module.exports.siteconfig.admins.indexOf(email)==-1){
+              db.close();
               callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, xnetAccess: false, isAdmin: false});
             } else {
               var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
-              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, xnetAccess: true, isAdmin: isAdmin});
+              module.exports.readExtranet(termbaseDB, termbaseID, xnetID, function(xnet){
+                db.close();
+                var xnetAccess=(xnet.users.indexOf(email)>-1);
+                callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, xnetAccess: xnetAccess, isAdmin: isAdmin}, xnet);
+              });
             }
           });
         });
@@ -174,6 +178,29 @@ module.exports={
         metadata[type].push(json);
       }
       callnext(metadata);
+    });
+  },
+  readExtranetsByUser: function(db, termbaseID, email, callnext){
+    db.all("select * from metadata where type='extranet'", {}, function(err, rows){
+      var ret=[];
+      if(!err) for(var i=0; i<rows.length; i++) {
+        var json=JSON.parse(rows[i].json);
+        if(json.users.indexOf(email)>-1){
+          json.id=rows[i].id;
+          ret.push(json);
+        }
+      }
+      callnext(ret);
+    });
+  },
+  readExtranet: function(db, termbaseID, extranetID, callnext){
+    db.get("select * from metadata where type='extranet' and id=$id", {$id: extranetID}, function(err, row){
+      var json=null;
+      if(row) {
+        json=JSON.parse(row.json);
+        json.id=row.id;
+      }
+      callnext(json);
     });
   },
 
@@ -309,6 +336,16 @@ module.exports={
       else { where.push(`fCollection.collection=$fCollection`); params[`$fCollection`]=parseInt(facets.collection); }
     }
 
+    if(facets.extranet && facets.extranet=="-1"){
+      joins.push(`left outer join entry_extranet as fExtranet on fExtranet.entry_id=e.id`);
+      where.push(`fExtranet.extranet is null`);
+    }
+    else if(facets.extranet){
+      joins.push(`inner join entry_extranet as fExtranet on fExtranet.entry_id=e.id`);
+      if(facets.extranet=="*") where.push(`fExtranet.extranet>0`);
+      else { where.push(`fExtranet.extranet=$fExtranet`); params[`$fExtranet`]=parseInt(facets.extranet); }
+    }
+
     var params1={}; for(var key in params) params1[key]=params[key]; params1.$howmany=parseInt(howmany);
     var sql1=`select e.id, e.json`;
     if(searchtext!="" && modifiers[1]=="smart"){
@@ -423,7 +460,10 @@ module.exports={
                 module.exports.saveDomains(db, termbaseID, entryID, entry, function(){
                   //index my collections:
                   module.exports.saveCollections(db, termbaseID, entryID, entry, function(){
-                    callnext(entryID);
+                    //index my extranets:
+                    module.exports.saveExtranets(db, termbaseID, entryID, entry, function(){
+                      callnext(entryID);
+                    });
                   });
                 });
               });
@@ -578,6 +618,24 @@ module.exports={
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_collection(entry_id, collection) values($entryID, $collection)", {$entryID: entryID, $collection: assig}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveExtranets: function(db, termbaseID, entryID, entry, callnext){
+    var assigs=[]; entry.extranets.map(obj => {
+      assigs.push(parseInt(obj));
+    });
+    db.run("delete from entry_extranet where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var assig=assigs.pop();
+      if(assig){
+        db.run("insert into entry_extranet(entry_id, extranet) values($entryID, $extranet)", {$entryID: entryID, $extranet: assig}, function(err){
           go();
         });
       } else {

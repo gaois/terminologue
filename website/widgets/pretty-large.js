@@ -28,14 +28,16 @@ Pretty.entry=function(entry){
   var minorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="minor" && minorlangs.indexOf(lang.abbr)==-1) minorlangs.push(lang.abbr); });
 
   //domains:
-  entry.domains.map(obj => {
-    var $row=$("<div class='prettyRow domain'></div>").appendTo($ret);
-    majorlangs.map(lang => {
-      var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
-      $cell.append(Pretty.domain(obj, lang));
+  if(entry.domains && entry.domains.length>0) {
+    entry.domains.map(obj => {
+      var $row=$("<div class='prettyRow domain'></div>").appendTo($ret);
+      majorlangs.map(lang => {
+        var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
+        $cell.append(Pretty.domain(obj, lang));
+      });
+      $("<div class='clear'></div>").appendTo($row);
     });
-    $("<div class='clear'></div>").appendTo($row);
-  });
+  }
 
   //terms in major languages:
   var langsDone=[];
@@ -69,38 +71,56 @@ Pretty.entry=function(entry){
   if($row.text()!="") $row.appendTo($ret);
 
   //definitions:
-  entry.definitions.map(obj => {
-    var $row=$("<div class='prettyRow definition'></div>").appendTo($ret);
-    majorlangs.map(lang => {
-      var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
-      if(obj.texts[lang]) {
-        $cell.append(Pretty.definition(obj, lang));
-      }
+  if(entry.definitions && entry.definitions.length>0) {
+    entry.definitions.map(obj => {
+      var $row=$("<div class='prettyRow definition'></div>").appendTo($ret);
+      majorlangs.map(lang => {
+        var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
+        if(obj.texts[lang]) {
+          $cell.append(Pretty.definition(obj, lang));
+        }
+      });
+      $("<div class='clear'></div>").appendTo($row);
+      $row.append(Pretty.sources(obj.sources));
     });
-    $("<div class='clear'></div>").appendTo($row);
-    $row.append(Pretty.sources(obj.sources));
-  });
+  }
 
   //examples:
-  entry.examples.map(obj => {
-    var $row=$("<div class='prettyRow example'></div>").appendTo($ret);
-    majorlangs.map(lang => {
-      var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
-      if(obj.texts[lang]) {
-        $cell.append(Pretty.example(obj, lang));
-      }
+  if(entry.examples && entry.examples.length>0) {
+    entry.examples.map(obj => {
+      var $row=$("<div class='prettyRow example'></div>").appendTo($ret);
+      majorlangs.map(lang => {
+        var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
+        if(obj.texts[lang]) {
+          $cell.append(Pretty.example(obj, lang));
+        }
+      });
+      $("<div class='clear'></div>").appendTo($row);
+      $row.append(Pretty.sources(obj.sources));
     });
-    $("<div class='clear'></div>").appendTo($row);
-    $row.append(Pretty.sources(obj.sources));
-  });
+  }
 
   //collections:
-  var $group=$("<div class='collections'></div>").appendTo($ret);
-  entry.collections.map(obj => {
-    obj=Spec.getCollection(obj);
-    var $item=$("<div class='collection'></div>").appendTo($group);
-    $item.append(Pretty.title(obj.title));
-  });
+  if(entry.collections && entry.collections.length>0) {
+    var $group=$("<div class='collections'></div>").appendTo($ret);
+    entry.collections.map(obj => {
+      obj=Spec.getCollection(obj);
+      var $item=$("<div class='collection'></div>").appendTo($group);
+      $item.append(Pretty.title(obj.title));
+    });
+  }
+
+  //extranet:
+  if(entry.extranets && entry.extranets.length>0) {
+    var $group=$("<div class='extranets'></div>").appendTo($ret);
+    entry.extranets.map(obj => {
+      obj=Spec.getExtranet(obj);
+      var $item=$("<span class='prettyExtranet'></span>").appendTo($group);
+      $item.append("<span class='label'>"+L("EXTRANET")+"</span>");
+      $item.append(obj.title.$);
+      $group.append(" ");
+    });
+  }
 
   return $ret;
 }

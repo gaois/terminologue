@@ -5,9 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<link rel="icon" type="image/x-icon" href="../furniture/favicon.ico"/>
-		<title><%=termbaseConfigs.ident.title%></title>
-		<meta property="og:title" content="<%=termbaseConfigs.ident.title%>" />
-		<meta property="og:site_name" content="<%=termbaseConfigs.ident.title%>"/>
+		<title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
+		<meta property="og:title" content="<%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%>" />
+		<meta property="og:site_name" content="<%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%>"/>
 		<meta name="description" content="<%=termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "")%>" />
 		<meta property="og:description" content="<%=termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "")%>" />
 		<meta property="og:url" content="<%=termbaseConfigs.siteconfig.baseUrl%><%=termbaseID%>/" />
@@ -48,12 +48,26 @@
 
 		<div class="invelope top">
 			<div id="dictheader">
-				<div class="titleContainer"><span class="dictTitle"><a class="dictTitle" href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title%></a><%if(user.termbaseAccess){%><a href="../<%=termbaseID%>/edit/" class="editLink"><%=L("Edit")%></a><%}%></span></div>
+				<div class="titleContainer">
+					<span class="dictTitle">
+						<a class="dictTitle" href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a>
+					</span>
+					<%if(user.termbaseAccess){%>
+						<div class="editLinks">
+							<a href="../<%=termbaseID%>/edit/" class="editLink <%if(user.level<1 && !user.isAdmin){%>disabled<%}%>"><%=L("Editing")%></a>
+							<a href="../<%=termbaseID%>/admin/" class="editLink <%if(user.level<4 && !user.isAdmin){%>disabled<%}%>"><%=L("Administration")%></a>
+							<a href="../<%=termbaseID%>/config/" class="editLink <%if(user.level<5 && !user.isAdmin){%>disabled<%}%>"><%=L("Configuration")%></a>
+						</div>
+					<%}%>
+				</div>
 			</div>
-			<div id="xnets">
-				<div class="yourdicts"><%=L("Your extranets")%></div>
-				<div class="xnet"><a class="xnetTitle" href="./x1/">Téarmaí nua le faomhadh</a></div>
-			</div>
+			<%if(extranets.length>0){%>
+				<div id="xnets">
+					<%for(var i=0; i<extranets.length; i++){ var xnet=extranets[i]; %>
+						<div class="xnet"><a class="xnetTitle" href="./x<%-xnet.id%>/"><span class="label"><%=L("EXTRANET")%></span> <%-xnet.title[uilang] || xnet.title.$%>%></a></div>
+					<%}%>
+				</div>
+			<%}%>
 			<div id="dictblurb" class="<%if(termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "").length<300 && termbaseConfigs.ident.blurb.indexOf("\n")==-1){%>centered<%}%>">
 				<%-termbaseConfigs.ident.blurb%>
 			</div>
@@ -62,7 +76,7 @@
 		<div class="invelope bottom">
 			<div id="dictfooter">
 				<div class="right"><a href="../">Terminologue</a></div>
-				<div><a href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title%></a></div>
+				<div><a href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a></div>
 			</div>
 		</div>
 
