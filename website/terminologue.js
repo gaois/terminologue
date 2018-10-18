@@ -505,6 +505,43 @@ app.get(siteconfig.rootPath+":termbaseID/x:xnetID/editor.html", function(req, re
     }
   });
 });
+app.post(siteconfig.rootPath+":termbaseID/x:xnetID/list.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndXnetAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, req.params.xnetID, function(user){
+    if(!user.xnetAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      var facets=req.body.facets || {};
+      facets.extranet=req.params.xnetID;
+      ops.entryList(db, req.params.termbaseID, facets, req.body.searchtext, req.body.modifier, req.body.howmany, function(total, primeEntries, entries, suggestions){
+        db.close();
+        res.json({success: true, total: total, primeEntries: primeEntries, entries: entries, suggestions: suggestions});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/x:xnetID/read.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndXnetAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, req.params.xnetID, function(user){
+    if(!user.xnetAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.entryRead(db, req.params.termbaseID, req.body.id, function(adjustedEntryID, json){
+        db.close();
+        var entry=JSON.parse(json);
+        if(!entry.extranets || entry.extranets.indexOf(req.params.xnetID)==-1){
+          res.json({success: false});
+        } else {
+          res.json({success: (adjustedEntryID>0), id: adjustedEntryID, content: json});
+        }
+      });
+    }
+  });
+});
 
 app.use(function(req, res){ res.status(404).render("404.ejs", {siteconfig: siteconfig}); });
 app.listen(PORT);
