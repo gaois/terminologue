@@ -84,7 +84,7 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #listbox .entry:last-child {margin-bottom: 10px;}
 #listbox .entry:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff;}
 #listbox .entry:focus {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; outline: 0px;}
-#listbox .entry.current {background-color: var(--highlight); text-shadow: 1px 1px 0px #dddddd;}
+#listbox .entry.current {background-color: var(--highlight, #eeeeee); text-shadow: 1px 1px 0px #dddddd;}
 #listbox .entry span.searchtext { background-color: #ffecb3; text-shadow: 0px 0px 0px transparent; border: 1px solid #ffffff; margin: 0px -1px; }
 
 #listbox .entry a.entryMenuLink {float: right; color: #999999; font-weight: bold; position: relative; z-index: 1;}
