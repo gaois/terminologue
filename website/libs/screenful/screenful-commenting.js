@@ -1,6 +1,16 @@
 Screenful.Commenting={
   currentEntryID: null,
+  peek: function(){
+    console.log("peeking");
+    if(Screenful.Commenting.peekUrl){
+      var entryID=Screenful.Editor.entryID;
+      if(entryID && entryID!=Screenful.Commenting.currentEntryID){
+        if(true) $("#butCommenting").addClass("hasData");
+      }
+    }
+  },
   go: function(){
+    console.log("going");
     var entryID=Screenful.Editor.entryID;
     if(entryID && entryID!=Screenful.Commenting.currentEntryID){
       Screenful.Commenting.currentEntryID=entryID;
@@ -9,8 +19,8 @@ Screenful.Commenting={
     }
   },
   list: function(){
-    // $("#commenting").append(Screenful.Commenting.draw("123", "someone@example.com", "2018-10-01 08:23:55", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?"));
-    // $("#commenting").append(Screenful.Commenting.draw("345", "valselob@gmail.com", "2018-10-02 13:03:23", "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."));
+    $("#commenting").append(Screenful.Commenting.draw("123", "someone@example.com", "2018-10-01 08:23:55", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?"));
+    $("#commenting").append(Screenful.Commenting.draw("345", "valselob@gmail.com", "2018-10-02 13:03:23", "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."));
     $("#commenting").append(Screenful.Commenting.draw("", "valselob@gmail.com", "", ""));
   },
   draw: function(commentID, userID, when, text){

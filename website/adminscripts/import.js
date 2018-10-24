@@ -39,9 +39,30 @@ function deed(stop){
               doDomains(db, function(){
                 doCollections(db, function(){
                   doConcepts(db, 0, stop, function(){
-                    db.run("COMMIT");
-                    db.close();
-                    console.log(`finito`);
+                    var obj={
+                      title: {
+                        ga: "Téarmaí ar gá féachaint orthu",
+                        en: "Terms that need to be looked at",
+                        $: "Téarmaí ar gá féachaint orthu/Terms that need to be looked at"
+                      },
+                      users: [
+                        "valselob@gmail.com",
+                        "tester1@terminologue.org",
+                        "tester2@terminologue.org",
+                        "tester3@terminologue.org",
+                        "tester4@terminologue.org",
+                        "tester5@terminologue.org",
+                        "tester6@terminologue.org",
+                        "fnag1@terminologue.org",
+                        "fnag2@terminologue.org",
+                        "fnag3@terminologue.org"
+                       ]
+                    };
+                    ops.metadataCreate(db, "bnt", "extranet", null, JSON.stringify(obj), function(){
+                      db.run("COMMIT");
+                      db.close();
+                      console.log(`finito`);
+                    });
                   });
                 });
               });

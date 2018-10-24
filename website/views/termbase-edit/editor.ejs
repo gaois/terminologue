@@ -103,6 +103,20 @@
 		var termbaseConfigs=window.parent.termbaseConfigs;
 		var termbaseMetadata=window.parent.termbaseMetadata;
 		</script>
+
+		<script type="text/javascript">
+		Screenful.Editor.allowCommenting=true;
+		Screenful.Editor.openCommenting=false;
+		</script>
+		<script type="text/javascript" src="../../libs/screenful/screenful-commenting.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-commenting.css" />
+		<script type="text/javascript">
+		Screenful.Commenting.peekUrl="./commentPeek.json";
+		Screenful.Commenting.userID="<%-user.email%>";
+		Screenful.Commenting.listUrl="./commentList.json";
+		// Screenful.Commenting.saveUrl="./commentSave.json";
+		// Screenful.Commenting.deleteUrl="./commentDelete.json";
+		</script>
 	</head>
 	<body>
 	</body>
