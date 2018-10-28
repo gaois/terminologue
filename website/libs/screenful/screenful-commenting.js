@@ -1,16 +1,21 @@
 Screenful.Commenting={
   currentEntryID: null,
   peek: function(){
-    console.log("peeking");
     if(Screenful.Commenting.peekUrl){
+      if(Screenful.Commenting.saveUrl) $("#butCommenting").removeClass("hasData"); else $("#butCommenting").hide();
       var entryID=Screenful.Editor.entryID;
-      if(entryID && entryID!=Screenful.Commenting.currentEntryID){
-        if(true) $("#butCommenting").addClass("hasData");
-      }
+      $.ajax({url: Screenful.Commenting.peekUrl, dataType: "json", method: "POST", data: {entryID: entryID}}).done(function(data){
+        if(data.success) {
+          if(entryID==Screenful.Editor.entryID){
+            if(data.hasComments){
+              if(Screenful.Commenting.saveUrl) $("#butCommenting").addClass("hasData"); else $("#butCommenting").show();
+            }
+          }
+        }
+      });
     }
   },
   go: function(){
-    console.log("going");
     var entryID=Screenful.Editor.entryID;
     if(entryID && entryID!=Screenful.Commenting.currentEntryID){
       Screenful.Commenting.currentEntryID=entryID;
@@ -19,38 +24,88 @@ Screenful.Commenting={
     }
   },
   list: function(){
-    $("#commenting").append(Screenful.Commenting.draw("123", "someone@example.com", "2018-10-01 08:23:55", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat?"));
-    $("#commenting").append(Screenful.Commenting.draw("345", "valselob@gmail.com", "2018-10-02 13:03:23", "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."));
-    $("#commenting").append(Screenful.Commenting.draw("", "valselob@gmail.com", "", ""));
+    var entryID=Screenful.Commenting.currentEntryID;
+    $.ajax({url: Screenful.Commenting.listUrl, dataType: "json", method: "POST", data: {entryID: entryID}}).done(function(data){
+      if(!data.success) {
+        Screenful.status(Screenful.Loc.listingFailed, "warn"); //"listing to save"
+      } else {
+        if(entryID==Screenful.Commenting.currentEntryID){
+          data.comments.map(comment => {
+            $("#commenting").append(Screenful.Commenting.draw(comment.commentID, comment.userID, comment.when, comment.body, comment.bodyMarkdown));
+          });
+          if(Screenful.Commenting.saveUrl) $("#commenting").append(Screenful.Commenting.draw("", Screenful.Commenting.userID, "", "", ""));
+        }
+      }
+    });
   },
-  draw: function(commentID, userID, when, text){
+  draw: function(commentID, userID, when, text, textMarkdown){
     var $ret=$("<div class='comment'></<div>");
     var $header=$("<div class='header'></div>").appendTo($ret);
     if(userID==Screenful.Commenting.userID && commentID){
-      var $deleteButton=$("<button class='iconOnly butDelete' title='"+Screenful.Loc["delete"]+"'>&nbsp;</button>").appendTo($header);
-      var $editButton=$("<button class='iconOnly butEdit' title='"+Screenful.Loc["edit"]+"'>&nbsp;</button>").appendTo($header);
+      if(Screenful.Commenting.deleteUrl) var $deleteButton=$("<button class='iconOnly butDelete' title='"+Screenful.Loc["delete"]+"'>&nbsp;</button>").appendTo($header);
+      if(Screenful.Commenting.saveUrl) var $editButton=$("<button class='iconOnly butEdit' title='"+Screenful.Loc["edit"]+"'>&nbsp;</button>").appendTo($header);
     }
     var $userID=$("<div class='userID'></div>").html(userID).appendTo($header);
     var $when=$("<div class='when'></div>").html(when).appendTo($header); if(!commentID) $when.html(Screenful.Loc["newComment"]);
-    if(commentID) var $text=$("<div class='text'></div>").html(text).appendTo($ret);
+    if(commentID) var $text=$("<div class='text'></div>").html(textMarkdown).appendTo($ret);
     if(userID==Screenful.Commenting.userID){
       var $form=$("<form onsubmit='return false'></form>").val(text).appendTo($ret); if(commentID) $form.hide();
-      var $textarea=$("<textarea></textarea>").val(text).appendTo($form);
+      var $input=$("<input type='hidden' name='commentID'>").val(commentID).appendTo($form);
+      var $textarea=$("<textarea rows='1'></textarea>").appendTo($form);
+      autosize($textarea);
+      var $markdownLink=$("<a class='markdownLink' target='_blank' href='https://www.markdownguide.org/cheat-sheet/'>Markdown</a>").appendTo($form);
       var $editButton=$("<button class='iconYes butSave'>"+Screenful.Loc["save"]+"</button>").appendTo($form);
+      $ret.find(".butDelete").on("click", function(event){
+        var $button=$(event.delegateTarget);
+        var $comment=$button.closest(".comment");
+        var commentID=$comment.find("input[name='commentID']").val();
+        if(confirm(Screenful.Loc.deleteConfirm)){ //"are you sure?"
+          Screenful.status(Screenful.Loc.deleting, "wait"); //"deleting..."
+          $.ajax({url: Screenful.Commenting.deleteUrl, dataType: "json", method: "POST", data: {commentID: commentID}}).done(function(data){
+            if(!data.success) {
+              Screenful.status(Screenful.Loc.deletingFailed, "warn"); //"failed to delete"
+            } else {
+              Screenful.status(Screenful.Loc.ready);
+              $comment.fadeOut(function(){ $comment.remove(); });
+            }
+        	});
+        }
+      });
       $ret.find(".butEdit").on("click", function(event){
         var $button=$(event.delegateTarget);
         if($button.hasClass("pressed")){
           $button.removeClass("pressed");
-          $ret.find("form").hide();
           $ret.find("div.text").show();
+          $ret.find("form").hide().find("textarea").val("");
+          autosize.update($ret.find("form textarea"));
         } else {
           $button.addClass("pressed");
           $ret.find("div.text").hide();
-          $ret.find("form").show().find("textarea").focus();
+          $ret.find("form").show().find("textarea").val(text).trigger("keyup").focus();
+          autosize.update($ret.find("form textarea"));
         }
       });
     }
-    $ret.find(".butsave").on("click", function(event){
+    $ret.find(".butSave").on("click", function(event){
+      var $button=$(event.delegateTarget);
+      var $form=$button.closest("form");
+      var commentID=$form.find("input[name='commentID']").val();
+      var entryID=Screenful.Commenting.currentEntryID;
+      var body=$.trim($form.find("textarea").val());
+      if(body){
+        $.ajax({url: Screenful.Commenting.saveUrl, dataType: "json", method: "POST", data: {commentID: commentID, entryID: entryID, userID: Screenful.Commenting.userID, body: body}}).done(function(data){
+          if(!data.success) {
+            Screenful.status(Screenful.Loc.savingFailed, "warn"); //"failed to save"
+          } else {
+            if(entryID==Screenful.Commenting.currentEntryID){
+              var $comment=Screenful.Commenting.draw(data.commentID, Screenful.Commenting.userID, data.when, data.body, data.bodyMarkdown).hide();
+              if(commentID) $form.closest(".comment").replaceWith($comment); else $comment.insertBefore($form.closest(".comment"));
+              $comment.fadeIn();
+              $form.find("textarea").val("");
+            }
+          }
+        });
+      }
       return false;
     });
     return $ret;

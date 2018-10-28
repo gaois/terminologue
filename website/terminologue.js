@@ -471,7 +471,7 @@ app.post(siteconfig.rootPath+":termbaseID/admin/:metadataType/delete.json", func
   });
 });
 
-//Extranet:
+//Extranet entries:
 app.get(siteconfig.rootPath+":termbaseID/x:xnetID/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
@@ -538,6 +538,85 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/read.json", function(req, res
         } else {
           res.json({success: (adjustedEntryID>0), id: adjustedEntryID, content: json});
         }
+      });
+    }
+  });
+});
+
+//Extranet comments:
+app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentSave.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndXnetAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, req.params.xnetID, function(user){
+    if(!user.xnetAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.commentSave(db, req.params.termbaseID, req.body.entryID, req.params.xnetID, req.body.commentID, req.body.userID, req.body.body, function(commentID, when, body, bodyMarkdown){
+        db.close();
+        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentList.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndXnetAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, req.params.xnetID, function(user){
+    if(!user.xnetAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.commentList(db, req.params.termbaseID, req.body.entryID, req.params.xnetID, function(comments){
+        db.close();
+        res.json({success: true, comments: comments});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentDelete.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndXnetAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, req.params.xnetID, function(user){
+    if(!user.xnetAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.commentDelete(db, req.params.termbaseID, req.params.xnetID, req.body.commentID, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  });
+});
+
+//Extranet comments viewed from the edit screen:
+app.post(siteconfig.rootPath+":termbaseID/edit/commentPeek.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.commentPeek(db, req.params.termbaseID, req.body.entryID, null, function(hasComments){
+        db.close();
+        res.json({success: true, hasComments: hasComments});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/edit/commentList.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.commentList(db, req.params.termbaseID, req.body.entryID, null, function(comments){
+        db.close();
+        res.json({success: true, comments: comments});
       });
     }
   });

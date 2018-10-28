@@ -777,6 +777,81 @@ module.exports={
     };
   },
 
+  commentSave: function(db, termbaseID, entryID, extranetID, commentID, email, body, callnext){
+    commentID=parseInt(commentID);
+    //first of all, find out what we're supposed to do:
+    if(!commentID) go("create"); //this is a new comment
+    else db.get("select id from comments where id=$id", {$id: commentID}, function(err, row){
+      if(!row) go("recreate"); //a comment with that ID does not exist: recreate it with that ID
+      else go("change") //the comment has changed: update it
+    });
+    //now actually do it:
+    function go(dowhat){
+      var sql=""; var params={};
+      if(dowhat=="create"){
+        sql="insert into comments(entry_id, extranet_id, [when], email, body) values($entry_id, $extranet_id, $when, $email, $body)";
+        params={$entry_id: entryID, $extranet_id: extranetID, $when: (new Date()).toISOString(), $email: email, $body: body};
+      }
+      if(dowhat=="recreate"){
+        sql="insert into comments(id, entry_id, extranet_id, [when], email, body) values($id, $entry_id, $extranet_id, $when, $email, $body)";
+        params={$id: commentID, $entry_id: entryID, $extranet_id: extranetID, $when: (new Date()).toISOString(), $email: email, $body: body};
+      }
+      if(dowhat=="change"){
+        sql="update comments set entry_id=$entry_id, extranet_id=$extranet_id, email=$email, body=$body where id=$id";
+        params={$id: commentID, $entry_id: entryID, $extranet_id: extranetID, $email: email, $body: body};
+      }
+      //create or change me:
+      db.run(sql, params, function(err){
+        if(!commentID) commentID=this.lastID;
+        db.get("select * from comments where id=$id", {$id: commentID}, function(err, row){
+          callnext(commentID, row.when, row.body, module.exports.markdown(row.body));
+        });
+      });
+    }
+  },
+  commentList: function(db, termbaseID, entryID, extranetID, callnext){
+    if(extranetID){
+      var sql="select * from comments where entry_id=$entry_id and $extranet_id=$extranet_id order by [when] asc";
+      var params={$entry_id: entryID, $extranet_id: extranetID};
+    } else {
+      var sql="select * from comments where entry_id=$entry_id order by [when] asc";
+      var params={$entry_id: entryID};
+    }
+    db.all(sql, params, function(err, rows){
+      if(err || !rows) rows=[];
+      var comments=[];
+      for(var i=0; i<rows.length; i++){
+        var comment={commentID: rows[i].id, userID: rows[i].email, when: rows[i].when, body: rows[i].body, bodyMarkdown: module.exports.markdown(rows[i].body)};
+        comments.push(comment);
+      }
+      callnext(comments);
+    });
+  },
+  commentPeek: function(db, termbaseID, entryID, extranetID, callnext){
+    if(extranetID){
+      var sql="select * from comments where entry_id=$entry_id and $extranet_id=$extranet_id";
+      var params={$entry_id: entryID, $extranet_id: extranetID};
+    } else {
+      var sql="select * from comments where entry_id=$entry_id";
+      var params={$entry_id: entryID};
+    }
+    db.get(sql, params, function(err, row){
+      if(row) callnext(true); else callnext(false);
+    });
+  },
+  commentDelete: function(db, termbaseID, extranetID, commentID, callnext){
+    if(extranetID){
+      var sql="delete from comments where id=$id and $extranet_id=$extranet_id";
+      var params={$id: commentID, $extranet_id: extranetID};
+    } else {
+      var sql="delete from comments where id=$id";
+      var params={$id: commentID};
+    }
+    db.run(sql, params, function(err){
+      callnext();
+    });
+  },
+
   markdown: function(str){
     var tree=markdown.parse(str);
     str=markdown.renderJsonML(markdown.toHTMLTree(tree));

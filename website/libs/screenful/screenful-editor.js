@@ -50,9 +50,9 @@ Screenful.Editor={
   },
   populateToolbar: function(){
     var $toolbar=$("#toolbar");
-    if(Screenful.Editor.allowCommenting) $("<button id='butCommenting' class='iconOnly' title='"+Screenful.Loc.comments+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.commenting);
-    if(Screenful.Editor.allowSourceCode) $("<button id='butSourceCode' class='iconOnly' title='"+Screenful.Loc.sourceCode+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.sourceCode);
     if(Screenful.History) $("<button id='butHistory' class='iconOnly' title='"+Screenful.Loc.history+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.history);
+    if(Screenful.Editor.allowSourceCode) $("<button id='butSourceCode' class='iconOnly' title='"+Screenful.Loc.sourceCode+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.sourceCode);
+    if(Screenful.Editor.allowCommenting) $("<button id='butCommenting' class='iconOnly' title='"+Screenful.Loc.comments+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.commenting);
     $("<span id='errorMessage' style='display: none;'></span>").appendTo($toolbar);
     if(!Screenful.Editor.singleton) {
       if(Screenful.Editor.createUrl) {
@@ -397,6 +397,7 @@ Screenful.Editor={
     if($("#chkAutosave").prop("checked")) Screenful.Editor.save();
   },
   history: function(){
+    $("#butHistory").blur();
     if(!Screenful.Editor.needsSaving || confirm(Screenful.Loc.unsavedConfirm)){ //"are you sure?"
       $("#container").css("right", ""); //remove room for xonomy layby
       Screenful.Editor.needsSaving=false;
@@ -437,6 +438,7 @@ Screenful.Editor={
     }
   },
   sourceCode: function(){
+    $("#butSourceCode").blur();
     if($("#container").hasClass("withSourceCode")) {
       Screenful.Editor.hideSourceCode();
     } else {
@@ -472,6 +474,7 @@ Screenful.Editor={
   },
 
   commenting: function(){
+    $("#butCommenting").blur();
     if($("#container").hasClass("withCommenting")) {
       Screenful.Editor.hideHCommenting();
     } else {
