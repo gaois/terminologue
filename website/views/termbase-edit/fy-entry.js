@@ -1,7 +1,8 @@
 var Spec={
   templates: {},
 };
-Spec.title=function(title){
+Spec.title=function(title, lang){
+  if(title[lang]) return title[lang];
   if(title.$) return title.$;
   var ret="";
   var done=[];
@@ -411,7 +412,7 @@ Spec.templates["source"]={
     <span class="fy_remover"></span>
     <span class="fy_downer"></span>
     <span class="fy_upper"></span>
-    <span class="fy_label" style="width: 245px;">source</span>
+    <span class="fy_label" style="width: 245px;">${L("source")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
       <select onchange="Fy.changed()"></select>
     </span>
@@ -684,7 +685,7 @@ Spec.templates["definition"]={
     <div class="fy_box">
       <div class="fy_replace" templateName="defTexts" jsonName="texts"></div>
       <div class="fy_box">
-        <div class="fy_replace" templateName="sources" jsonName="sources"></div>
+        <div class="fy_replace" templateName="lingySources" jsonName="sources"></div>
       </div>
       <div class="fy_replace" templateName="domains" jsonName="domains"></div>
       <div class="fy_horizon blind">
@@ -736,7 +737,7 @@ Spec.templates["example"]={
     <div class="fy_box">
       <div class="fy_replace" templateName="exampleTexts" jsonName="texts"></div>
       <div class="fy_box">
-        <div class="fy_replace" templateName="sources" jsonName="sources"></div>
+        <div class="fy_replace" templateName="lingySources" jsonName="sources"></div>
       </div>
       <div class="fy_horizon blind">
         <span class="fy_remover"></span>
@@ -855,6 +856,51 @@ Spec.templates["extranet"]={
     var $select=$me.find("select");
     termbaseMetadata.extranet.map(datum => {
       $select.append(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`)
+    });
+  },
+};
+
+Spec.templates["lingySources"]={
+  type: "array",
+  html: `<div>
+    <div class="fy_replace" templateName="lingySource" jsonName=":item"></div>
+    <span class="fy_adder" templateName="lingySource">+ ${L("source")}</span>
+  </div>`,
+};
+Spec.templates["lingySource"]={
+  type: "object",
+  blank: {id: "", lang: ""},
+  html: `<div class="fy_horizon">
+    <span class="fy_remover"></span>
+    <span class="fy_downer"></span>
+    <span class="fy_upper"></span>
+    <span class="fy_label" style="width: 245px;">
+      <select class="hanger" onchange="Fy.changed()"></select>
+      ${L("source")}
+    </span>
+    <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
+      <select class="id" onchange="Fy.changed()"></select>
+    </span>
+  </div>`,
+  set: function($me, data){
+    $me.find("select.id").val(data.id);
+    $me.find("select.hanger").val(data.lang);
+  },
+  get: function($me){
+    return {
+      id: $me.find("select.id").val(),
+      lang: $me.find("select.hanger").val(),
+    };
+  },
+  populate: function($me){
+    var $select=$me.find("select.id");
+    termbaseMetadata.source.map(datum => {
+      $select.append(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
+    });
+    var $select=$me.find("select.hanger");
+    $select.append(`<option value=""></option>`);
+    termbaseConfigs.lingo.languages.map(datum => {
+      if(datum.role=="major") $select.append(`<option value="${datum.abbr}" title="${Spec.title(datum.title)}">${datum.abbr.toUpperCase()}</option>`);
     });
   },
 };

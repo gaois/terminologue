@@ -78,10 +78,10 @@ Pretty.entry=function(entry){
         var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
         if(obj.texts[lang]) {
           $cell.append(Pretty.definition(obj, lang));
+          $cell.append(Pretty.lingySources(obj.sources, lang));
         }
       });
       $("<div class='clear'></div>").appendTo($row);
-      $row.append(Pretty.sources(obj.sources));
     });
   }
 
@@ -93,10 +93,10 @@ Pretty.entry=function(entry){
         var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
         if(obj.texts[lang]) {
           $cell.append(Pretty.example(obj, lang));
+          $cell.append(Pretty.lingySources(obj.sources, lang));
         }
       });
       $("<div class='clear'></div>").appendTo($row);
-      $row.append(Pretty.sources(obj.sources));
     });
   }
 
@@ -131,6 +131,19 @@ Pretty.sources=function(sources){
     obj=Spec.getSource(obj);
     var $item=$("<div class='source'></div>").appendTo($group);
     $item.append("— "+Pretty.title(obj.title));
+  });
+  if($group.text()!="") return $group;
+  return "";
+};
+
+Pretty.lingySources=function(sources, lang){
+  var $group=$("<div class='prettySources'></div>");
+  sources.map(obj => {
+    if(obj.lang==lang || obj.lang=="") {
+      obj=Spec.getSource(obj.id);
+      var $item=$("<div class='source'></div>").appendTo($group);
+      $item.append("— "+Pretty.title(obj.title));
+    }
   });
   if($group.text()!="") return $group;
   return "";

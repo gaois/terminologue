@@ -97,33 +97,7 @@ Screenful.Editor={
     $("#butHistory").removeClass("pressed");
     $("#butSourceCode").removeClass("pressed");
     $("#butCommenting").removeClass("pressed");
-    if($("#container").hasClass("withCommenting")) { //the commenting pane is open
-      $("#butCommenting").addClass("pressed").show();
-      $("#butSourceCode").hide();
-      $("#butHistory").hide();
-    } else if($("#container").hasClass("withHistory")) { //the history pane is open
-      $("#butEdit").hide();
-      $("#butView").hide();
-      $("#butNonew").hide();
-      $("#butSave").hide(); $("#butSave .star").hide();
-      $("#labAutosave").hide();
-      $("#butDelete").hide();
-      $("#butSourceCode").hide();
-      $("#butCommenting").hide();
-      $("#butClone").hide();
-      $("#butHistory").addClass("pressed").show();
-    } else if($("#container").hasClass("withSourceCode")) { //the source code editor is open
-      $("#butEdit").hide();
-      $("#butView").hide();
-      $("#butNonew").hide();
-      $("#butSave").hide(); $("#butSave .star").hide();
-      $("#butCommenting").hide();
-      $("#labAutosave").hide();
-      $("#butDelete").hide();
-      if(Screenful.Editor.entryID) $("#butHistory").show(); else $("#butHistory").hide();
-      $("#butClone").hide();
-      $("#butSourceCode").addClass("pressed").show();
-    } else if($("#container").hasClass("empty")) { //we have nothing open
+    if($("#container").hasClass("empty")) { //we have nothing open
       $("#butEdit").hide();
       $("#butView").hide();
       $("#butNonew").hide();
@@ -167,6 +141,33 @@ Screenful.Editor={
       $("#butCommenting").show();
       $("#butClone").show();
       $("#butHistory").show();
+    }
+    if($("#container").hasClass("withCommenting")) { //the commenting pane is open
+      $("#butCommenting").addClass("pressed").show();
+      $("#butSourceCode").hide();
+      $("#butHistory").hide();
+    } else if($("#container").hasClass("withHistory")) { //the history pane is open
+      $("#butEdit").hide();
+      $("#butView").hide();
+      $("#butNonew").hide();
+      $("#butSave").hide(); $("#butSave .star").hide();
+      $("#labAutosave").hide();
+      $("#butDelete").hide();
+      $("#butSourceCode").hide();
+      $("#butCommenting").hide();
+      $("#butClone").hide();
+      $("#butHistory").addClass("pressed").show();
+    } else if($("#container").hasClass("withSourceCode")) { //the source code editor is open
+      $("#butEdit").hide();
+      $("#butView").hide();
+      $("#butNonew").hide();
+      $("#butSave").hide(); $("#butSave .star").hide();
+      $("#butCommenting").hide();
+      $("#labAutosave").hide();
+      $("#butDelete").hide();
+      if(Screenful.Editor.entryID) $("#butHistory").show(); else $("#butHistory").hide();
+      $("#butClone").hide();
+      $("#butSourceCode").addClass("pressed").show();
     }
     if($("#butNonew:visible").length==0 && $("#butView:visible").length==0){
       $("#butLeave").show();

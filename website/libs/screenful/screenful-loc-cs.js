@@ -85,4 +85,5 @@ Screenful.Loc={
 
   comments: "Komentáře",
   newComment: "nový komentář",
+  revive: "Znovu oživit",
 };

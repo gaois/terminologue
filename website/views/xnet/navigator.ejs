@@ -49,8 +49,8 @@
 		];
 		termbaseConfigs.lingo.languages.map(lang => {
 			if(lang.role=="major") {
-				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("search in:")%> "+Spec.title(lang.title)},);
-				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sort by:")%> "+Spec.title(lang.title)},);
+				Screenful.Navigator.modifiers.push({position: "box", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: L("only")(Spec.title(lang.title, "<%=uilang%>"))},);
+				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sorting language")%>: "+Spec.title(lang.title, "<%=uilang%>")},);
 			}
 		});
 		</script>

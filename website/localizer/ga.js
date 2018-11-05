@@ -1,4 +1,7 @@
 function L(s, gloss){
+  if(s=="only") return function(s){
+    return s+" amháin";
+  };
   if(s=="READ-ONLY") return "LÉAMH AMHÁIN";
   if(s=="Editing") return "Eagarthóireacht";
   if(s=="Dublin City University") return "Ollscoil Chathair Bhaile Átha Cliath";
@@ -20,9 +23,7 @@ function L(s, gloss){
   if(s=="starts like this") return "tosaíonn mar seo";
   if(s=="contains a word that starts like this") return "tiomsaíonn focal a thosaíonn mar seo";
   if(s=="contains this sequence of characters") return "tiomsaíonn an teaghrán seo de charachtair";
-  if(s=="search in all languages") return "cuardaigh i ngach teangach";
-  if(s=="search in:") return "cuardaigh i:";
-  if(s=="sort by:") return "sórtáil de réir:";
+  if(s=="search in all languages") return "cuardaigh i ngach teanga";
   if(s=="Configuration") return "Cumrú";
   if(s=="ADMIN") return "RIAR";
   if(s=="TRM") return "TRM";
@@ -62,7 +63,7 @@ function L(s, gloss){
   if(s=="while uploading") return "le linn uaslódála";
   if(s=="By") return "Ag";
   if(s=="When") return "Cathain";
-  if(s=="any checking status") return "stádas sseiceála ar bith";
+  if(s=="any checking status") return "stádas seiceála ar bith";
   if(s=="any publishing status") return "stádas foilsithe ar bith";
   if(s=="any language") return "teanga ar bith";
   if(s=="any acceptabilty or no acceptability") return "inghlacthacht ar bith nó gan inghlacthacht";
@@ -112,6 +113,7 @@ function L(s, gloss){
   if(s=="any extranet or no extranet") return "eislíon ar bith nó gan eislíon";
   if(s=="any extranet") return "eislíon ar bith";
   if(s=="no extranet") return "gan eislíon";
+  if(s=="sorting language") return "teanga sortála";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

@@ -85,4 +85,5 @@ Screenful.Loc={
 
   comments: "Comments",
   newComment: "new comment",
+  revive: "Revive",
 };

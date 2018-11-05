@@ -85,4 +85,5 @@ Screenful.Loc={
 
   comments: "Nótaí tráchta",
   newComment: "nóta nua",
+  revive: "Tabhair ar ais",
 };
