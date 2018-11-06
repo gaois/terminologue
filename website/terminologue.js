@@ -515,6 +515,7 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/list.json", function(req, res
     } else {
       var facets=req.body.facets || {};
       facets.extranet=req.params.xnetID;
+      facets.email=user.email;
       ops.entryList(db, req.params.termbaseID, facets, req.body.searchtext, req.body.modifier, req.body.howmany, function(total, primeEntries, entries, suggestions){
         db.close();
         res.json({success: true, total: total, primeEntries: primeEntries, entries: entries, suggestions: suggestions});

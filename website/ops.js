@@ -346,6 +346,30 @@ module.exports={
       else { where.push(`fExtranet.extranet=$fExtranet`); params[`$fExtranet`]=parseInt(facets.extranet); }
     }
 
+    if(facets.me=="1" && facets.extranet && facets.email){
+      joins.push(`inner join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email=$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+      params[`$fEmail`]=facets.email;
+      params[`$fExtranet`]=parseInt(facets.extranet);
+    }
+    if(facets.me=="0" && facets.extranet && facets.email){
+      joins.push(`left outer join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email=$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+      params[`$fEmail`]=facets.email;
+      params[`$fExtranet`]=parseInt(facets.extranet);
+      where.push(`fCommentsMe.id is null`);
+    }
+
+    if(facets.oth=="1" && facets.extranet && facets.email){
+      joins.push(`inner join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email<>$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+      params[`$fEmail`]=facets.email;
+      params[`$fExtranet`]=parseInt(facets.extranet);
+    }
+    if(facets.oth=="0" && facets.extranet && facets.email){
+      joins.push(`left outer join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email<>$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+      params[`$fEmail`]=facets.email;
+      params[`$fExtranet`]=parseInt(facets.extranet);
+      where.push(`fCommentsMe.id is null`);
+    }
+
     var params1={}; for(var key in params) params1[key]=params[key]; params1.$howmany=parseInt(howmany);
     var sql1=`select e.id, e.json`;
     if(searchtext!="" && modifiers[1]=="smart"){
