@@ -34,7 +34,7 @@ Screenful.Navigator={
       if(event.which==13) Screenful.Navigator.critGo(event);
     });
     $("#butSearch").on("click", Screenful.Navigator.critGo);
-    $("#navbox").append("<div class='line2'><span id='countcaption'>0</span><button class='iconYes noborder' id='butReload'>"+Screenful.Loc.reload+"</button></div>");
+    $("#navbox").append("<div class='line2'><span id='starbox' style='display: none'></span><span id='countcaption'>0</span><button class='iconYes noborder' id='butReload'>"+Screenful.Loc.reload+"</button></div>");
     if(!(Screenful.Navigator.critEditor && Screenful.Navigator.critHarvester)) $("#butCritOpen").remove();
     $("#butCritOpen").on("click", Screenful.Navigator.critOpen);
     $("#butReload").on("click", Screenful.Navigator.reload);
@@ -254,6 +254,10 @@ Screenful.Navigator={
             e.preventDefault();
             Screenful.Navigator.entryDelete(e);
           }
+          if(e.which==76 && (e.ctrlKey||e.metaKey) && e.shiftKey){ //L key
+            e.preventDefault();
+            Screenful.Navigator.entryStar(e);
+          }
           if(Screenful.Navigator.flags && Screenful.Navigator.flags.length>0 && Screenful.Navigator.entryFlagUrl){
             for(var i=0; i<Screenful.Navigator.flags.length; i++) {
               if(e.key==Screenful.Navigator.flags[i].key){
@@ -293,14 +297,17 @@ Screenful.Navigator={
       }, 10);
     }
 
-    //entry menu:
+    //star icon:
+    if(Screenful.Navigator.listByIdUrl){
+      var $menuLink=$("<a class='entryMenuLink star' title='"+Screenful.Loc.addToWorklist+" [Ctrl + Shift + L]'></a>").prependTo($item);
+      if(Screenful.Navigator.starList.indexOf(entry.id)>-1) $menuLink.addClass("on"); else $menuLink.addClass("off");
+      $menuLink.on("click", Screenful.Navigator.entryStar);
+    }
+
+    //delete icon:
     if(Screenful.Navigator.entryDeleteUrl){
-      var $menuLink=$("<a class='entryMenuLink'>&middot;&middot;&middot;</a>").prependTo($item);
-      $menuLink.on("click", Screenful.Navigator.entryMenuLinkClick);
-      var $menu=$("<div class='menu entrymenu' style='display: none'></div>").appendTo($item);
-      //delete:
-      var $menuItem=$("<a href='javascript:void(null)'><span class='keyCaption'>Del</span>"+Screenful.Loc.delete+"</a>").appendTo($menu);
-      $menuItem.on("click", Screenful.Navigator.entryDelete);
+      var $menuLink=$("<a class='entryMenuLink delete' title='"+Screenful.Loc.delete+" [Del]'></a>").prependTo($item);
+      $menuLink.on("click", Screenful.Navigator.entryDelete);
     }
   },
   lastStepSize: 0,
@@ -449,5 +456,33 @@ Screenful.Navigator={
     });
   },
 
+  starList: [],
+  entryStar: function(arg){ //arg = event object or entryID
+    var entryID=arg; if(typeof(arg)=="object") {
+      entryID=parseInt($(arg.delegateTarget).closest(".entry").attr("data-id"));
+      $(".menu:visible").hide();
+      arg.stopPropagation();
+    }
+    var $entry=$("div.entry[data-id=\""+entryID+"\"]");
+    if(Screenful.Navigator.starList.indexOf(entryID)>-1){
+      //remove the entry from star list:
+      Screenful.Navigator.starList.splice(Screenful.Navigator.starList.indexOf(entryID), 1);
+      $entry.find(".star").removeClass("on").addClass("off");
+      if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor && window.frames["editframe"].Screenful.Editor.entryID==entryID) {
+        window.frames["editframe"].$("#butStar").removeClass("on").addClass("off");
+      }
+    } else {
+      //add the entry to star list:
+      Screenful.Navigator.starList.push(entryID);
+      $entry.find(".star").removeClass("off").addClass("on");
+      if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor && window.frames["editframe"].Screenful.Editor.entryID==entryID) {
+        window.frames["editframe"].$("#butStar").removeClass("off").addClass("on");
+      }
+    }
+    //update starbox:
+    var $starbox=$("#starbox");
+    $starbox.html(Screenful.Navigator.starList.length);
+    if(Screenful.Navigator.starList.length>0) $starbox.fadeIn(); else $starbox.fadeOut();
+  },
 };
 $(window).ready(Screenful.Navigator.start);

@@ -39,7 +39,9 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #navbox.hasSearchModifiers .lineModifiers {display: block;}
 #navbox .line2 { padding-left: 10px; margin: 0px 0px 0px 0px; overflow-x: hidden; white-space: nowrap; }
 #navbox .line2 button {padding-top: 0px; padding-bottom: 0px;}
-#navbox #countcaption {color: #666666; padding: 14px 20px 0px 10px; float: right;}
+#navbox #countcaption {color: #666666; padding: 14px 10px 0px 10px;}
+#navbox #starbox {float: right; color: #666666; margin-top: 8px; margin-right: 10px; border-radius: 4px; padding: 5px 10px 5px 40px; min-width: 32px; text-align: center; background-image: url(star.png); background-position: 10px 5px; background-repeat: no-repeat; font-weight: bold; cursor: pointer;}
+#navbox #starbox:hover {background-color: #f7f9ea; }
 
 #navbox .modifiers span.clickable { color: #999999; cursor: pointer;}
 #navbox .modifiers span.clickable:hover {color: var(--link); }
@@ -87,19 +89,9 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #listbox .entry.current {background-color: var(--highlight, #eeeeee); text-shadow: 1px 1px 0px #dddddd;}
 #listbox .entry span.searchtext { background-color: #ffecb3; text-shadow: 0px 0px 0px transparent; border: 1px solid #ffffff; margin: 0px -1px; }
 
-#listbox .entry a.entryMenuLink {float: right; color: #999999; font-weight: bold; position: relative; z-index: 1;}
-#listbox .entry a.entryMenuLink:hover {color: #002c6f;}
-
 #listbox .entry a.entryFlagLink {float: left; background-color: #ffffff; border: 1px solid #999999; border-radius: 20px; box-sizing: border-box; width: 1em; height: 1em; margin-right: 0.5em; position: relative; top: 2px; z-index: 1;}
 #listbox .entry a.entryFlagLink.undecided {border-color: transparent; background-image: url(loader-round-tiny.gif); background-position: center center; background-repeat: no-repeat;}
 #listbox .entry a.entryFlagLink:hover {border-color: #002c6f;}
-
-#listbox .entry div.entrymenu {border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; position: absolute; right: 0px; top: 35px; z-index: 2; white-space: nowrap;}
-#listbox .entry div.entrymenu a {display: block; padding: 8px 20px; text-decoration: none; color: #333333; border-top: 1px solid #dddddd;}
-#listbox .entry div.entrymenu a span.keyCaption {float: right; margin-left: 2em; margin-right: -0.5em; color: #999999; font-size: 80%; padding-top: 1px;}
-#listbox .entry div.entrymenu a:first-child {border-top-left-radius: 4px; border-top-right-radius: 4px; border-top: 0px;}
-#listbox .entry div.entrymenu a:last-child {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
-#listbox .entry div.entrymenu a:hover {background-color: #f7f9ea; }
 
 #listbox .entry div.flagmenu {border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; position: absolute; left: 10px; top: 35px; z-index: 2; white-space: nowrap; max-height: 300px; overflow-y: auto;}
 #listbox .entry div.flagmenu a {display: block; padding: 8px 20px 8px 10px; text-decoration: none; color: #333333; border-top: 1px solid #dddddd;}
@@ -109,6 +101,11 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #listbox .entry div.flagmenu a:last-child {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
 #listbox .entry div.flagmenu a:hover {background-color: #f7f9ea; }
 
+#listbox .entry a.entryMenuLink {float: right; position: relative; z-index: 1; width: 30px; height: 30px; background-position: center center; background-repeat: no-repeat; border-radius: 2px; margin-left: 5px;}
+#listbox .entry a.entryMenuLink:hover {box-shadow: 0px 0px 2px #666666;}
+#listbox .entry a.entryMenuLink.delete {background-image: url(delete.png); background-position: 5px center;}
+#listbox .entry a.entryMenuLink.star.off {background-image: url(star_bw.png);}
+#listbox .entry a.entryMenuLink.star.on {background-image: url(star.png);}
 
 #listbox #divMore { text-align: center; padding: 30px 0px; }
 #listbox #divMore button#butMore {background-image: url(resultset_down.png);}

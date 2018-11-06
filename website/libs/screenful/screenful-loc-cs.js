@@ -86,4 +86,5 @@ Screenful.Loc={
   comments: "Komentáře",
   newComment: "nový komentář",
   revive: "Znovu oživit",
+  addToWorklist: "Dát na pracovní seznam",
 };

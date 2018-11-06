@@ -26,6 +26,9 @@
 #toolbar button.iconOnly#butCommenting {background-image: url(comment.png); float: right;}
 #toolbar button.iconOnly#butHistory {background-image: url(time.png); float: right;}
 #toolbar span#errorMessage {float: right; padding: 6px 10px; margin: 10px 5px; min-height: 1.3em; display: inline-block; color: #aa0000; font-size: 0.85em;}
+#toolbar button.iconOnly#butStar {float: right;}
+#toolbar button.iconOnly#butStar.off {background-image: url(star_bw.png);}
+#toolbar button.iconOnly#butStar.on {background-image: url(star.png);}
 
 #toolbar a {color: var(--link); padding: 5px 0px; margin: 10px 5px; min-height: 1.3em; display: inline-block; padding-left: 35px; background-position: left+10px center; background-repeat: no-repeat; text-decoration: none;}
 #toolbar a:hover {color: var(--link-hover);}
