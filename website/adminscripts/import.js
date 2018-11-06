@@ -38,7 +38,8 @@ function deed(stop){
             doPosLabels(db, function(){
               doDomains(db, function(){
                 doCollections(db, function(){
-                  doConcepts(db, 0, stop, function(){
+                  doNoteTypes(db, function(){
+                    doConcepts(db, 0, stop, function(){
                     var obj={
                       title: {
                         ga: "Téarmaí ar gá féachaint orthu",
@@ -63,6 +64,7 @@ function deed(stop){
                       db.close();
                       console.log(`finito`);
                     });
+                  });
                   });
                 });
               });
@@ -315,6 +317,30 @@ function doCollections(db, callnext){
       })
     } else {
       console.log("collections done");
+      callnext();
+    }
+  };
+}
+function doNoteTypes(db, callnext){
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.noteType/";
+  var filenames=fs.readdirSync(dir);
+  doOne();
+  function doOne(){
+    if(filenames.length>0){
+      var filename=filenames.pop();
+      var id=filename.replace(/\.xml$/, "");
+      var xml=fs.readFileSync(dir+filename, "utf8");
+      var doc=domParser.parseFromString(xml, 'text/xml');
+      var json={
+        title: {
+          $: doc.getElementsByTagName("name")[0].getAttribute("default"),
+        },
+      };
+      ops.metadataUpdate(db, "bnt", "tag", id, JSON.stringify(json), function(){
+        doOne();
+      })
+    } else {
+      console.log("note types done");
       callnext();
     }
   };

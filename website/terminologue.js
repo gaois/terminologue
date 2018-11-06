@@ -15,6 +15,7 @@ const PORT=process.env.PORT||siteconfig.port||80;
 const localizer={
   en: require("./localizer/en.js"),
   ga: require("./localizer/ga.js"),
+  cs: require("./localizer/cs.js"),
 };
 
 //ops module:

@@ -1,7 +1,6 @@
 var Pretty={};
 
 Pretty.metadatum=function(metadatum, lingo){
-  if(metadatum.title.$) return metadatum.title.$;
   var ret="";
   var strings=[];
   lingo.languages.map(lang => {

@@ -123,6 +123,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $html.find("input").prop("disabled", true);
     $html.find("textarea").prop("disabled", true);
     $html.find("select").prop("disabled", true);
+    $html.find("button").prop("disabled", true).hide();
   }
   return $html;
 };

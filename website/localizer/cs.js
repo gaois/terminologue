@@ -1,0 +1,128 @@
+function L(s, gloss){
+  if(s=="only") return function(s){
+    return "jen "+s;
+  };
+  if(s=="READ-ONLY") return "JEN KE ČTENÍ";
+  if(s=="Editing") return "Editace";
+  if(s=="Dublin City University") return "Ollscoil Chathair Bhaile Átha Cliath/Dublin City University";
+  if(s=="Log out") return "Odhlásit se";
+  if(s=="Change your password") return "Změnit si heslo";
+  if(s=="Registered user login") return "Registrovaní uživatelé";
+  if(s=="Get an account") return "Zřídit si účet";
+  if(s=="Forgot your password?") return "Zapomenuté heslp?";
+  if(s=="E-mail address") return "E-mailová adresa";
+  if(s=="Password") return "Heslo";
+  if(s=="Log in") return "Přihlásit se";
+  if(s=="Your termbases") return "Tvoje terminologické databáze";
+  if(s=="You have no termbases yet.") return "Zatím žádnou nemáš.";
+  if(s=="Create a termbase") return "Vytvořit terminologickou databázi";
+  if(s=="Administration") return "Administrace";
+  if(s=="Users") return "Uživateĺé";
+  if(s=="Termbases") return "Terminologické dDatabáze";
+  if(s=="smart search") return "chytré hledání";
+  if(s=="starts like this") return "začíná takhle";
+  if(s=="contains a word that starts like this") return "obsahuje slovo, které takhle začíná";
+  if(s=="contains this sequence of characters") return "obsahuje tuto posloupnost znaků";
+  if(s=="search in all languages") return "hledat ve všech jazycích";
+  if(s=="Configuration") return "Konfigurace";
+  if(s=="ADMIN") return "ADMIN";
+  if(s=="TRM") return "TRM";
+  if(s=="DOM") return "DOM";
+  if(s=="DEF") return "DEF";
+  if(s=="XMPL") return "NAPŘ"
+  if(s=="CHECKING STATUS") return "STAV ZKONTROLOVANOSTI";
+  if(s=="PUBLISHING STATUS") return "STAV PUBLIKOVATELNOSTI";
+  if(s=="TERMS") return "TERMÍNY";
+  if(s=="DOMAINS") return "DOMÉNY";
+  if(s=="checked") return "zkontrolováno";
+  if(s=="not checked") return "nezkontrolováno";
+  if(s=="publishable") return "publikovatelné";
+  if(s=="hidden") return "skryté";
+  if(s=="term") return "termín";
+  if(s=="clarification") return "vysvětlivka";
+  if(s=="acceptability") return "přijatelnost";
+  if(s=="source") return "zdroj";
+  if(s=="inflected form") return "inflekční forma";
+  if(s=="annotation") return "anotace";
+  if(s=="domain") return "doména";
+  if(s=="subdomain") return "poddoména";
+  if(s=="part of speech") return "slovní druh";
+  if(s=="inflection") return "inflekce";
+  if(s=="language of origin") return "jazyk původu";
+  if(s=="symbol") return "symbol";
+  if(s=="trademark") return "obchodní značka";
+  if(s=="registered trademark") return "zapsaná obchodní značka";
+  if(s=="proper noun") return "vlastní jméno";
+  if(s=="formatting") return "formátování";
+  if(s=="italic") return "kurzívou";
+  if(s=="none" && gloss=="no subdomain") return "žádná";
+  if(s=="Created") return "Vytvořeno";
+  if(s=="Changed") return "Změněno";
+  if(s=="Deleted") return "Smazáno";
+  if(s=="Bulk-deleted") return "Hromadně smazáno";
+  if(s=="while uploading") return "během nahrávání";
+  if(s=="By") return "Kým";
+  if(s=="When") return "Kdy";
+  if(s=="any checking status") return "jakýkoliv status zkontrolovanosti";
+  if(s=="any publishing status") return "jakýkoliv status publikovatelnosti";
+  if(s=="any language") return "jakýkoliv jazyk";
+  if(s=="any acceptabilty or no acceptability") return "jakákoliv přijatelnost nebo žádná";
+  if(s=="any acceptabilty") return "jakákoliv přijatelnost";
+  if(s=="no acceptability") return "žádná přijatelnost";
+  if(s=="any domain or no domain") return "jakákoliv doména nebo žádná";
+  if(s=="any domain") return "jakákoliv doména";
+  if(s=="no domain") return "žádná doména";
+  if(s=="any subdomain or no subdomain") return "jakákoliv poddoména nebo žádná";
+  if(s=="any subdomain") return "jakákoliv poddoména";
+  if(s=="no subdomain") return "žádná poddoména";
+  if(s=="DATESTAMP") return "DATUM";
+  if(s=="LAST MAJOR UPDATE") return "POSLEDNÍ PODSTATNÉ ZMÉNY";
+  if(s=="set to today") return "změnit na dnešek";
+  if(s=="any datestamp or no datestamp") return "jakékoliv datum nebo žádné";
+  if(s=="any datestamp") return "jakékoliv datum";
+  if(s=="no datestamp") return "žádné datum";
+  if(s=="datestamp before...") return "datum před...";
+  if(s=="datestamp on...") return "datum přesně...";
+  if(s=="datestamp after...") return "datum po...";
+  if(s=="Invalid e-mail address or password.") return "Neplatná e-mailová adresa nebo neplatné heslo.";
+  if(s=="INTR") return "ÚVD";
+  if(s=="COLL") return "SBÍR";
+  if(s=="INTROS") return "ÚVODY";
+  if(s=="DEFINITIONS") return "DEFINICE";
+  if(s=="EXAMPLES") return "PŘÍKLADY";
+  if(s=="COLLECTIONS") return "SBÍRKY";
+  if(s=="definition") return "definice";
+  if(s=="example") return "příklad";
+  if(s=="sentence") return "věta";
+  if(s=="collection") return "sbírka";
+  if(s=="any collection or no collection") return "jakákoliv sbírka nebo žádná";
+  if(s=="any collection") return "jakákoliv sbírka";
+  if(s=="no collection") return "žádná sbírka";
+  if(s=="my comments") return "komentáře ode mě";
+  if(s=="with or without my comments") return "má komentář ode mě nebo nemá";
+  if(s=="with my comments") return "má komentář ode mě";
+  if(s=="without my comments") return "nemá komentář ode mě";
+  if(s=="other people's comments") return "komentáře od ostatních";
+  if(s=="with or without other people's comments") return "má komentáře od ostatních nebo nemá";
+  if(s=="with other people's comments") return "má komentáře od ostatních";
+  if(s=="without other people's comments") return "nemá komentáře od ostatních";
+  if(s=="EXTRANET") return "EXTRANET";
+  if(s=="EXT") return "EXT";
+  if(s=="EXTRANETS") return "EXTRANETY";
+  if(s=="extranet") return "extranet";
+  if(s=="any extranet or no extranet") return "jakýkoliv extranet nebo žádný";
+  if(s=="any extranet") return "jakýkoliv extranet";
+  if(s=="no extranet") return "žádný extranet";
+  if(s=="sorting language") return "jazyk abecedního řazení";
+
+  if(!gloss) console.log(`if(s=="${s}") return "";`);
+  else console.log(`if(s=="${s}", "${gloss}") return "";`);
+  //if(s=="") return s;
+  return s;
+}
+
+try {
+  module.exports={
+    L: L,
+  }
+} catch(e){}

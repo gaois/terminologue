@@ -15,7 +15,7 @@ Pretty.metadatum=function(metadatum, lingo){
   });
   ret="<span class='prettyMetadatum'>"+ret+"</span>"
   return ret;
-}
+};
 
 //---
 
@@ -117,7 +117,7 @@ Pretty.entry=function(entry){
       obj=Spec.getExtranet(obj);
       var $item=$("<span class='prettyExtranet'></span>").appendTo($group);
       $item.append("<span class='label'>"+L("EXTRANET")+"</span>");
-      $item.append(obj.title.$);
+      $item.append(Pretty.titleInLang(obj.title, uilang));
       $group.append(" ");
     });
   }
@@ -316,7 +316,9 @@ Pretty.title=function(title){
 Pretty.titleInLang=function(title, lang){
   var ret="";
   var done=[];
-  if(title[lang]) ret+="<span>"+title[lang]+"</span>"; else {
+  if(title[lang]) ret+="<span>"+title[lang]+"</span>";
+  else if(title.$) ret+="<span>"+title.$+"</span>";
+  else {
     for(var key in title) if(title[key]){ ret+="<span>"+title[key]+"</span>"; break; }
   }
   return ret;
