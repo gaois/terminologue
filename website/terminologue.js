@@ -190,6 +190,22 @@ app.post(siteconfig.rootPath+":termbaseID/edit/list.json", function(req, res){
     }
   });
 });
+app.post(siteconfig.rootPath+":termbaseID/edit/listById.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      //if(req.body.id) req.body.ids=[req.body.id];
+      ops.entryListById(db, req.params.termbaseID, req.body.ids, function(entries){
+        db.close();
+        res.json({success: true, entries: entries});
+      });
+    }
+  });
+});
 app.post(siteconfig.rootPath+":termbaseID/edit/create.json", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID);

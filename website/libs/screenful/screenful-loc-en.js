@@ -87,4 +87,7 @@ Screenful.Loc={
   newComment: "new comment",
   revive: "Revive",
   addToWorklist: "Add to worklist",
+  worklist: "WORKLIST",
+  actions: "Actions",
+  purgeWorklist: "Remove all from worklist",
 };

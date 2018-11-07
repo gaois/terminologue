@@ -15,11 +15,30 @@
 
 #navbox { position: absolute; top: 0px; left: 0px; width: 30%; height: 100px; box-shadow: -2px 2px 2px #999999; z-index: 5;}
 #listbox { position: absolute; top: 100px; left: 0px; width: 30%; bottom: 0px; overflow-y: scroll; overflow-x: hidden; padding-top: 10px; }
+#starlist { position: absolute; top: 90px; left: 0px; width: 30%; bottom: 0px; overflow: hidden; z-index: 5; }
+#starlist > div.callout {height: 9px; position: absolute; top: 0px; left: 0px; right: 0px; background-image: url(callout.gif); background-repeat: no-repeat; background-position: center right 65px;}
+#starlist > div.inside {position: absolute; top: 8px; left: 20px; right: 27px; bottom: 20px; border: 1px solid #666666; background-color: #dddddd; border-radius: 4px; box-shadow: 0px 0px 4px #666666; }
+#starlist > div.inside > div.listbox {position: absolute; top: 40px; left: 10px; right: 10px; bottom: 10px; background-color: #ffffff; overflow-x: hidden; overflow-y: auto; padding-top: 10px;}
+#starlist > div.inside > div.title {position: absolute; top: 10px; left: 10px; right: 10px; height: 30px; padding: 0px 10px;}
+#starlist > div.inside > div.title > span.title {font-weight: bold; color: #666666; text-shadow: 1px 1px 0px #ffffff;}
 #navbox.hasSearchModifiers {height: 125px;}
 #listbox.hasSearchModifiers {top: 125px;}
+#starlist.hasSearchModifiers {top: 115px;}
 #editbox { position: absolute; top: 1px; left: 30%; right: 0px; bottom: 0px; border-left: 1px solid var(--border, #aaaaaa); }
 #editbox iframe { width: 100%; height: 100%; border: 0px; }
 #critbox { position: absolute; top: 70px; left: 15px; bottom: 30px; max-height: 600px; width: 60%; background-color: #ffffff; box-shadow: 0px 0px 5px #666666; border-radius: 4px; z-index: 10;}
+
+#starlist > div.inside > div.title > div.menuContainer { float: right; font-size: 0.9em; position: relative; z-index: 5;}
+#starlist > div.inside > div.title > div.menuContainer > span.clickable { color: #666666; cursor: pointer;}
+#starlist > div.inside > div.title > div.menuContainer > span.clickable:hover {color: var(--link); }
+#starlist > div.inside > div.title > div.menuContainer > span.clickable span.arrow {color: #666666; font-size: 85%; position: relative; top: -2px; margin-left: 5px; }
+#starlist > div.inside > div.title > div.menuContainer > span.clickable:hover span.arrow {color: #09587e; }
+#starlist > div.inside > div.title > div.menuContainer > div.menu {border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; position: absolute; right: 0px;  margin-top: 5px; z-index: 5; white-space: nowrap;}
+#starlist > div.inside > div.title > div.menuContainer > div.menu a {display: block; padding: 10px 20px; text-decoration: none; color: #333333; border-top: 1px solid #dddddd;}
+#starlist > div.inside > div.title > div.menuContainer > div.menu a span.abbr {display: inline-block; width: 3em; overflow: hidden; text-align: center; box-sizing: border-box; padding: 4px 4px; margin: 0px 10px -10px -10px; position: relative; top: -3px; line-height: 1em; background-color: #cccccc; border-radius: 2px; text-shadow: 1px 1px 0px #ffffff;}
+#starlist > div.inside > div.title > div.menuContainer > div.menu a:first-child {border-top-left-radius: 4px; border-top-right-radius: 4px; border-top: 0px;}
+#starlist > div.inside > div.title > div.menuContainer > div.menu a:last-child {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+#starlist > div.inside > div.title > div.menuContainer > div.menu a:hover {background-color: #f7f9ea; }
 
 input#searchbox {font: inherit; border: 1px inset #cccccc; cursor: inline; border-radius: 4px; background-color: #ffffff; color: #333333; padding: 6px 35px 6px 10px; margin: 10px 5px 10px 5px; min-height: 1.3em; display: inline-block; width: 40%; vertical-align: middle;}
 input#searchbox.hasSearchModifiers {padding-left: 80px; width: 30%;}
@@ -40,8 +59,8 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #navbox .line2 { padding-left: 10px; margin: 0px 0px 0px 0px; overflow-x: hidden; white-space: nowrap; }
 #navbox .line2 button {padding-top: 0px; padding-bottom: 0px;}
 #navbox #countcaption {color: #666666; padding: 14px 10px 0px 10px;}
-#navbox #starbox {float: right; color: #666666; margin-top: 8px; margin-right: 10px; border-radius: 4px; padding: 5px 10px 5px 40px; min-width: 32px; text-align: center; background-image: url(star.png); background-position: 10px 5px; background-repeat: no-repeat; font-weight: bold; cursor: pointer;}
-#navbox #starbox:hover {background-color: #f7f9ea; }
+#navbox #starbox {float: right; color: #666666; margin-top: 8px; margin-right: 10px; border-radius: 4px; padding: 5px 15px 5px 45px; min-width: 27px; text-align: center; background-image: url(star.png); background-position: 15px 5px; background-repeat: no-repeat; font-weight: bold; cursor: pointer;}
+#navbox #starbox:hover {background-color: #f7f9ea; color: var(--link); }
 
 #navbox .modifiers span.clickable { color: #999999; cursor: pointer;}
 #navbox .modifiers span.clickable:hover {color: var(--link); }
@@ -80,32 +99,32 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #listbox div.intertitle {padding: 5px 10px; margin: 10px 10px 5px 10px; background-color: var(--contrast); color: #ffffff; border-radius: 2px;}
 #listbox div.intertitle:first-child {margin-top: 0px;}
 
-#listbox .entry { padding: 5px 5px; margin: 0px 10px; border-bottom: 1px solid #eeeeee; cursor: pointer; position: relative;}
-#listbox .entry > div.inside { display: inline; }
-#listbox .entry:first-child { border-top: 1px solid #eeeeee; }
-#listbox .entry:last-child {margin-bottom: 10px;}
-#listbox .entry:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff;}
-#listbox .entry:focus {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; outline: 0px;}
-#listbox .entry.current {background-color: var(--highlight, #eeeeee); text-shadow: 1px 1px 0px #dddddd;}
-#listbox .entry span.searchtext { background-color: #ffecb3; text-shadow: 0px 0px 0px transparent; border: 1px solid #ffffff; margin: 0px -1px; }
+.listbox .entry { padding: 5px 5px; margin: 0px 10px; border-bottom: 1px solid #eeeeee; cursor: pointer; position: relative;}
+.listbox .entry > div.inside { display: inline; }
+.listbox .entry:first-child { border-top: 1px solid #eeeeee; }
+.listbox .entry:last-child {margin-bottom: 10px;}
+.listbox .entry:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff;}
+.listbox .entry:focus {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; outline: 0px;}
+.listbox .entry.current {background-color: var(--highlight, #eeeeee); text-shadow: 1px 1px 0px #dddddd;}
+.listbox .entry span.searchtext { background-color: #ffecb3; text-shadow: 0px 0px 0px transparent; border: 1px solid #ffffff; margin: 0px -1px; }
 
-#listbox .entry a.entryFlagLink {float: left; background-color: #ffffff; border: 1px solid #999999; border-radius: 20px; box-sizing: border-box; width: 1em; height: 1em; margin-right: 0.5em; position: relative; top: 2px; z-index: 1;}
-#listbox .entry a.entryFlagLink.undecided {border-color: transparent; background-image: url(loader-round-tiny.gif); background-position: center center; background-repeat: no-repeat;}
-#listbox .entry a.entryFlagLink:hover {border-color: #002c6f;}
+.listbox .entry a.entryFlagLink {float: left; background-color: #ffffff; border: 1px solid #999999; border-radius: 20px; box-sizing: border-box; width: 1em; height: 1em; margin-right: 0.5em; position: relative; top: 2px; z-index: 1;}
+.listbox .entry a.entryFlagLink.undecided {border-color: transparent; background-image: url(loader-round-tiny.gif); background-position: center center; background-repeat: no-repeat;}
+.listbox .entry a.entryFlagLink:hover {border-color: #002c6f;}
 
-#listbox .entry div.flagmenu {border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; position: absolute; left: 10px; top: 35px; z-index: 2; white-space: nowrap; max-height: 300px; overflow-y: auto;}
-#listbox .entry div.flagmenu a {display: block; padding: 8px 20px 8px 10px; text-decoration: none; color: #333333; border-top: 1px solid #dddddd;}
-#listbox .entry div.flagmenu a span.spot {float: left; background-color: #ffffff; border: 1px solid #999999; border-radius: 20px; box-sizing: border-box; width: 1em; height: 1em; margin-right: 0.5em; position: relative; top: 2px;}
-#listbox .entry div.flagmenu a span.keyCaption {float: right; margin-left: 2em; margin-right: -0.5em; color: #999999; font-size: 80%; padding-top: 1px;}
-#listbox .entry div.flagmenu a:first-child {border-top-left-radius: 4px; border-top-right-radius: 4px; border-top: 0px;}
-#listbox .entry div.flagmenu a:last-child {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
-#listbox .entry div.flagmenu a:hover {background-color: #f7f9ea; }
+.listbox .entry div.flagmenu {border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; position: absolute; left: 10px; top: 35px; z-index: 2; white-space: nowrap; max-height: 300px; overflow-y: auto;}
+.listbox .entry div.flagmenu a {display: block; padding: 8px 20px 8px 10px; text-decoration: none; color: #333333; border-top: 1px solid #dddddd;}
+.listbox .entry div.flagmenu a span.spot {float: left; background-color: #ffffff; border: 1px solid #999999; border-radius: 20px; box-sizing: border-box; width: 1em; height: 1em; margin-right: 0.5em; position: relative; top: 2px;}
+.listbox .entry div.flagmenu a span.keyCaption {float: right; margin-left: 2em; margin-right: -0.5em; color: #999999; font-size: 80%; padding-top: 1px;}
+.listbox .entry div.flagmenu a:first-child {border-top-left-radius: 4px; border-top-right-radius: 4px; border-top: 0px;}
+.listbox .entry div.flagmenu a:last-child {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.listbox .entry div.flagmenu a:hover {background-color: #f7f9ea; }
 
-#listbox .entry a.entryMenuLink {float: right; position: relative; z-index: 1; width: 30px; height: 30px; background-position: center center; background-repeat: no-repeat; border-radius: 2px; margin-left: 5px;}
-#listbox .entry a.entryMenuLink:hover {box-shadow: 0px 0px 2px #666666;}
-#listbox .entry a.entryMenuLink.delete {background-image: url(delete.png); background-position: 5px center;}
-#listbox .entry a.entryMenuLink.star.off {background-image: url(star_bw.png);}
-#listbox .entry a.entryMenuLink.star.on {background-image: url(star.png);}
+.listbox .entry a.entryMenuLink {float: right; position: relative; z-index: 1; width: 30px; height: 30px; background-position: center center; background-repeat: no-repeat; border-radius: 2px; margin-left: 5px;}
+.listbox .entry a.entryMenuLink:hover {box-shadow: 0px 0px 2px #666666;}
+.listbox .entry a.entryMenuLink.delete {background-image: url(delete.png); background-position: 5px center;}
+.listbox .entry a.entryMenuLink.star.off {background-image: url(star_bw.png);}
+.listbox .entry a.entryMenuLink.star.on {background-image: url(star.png);}
 
 #listbox #divMore { text-align: center; padding: 30px 0px; }
 #listbox #divMore button#butMore {background-image: url(resultset_down.png);}

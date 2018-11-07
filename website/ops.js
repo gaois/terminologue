@@ -209,6 +209,19 @@ module.exports={
     return words;
   },
 
+  entryListById: function(db, termbaseID, ids, callnext){
+    var sql=`select * from entries where id in(${ids})`;
+    console.log(sql);
+    db.all(sql, {}, function(err, rows){
+      if(err || !rows) rows=[];
+      var entries=[];
+      for(var i=0; i<rows.length; i++){
+        var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+        entries.push(item);
+      }
+      callnext(entries);
+    });
+  },
   entryList: function(db, termbaseID, facets, searchtext, modifier, howmany, callnext){
     module.exports.composeSqlQueries(facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){

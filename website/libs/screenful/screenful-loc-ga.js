@@ -87,4 +87,7 @@ Screenful.Loc={
   newComment: "nóta nua",
   revive: "Tabhair ar ais",
   addToWorklist: "Cuir ar liosta oibre",
+  worklist: "LIOSTA OIBRE",
+  actions: "Gníomhartha",
+  purgeWorklist: "Folmhaigh an liosta oibre",
 };
