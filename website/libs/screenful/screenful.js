@@ -29,15 +29,15 @@ var Screenful={
   wycQueue: [],
   wycIsRunning: false,
   wyc: function(url, callback){ //a "when-you-can" function for delayed rendering: gets json from url, passes it to callback, and delayed-returns html-as-string from callback
-  	Xonomy.wycLastID++;
-  	var wycID="screenful_wyc_"+Xonomy.wycLastID;
-  	if(Xonomy.wycCache[url]) return callback(Xonomy.wycCache[url]);
-	Screenful.wycQueue.push(function(){ //push job to WYC queue
+  	Screenful.wycLastID++;
+  	var wycID="screenful_wyc_"+Screenful.wycLastID;
+  	if(Screenful.wycCache[url]) return callback(Screenful.wycCache[url]);
+	  Screenful.wycQueue.push(function(){ //push job to WYC queue
 		Screenful.wycIsRunning=true;
 		Screenful.wycQueue.shift(); //remove myself from the WYC queue
 		$.ajax({url: url, dataType: "json", method: "POST"}).done(function(data){
 			$("#"+wycID).replaceWith(callback(data));
-			Xonomy.wycCache[url]=data;
+			Screenful.wycCache[url]=data;
 			if(Screenful.wycQueue.length>0) Screenful.wycQueue[0](); else Screenful.wycIsRunning=false; //run the next WYC job, or say that WYC has finished running
 		})
 	});

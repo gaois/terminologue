@@ -38,10 +38,17 @@
 		Screenful.Editor.editor=function(div, entry, uneditable){
 			if(!entry) {
 				var json={
-					cStatus: "0",
-					pStatus: "1",
-					desigs: [],
-					domains: [],
+					"cStatus": "0",
+				  "pStatus": "1",
+				  "dateStamp": "",
+				  "domains": [],
+				  "desigs": [],
+				  "intros": {},
+				  "definitions": [],
+				  "examples": [],
+				  "collections": [],
+				  "extranets": [],
+					"xrefs": [],
 				};
 				entry={content: JSON.stringify(json)};
 			}
@@ -114,10 +121,18 @@
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-commenting.css" />
 		<script type="text/javascript">
 		Screenful.Commenting.peekUrl="./commentPeek.json";
-		//Screenful.Commenting.userID="<%-user.email%>";
+		Screenful.Commenting.userID="<%-user.email%>";
 		Screenful.Commenting.listUrl="./commentList.json";
-		// Screenful.Commenting.saveUrl="./commentSave.json";
-		// Screenful.Commenting.deleteUrl="./commentDelete.json";
+		Screenful.Commenting.saveUrl="./commentSave.json";
+		Screenful.Commenting.deleteUrl="./commentDelete.json";
+		Screenful.Commenting.getExtranetTitle=function(xnetID){
+			var xnet=Spec.getExtranet(xnetID);
+			var ret=Spec.title(xnet.title, uilang);
+			return ret;
+		};
+		Screenful.Commenting.tags=[]; termbaseMetadata.tag.map(tag => {
+			Screenful.Commenting.tags.push({id: tag.id, title: Spec.title(tag.title, uilang)});
+		});
 		</script>
 	</head>
 	<body>

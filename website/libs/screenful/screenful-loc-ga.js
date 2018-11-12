@@ -88,6 +88,7 @@ Screenful.Loc={
   revive: "Tabhair ar ais",
   addToWorklist: "Cuir ar liosta oibre",
   worklist: "LIOSTA OIBRE",
-  actions: "Gníomhartha",
+  action: "Gníomh",
   purgeWorklist: "Folmhaigh an liosta oibre",
+  extranet: "EISLÍON",
 };

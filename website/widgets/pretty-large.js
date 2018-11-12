@@ -122,8 +122,56 @@ Pretty.entry=function(entry){
     });
   }
 
+  //xrefs:
+  if(entry.xrefs && entry.xrefs.length>0) {
+    var $group=$("<div class='prettyXrefs'></div>").appendTo($ret);
+    var $title=$("<div class='title'></div>").appendTo($group);
+    $("<span class='title'>"+L("SEE ALSO")+"</span>").appendTo($title);
+    $title.append(" ");
+    entry.xrefs.map(entryID => {
+      var $item=$("<div class='xref'></div>").appendTo($group);
+      $("<span class='id'></span>").appendTo($item).on("click", function(e){
+        Screenful.Editor.open(e, entryID);
+      }).html(Screenful.wyc("./read.json?id="+entryID, function(json){
+        if(!json.success){
+          return entryID;
+        } else {
+          var $ret=Pretty.entryOneliner(JSON.parse(json.content));
+          if($ret.text()=="") return entryID; else return $ret;
+        }
+      }));
+    });
+    $("<span class='link'>"+L("add to worklist")+"</span>").appendTo($title).on("click", function(e){
+      entry.xrefs.push(Screenful.Editor.entryID);
+      Screenful.Editor.addToStarlist(entry.xrefs);
+    });
+  }
+
   return $ret;
 }
+
+Pretty.entryOneliner=function(entry){
+  var $ret=$("<span class='prettyEntryOneliner'></span>");
+
+  //terms in major languages:
+  var majorlangs=[]; termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="major" && majorlangs.indexOf(lang.abbr)==-1) majorlangs.push(lang.abbr); });
+  var langsDone=[];
+  var count=0;
+  majorlangs.map(lang => {
+    entry.desigs.map(desig => {
+      if(desig.term.lang==lang && langsDone.indexOf(lang)==-1) {
+        if(count>0) $ret.append("<span class='divider'>/</span>");
+        $ret.append("<span class='term'>"+Pretty.clean4html(desig.term.wording)+"</span>");
+        langsDone.push(lang);
+        count++;
+      }
+    });
+  });
+
+  return $ret;
+};
+
+
 
 Pretty.sources=function(sources){
   var $group=$("<div class='prettySources'></div>");

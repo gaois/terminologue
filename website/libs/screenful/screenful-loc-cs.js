@@ -88,6 +88,7 @@ Screenful.Loc={
   revive: "Znovu oživit",
   addToWorklist: "Dát na pracovní seznam",
   worklist: "PRACOVNÍ SEZNAM",
-  actions: "Úkony",
+  action: "Úkon",
   purgeWorklist: "Vyprázdnit pracovní seznam",
+  extranet: "EXTRANET",
 };

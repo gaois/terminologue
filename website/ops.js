@@ -814,7 +814,7 @@ module.exports={
     };
   },
 
-  commentSave: function(db, termbaseID, entryID, extranetID, commentID, email, body, callnext){
+  commentSave: function(db, termbaseID, entryID, extranetID, commentID, email, body, tagID, callnext){
     commentID=parseInt(commentID);
     //first of all, find out what we're supposed to do:
     if(!commentID) go("create"); //this is a new comment
@@ -826,29 +826,29 @@ module.exports={
     function go(dowhat){
       var sql=""; var params={};
       if(dowhat=="create"){
-        sql="insert into comments(entry_id, extranet_id, [when], email, body) values($entry_id, $extranet_id, $when, $email, $body)";
-        params={$entry_id: entryID, $extranet_id: extranetID, $when: (new Date()).toISOString(), $email: email, $body: body};
+        sql="insert into comments(entry_id, extranet_id, [when], email, body, tag_id) values($entry_id, $extranet_id, $when, $email, $body, $tag_id)";
+        params={$entry_id: entryID, $extranet_id: extranetID, $when: (new Date()).toISOString(), $email: email, $body: body, $tag_id: tagID};
       }
       if(dowhat=="recreate"){
-        sql="insert into comments(id, entry_id, extranet_id, [when], email, body) values($id, $entry_id, $extranet_id, $when, $email, $body)";
-        params={$id: commentID, $entry_id: entryID, $extranet_id: extranetID, $when: (new Date()).toISOString(), $email: email, $body: body};
+        sql="insert into comments(id, entry_id, extranet_id, [when], email, body, tag_id) values($id, $entry_id, $extranet_id, $when, $email, $body, $tag_id)";
+        params={$id: commentID, $entry_id: entryID, $extranet_id: extranetID, $when: (new Date()).toISOString(), $email: email, $body: body, $tag_id: tagID};
       }
       if(dowhat=="change"){
-        sql="update comments set entry_id=$entry_id, extranet_id=$extranet_id, email=$email, body=$body where id=$id";
-        params={$id: commentID, $entry_id: entryID, $extranet_id: extranetID, $email: email, $body: body};
+        sql="update comments set entry_id=$entry_id, extranet_id=$extranet_id, email=$email, body=$body, tag_id=$tag_id where id=$id";
+        params={$id: commentID, $entry_id: entryID, $extranet_id: extranetID, $email: email, $body: body, $tag_id: tagID};
       }
       //create or change me:
       db.run(sql, params, function(err){
         if(!commentID) commentID=this.lastID;
         db.get("select * from comments where id=$id", {$id: commentID}, function(err, row){
-          callnext(commentID, row.when, row.body, module.exports.markdown(row.body));
+          callnext(commentID, row.when, row.body, module.exports.markdown(row.body), row.extranet_id, row.tag_id);
         });
       });
     }
   },
   commentList: function(db, termbaseID, entryID, extranetID, callnext){
     if(extranetID){
-      var sql="select * from comments where entry_id=$entry_id and $extranet_id=$extranet_id order by [when] asc";
+      var sql="select * from comments where entry_id=$entry_id and extranet_id=$extranet_id order by [when] asc";
       var params={$entry_id: entryID, $extranet_id: extranetID};
     } else {
       var sql="select * from comments where entry_id=$entry_id order by [when] asc";
@@ -858,7 +858,7 @@ module.exports={
       if(err || !rows) rows=[];
       var comments=[];
       for(var i=0; i<rows.length; i++){
-        var comment={commentID: rows[i].id, userID: rows[i].email, when: rows[i].when, body: rows[i].body, bodyMarkdown: module.exports.markdown(rows[i].body)};
+        var comment={commentID: rows[i].id, userID: rows[i].email, when: rows[i].when, body: rows[i].body, bodyMarkdown: module.exports.markdown(rows[i].body), extranetID: rows[i].extranet_id, tagID: rows[i].tag_id};
         comments.push(comment);
       }
       callnext(comments);
@@ -866,19 +866,19 @@ module.exports={
   },
   commentPeek: function(db, termbaseID, entryID, extranetID, callnext){
     if(extranetID){
-      var sql="select * from comments where entry_id=$entry_id and $extranet_id=$extranet_id";
+      var sql="select count(*) as commentCount from comments where entry_id=$entry_id and extranet_id=$extranet_id";
       var params={$entry_id: entryID, $extranet_id: extranetID};
     } else {
-      var sql="select * from comments where entry_id=$entry_id";
+      var sql="select count(*) as commentCount from comments where entry_id=$entry_id";
       var params={$entry_id: entryID};
     }
     db.get(sql, params, function(err, row){
-      if(row) callnext(true); else callnext(false);
+      if(row) callnext(row.commentCount); else callnext(0);
     });
   },
   commentDelete: function(db, termbaseID, extranetID, commentID, callnext){
     if(extranetID){
-      var sql="delete from comments where id=$id and $extranet_id=$extranet_id";
+      var sql="delete from comments where id=$id and extranet_id=$extranet_id";
       var params={$id: commentID, $extranet_id: extranetID};
     } else {
       var sql="delete from comments where id=$id";

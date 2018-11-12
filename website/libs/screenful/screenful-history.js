@@ -1,7 +1,7 @@
 Screenful.History={
   go: function(entryID){
     Screenful.Editor.entryID=entryID;
-    $("#history").html("<div class='leftie'></div>");
+    $("#history").html("");
     $.ajax({url: Screenful.History.historyUrl, dataType: "json", method: "POST", data: {id: entryID}}).done(function(data){
       if(!data.length) {
         //no history for this entry

@@ -29,7 +29,7 @@ Screenful.Navigator={
       var $clicked=$(e.target);
       if($clicked.closest("#starbox").length==0 && $clicked.closest("#starlist .inside").length==0) $("#starlist").hide();
     });
-    $("#starlist > .inside > .title").append("<div class='menuContainer'><span class='clickable'>"+Screenful.Loc.actions+" <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div>");
+    $("#starlist > .inside > .title").append("<div class='menuContainer'><span class='clickable'>"+Screenful.Loc.action+" <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div>");
     $("#starlist > .inside > .title > .menuContainer > .clickable").on("click", function(e){
       var $mymenu=$(e.delegateTarget).closest(".menuContainer").find(".menu");
       $(".menu:visible").not($mymenu).slideUp();
@@ -291,7 +291,7 @@ Screenful.Navigator={
     });
   },
   printEntry: function(entry, $listbox, searchtext, modifier){
-    var $item=$("<div class='entry' tabindex='0' data-id='"+entry.id+"'><div class='inside'>"+entry.id+"</div></div>").appendTo($listbox);
+    var $item=$("<div class='entry' tabindex='0' data-id='"+entry.id+"'><div class='inside'>"+entry.id+"</div><div class='clear'></div></div>").appendTo($listbox);
     $item.on("click", entry, Screenful.Navigator.openEntry);
 
     //entry title:
@@ -542,12 +542,37 @@ Screenful.Navigator={
           var $menu=$("#starlist > .inside > .title > .menuContainer > .menu").html("");
           var $a=$("<a href='javascript:void(null)' >"+Screenful.Loc.purgeWorklist+"</a>").appendTo($menu).on("click", function(e){
             $(".listbox .entry .star").removeClass("on").addClass("off");
+            if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
+              window.frames["editframe"].$("#butStar").removeClass("on").addClass("off");
+            }
             Screenful.Navigator.starList=[];
             Screenful.Navigator.refreshStarlist();
+          });
+          if(Screenful.Navigator.starlistActions) Screenful.Navigator.starlistActions.map(action => {
+            var $a=$("<a href='javascript:void(null)' >"+action.caption+"</a>").appendTo($menu).on("click", function(e){
+              $.ajax({url: action.url, dataType: "json", method: "POST", data: {ids: Screenful.Navigator.starList}}).done(function(data){
+
+                //if one of the starred entries is currently open in the editor, abandon it and reload it there:
+                if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
+                  Screenful.Navigator.starList.map(entryID => {
+                    if(window.frames["editframe"].Screenful.Editor.entryID==entryID){
+                      window.frames["editframe"].Screenful.Editor.needsSaving=false;
+                      window.frames["editframe"].Screenful.Editor.open(null, entryID);
+                    }
+                  });
+                }
+
+                Screenful.Navigator.refreshStarlist();
+              });
+            });
           });
         }
       }
     });
+  },
+  addToStarlist: function(list){
+    list.map(id => { if(Screenful.Navigator.starList.indexOf(id)==-1) Screenful.Navigator.starList.push(id); });
+    Screenful.Navigator.showStarlist();
   },
 };
 $(window).ready(Screenful.Navigator.start);

@@ -4,12 +4,12 @@ function L(s, gloss){
   };
   if(s=="READ-ONLY") return "JEN KE ČTENÍ";
   if(s=="Editing") return "Editace";
-  if(s=="Dublin City University") return "Ollscoil Chathair Bhaile Átha Cliath/Dublin City University";
+  if(s=="Dublin City University") return "Dublin City University";
   if(s=="Log out") return "Odhlásit se";
   if(s=="Change your password") return "Změnit si heslo";
   if(s=="Registered user login") return "Registrovaní uživatelé";
   if(s=="Get an account") return "Zřídit si účet";
-  if(s=="Forgot your password?") return "Zapomenuté heslp?";
+  if(s=="Forgot your password?") return "Zapomenuté heslo?";
   if(s=="E-mail address") return "E-mailová adresa";
   if(s=="Password") return "Heslo";
   if(s=="Log in") return "Přihlásit se";
@@ -18,7 +18,7 @@ function L(s, gloss){
   if(s=="Create a termbase") return "Vytvořit terminologickou databázi";
   if(s=="Administration") return "Administrace";
   if(s=="Users") return "Uživateĺé";
-  if(s=="Termbases") return "Terminologické dDatabáze";
+  if(s=="Termbases") return "Terminologické databáze";
   if(s=="smart search") return "chytré hledání";
   if(s=="starts like this") return "začíná takhle";
   if(s=="contains a word that starts like this") return "obsahuje slovo, které takhle začíná";

@@ -16,8 +16,10 @@ body {font-family: sans-serif; background-color: #ffffff; margin: 0; padding: 0;
 #envelope button.noborder { box-shadow: 0px 0px 0px transparent; }
 #envelope button.mergeLeft { margin-left: -42px; }
 #envelope button.disabled { color: #999999; cursor: not-allowed; }
-#envelope button.hasData {box-shadow: 0px 0px 3px #cc0000; }
-#envelope button.hasData.pressed { box-shadow: inset 0px 0px 2px #666666;}
+
+#envelope button span.bubble {display: none;}
+#envelope button.hasData {position: relative;}
+#envelope button.hasData span.bubble {font-size: 0.75em; display: block; position: absolute; top: -10px; left: -10px; background-color: #dd0000; color: #ffffff; padding: 1px 8px; border-radius: 20px;}
 
 #statusbar span.wait { background-image: url(loader.gif); display: inline-block; width: 30px; height: 10px; background-repeat: no-repeat; background-position: left center; margin-right: 1em;}
 #statusbar span.warn { background-image: url(exclamation.png); display: inline-block; width: 16px; height: 10px; background-repeat: no-repeat; background-position: left center; margin-right: 0.75em;}

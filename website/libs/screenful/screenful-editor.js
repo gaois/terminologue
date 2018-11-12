@@ -52,7 +52,7 @@ Screenful.Editor={
     var $toolbar=$("#toolbar");
     if(Screenful.History) $("<button id='butHistory' class='iconOnly' title='"+Screenful.Loc.history+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.history);
     if(Screenful.Editor.allowSourceCode) $("<button id='butSourceCode' class='iconOnly' title='"+Screenful.Loc.sourceCode+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.sourceCode);
-    if(Screenful.Editor.allowCommenting) $("<button id='butCommenting' class='iconOnly' title='"+Screenful.Loc.comments+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.commenting);
+    if(Screenful.Editor.allowCommenting) $("<button id='butCommenting' class='iconOnly' title='"+Screenful.Loc.comments+"'>&nbsp;<span class='bubble'></span></button>").appendTo($toolbar).on("click", Screenful.Editor.commenting);
     if(window.parent!=window && window.parent.Screenful && window.parent.Screenful.Navigator && window.parent.Screenful.Navigator.listByIdUrl){
       $("<button id='butStar' class='iconOnly noborder' title='"+Screenful.Loc.addToWorklist+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.starClick);
     }
@@ -322,6 +322,7 @@ Screenful.Editor={
         } else {
           Screenful.Editor.entryID=data.id;
           $("#idbox").val(data.id);
+          if(Screenful.Editor.allowCommenting) Screenful.Commenting.peek();
           if(Screenful.Editor.viewer && !$("#chkAutosave").prop("checked")) {
       			$("#container").removeClass("empty").html("<div id='viewer'></div>");
             Screenful.Editor.viewer(document.getElementById("viewer"), data);
@@ -508,7 +509,14 @@ Screenful.Editor={
   },
 
   starClick: function(event){
-    window.parent.Screenful.Navigator.entryStar(Screenful.Editor.entryID);
+    if(window.parent && window.parent.Screenful && window.parent.Screenful.Navigator){
+      window.parent.Screenful.Navigator.entryStar(Screenful.Editor.entryID);
+    }
+  },
+  addToStarlist: function(list){
+    if(window.parent && window.parent.Screenful && window.parent.Screenful.Navigator){
+      window.parent.Screenful.Navigator.addToStarlist(list);
+    }
   },
 
 };

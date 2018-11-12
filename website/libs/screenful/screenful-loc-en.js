@@ -88,6 +88,7 @@ Screenful.Loc={
   revive: "Revive",
   addToWorklist: "Add to worklist",
   worklist: "WORKLIST",
-  actions: "Actions",
+  action: "Action",
   purgeWorklist: "Remove all from worklist",
+  extranet: "EXTRANET",
 };

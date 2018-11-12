@@ -67,16 +67,16 @@
 		</script>
 
 		<script type="text/javascript">
-		Screenful.Navigator.critEditor=function(div, crits){ //optional
-			//div = an HTML element to render the criteria editor into
-			//crits = "..." or JSON,  the criteria to render; if undefined then render blank criteria
-			$(div).html(`<input class="focusme" style="font: inherit; width: 100%; box-sizing: border-box"/>`);
-		};
-		Screenful.Navigator.critHarvester=function(div){ //optional
-			//div = an HTML element to harvest the criteria from
-			//returns "..." or JSON
-			return $(div).find("input").val();
-		};
+		// Screenful.Navigator.critEditor=function(div, crits){ //optional
+		// 	//div = an HTML element to render the criteria editor into
+		// 	//crits = "..." or JSON,  the criteria to render; if undefined then render blank criteria
+		// 	$(div).html(`<input class="focusme" style="font: inherit; width: 100%; box-sizing: border-box"/>`);
+		// };
+		// Screenful.Navigator.critHarvester=function(div){ //optional
+		// 	//div = an HTML element to harvest the criteria from
+		// 	//returns "..." or JSON
+		// 	return $(div).find("input").val();
+		// };
 		</script>
 
 		<script type="text/javascript">
@@ -86,6 +86,26 @@
 		<script type="text/javascript" src="../../libs/screenful/screenful-facetor.js"></script>
 		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
 		<script type="text/javascript" src="../../views/termbase-edit/facetor-settings.js"></script>
+
+		<script type="text/javascript">
+		Screenful.Navigator.starlistActions=[
+			{
+				caption: "<%=L('Create mutual cross-references')%>",
+				url: "./read.json?id=0",
+				//url: "./xrefsMake.json",
+			},
+			{
+				caption: "<%=L('Remove mutual cross-references')%>",
+				url: "./read.json?id=0",
+				//url: "./xrefsBreak.json",
+			},
+			{
+				caption: "<%=L('Merge into a single entry')%>",
+				url: "./read.json?id=0",
+				//url: "./merge.json",
+			},
+		];
+		</script>
 
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
 	</head>

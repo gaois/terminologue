@@ -231,7 +231,8 @@ app.post(siteconfig.rootPath+":termbaseID/edit/read.json", function(req, res){
       db.close();
       res.json({success: false});
     } else {
-      ops.entryRead(db, req.params.termbaseID, req.body.id, function(adjustedEntryID, json){
+      var entryID=req.body.id || req.query.id;
+      ops.entryRead(db, req.params.termbaseID, entryID, function(adjustedEntryID, json){
         db.close();
         res.json({success: (adjustedEntryID>0), id: adjustedEntryID, content: json});
       });
@@ -548,7 +549,8 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/read.json", function(req, res
       db.close();
       res.json({success: false});
     } else {
-      ops.entryRead(db, req.params.termbaseID, req.body.id, function(adjustedEntryID, json){
+      var entryID=req.body.id || req.query.id;
+      ops.entryRead(db, req.params.termbaseID, entryID, function(adjustedEntryID, json){
         db.close();
         var entry=JSON.parse(json);
         if(!entry.extranets || entry.extranets.indexOf(req.params.xnetID)==-1){
@@ -561,7 +563,7 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/read.json", function(req, res
   });
 });
 
-//Extranet comments:
+//Comments viewed from an extranet:
 app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentSave.json", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, false);
@@ -570,9 +572,9 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentSave.json", function(r
       db.close();
       res.json({success: false});
     } else {
-      ops.commentSave(db, req.params.termbaseID, req.body.entryID, req.params.xnetID, req.body.commentID, req.body.userID, req.body.body, function(commentID, when, body, bodyMarkdown){
+      ops.commentSave(db, req.params.termbaseID, req.body.entryID, req.params.xnetID, req.body.commentID, req.body.userID, req.body.body, null, function(commentID, when, body, bodyMarkdown, tagID){
         db.close();
-        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown});
+        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown, tagID: tagID});
       });
     }
   });
@@ -608,7 +610,7 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentDelete.json", function
   });
 });
 
-//Extranet comments viewed from the edit screen:
+//Comments viewed from the edit screen:
 app.post(siteconfig.rootPath+":termbaseID/edit/commentPeek.json", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, false);
@@ -617,9 +619,9 @@ app.post(siteconfig.rootPath+":termbaseID/edit/commentPeek.json", function(req, 
       db.close();
       res.json({success: false});
     } else {
-      ops.commentPeek(db, req.params.termbaseID, req.body.entryID, null, function(hasComments){
+      ops.commentPeek(db, req.params.termbaseID, req.body.entryID, null, function(numComments){
         db.close();
-        res.json({success: true, hasComments: hasComments});
+        res.json({success: true, numComments: numComments});
       });
     }
   });
@@ -639,6 +641,37 @@ app.post(siteconfig.rootPath+":termbaseID/edit/commentList.json", function(req, 
     }
   });
 });
+app.post(siteconfig.rootPath+":termbaseID/edit/commentSave.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.commentSave(db, req.params.termbaseID, req.body.entryID, null, req.body.commentID, req.body.userID, req.body.body, req.body.tagID, function(commentID, when, body, bodyMarkdown, extranetID, tagID){
+        db.close();
+        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown, extranetID: extranetID, tagID: tagID});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/edit/commentDelete.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.commentDelete(db, req.params.termbaseID, null, req.body.commentID, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  });
+});
+
 
 app.use(function(req, res){ res.status(404).render("404.ejs", {siteconfig: siteconfig}); });
 app.listen(PORT);

@@ -122,6 +122,7 @@ Spec.templates[":top"]={
       <div class="title">${L("EXTRANETS")}</div>
       <div class="fy_replace" templateName="extranets" jsonName="extranets"></div>
     </div>
+    <div class="fy_replace" templateName="xrefs" jsonName="xrefs"></div>
   </div>`,
 };
 Spec.templates["hiddenID"]={
@@ -903,4 +904,16 @@ Spec.templates["lingySource"]={
       if(datum.role=="major") $select.append(`<option value="${datum.abbr}" title="${Spec.title(datum.title)}">${datum.abbr.toUpperCase()}</option>`);
     });
   },
+};
+
+Spec.templates["xrefs"]={
+  type: "array",
+  html: `<div/>`,
+  set: function($me, data){
+    $me.data("data", data);
+  },
+  get: function($me){
+    return $me.data("data");
+  },
+
 };
