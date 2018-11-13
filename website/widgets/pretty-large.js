@@ -110,43 +110,45 @@ Pretty.entry=function(entry){
     });
   }
 
-  //extranet:
-  if(entry.extranets && entry.extranets.length>0) {
-    var $group=$("<div class='extranets'></div>").appendTo($ret);
-    entry.extranets.map(obj => {
-      obj=Spec.getExtranet(obj);
-      var $item=$("<span class='prettyExtranet'></span>").appendTo($group);
-      $item.append("<span class='label'>"+L("EXTRANET")+"</span>");
-      $item.append(Pretty.titleInLang(obj.title, uilang));
-      $group.append(" ");
-    });
-  }
+  if(entry.dateStamp || (entry.xrefs && entry.xrefs.length>0) ){
+    var $bin=$("<div class='bin'></div>").appendTo($ret);
 
-  //xrefs:
-  if(entry.xrefs && entry.xrefs.length>0) {
-    var $group=$("<div class='prettyXrefs'></div>").appendTo($ret);
-    var $title=$("<div class='title'></div>").appendTo($group);
-    $("<span class='title'>"+L("SEE ALSO")+"</span>").appendTo($title);
-    $title.append(" ");
-    entry.xrefs.map(entryID => {
-      var $item=$("<div class='xref'></div>").appendTo($group);
-      $("<span class='id'></span>").appendTo($item).on("click", function(e){
-        Screenful.Editor.open(e, entryID);
-      }).html(Screenful.wyc("./read.json?id="+entryID, function(json){
-        if(!json.success){
-          return entryID;
-        } else {
-          var $ret=Pretty.entryOneliner(JSON.parse(json.content));
-          if($ret.text()=="") return entryID; else return $ret;
-        }
-      }));
-    });
-    $("<span class='link'>"+L("add to worklist")+"</span>").appendTo($title).on("click", function(e){
-      var ids=[];
-      ids.push(Screenful.Editor.entryID);
-      entry.xrefs.map(id => { ids.push(parseInt(id)); });
-      Screenful.Editor.addToStarlist(ids);
-    });
+    //date stamp:
+    if(entry.dateStamp){
+      var $group=$("<div class='dateStamp'></div>").appendTo($bin);
+      var $title=$("<div class='prettyDateStamp'></div>").appendTo($group);
+      $("<span class='title'>"+L("LAST UPDATED")+"</span>").appendTo($title);
+      $title.append(" ");
+      $("<span class='date'>"+entry.dateStamp+"</span>").appendTo($title);
+    }
+
+    //xrefs:
+    if(entry.xrefs && entry.xrefs.length>0) {
+      var $group=$("<div class='prettyXrefs'></div>").appendTo($bin);
+      var $title=$("<div class='title'></div>").appendTo($group);
+      $("<span class='title'>"+L("SEE ALSO")+"</span>").appendTo($title);
+      $title.append(" ");
+      entry.xrefs.map(entryID => {
+        var $item=$("<div class='xref'></div>").appendTo($group);
+        $("<span class='id'></span>").appendTo($item).on("click", function(e){
+          Screenful.Editor.open(e, entryID);
+        }).html(Screenful.wyc("./read.json?id="+entryID, function(json){
+          if(!json.success){
+            return entryID;
+          } else {
+            var $ret=Pretty.entryOneliner(JSON.parse(json.content));
+            if($ret.text()=="") return entryID; else return $ret;
+          }
+        }));
+      });
+      $("<span class='link'>"+L("add to worklist")+"</span>").appendTo($title).on("click", function(e){
+        var ids=[];
+        ids.push(Screenful.Editor.entryID);
+        entry.xrefs.map(id => { ids.push(parseInt(id)); });
+        Screenful.Editor.addToStarlist(ids);
+      });
+    }
+
   }
 
   return $ret;

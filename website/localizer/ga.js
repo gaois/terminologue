@@ -114,7 +114,12 @@ function L(s, gloss){
   if(s=="any extranet") return "eislíon ar bith";
   if(s=="no extranet") return "gan eislíon";
   if(s=="sorting language") return "teanga sortála";
-
+  if(s=="Create mutual cross-references") return "Cruthaigh crostagairtí eatarthu";
+  if(s=="Remove mutual cross-references") return "Bris crostagairtí eatarthu";
+  if(s=="Merge into a single entry") return "Cumaisc go hiontráil amháin";
+  if(s=="LAST UPDATED") return "UASDÁTÚ DEIREANACH";
+  if(s=="SEE ALSO") return "FÉACH FREISIN";
+  if(s=="add to worklist") return "cuir ar liosta oibre";
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

@@ -42,12 +42,12 @@ function L(s, gloss){
   if(s=="clarification") return "vysvětlivka";
   if(s=="acceptability") return "přijatelnost";
   if(s=="source") return "zdroj";
-  if(s=="inflected form") return "inflekční forma";
+  if(s=="inflected form") return "vyskloňovaná forma";
   if(s=="annotation") return "anotace";
   if(s=="domain") return "doména";
   if(s=="subdomain") return "poddoména";
   if(s=="part of speech") return "slovní druh";
-  if(s=="inflection") return "inflekce";
+  if(s=="inflection") return "sklonění";
   if(s=="language of origin") return "jazyk původu";
   if(s=="symbol") return "symbol";
   if(s=="trademark") return "obchodní značka";
@@ -76,7 +76,7 @@ function L(s, gloss){
   if(s=="any subdomain") return "jakákoliv poddoména";
   if(s=="no subdomain") return "žádná poddoména";
   if(s=="DATESTAMP") return "DATUM";
-  if(s=="LAST MAJOR UPDATE") return "POSLEDNÍ PODSTATNÉ ZMÉNY";
+  if(s=="LAST MAJOR UPDATE") return "POSLEDNÍ PODSTATNÁ ZMÉNA";
   if(s=="set to today") return "změnit na dnešek";
   if(s=="any datestamp or no datestamp") return "jakékoliv datum nebo žádné";
   if(s=="any datestamp") return "jakékoliv datum";
@@ -114,6 +114,12 @@ function L(s, gloss){
   if(s=="any extranet") return "jakýkoliv extranet";
   if(s=="no extranet") return "žádný extranet";
   if(s=="sorting language") return "jazyk abecedního řazení";
+  if(s=="Create mutual cross-references") return "Propojit vzájemnými odkazy";
+  if(s=="Remove mutual cross-references") return "Rozpojit vzájemné odkazy";
+  if(s=="Merge into a single entry") return "Sloučit do jednoho hesla";
+  if(s=="LAST UPDATED") return "POSLEDNÍ ZMĚNA";
+  if(s=="SEE ALSO") return "VIZ TAKÉ";
+  if(s=="add to worklist") return "dát na pracovní seznam";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
