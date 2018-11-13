@@ -453,7 +453,7 @@ app.get(siteconfig.rootPath+":termbaseID/admin/:metadataType/editor.html", funct
       ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
         db.close();
         var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-        res.render("termbase-admin/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadatType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+        res.render("termbase-admin/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadataType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
       });
     }
   });

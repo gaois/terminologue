@@ -9,14 +9,14 @@
     <%if(sectionID=="metadata" && subsectionID){%>
         <%
           var subtitle=subsectionID;
-          if(subsectionID=="posLabel") subtitle="Part-of-speech labels";
-          if(subsectionID=="inflectLabel") subtitle="Inflection labels";
-          if(subsectionID=="acceptLabel") subtitle="Acceptability labels";
-          if(subsectionID=="source") subtitle="Sources";
-          if(subsectionID=="domain") subtitle="Domains";
-          if(subsectionID=="collection") subtitle="Collections";
-          if(subsectionID=="tag") subtitle="Tags";
-          if(subsectionID=="extraneto") subtitle="Extranets";
+          if(subsectionID=="domain") subtitle=L('Domains');
+          if(subsectionID=="posLabel") subtitle=L('Part-of-speech labels');
+          if(subsectionID=="inflectLabel") subtitle=L('Inflection labels');
+          if(subsectionID=="acceptLabel") subtitle=L('Acceptability labels');
+          if(subsectionID=="source") subtitle=L('Sources');
+          if(subsectionID=="collection") subtitle=L('Collections');
+          if(subsectionID=="tag") subtitle=L('Tags');
+          if(subsectionID=="extranet") subtitle=L('Extranets');
         %>
         <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>
@@ -25,11 +25,11 @@
     <%if(sectionID=="config" && subsectionID){%>
         <%
           var subtitle=subsectionID;
-          if(subsectionID=="ident") subtitle="Name and description";
-          if(subsectionID=="features") subtitle="Features";
-          if(subsectionID=="lingo") subtitle="Languages";
-          if(subsectionID=="users") subtitle="Users";
-          if(subsectionID=="publico") subtitle="Publishing";
+          if(subsectionID=="ident") subtitle=L("Name and description");
+          if(subsectionID=="lingo") subtitle=L("Languages");
+          if(subsectionID=="features") subtitle=L("Features");
+          if(subsectionID=="users") subtitle=L("Users");
+          if(subsectionID=="publico") subtitle=L("Publishing");
         %>
         <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>

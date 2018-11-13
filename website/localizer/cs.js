@@ -121,6 +121,27 @@ function L(s, gloss){
   if(s=="SEE ALSO") return "VIZ TAKÉ";
   if(s=="add to worklist") return "dát na pracovní seznam";
 
+  if(s=="Lists") return "Seznamy";
+  if(s=="Domains") return "Domény";
+  if(s=="Part-of-speech labels") return "Slovní druhy";
+  if(s=="Inflection labels") return "Druhy skloňování";
+  if(s=="Acceptability labels") return "Druhy přijatelnosti";
+  if(s=="Sources") return "Zdroje";
+  if(s=="Collections") return "Sbírky";
+  if(s=="Teamwork") return "Týmová práce";
+  if(s=="Tags") return "Značky";
+  if(s=="Extranets") return "Extranety";
+
+  if(s=="Termbase settings") return "Nastavení databáze";
+  if(s=="Name and description") return "Jméno a popis";
+  if(s=="Features") return "Vlastnosti";
+  if(s=="Languages") return "Jazyky";
+  if(s=="Termbase access") return "Přístup k databázi";
+  if(s=="Publishing") return "Publikování";
+  if(s=="Change the termbase's URL") return "Změnit URL databáze";
+  if(s=="Delete the termbase") return "Smazat databázi";
+  if(s=="Careful now! You will not be able to undo this.") return "Pozor! Tohle nepůjde vrátit zpátky.";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

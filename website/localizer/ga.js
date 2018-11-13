@@ -120,6 +120,28 @@ function L(s, gloss){
   if(s=="LAST UPDATED") return "UASDÁTÚ DEIREANACH";
   if(s=="SEE ALSO") return "FÉACH FREISIN";
   if(s=="add to worklist") return "cuir ar liosta oibre";
+
+  if(s=="Lists") return "Liostaí";
+  if(s=="Domains") return "Réimsí";
+  if(s=="Part-of-speech labels") return "Ranna cainte";
+  if(s=="Inflection labels") return "Lipéid infhillte";
+  if(s=="Acceptability labels") return "Lipéid inghacthachta";
+  if(s=="Sources") return "Foinsí";
+  if(s=="Collections") return "Bailiúcháin";
+  if(s=="Teamwork") return "Obair foirne";
+  if(s=="Tags") return "Clibeanna";
+  if(s=="Extranets") return "Eislíonta";
+
+  if(s=="Termbase settings") return "Socruithe an chnuasaigh";
+  if(s=="Name and description") return "Ainm agus cur síos";
+  if(s=="Features") return "Gnéithe";
+  if(s=="Languages") return "Teangacha";
+  if(s=="Termbase access") return "Rochtain ar an chnuasach";
+  if(s=="Publishing") return "Foilsiú";
+  if(s=="Change the termbase's URL") return "Athraigh URL an chnuasaigh";
+  if(s=="Delete the termbase") return "Scrios an cnuasach";
+  if(s=="Careful now! You will not be able to undo this.") return "Cúramach! Ní bheidh tú ábalta dul ar ais.";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;
