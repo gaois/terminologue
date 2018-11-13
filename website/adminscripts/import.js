@@ -332,10 +332,7 @@ function doNoteTypes(db, callnext){
       var xml=fs.readFileSync(dir+filename, "utf8");
       var doc=domParser.parseFromString(xml, 'text/xml');
       var json={
-        title: {
-          ga: doc.getElementsByTagName("name")[0].getAttribute("default"),
-          en: doc.getElementsByTagName("name")[0].getAttribute("default"),
-        },
+        title: doc.getElementsByTagName("name")[0].getAttribute("default"),
       };
       ops.metadataUpdate(db, "bnt", "tag", id, JSON.stringify(json), function(){
         doOne();

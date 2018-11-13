@@ -25,6 +25,10 @@
 		</script>
 
 		<script type="text/javascript">
+		uilangs=<%-JSON.stringify(uilangs)%>;
+		</script>
+
+		<script type="text/javascript">
 		// Screenful.Editor.viewer=function(div, entry){
 		// 	$(div).html(entry.id);
 		// };
@@ -35,22 +39,15 @@
 		<script type="text/javascript" src="../../../views/termbase-admin/fy-<%-metadataType%>.js"></script>
 		<script type="text/javascript">
 		Screenful.Editor.editor=function(div, entry, uneditable){
-			if(!entry){
-				var json={title: {}};
-				termbaseConfigs.lingo.languages.map(lang => {
-			    if(lang.role=="major"){
-						json.title[lang.abbr]="";
-			    }
-			  });
-				entry={content: JSON.stringify(json)};
-			}
-			$(div).html("<textarea style='padding: 10px; box-sizing: border-box; width: 100%; height: 400px; resize: vertical; border: 0px; box-shadow: inset 0px 0px 5px #999999; color: var(--link); border-radius: 4px; margin-top: 10px; font-size: 0.9rem;'></textarea>");
-			$(div).find("textarea").focus().val(JSON.stringify(JSON.parse(entry.content), null, "  "));
-      //Editor.render($(div), JSON.parse(entry.content), uneditable);
+			if(!entry) entry={content: JSON.stringify(Spec.blank)};
+			Fy.render($(div), JSON.parse(entry.content), Spec, uneditable);
+			// $(div).html("<textarea style='padding: 10px; box-sizing: border-box; width: 100%; height: 400px; resize: vertical; border: 0px; box-shadow: inset 0px 0px 5px #999999; color: var(--link); border-radius: 4px; margin-top: 10px; font-size: 0.9rem;'></textarea>");
+			// $(div).find("textarea").focus().val(JSON.stringify(JSON.parse(entry.content), null, "  "));
 		};
 		Screenful.Editor.harvester=function(div){
-			return $(div).find("textarea").val();
-      //return Editor.harvest($(div));
+			var ret=Fy.harvest($(div));
+			return JSON.stringify(ret, null, "  ");
+			//return $(div).find("textarea").val();
 		};
 		</script>
 
