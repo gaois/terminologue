@@ -142,8 +142,10 @@ Pretty.entry=function(entry){
       }));
     });
     $("<span class='link'>"+L("add to worklist")+"</span>").appendTo($title).on("click", function(e){
-      entry.xrefs.push(Screenful.Editor.entryID);
-      Screenful.Editor.addToStarlist(entry.xrefs);
+      var ids=[];
+      ids.push(Screenful.Editor.entryID);
+      entry.xrefs.map(id => { ids.push(parseInt(id)); });
+      Screenful.Editor.addToStarlist(ids);
     });
   }
 

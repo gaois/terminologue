@@ -220,6 +220,7 @@ Screenful.Editor={
         Screenful.Editor.entryID=null;
         $("#idbox").val(id);
         Screenful.status(Screenful.Loc.reading, "wait"); //"reading entry"
+        if(window.parent!=window && window.parent.Screenful && window.parent.Screenful.Navigator) window.parent.Screenful.Navigator.setEntryAsCurrent(id);
         $.ajax({url: url, dataType: "json", method: "POST", data: {id: id}}).done(function(data){
           if(!data.success) {
             Screenful.status(Screenful.Loc.readingFailed, "warn"); //"failed to read entry"
@@ -258,6 +259,7 @@ Screenful.Editor={
     		  Screenful.Editor.entryID=null;
           $("#idbox").val(id);
           Screenful.status(Screenful.Loc.reading, "wait"); //"reading entry"
+          if(window.parent!=window && window.parent.Screenful && window.parent.Screenful.Navigator) window.parent.Screenful.Navigator.setEntryAsCurrent(id);
     		  $.ajax({url: url, dataType: "json", method: "POST", data: {id: id}}).done(function(data){
       			if(!data.success) {
               Screenful.status(Screenful.Loc.readingFailed, "warn"); //"failed to read entry"

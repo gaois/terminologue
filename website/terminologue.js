@@ -286,6 +286,51 @@ app.post(siteconfig.rootPath+":termbaseID/edit/history.json", function(req, res)
     });
   })
 });
+app.post(siteconfig.rootPath+":termbaseID/edit/xrefsMake.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess){
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.xrefsMake(db, req.params.termbaseID, req.body.ids, req.cookies.email, {}, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  })
+});
+app.post(siteconfig.rootPath+":termbaseID/edit/xrefsBreak.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess){
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.xrefsBreak(db, req.params.termbaseID, req.body.ids, req.cookies.email, {}, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  })
+});
+app.post(siteconfig.rootPath+":termbaseID/edit/merge.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess){
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.merge(db, req.params.termbaseID, req.body.ids, req.cookies.email, {}, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  })
+});
 
 //Term sharing:
 app.post(siteconfig.rootPath+":termbaseID/edit/sharEnquire.json", function(req, res){

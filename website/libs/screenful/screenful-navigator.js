@@ -552,6 +552,10 @@ Screenful.Navigator={
             var $a=$("<a href='javascript:void(null)' >"+action.caption+"</a>").appendTo($menu).on("click", function(e){
               $.ajax({url: action.url, dataType: "json", method: "POST", data: {ids: Screenful.Navigator.starList}}).done(function(data){
 
+                //empty wyc cache:
+                Screenful.wycCache={};
+                if(window.frames["editframe"].Screenful) window.frames["editframe"].Screenful.wycCache={};
+
                 //if one of the starred entries is currently open in the editor, abandon it and reload it there:
                 if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
                   Screenful.Navigator.starList.map(entryID => {
@@ -563,6 +567,7 @@ Screenful.Navigator={
                 }
 
                 Screenful.Navigator.refreshStarlist();
+                Screenful.Navigator.list(null, null, true);
               });
             });
           });
@@ -571,7 +576,17 @@ Screenful.Navigator={
     });
   },
   addToStarlist: function(list){
-    list.map(id => { if(Screenful.Navigator.starList.indexOf(id)==-1) Screenful.Navigator.starList.push(id); });
+    list.map(id => {
+      if(Screenful.Navigator.starList.indexOf(id)==-1) Screenful.Navigator.starList.push(id);
+    });
+    //if one of the starred entries is currently open in the editor, star it there:
+    if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
+      Screenful.Navigator.starList.map(entryID => {
+        if(window.frames["editframe"].Screenful.Editor.entryID==entryID){
+          window.frames["editframe"].$("#butStar").removeClass("off").addClass("on");
+        }
+      });
+    }
     Screenful.Navigator.showStarlist();
   },
 };

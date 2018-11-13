@@ -211,7 +211,6 @@ module.exports={
 
   entryListById: function(db, termbaseID, ids, callnext){
     var sql=`select * from entries where id in(${ids})`;
-    console.log(sql);
     db.all(sql, {}, function(err, rows){
       if(err || !rows) rows=[];
       var entries=[];
@@ -471,7 +470,8 @@ module.exports={
     //now actually do it:
     function go(dowhat){
       var entry=JSON.parse(json);
-      module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
+      module.exports.cleanUpXrefs(db, termbaseID, entryID, entry, function(entry){
+        module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
         var sql=""; var params={};
         if(dowhat=="create"){
           sql="insert into entries(json, cStatus, pStatus, dateStamp) values($json, $cStatus, $pStatus, $dateStamp)";
@@ -490,7 +490,7 @@ module.exports={
           //save connections between me and my terms, delete any terms orphaned by this:
           module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
             //tell history that I have been created or changed:
-            module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change"?"update":"create"), email, json, historiography, function(){
+            module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change"?"update":"create"), email, JSON.stringify(entry), historiography, function(){
               //propagate changes in my terms to other entries that share the terms:
               module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
                 //index my domains:
@@ -507,6 +507,7 @@ module.exports={
             });
           });
         });
+      });
       });
     }
   },
@@ -716,6 +717,121 @@ module.exports={
         callnext(data);
       });
     });
+  },
+  xrefsMake: function(db, termbaseID, ids, email, historiography, callnext){
+    var sql=`select * from entries where id in(${ids})`;
+    ids=[]; var entries={};
+    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+      for(var i=0; i<rows.length; i++){ entries[rows[i].id.toString()]=JSON.parse(rows[i].json); ids.push(rows[i].id.toString()); }
+      ids.map(id1 => { ids.map(id2 => { if(id1!=id2){
+        var entry1=entries[id1]; var entry2=entries[id2];
+        if(!entry1.xrefs) entry1.xrefs=[];
+        if(entry1.xrefs.indexOf(id2)==-1) entry1.xrefs.push(id2);
+      }})});
+      save();
+    });
+    function save(){
+      if(ids.length>0){
+        var entryID=ids.pop();
+        var json=JSON.stringify(entries[entryID]);
+        db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
+          module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
+            save();
+          });
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  xrefsBreak: function(db, termbaseID, ids, email, historiography, callnext){
+    var sql=`select * from entries where id in(${ids})`;
+    ids=[]; var entries={};
+    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+      for(var i=0; i<rows.length; i++){ entries[rows[i].id.toString()]=JSON.parse(rows[i].json); ids.push(rows[i].id.toString()); }
+      ids.map(id1 => { ids.map(id2 => { if(id1!=id2){
+        var entry1=entries[id1]; var entry2=entries[id2];
+        if(!entry1.xrefs) entry1.xrefs=[];
+        if(entry1.xrefs.indexOf(id2)>-1) entry1.xrefs.splice(entry1.xrefs.indexOf(id2), 1);
+      }})});
+      save();
+    });
+    function save(){
+      if(ids.length>0){
+        var entryID=ids.pop();
+        var json=JSON.stringify(entries[entryID]);
+        db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
+          module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
+            save();
+          });
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  cleanUpXrefs: function(db, termbaseID, entryID, entry, callnext){
+    //remove xrefs that go to entries that don't exist
+    var ids=[]; if(entry.xrefs) entry.xrefs.map(id => { ids.push(id); });
+    var sql=`select id from entries where id in(${ids})`;
+    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+      var existIDs=[]; for(var i=0; i<rows.length; i++){ existIDs.push(rows[i].id.toString()); }
+      if(entry.xrefs){
+        ids.map(id => {
+          if(existIDs.indexOf(id)==-1 || id==entryID.toString()) entry.xrefs.splice(entry.xrefs.indexOf(id), 1);
+        });
+      }
+      callnext(entry);
+    });
+  },
+  merge: function(db, termbaseID, ids, email, historiography, callnext){
+    var sql=`select * from entries where id in(${ids})`;
+    ids=[]; var entries={};
+    var motherID=0; var motherEntry=null;
+    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+      for(var i=0; i<rows.length; i++){ entries[rows[i].id.toString()]=JSON.parse(rows[i].json); ids.push(rows[i].id.toString()); }
+      motherID=ids[0]; ids.splice(0, 1); motherEntry=entries[motherID];
+      ids.map(id => {
+        var deadEntry=entries[id];
+        motherEntry=mergeTwo(motherEntry, deadEntry);
+      });
+      del();
+    });
+    function del(){
+      if(ids.length>0){
+        var entryID=ids.pop();
+        module.exports.entryDelete(db, termbaseID, entryID, email, historiography, function(){
+          del();
+        });
+      } else {
+        module.exports.entrySave(db, termbaseID, motherID, JSON.stringify(motherEntry), email, historiography, function(){
+          callnext();
+        });
+      }
+    }
+    function mergeTwo(entry1, entry2){
+      for(var key in entry2){
+        if(!entry1[key]){
+          entry1[key]=entry2[key]
+        } else {
+          if(key=="cStatus" || key=="pStatus"){
+            entry1[key]=Math.max(entry1[key], entry2[key]).toString();
+          } else if(key=="dateStamp"){
+            entry1[key]=(entry1[key]>entry2[key] ? entry1[key] : entry2[key]);
+          } else if(key=="intros"){
+            for(var lang in entry2[key]){
+              if(!entry1[key][lang]) entry1[key][lang]=entry2[key][lang]; else entry1[key][lang]+=" + "+entry2[key][lang];
+            }
+          } else {
+            var stamps=[]; entry1[key].map(obj => { stamps.push(JSON.stringify(obj)); });
+            entry2[key].map(obj => {
+              if(stamps.indexOf(JSON.stringify(obj))==-1) entry1[key].push(obj);
+            });
+          }
+        }
+      }
+      return entry1;
+    }
   },
 
   metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
