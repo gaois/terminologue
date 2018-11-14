@@ -83,8 +83,8 @@ Spec.templates["isfor"]={
   html: function(){
     var html=`<div class="title">
       ${L("LANGUAGES")}
-      <span class="link" onclick="$(this).closest('.title').next('.fy_container').first().find('input').prop('checked', true)">${L("select all")}</span>
-      <span class="link" onclick="$(this).closest('.title').next('.fy_container').first().find('input').prop('checked', false)">${L("unselect all")}</span>
+      <span class="link" onclick="$(this).closest('.title').next('.fy_container').first().find('input').prop('checked', true); Fy.changed()">${L("select all")}</span>
+      <span class="link" onclick="$(this).closest('.title').next('.fy_container').first().find('input').prop('checked', false); Fy.changed()">${L("unselect all")}</span>
     </div>
     <div class="fy_container">
       <div class="fy_box">

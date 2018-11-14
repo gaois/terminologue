@@ -142,6 +142,20 @@ function L(s, gloss){
   if(s=="Delete the termbase") return "Scrios an cnuasach";
   if(s=="Careful now! You will not be able to undo this.") return "Cúramach! Ní bheidh tú ábalta dul ar ais.";
 
+  if(s=="TITLE") return "TEIDEAL";
+  if(s=="SUBDOMAINS") return "FO-RÉIMSÍ";
+  if(s=="abbreviation") return "giorrúchán";
+  if(s=="LANGUAGES") return "TEANGACHA";
+  if(s=="select all") return "roghnaigh cách";
+  if(s=="unselect all") return "díroghaigh cách";
+  if(s=="PRIORITY") return "TOSAÍOCHT";
+  if(s=="high") return "ard";
+  if(s=="medium") return "meánach";
+  if(s=="low") return "íseal";
+  if(s=="USERS") return "ÚSÁIDEOIRÍ";
+  if(s=="e-mail address") return "seoladh ríomhphoist";
+  if(s=="user") return "úsáideoir";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

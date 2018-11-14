@@ -104,10 +104,11 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $html.append($collapsor);
     $collapsor.on("click", function(e){
       if($collapsor.html()=="+") {
-        $html.find(".fy_hidable").slideDown();
+        //$html.find(".fy_hidable").slideDown();
+        $html.find(".fy_hidable").not($html.find(".fy_hidable .fy_hidable")).slideDown();
         $collapsor.html("–");
       } else {
-        $html.find(".fy_hidable").each(function(){
+        $html.find(".fy_hidable").not($html.find(".fy_hidable .fy_hidable")).each(function(){
           var $this=$(this);
           if(!$this.data("template") || $this.data("template").hidable==undefined || $this.data("template").hidable($this)) $this.slideUp();
         });

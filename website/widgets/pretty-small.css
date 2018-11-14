@@ -1,4 +1,5 @@
 span.prettyMetadatum {}
+span.prettyMetadatum span.abbr {font-weight: bold;}
 
 div.prettyEntry {font-size: 1em; padding-bottom: 10px;}
 

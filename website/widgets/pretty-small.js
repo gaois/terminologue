@@ -2,17 +2,24 @@ var Pretty={};
 
 Pretty.metadatum=function(metadatum, lingo){
   var ret="";
-  var strings=[];
-  lingo.languages.map(lang => {
-    if(lang.role=="major" && metadatum.title[lang.abbr]){
-      var string=Pretty.clean4html(metadatum.title[lang.abbr]);
-      if(strings.indexOf(string)==-1){
-        if(strings.length>0) ret+="/"
-        ret+="<span>"+string+"</span>";
-        strings.push(string);
+  if(metadatum.abbr) ret+="<span class='abbr'>"+metadatum.abbr+"</span> ";
+  if(typeof(metadatum.title)=="string") {
+    ret+=metadatum.title;
+  } else if(metadatum.title.$) {
+    ret+=metadatum.title.$;
+  } else {
+    var strings=[];
+    lingo.languages.map(lang => {
+      if(lang.role=="major" && metadatum.title[lang.abbr]){
+        var string=Pretty.clean4html(metadatum.title[lang.abbr]);
+        if(strings.indexOf(string)==-1){
+          if(strings.length>0) ret+="/"
+          ret+="<span>"+string+"</span>";
+          strings.push(string);
+        }
       }
-    }
-  });
+    });
+  }
   ret="<span class='prettyMetadatum'>"+ret+"</span>"
   return ret;
 }

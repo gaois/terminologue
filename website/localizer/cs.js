@@ -142,6 +142,20 @@ function L(s, gloss){
   if(s=="Delete the termbase") return "Smazat databázi";
   if(s=="Careful now! You will not be able to undo this.") return "Pozor! Tohle nepůjde vrátit zpátky.";
 
+  if(s=="TITLE") return "NADPIS";
+  if(s=="SUBDOMAINS") return "PODDOMÉNY";
+  if(s=="abbreviation") return "zkratka";
+  if(s=="LANGUAGES") return "JAZYKY";
+  if(s=="select all") return "vybrat všechny";
+  if(s=="unselect all") return "odvybrat všechny";
+  if(s=="PRIORITY") return "PRIORITA";
+  if(s=="high") return "vysoká";
+  if(s=="medium") return "střední";
+  if(s=="low") return "nízká";
+  if(s=="USERS") return "UŹIVATElĚ";
+  if(s=="e-mail address") return "e-mailová adresa";
+  if(s=="user") return "uživatel";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

@@ -18,7 +18,7 @@ div.fy_onlybody div.title:first-child {margin-top: 0px;}
 div.fy_onlybody div.title span.link {color: #aaaaaa; font-weight: normal; margin-left: 0.5em; cursor: pointer;}
 div.fy_onlybody div.title span.link:hover {color: var(--link);}
 
-div.fy_onlybody div.goodtitle {border-bottom: 1px solid #cccccc; padding: 0px 0px 5px 0px; margin-bottom: 15px; margin-top: 25px; font-weight: bold;}
+div.fy_onlybody div.goodtitle {border-bottom: 1px solid #cccccc; padding: 0px 0px 5px 0px; margin-bottom: 15px; margin-top: 25px; font-weight: bold; color: #666666;}
 div.fy_onlybody div.goodtitle:first-child {margin-top: 0px;}
 div.fy_onlybody div.goodtitle span.light {color: #aaaaaa; font-style: italic;}
 
@@ -36,12 +36,12 @@ div.fy_collapsible {padding-left: 40px; position: relative;}
 div.fy_collapsible div.collapsor {position: absolute; left: 0px; top: 20px; color: #666666; border: 1px dotted #999999; font-weight: bold; padding: 1px 0px; box-sizing: border-box; width: 25px; text-align: center; cursor: pointer; font-size: 0.9em;}
 div.fy_collapsible div.collapsor:hover {color: #333333;}
 
-div.fy_box {background-color: #dddddd; border: 3px solid #86d1c9; padding: 10px 10px 7px 10px; margin-left: -5px; margin-right: -5px; margin-bottom: 3px; border-radius: 4px; position: relative;}
+div.fy_box {background-color: #dddddd; border: 2px solid #86d1c9; padding: 10px 10px 7px 10px; margin-left: -5px; margin-right: -5px; margin-bottom: 3px; border-radius: 2px; position: relative;}
 div.fy_box div.fy_box {border: 0px; border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; padding: 10px 10px 0px 10px;}
 
 div.fy_lineabove {border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; padding: 10px 10px 0px 10px;}
 
-div.fy_horizon { margin: 5px 0px; border: 1px inset #999999; border-radius: 4px; min-height: 1.5rem; position: relative; padding: 4px 0px; background-color: #ffffff;}
+div.fy_horizon { margin: 5px 0px; border: 1px inset #999999; border-radius: 2px; min-height: 1.5rem; position: relative; padding: 4px 0px; background-color: #ffffff;}
 div.fy_horizon:first-child {margin-top: 0px;}
 div.fy_horizon:last-child {margin-bottom: 0px;}
 div.fy_box div.fy_box div.fy_horizon:last-child {margin-bottom: 5px;}
@@ -75,6 +75,10 @@ span.fy_adder:hover {color: #333333; text-shadow: 1px 1px 0px #ffffff;}
 div.fy_lineabove > span.fy_adder {margin-top: 10px;}
 div.fy_lineabove > span.fy_adder:first-child {margin-top: 0px;}
 div.fy_box > div.fy_lineabove:last-child > span.fy_adder:last-child {margin-bottom: 2px;}
+
+span.fy_adder.big {padding-left: 40px; position: relative; padding-top: 3px; padding-bottom: 10px;}
+span.fy_adder.big span.collapsor {position: absolute; left: 0px; top: 0px; color: #666666; border: 1px dotted #999999; font-weight: bold; padding: 1px 0px; box-sizing: border-box; width: 25px; text-align: center; cursor: pointer; font-size: 0.9em;}
+span.fy_adder.big:hover {color: #333333;}
 
 div.fy_box div.fy_box > span.fy_adder {margin-top: 10px;}
 div.fy_box div.fy_box > span.fy_adder:first-child {margin-top: 0px;}
