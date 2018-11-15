@@ -248,8 +248,6 @@ module.exports={
   },
   composeSqlQueries: function(facets, searchtext, modifier, howmany, callnext){
     var modifiers=modifier.split(" ");
-    console.log();
-    console.log(facets);
     var joins=[], where=[]; params={};
     if(searchtext!="") {
       joins.push(`inner join entry_term as et on et.entry_id=e.id`);
@@ -393,12 +391,12 @@ module.exports={
     sql1+=` as match_quality\n`;
     sql1+=` from entries as e\n`;
     joins.map(s => {sql1+=" "+s+"\n"});
+    sql1+=` inner join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
+    params1.$sortlang=modifiers[2];
     if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
     sql1+=` group by e.id\n`;
-    sql1+=` order by match_quality desc, e.id\n`;
+    sql1+=` order by match_quality desc, sk.key\n`;
     sql1+=` limit $howmany`;
-    console.log(params1);
-    console.log(sql1);
     //sql1=`select * from entries order by id limit $howmany`;
     //var params1={$howmany: howmany};
 
@@ -407,8 +405,6 @@ module.exports={
     joins.map(s => {sql2+=" "+s+"\n"});
     if(where.length>0){ sql2+=" where "; where.map((s, i) => {if(i>0) sql2+=" and "; sql2+=s+"\n";}); }
     sql2=sql2.trim();
-    console.log(params2);
-    console.log(sql2);
     //var sql2=`select count(*) as total from entries`;
     //var params2={};
 
@@ -487,19 +483,21 @@ module.exports={
         }
         //create or change me:
         db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;
-          //save connections between me and my terms, delete any terms orphaned by this:
-          module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
-            //tell history that I have been created or changed:
-            module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change"?"update":"create"), email, JSON.stringify(entry), historiography, function(){
-              //propagate changes in my terms to other entries that share the terms:
-              module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
-                //index my domains:
-                module.exports.saveDomains(db, termbaseID, entryID, entry, function(){
-                  //index my collections:
-                  module.exports.saveCollections(db, termbaseID, entryID, entry, function(){
-                    //index my extranets:
-                    module.exports.saveExtranets(db, termbaseID, entryID, entry, function(){
-                      callnext(entryID);
+          module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
+            //save connections between me and my terms, delete any terms orphaned by this:
+            module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
+              //tell history that I have been created or changed:
+              module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change"?"update":"create"), email, JSON.stringify(entry), historiography, function(){
+                //propagate changes in my terms to other entries that share the terms:
+                module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
+                  //index my domains:
+                  module.exports.saveDomains(db, termbaseID, entryID, entry, function(){
+                    //index my collections:
+                    module.exports.saveCollections(db, termbaseID, entryID, entry, function(){
+                      //index my extranets:
+                      module.exports.saveExtranets(db, termbaseID, entryID, entry, function(){
+                        callnext(entryID);
+                      });
                     });
                   });
                 });
@@ -610,14 +608,41 @@ module.exports={
               entry.desigs.map(desig => { if(parseInt(desig.term.id)==changedTerm.id) desig.term=changedTerm; });
               var json=JSON.stringify(entry);
               db.run("update entries set json=$json where id=$id", {$id: entryID, $json: json}, function(err){
-                module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
-                  goEntry();
+                module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
+                  module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
+                    goEntry();
+                  });
                 });
               });
             } else {
               goTerm();
             }
           }
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveEntrySortings: function(db, termbaseID, entryID, entry, callnext){
+    var sortkeys=[];
+    module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
+      termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="major"){
+        var str="";
+        entry.desigs.map(desig => { if(desig.term.lang==lang.abbr) str+=desig.term.wording; });
+        var abc=termbaseConfigs.abc[lang.abbr] || module.exports.siteconfig.defaultAbc;
+        var sortkey=toSortkey(str, abc);
+        sortkeys.push({lang: lang.abbr, key: sortkey})
+      }});
+      db.run("delete from entry_sortkey where entry_id=$entry_id", {$entry_id: entryID}, function(err){
+        save();
+      })
+    });
+    function save(){
+      var obj=sortkeys.pop();
+      if(obj) {
+        db.run("insert into entry_sortkey(entry_id, lang, key) values($entry_id, $lang, $key)", {$entry_id: entryID, $lang: obj.lang, $key: obj.key}, function(err){
+          save();
         });
       } else {
         callnext();
@@ -1021,4 +1046,32 @@ function generateKey(){
     key+=alphabet[i]
   }
   return key;
+}
+
+function toSortkey(s, abc){
+  const keylength=5;
+  var ret=s.replace(/\<[\<\>]+>/g, "").toLowerCase();
+  //replace any numerals:
+  var pat=new RegExp("[0-9]{1,"+keylength+"}", "g");
+  ret=ret.replace(pat, function(x){while(x.length<keylength+1) x="0"+x; return x;});
+  //prepare characters:
+  var chars=[];
+  var count=0;
+  for(var pos=0; pos<abc.length; pos++){
+    var key=(count++).toString(); while(key.length<keylength) key="0"+key; key="_"+key;
+    for(var i=0; i<abc[pos].length; i++){
+      if(i>0) count++;
+      chars.push({char: abc[pos][i], key: key});
+    }
+  }
+  chars.sort(function(a,b){ if(a.char.length>b.char.length) return -1; if(a.char.length<b.char.length) return 1; return 0; });
+  //replace characters:
+  for(var i=0; i<chars.length; i++){
+    if(!/^[0-9]$/.test(chars[i].char)) { //skip chars that are actually numbers
+      while(ret.indexOf(chars[i].char)>-1) ret=ret.replace(chars[i].char, chars[i].key);
+    }
+  }
+  //remove any remaining characters that aren't a number or an underscore:
+  ret=ret.replace(/[^0-9_]/g, "");
+  return ret;
 }

@@ -125,8 +125,11 @@ function doLanguages(db, callnext){
     }
   });
   ops.configUpdate(db, "bnt", "lingo", JSON.stringify(lingo), function(){
-    console.log("languages done");
-    callnext();
+    var defaultAbc=[["a", "á", "à", "â", "ä", "ă", "ā", "ã", "å", "ą", "æ"],["b"],["c", "ć", "ċ", "ĉ", "č", "ç"],["d", "ď", "đ"],["e", "é", "è", "ė", "ê", "ë", "ě", "ē", "ę"],["f"],["g", "ġ", "ĝ", "ğ", "ģ"],["h", "ĥ", "ħ"],["i", "ı", "í", "ì", "i", "î", "ï", "ī", "į"],["j", "ĵ"],["k", "ĸ", "ķ"],["l", "ĺ", "ŀ", "ľ", "ļ", "ł"],["m"],["n", "ń", "ň", "ñ", "ņ"],["o", "ó", "ò", "ô", "ö", "ō", "õ", "ő", "ø", "œ"],["p"],["q"],["r", "ŕ", "ř", "ŗ"],["s", "ś", "ŝ", "š", "ş", "ș", "ß"],["t", "ť", "ţ", "ț"],["u", "ú", "ù", "û", "ü", "ŭ", "ū", "ů", "ų", "ű"],["v"],["w", "ẃ", "ẁ", "ŵ", "ẅ"],["x"],["y", "ý", "ỳ", "ŷ", "ÿ"],["z", "ź", "ż", "ž"]]
+    ops.configUpdate(db, "bnt", "abc", JSON.stringify({en: defaultAbc, ga: defaultAbc}), function(){
+      console.log("languages done");
+      callnext();
+    });
   });
 }
 function doAcceptLabels(db, callnext){

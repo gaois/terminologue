@@ -110,7 +110,7 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 
 body.sitehome .invelope.top {margin: 50px auto 25px auto;}
 body.sitehome .invelope.top > div.clear {clear: left;}
-div.leftie {float: left; width: 50%; box-sizing: border-box; padding: 20px 40px 0px 0px; border-right: 1px solid #1e6bcf;}
+div.leftie {float: left; width: 50%; box-sizing: border-box; padding: 20px 40px 0px 0px; border-right: 1px solid #03A491;}
 div.rightie {float: left; width: 50%; box-sizing: border-box; border-left: 1px solid #03A491; padding: 20px 0px 20px 40px; position: relative; left: -1px;}
 @media (max-width: 800px){
   body.sitehome .invelope.top {margin-top: 50px;}
@@ -118,7 +118,7 @@ div.rightie {float: left; width: 50%; box-sizing: border-box; border-left: 1px s
   div.rightie {float: none; width: auto; box-sizing: border-box; padding: 40px 0px 0px 0px; border-left: 0px; left: 0px; margin-top: 40px;}
 }
 
-div.welcome {font-size: 1.1rem; line-height: 1.5em; color: #666666; }
+div.welcome {font-size: 1.1rem; line-height: 1.5em; color: #666666; min-height: 500px;}
 div.welcome > div.intro {color: #333333;}
 div.welcome > div.point { margin: 20px 0px;}
 div.welcome > div.point > div.title {}
