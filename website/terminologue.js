@@ -80,7 +80,9 @@ app.get(siteconfig.rootPath, function(req, res){
 app.get(siteconfig.rootPath+"login/", function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     if(/\/login\/$/.test(req.headers.referer)) req.headers.referer=null;
-    res.render("sitewide/login.ejs", {user: user, redirectUrl: req.headers.referer || siteconfig.baseUrl, siteconfig: siteconfig, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
+    var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+    res.render("sitewide/login.ejs", {siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, redirectUrl: req.headers.referer || siteconfig.baseUrl});
+    //res.render("sitewide/login.ejs", {user: user, redirectUrl: req.headers.referer || siteconfig.baseUrl, siteconfig: siteconfig, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
   });
 });
 app.get(siteconfig.rootPath+"logout/", function(req, res){
@@ -121,6 +123,25 @@ app.get(siteconfig.rootPath+"uilang", function(req, res){
     }
   });
 });
+app.get(siteconfig.rootPath+"make/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.loggedin) res.redirect("/"); else {
+      ops.suggestTermbaseID(function(suggested){
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("sitewide/make.ejs", {siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, suggested: suggested});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+"make.json", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.loggedin) res.redirect(siteconfig.baseUrl); else {
+      ops.makeTermbase(req.body.url, req.body.template, req.body.title, "", user.email, function(success){
+        res.json({success: success});
+      });
+    }
+  });
+});
 
 //Termbase home:
 app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
@@ -135,6 +156,18 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
         res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets});
       });
     });
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/random.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
+    if(!configs.publico.public) res.json({more: false, entries: []}); else {
+      ops.readRandoms(db, req.params.termbaseID, function(more, entries){
+        db.close();
+        res.json({more: more, entries: entries});
+      });
+    }
   });
 });
 
@@ -404,6 +437,38 @@ app.post(siteconfig.rootPath+":termbaseID/config/update.json", function(req, res
         db.close();
         var redirUrl=null; if(resaveNeeded) redirUrl="../../resave/";
         res.json({success: true, id: req.body.id, content: adjustedJson, redirUrl: redirUrl});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/config/destroy.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(false) {
+      db.close();
+      res.json({success: false});
+    } else {
+      db.close(function(){
+        ops.destroyTermbase(req.params.termbaseID, function(){
+          res.json({success: true});
+        });
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/config/move.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(false) {
+      db.close();
+      res.json({success: false});
+    } else {
+      db.close(function(){
+        ops.renameTermbase(req.params.termbaseID, req.body.url, function(success){
+          res.json({success: success});
+        });
       });
     }
   });

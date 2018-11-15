@@ -36,6 +36,26 @@
 		<script type="text/javascript" src="../furniture/screenful-user-config.js"></script>
 
 		<link type="text/css" rel="stylesheet" href="../furniture/public.css" />
+
+		<%if(termbaseConfigs.publico.public){%>
+			<script type="text/javascript">
+				$(window).ready(random);
+				function random(){
+					$("#randoms .randomizer").addClass("animated");
+					$.ajax({url: "./random.json", dataType: "json", method: "POST"}).done(function(data){
+						$("#randoms .list").html("");
+						if(!data.more && data.entries.length<20) $("#randoms").addClass("short"); else $("#randoms").removeClass("short");
+						if(data.more) $("#randoms").addClass("hasMore"); else $("#randoms").removeClass("hasMore");
+						for(var i=0; i<data.entries.length; i++){
+							var html="<a href='./search/q="+encodeURIComponent(data.entries[i])+"'>"+data.entries[i]+"</a> ";
+							$("#randoms .list").append(html);
+						}
+						$("#randoms .randomizer").removeClass("animated");
+						$("#randoms").hide().fadeIn();
+					});
+				}
+			</script>
+		<%}%>
 	</head>
 	<body class="homepage">
 		<div id="header">
@@ -60,17 +80,26 @@
 						</div>
 					<%}%>
 				</div>
+				<%if(termbaseConfigs.publico.public){%>
+					<form class="searchContainer" action="./search/" method="GET"><span class="searchbox"><input class="searchbox" name="q"/><input type="submit" class="submit" value="&nbsp;"/></span></form>
+				<%}%>
 			</div>
-			<%if(extranets.length>0){%>
-				<div id="xnets">
-					<%for(var i=0; i<extranets.length; i++){ var xnet=extranets[i]; %>
-						<div class="xnet"><a class="xnetTitle" href="./x<%-xnet.id%>/"><span class="label"><%=L("EXTRANET")%></span> <%-xnet.title[uilang] || xnet.title.$%>%></a></div>
-					<%}%>
+			<div id="dictblurb" class="<%if(termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "").length<200 && termbaseConfigs.ident.blurb.indexOf("\n")==-1){%>centered<%}%>">
+				<%-termbaseConfigs.ident.blurb%>
+				<%if(extranets.length>0){%>
+					<div id="xnets">
+						<%for(var i=0; i<extranets.length; i++){ var xnet=extranets[i]; %>
+							<div class="xnet"><a class="xnetTitle" href="./x<%-xnet.id%>/"><span class="label"><%=L("EXTRANET")%></span> <%-xnet.title[uilang] || xnet.title.$%>%> &nbsp;»</a></div>
+						<%}%>
+					</div>
+				<%}%>
+			</div>
+			<%if(termbaseConfigs.publico.public){%>
+				<div id="randoms">
+					<div class="randomizer" onclick="random()"></div>
+					<div class="list"></div>
 				</div>
 			<%}%>
-			<div id="dictblurb" class="<%if(termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "").length<300 && termbaseConfigs.ident.blurb.indexOf("\n")==-1){%>centered<%}%>">
-				<%-termbaseConfigs.ident.blurb%>
-			</div>
 		</div>
 
 		<div class="invelope bottom">

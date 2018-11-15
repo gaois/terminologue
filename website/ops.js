@@ -72,6 +72,34 @@ module.exports={
     });
   },
 
+  suggestTermbaseID: function(callnext){
+    var id;
+    do{ id=generateTermbaseID(); } while(prohibitedTermbaseIDs.indexOf(id)>-1 || module.exports.termbaseExists(id));
+    callnext(id);
+  },
+  makeTermbase: function(termbaseID, template, title, blurb, email, callnext){
+    if(!title) title="?";
+    if(!blurb) blurb="";
+    if(prohibitedTermbaseIDs.indexOf(termbaseID)>-1 || module.exports.termbaseExists(termbaseID)){
+      callnext(false);
+    } else {
+      fs.copy("termbaseTemplates/"+template+".sqlite", path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"), function(err){
+        var db=module.exports.getDB(termbaseID);
+        var users={}; users[email]={level: "5"};
+        db.run("update configs set json=$json where id='users'", {$json: JSON.stringify(users, null, "\t")}, function(err){
+          var ident={title: {$: title}, blurb: {$: blurb}};
+          db.run("update configs set json=$json where id='ident'", {$json: JSON.stringify(ident, null, "\t")}, function(err){
+            module.exports.escalateConfigIdent(termbaseID, ident, function(){
+              module.exports.escalateConfigUsers(termbaseID, users, function(){
+                db.close();
+                callnext(true);
+              });
+            });
+          });
+        });
+      });
+    }
+  },
   escalateConfigIdent: function(termbaseID, ident, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
     db.run("delete from termbases where id=$termbaseID", {$termbaseID: termbaseID}, function(err){
@@ -89,6 +117,18 @@ module.exports={
       }
       db.close();
       callnext();
+    });
+  },
+  destroyTermbase: function(termbaseID, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
+    db.run("delete from termbases where id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+      db.run("delete from user_termbase where termbase_id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+        db.close(function(){
+          fs.remove(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"), function(){
+            callnext();
+          });
+        });
+      });
     });
   },
 
@@ -169,7 +209,7 @@ module.exports={
   },
   readTermbaseMetadata: function(db, termbaseID, callnext){
     var metadata={};
-    db.all("select * from metadata", {}, function(err, rows){
+    db.all("select * from metadata order by sortkey", {}, function(err, rows){
       if(!err) for(var i=0; i<rows.length; i++) {
         var type=rows[i].type;
         if(!metadata[type]) metadata[type]=[];
@@ -860,7 +900,7 @@ module.exports={
   },
 
   metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
-    var sql1=`select * from metadata where type=$type order by id limit $howmany`;
+    var sql1=`select * from metadata where type=$type order by sortkey limit $howmany`;
     var params1={$howmany: howmany, $type: type};
     var sql2=`select count(*) as total from metadata where type=$type`;
     var params2={$type: type};
@@ -900,15 +940,14 @@ module.exports={
     });
   },
   metadataCreate: function(db, termbaseID, type, entryID, json, callnext){
-    var sql="insert into metadata(type, json) values($type, $json)";
-    var params={$json: json, $type: type};
-    if(entryID) {
-      sql="insert into metadata(id, type, json) values($id, $type, $json)";
-      params.$id=entryID;
-    }
-    db.run(sql, params, function(err){
-      if(!entryID) entryID=this.lastID;
-      callnext(entryID, json);
+    module.exports.getMetadataSortkey(db, termbaseID, json, function(sortkey){
+      var sql="insert into metadata(type, json, sortkey) values($type, $json, $sortkey)";
+      var params={$json: json, $type: type, $sortkey: sortkey};
+      if(entryID) { sql="insert into metadata(id, type, json, sortkey) values($id, $type, $json, $sortkey)"; params.$id=entryID; }
+      db.run(sql, params, function(err){
+        if(!entryID) entryID=this.lastID;
+        callnext(entryID, json);
+      });
     });
   },
   metadataUpdate: function(db, termbaseID, type, entryID, json, callnext){
@@ -921,12 +960,30 @@ module.exports={
         callnext(entryID, json, false);
       } else {
         //update me:
-        db.run("update metadata set json=$json where id=$id and type=$type", {
-          $id: entryID, $json: json, $type: type
-        }, function(err){
-          callnext(entryID, json, true);
+        module.exports.getMetadataSortkey(db, termbaseID, json, function(sortkey){
+          db.run("update metadata set json=$json, sortkey=$sortkey where id=$id and type=$type", {
+            $id: entryID, $json: json, $type: type, $sortkey: sortkey
+          }, function(err){
+            callnext(entryID, json, true);
+          });
         });
       }
+    });
+  },
+  getMetadataSortkey: function(db, termbaseID, json, callnext){
+    var metadatum=JSON.parse(json);
+    module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
+      var str="";
+      if(metadatum.abbr) str+=metadatum.abbr;
+      if(metadatum.title && typeof(metadatum.title)=="string") str+=metadatum.title;
+      if(metadatum.title && typeof(metadatum.title)=="object") {
+        if(metadatum.title.$) str+=metadatum.title.$;
+        termbaseConfigs.lingo.languages.map(lang => { if(lang.role=="major" && metadatum.title[lang.abbr]) str+=metadatum.title[lang.abbr]; });
+      }
+      var abc=module.exports.siteconfig.defaultAbc;
+      if(termbaseConfigs.lingo.languages.length>0) abc=termbaseConfigs.abc[termbaseConfigs.lingo.languages[0].abbr] || abc;
+      var sortkey=toSortkey(str, abc)
+      callnext(sortkey);
     });
   },
 
@@ -1036,6 +1093,24 @@ module.exports={
     str=str.replace("<a href=\"http", "<a target=\"_blank\" href=\"http");
     return str;
   },
+
+  readRandoms: function(db, termbaseID, callnext){
+    var limit=30;
+    var sql_randoms="select wording from terms where id in (select id from terms order by random() limit $limit)"
+    var sql_total="select count(*) as total from terms";
+    var randoms=[];
+    var more=false;
+    db.all(sql_randoms, {$limit: limit}, function(err, rows){
+      for(var i=0; i<rows.length; i++){
+        randoms.push(rows[i].wording);
+      }
+      db.get(sql_total, {}, function(err, row){
+        if(row.total>limit) more=true;
+        callnext(more, randoms);
+      });
+    });
+  },
+
 }
 
 function generateKey(){
@@ -1075,3 +1150,15 @@ function toSortkey(s, abc){
   ret=ret.replace(/[^0-9_]/g, "");
   return ret;
 }
+
+function generateTermbaseID(){
+  var alphabet="abcdefghijkmnpqrstuvwxy23456789";
+  var id="";
+  while(id.length<8) {
+    var i=Math.floor(Math.random() * alphabet.length);
+    id+=alphabet[i]
+  }
+  return "z"+id;
+}
+
+const prohibitedTermbaseIDs=["login", "logout", "make", "signup", "forgotpwd", "changepwd", "users", "termbases", "recoverpwd", "createaccount"];

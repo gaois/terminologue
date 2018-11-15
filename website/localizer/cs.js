@@ -156,6 +156,8 @@ function L(s, gloss){
   if(s=="e-mail address") return "e-mailová adresa";
   if(s=="user") return "uživatel";
 
+  if(s=="Alphabetical order") return "Abecední řazení";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

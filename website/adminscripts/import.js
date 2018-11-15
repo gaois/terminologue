@@ -44,7 +44,7 @@ function deed(stop){
                       title: {
                         ga: "Téarmaí ar gá féachaint orthu",
                         en: "Terms that need to be looked at",
-                        $: "Téarmaí ar gá féachaint orthu/Terms that need to be looked at"
+                        $: "Téarmaí that need to be looked at"
                       },
                       users: [
                         "valselob@gmail.com",

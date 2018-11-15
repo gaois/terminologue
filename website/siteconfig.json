@@ -6,13 +6,16 @@
   "dataDir": "../data/",
   "admins": ["valselob@gmail.com"],
   "trackingCode": "",
-  "X-welcome": "Welcome to your <a href='http://www.terminologue.org/'>Terminologue</a> installation.",
-  "welcome": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro/'>Gentle introduction to Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div>",
   "uilangs": [
-    {"abbr": "ga", "caption": "Gaeilge"},
     {"abbr": "en", "caption": "English"},
+    {"abbr": "ga", "caption": "Gaeilge"},
     {"abbr": "cs", "caption": "česky"}
   ],
+  "welcome": {
+    "en": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro/'>Gentle introduction to Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div>",
+    "ga": "<div class='intro'>Fáilte go <strong>Terminologue</strong>, córas bainistithe téarmaíochta atá oscailte agus saor in aisce.</div><div class='point'><div class='title'><a href='docs/intro/'>Cuir aithne ar Terminologue</a></div><div class='blurb'>Turas treoraithe gairid agus éasca trí Terminologue do thosaitheorí.</div></div>",
+    "cs": "<div class='intro'>Vítá vás <strong>Terminologue</strong>, otevřený systém pro práci s terminologickými databázemi.</div><div class='point'><div class='title'><a href='docs/intro/'>Začínáme s Terminologuem</a></div><div class='blurb'>Krátký a snadný úvod to systému Terminologue pro začátečníky.</div></div>"
+  },
   "uilangDefault": "ga",
   "mailconfig": {"host": "localhost", "port": 465,"secure": false, "from": "noreply@terminologue.org"},
   "licences": {

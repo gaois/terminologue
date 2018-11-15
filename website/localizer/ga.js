@@ -156,6 +156,8 @@ function L(s, gloss){
   if(s=="e-mail address") return "seoladh ríomhphoist";
   if(s=="user") return "úsáideoir";
 
+  if(s=="Alphabetical order") return "Ord aibítre";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

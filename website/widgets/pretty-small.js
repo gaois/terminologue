@@ -51,6 +51,7 @@ Pretty.entry=function(entry){
 
 Pretty.desig=function(desig, withLangLabel){
   var $ret=$("<div class='prettyDesig'></div>");
+  var lang=Spec.getLang(desig.term.lang); if(lang && lang.role=="minor") $ret.addClass("minor");;
   var acceptLabel=Spec.getAcceptLabel(desig.accept); if(acceptLabel && acceptLabel.level<0) $ret.addClass("grey");
   if(withLangLabel) $ret.append(Pretty.lang(desig.term.lang));
   $ret.append(Pretty.wording(desig.term.wording, desig.term.annots));

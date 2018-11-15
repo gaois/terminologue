@@ -17,7 +17,7 @@ body {background-image: url(header-back.gif); background-position: right top; ba
 .invelope > .clear {clear: both;}
 
 #dictheader {margin-bottom: 20px;}
-body.homepage #dictheader {text-align: center; margin-top: 100px; margin-bottom: 100px;}
+body.homepage #dictheader {text-align: center; margin-top: 100px; margin-bottom: 50px;}
 body.entrypage #dictheader {margin-top: -10px;}
 @media (max-width: 800px){ body.homepage #dictheader {margin-top: 20px; margin-bottom: 60px;} }
 @media (min-width: 1550px){ body.entrypage #dictheader {margin-top: -30px;} }
@@ -32,7 +32,7 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #dictheader div.titleContainer div.editLinks a.editLink {font-size: 16px; border: 1px solid transparent; border-radius: 100px; border-color: #666666; color: #666666; background-color: #ffffff; padding: 5px 10px; text-decoration: none; }
 #dictheader div.titleContainer div.editLinks a.editLink:hover {color: #666666; box-shadow: 0px 0px 2px #999999;}
 
-#dictheader form.searchContainer {margin-top: 20px;}
+#dictheader form.searchContainer {margin-top: 40px;}
 @media (max-width: 800px) { body.entrypage #dictheader form.searchContainer {margin-top: 15px;} }
 #dictheader form.searchContainer span.searchbox {position: relative; display: inline-block; width: 90%; padding: 0px 10px; max-width: 400px; border: 1px inset #cccccc; box-shadow: 0px 0px 4px #999999; text-align: left;}
 #dictheader form.searchContainer span.searchbox input.searchbox {font: inherit; border: 0px; cursor: inline; border-radius: 4px; background-color: #ffffff; color: #333333; font-size: 1rem; padding: 10px 0px 10px 0px; display: inline-block; vertical-align: middle; width: 100%; }
@@ -43,16 +43,22 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #dictblurb a {color: #124f6c; text-decoration: none;}
 #dictblurb a:hover {color: #1a668b;}
 
+#dictblurb div#xnets {margin: 0px auto; line-height: 3em;}
+#dictblurb div.xnet {display: block; margin: 0px 0px 0px 0px;}
+#dictblurb div.xnet a.xnetTitle {display: inline-block; font-size: 1rem; padding: 5px 15px 5px 10px; background-color: #c1f1ec; color: #026c60; border-radius: 4px; text-decoration: none; line-height: 1.5em; border: 2px solid #03A491;}
+#dictblurb div.xnet a.xnetTitle span.label {display: inline-block; font-size: 16px; color: #999999; padding: 0px 5px; font-weight: bold;}
+#dictblurb div.xnet a.xnetTitle:hover {box-shadow: 0px 0px 2px #999999; color: #026c60; text-shadow: 0px 0px 2px #ffffff;}
+
+
+
 #randoms { margin-top: 60px; position: relative; min-height: 100px;}
 #randoms.short {}
 #randoms.hasMore {}
 #randoms > div.list {font-size: 1rem; line-height: 2em; text-align: center;}
 #randoms.short div.list {margin: auto; max-width: 1100px;}
 #randoms.hasMore div.list {text-align: left; border-left: 1px solid #dddddd; padding-left: 10px; margin-left: 105px;}
-#randoms > div.list > a {color: #666666; text-decoration: none; white-space: nowrap; margin: 0px 0px; padding: 5px 10px;}
-#randoms > div.list > a span.headword {font-weight: bold; color: #000000;}
-#randoms > div.list > a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff;}
-#randoms > div.list > a:hover span.headword {color: rgb(0, 76, 131);}
+#randoms > div.list > a {color: #666666; text-decoration: none; white-space: nowrap; margin: 0px 0px; padding: 5px 10px; font-weight: bold; color: #000000;}
+#randoms > div.list > a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 #randoms > div.randomizer {display: none; }
 #randoms.hasMore > div.randomizer {display: block; position: absolute; top: 0px; left: 45px; background-image: url(refresh-static.gif); width: 40px; height: 40px; background-position: center center; background-repeat: no-repeat; cursor: pointer;}
 #randoms.hasMore > div.randomizer:hover {background-color: #f7f9ea;}
@@ -160,13 +166,6 @@ div.dict a.dictTitle:hover {box-shadow: 0px 0px 2px #999999; color: #eeeeee;}
 div.dict a.dictAction {visibility: hidden; display: inline-block; color: #cccccc; text-decoration: none;}
 div.dict:hover a.dictAction {visibility: visible;}
 div.dict a.dictAction:hover {color: #2c7fba;}
-
-div#xnets {margin: 0px auto; text-align: center; line-height: 3em;}
-body.homepage div#xnets {margin-top: -50px; margin-bottom: 100px; min-height: 200px;}
-div.xnet {display: inline-block; margin: 0px 2px;}
-div.xnet a.xnetTitle {display: inline-block; font-size: 1.1rem; padding: 5px 15px 5px 10px; background-color: #c1f1ec; color: #026c60; border-radius: 4px; text-decoration: none; line-height: 1.5em; border: 2px solid #03A491;}
-div.xnet a.xnetTitle span.label {display: inline-block; font-size: 16px; color: #999999; padding: 0px 5px; font-weight: bold;}
-div.xnet a.xnetTitle:hover {box-shadow: 0px 0px 2px #999999; color: #026c60; text-shadow: 0px 0px 2px #ffffff;}
 
 div.adminlink {margin-top: 15px; color: #999999;}
 div.adminlink a {text-decoration: none; color: #047063; background-image: url(cog.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px; margin-right: 0.75em;}

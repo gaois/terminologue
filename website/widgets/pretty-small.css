@@ -31,4 +31,6 @@ div.prettyDesig.grey span.prettyWording span.label {color: #999999;}
 div.prettyDesig.grey span.clarif {color: #999999;}
 div.prettyDesig.grey span.accept {color: #999999;}
 
+div.prettyDesig.minor span.prettyWording {font-size: 0.8em; color: #666666; }
+
 div.prettyIntro {position: relative; padding-left: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em;}
