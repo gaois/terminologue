@@ -961,6 +961,7 @@ module.exports={
     });
   },
   metadataCreate: function(db, termbaseID, type, entryID, json, callnext){
+    if(type=="domain") json=module.exports.subdomainIDs(json);
     module.exports.getMetadataSortkey(db, termbaseID, json, function(sortkey){
       var sql="insert into metadata(type, json, sortkey) values($type, $json, $sortkey)";
       var params={$json: json, $type: type, $sortkey: sortkey};
@@ -972,6 +973,7 @@ module.exports={
     });
   },
   metadataUpdate: function(db, termbaseID, type, entryID, json, callnext){
+    if(type=="domain") json=module.exports.subdomainIDs(json);
     db.get("select id, json from metadata where id=$id and type=$type", {$id: entryID, $type: type}, function(err, row){
       var newJson=json;
       var oldJson=(row?row.json:"");
@@ -990,6 +992,22 @@ module.exports={
         });
       }
     });
+  },
+  subdomainIDs: function(json){
+    var domain=JSON.parse(json);
+    var maxID=0;
+    var lidless=[];
+    if(domain.subdomains) walk(domain.subdomains);
+    function walk(subdomains){
+      subdomains.map(subdomain => {
+        if(!subdomain.lid) lidless.push(subdomain); else maxID=Math.max(maxID, parseInt(subdomain.lid));
+        if(subdomain.subdomains) walk(subdomain.subdomains);
+      });
+    }
+    lidless.map(subdomain => {
+      subdomain.lid=(++maxID).toString();
+    });
+    return JSON.stringify(domain);
   },
   getMetadataSortkey: function(db, termbaseID, json, callnext){
     var metadatum=JSON.parse(json);
