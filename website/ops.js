@@ -131,6 +131,27 @@ module.exports={
       });
     });
   },
+  renameTermbase: function(oldTermbaseID, newTermbaseID, callnext){
+    if(prohibitedTermbaseIDs.indexOf(newTermbaseID)>-1 || module.exports.termbaseExists(newTermbaseID)){
+      callnext(false);
+    } else {
+      fs.move(path.join(module.exports.siteconfig.dataDir, "termbases/"+oldTermbaseID+".sqlite"), path.join(module.exports.siteconfig.dataDir, "termbases/"+newTermbaseID+".sqlite"), function(err){
+        var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
+        db.run("delete from termbases where id=$termbaseID", {$termbaseID: oldTermbaseID}, function(err){
+          db.close();
+          var termbaseDB=module.exports.getDB(newTermbaseID);
+          module.exports.readTermbaseConfigs(termbaseDB, newTermbaseID, function(configs){
+            module.exports.escalateConfigIdent(newTermbaseID, configs.ident, function(){
+              module.exports.escalateConfigUsers(newTermbaseID, configs.users, function(){
+                termbaseDB.close();
+                callnext(true);
+              });
+            });
+          });
+        });
+      });
+    }
+  },
 
   termbaseExists: function(termbaseID){
     return fs.existsSync(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"));

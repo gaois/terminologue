@@ -394,6 +394,22 @@ app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
     }
   });
 });
+app.get(siteconfig.rootPath+":termbaseID/config/url/", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+    } else {
+      ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+        db.close();
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-config/url.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: "url", uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+      });
+    }
+  });
+});
 app.get(siteconfig.rootPath+":termbaseID/config/:configType/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
