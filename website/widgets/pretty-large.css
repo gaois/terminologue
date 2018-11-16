@@ -74,6 +74,7 @@ div.prettyXrefs div.xref > span.id {color: #aaaaaa; cursor: pointer;}
 div.prettyXrefs div.xref > span.id:hover {color: var(--link);}
 
 span.prettyEntryOneliner {font-size: 0.8em;}
+div#fy_popup span.prettyEntryOneliner {font-size: 1em; padding: 5px 0px; display: block;}
 span.prettyEntryOneliner span.term {font-weight: bold; color: #333333;}
 span.prettyEntryOneliner span.divider {margin: 0px 0.25em; color: #aaaaaa;}
 span.prettyEntryOneliner:hover span.term {color: var(--link);}

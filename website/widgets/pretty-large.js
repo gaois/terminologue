@@ -234,7 +234,7 @@ Pretty.desig=function(desig, withLangLabel){
       $inflects.append(Pretty.inflect(obj));
     });
   }
-  $ret.append(Pretty.sources(desig.sources));
+  if(desig.sources) $ret.append(Pretty.sources(desig.sources));
   return $ret;
 };
 

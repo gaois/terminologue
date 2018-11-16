@@ -61,17 +61,6 @@ Spec.getExtranet=function(id){
   return ret;
 };
 
-Spec.sharEnquire=function($term, termID, lang, wording){
-  var $bubble=$term.find(".fy_bubble").hide().removeClass("fullon").removeClass("sublime").removeClass("invisible").html("");
-  $.ajax({url: "./sharEnquire.json", dataType: "json", method: "POST", data: {termID: termID, lang: lang, wording: wording}}).done(function(data){
-    if(data.sharedBy.length>1){
-      $bubble.addClass("fullon").html(data.sharedBy.length).show();
-    } else if(data.similarTo.length>0){
-      $bubble.addClass("sublime").html(data.similarTo.length).show();
-    }
-  });
-};
-
 Spec.templates[":top"]={
   type: "object",
   html: `<div>
@@ -129,7 +118,7 @@ Spec.templates["hiddenID"]={
   type: "string",
   html: `<input type="hidden"/>`,
   set: function($me, data){
-    if(data.toString()) $me.val(data);
+    if(data.toString() || data==="") $me.val(data);
   },
   get: function($me){
     return $me.val();
@@ -916,4 +905,80 @@ Spec.templates["xrefs"]={
     return $me.data("data");
   },
 
+};
+
+Spec.sharEnquire=function($term, termID, lang, wording){
+  var $bubble=$term.find(".fy_bubble").hide().removeClass("fullon").removeClass("sublime").removeClass("invisible").html("");
+  $.ajax({url: "./sharEnquire.json", dataType: "json", method: "POST", data: {termID: termID, lang: lang, wording: wording}}).done(function(data){
+    //remove the current entry:
+    if(data.sharedBy && data.sharedBy.length>0) data.sharedBy.map((entry, i) => {
+      if(entry.entryID==Screenful.Editor.entryID) data.sharedBy.splice(i, 1);
+    });
+
+    if(data.sharedBy.length>0){
+      $bubble.addClass("fullon").html(data.sharedBy.length).show();
+      $bubble.on("click", function(e){
+        e.stopPropagation();
+        Spec.sharPopup($term, termID, lang, wording, data);
+      });
+    } else if(data.similarTo.length>0){
+      $bubble.addClass("sublime").html(data.similarTo.length).show();
+      $bubble.on("click", function(e){
+        e.stopPropagation();
+        Spec.sharPopup($term, termID, lang, wording, data);
+      });
+    }
+  });
+};
+
+Spec.sharPopup=function($term, termID, lang, wording, data){
+  console.log($term, termID, data);
+  Fy.showPopup($term.find(".fy_bubble"));
+
+  if(data.sharedBy && data.sharedBy.length>0){
+    $("#fy_popup").append("<div class='title'>"+L("Other entries that share this term")+"</div>");
+    var $actions=$("<div class='actions'><span class='action stopSharing'>"+L("stop sharing")+"</span> <span class='action addToWorklist'>"+L("add to worklist")+"</span></div>").appendTo($("#fy_popup"));
+    $actions.find(".action.stopSharing").on("click", function(){
+      //disconnect:
+      var $id=$term.find(".jsonName_id");
+      Spec.templates["hiddenID"].set($id, "");
+      Spec.sharEnquire($term, "", lang, wording);
+      Fy.changed();
+      $("#fy_popup").remove();
+    });
+    $actions.find(".action.addToWorklist").on("click", function(){
+      var ids=[]; if(Screenful.Editor.entryID) ids.push(Screenful.Editor.entryID); data.sharedBy.map(entry => {ids.push(entry.entryID)});
+      Screenful.Editor.addToStarlist(ids);
+    });
+    data.sharedBy.map(entry => {
+      if(entry.entryID!=Screenful.Editor.entryID){
+        var entryID=entry.entryID; entry=JSON.parse(entry.json);
+        var $div=$("<div class='clickable arrow'></div>").appendTo($("#fy_popup")).html(Pretty.entryOneliner(entry)).on("click", function(e){
+          Screenful.Editor.open(e, entryID);
+        });
+      }
+    });
+  }
+
+  if(data.similarTo && data.similarTo.length>0){
+    $("#fy_popup").append("<div class='title'>"+L("Similar terms (click to insert)")+"</div>");
+    data.similarTo.map(term => {
+      var termID=term.termID; term=JSON.parse(term.json);
+      var $div=$("<div class='clickable'></div>").appendTo($("#fy_popup")).html(Pretty.desig({term: term}, true)).on("click", function(e){
+        //replace:
+        var $replacer=Fy.renderNode(term, Spec.templates.term, Spec, false).data("jsonName", "term").addClass("jsonName_term");
+        $term.replaceWith($replacer);
+        $replacer.closest(".jsonName_item").find(".collapsor").html("-").trigger("click");
+        Spec.sharEnquire($replacer, term.id, term.lang, term.wording);
+        Fy.changed();
+      });
+    });
+  }
+
+  //disconnect:
+  // var $id=$term.find(".jsonName_id");
+  // console.log($id);
+  // Spec.templates["hiddenID"].set($id, "");
+  // Spec.sharEnquire($term, "", lang, wording);
+  // Fy.changed();
 };

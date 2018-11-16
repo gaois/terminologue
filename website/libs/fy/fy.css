@@ -107,3 +107,13 @@ div.fy_bubble.invisible {background-color: #aaaaaa; color: #dddddd; opacity: 0;}
 div.fy_bubble.invisible:hover {opacity: 1;}
 
 div.fy_column {margin: 10px 0px;}
+
+div#fy_popup {border: 1px solid #666666; box-shadow: 0px 0px 4px #666666; border-radius: 4px; background-color: #ffffff; padding: 10px; position: absolute; z-index: 10;}
+div#fy_popup div.title {margin: 20px -10px 10px -10px; background-color: var(--highlight); color: #666666; text-shadow: 1px 1px 0px #eeeeee ; padding: 10px 100px 10px 10px; font-weight: bold;}
+div#fy_popup div.title:first-child {margin-top: -10px; border-radius: 4px 4px 0px 0px}
+div#fy_popup div.actions {color: #999999; font-size: 0.9em; margin: 10px 0px}
+div#fy_popup div.actions span.action {color: #aaaaaa; cursor: pointer; margin-right: 0.5em;}
+div#fy_popup div.actions span.action:hover {color: var(--link);}
+div#fy_popup div.clickable {border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; cursor: pointer; padding: 5px 10px; margin-bottom: -1px;}
+div#fy_popup div.clickable:hover {background-color: #eeeeee;}
+div#fy_popup div.clickable.arrow {background-image: url(../../furniture/arrow_right.png); background-position: center left 10px; padding-left: 40px; background-repeat: no-repeat;}
