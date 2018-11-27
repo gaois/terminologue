@@ -157,6 +157,11 @@ function L(s, gloss){
   if(s=="Other entries that share this term") return "Iontrálacha eile a bhfuil an téarma seo iontu";
   if(s=="stop sharing") return "dícheangail";
 
+  if(s=="Change checking status to") return "Athraigh stádas seiceála go";
+  if(s=="Change publishing status to") return "Athraigh stádas foilsithe go";
+  if(s=="Add to extranet") return "Cuir ar an eislíon";
+  if(s=="Remove from extranet") return "Bain den eislíon";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

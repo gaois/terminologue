@@ -157,6 +157,11 @@ function L(s, gloss){
   if(s=="Other entries that share this term") return "Ostatní hesla, se kterými se termín sdílí";
   if(s=="stop sharing") return "přestat sdílet";
 
+  if(s=="Change checking status to") return "Změnit stav zkontrolovanosti na";
+  if(s=="Change publishing status to") return "Změnit stav publikovatelnosti na";
+  if(s=="Add to extranet") return "Přidat na extranet";
+  if(s=="Remove from extranet") return "Odebrat z extranetu";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

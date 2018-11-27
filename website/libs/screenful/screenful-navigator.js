@@ -47,7 +47,16 @@ Screenful.Navigator={
       if(event.which==13) Screenful.Navigator.critGo(event);
     });
     $("#butSearch").on("click", Screenful.Navigator.critGo);
-    $("#navbox").append("<div class='line2'><span id='starbox' style='display: none'></span><span id='countcaption'>0</span><button class='iconYes noborder' id='butReload'>"+Screenful.Loc.reload+"</button></div>");
+    $("#navbox").append("<div class='line2'><span id='starbox' style='display: none'></span><div class='menuContainer'><span id='countContainer'><span id='countcaption'>0</span><span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div><button class='iconYes noborder' id='butReload'>"+Screenful.Loc.reload+"</button></div>");
+    if(Screenful.Navigator.actions && Screenful.Navigator.actions.length>0){
+      Screenful.Navigator.populateActionMenu();
+      $("#countContainer").addClass("clickable").on("click", function(e){
+        var $mymenu=$(e.delegateTarget).closest(".menuContainer").find(".menu");
+        $(".menu:visible").not($mymenu).slideUp();
+        $mymenu.hide().slideDown();
+        e.stopPropagation();
+      });
+    }
     $("#starbox").on("click", Screenful.Navigator.clickStarbox);
     if(!(Screenful.Navigator.critEditor && Screenful.Navigator.critHarvester)) $("#butCritOpen").remove();
     $("#butCritOpen").on("click", Screenful.Navigator.critOpen);
@@ -188,19 +197,28 @@ Screenful.Navigator={
       $("#listbox .entry").first().focus();
   },
 
+  harvestListParams: function(){
+    var ret={};
+    ret.facets=null; if(Screenful.Facetor && $("#envelope").hasClass("leftContainerExpanded")) ret.facets=Screenful.Facetor.report();
+    ret.criteria=null; if(Screenful.Navigator.critHarvester) ret.criteria=Screenful.Navigator.critHarvester(document.getElementById("editor"));
+    ret.searchtext=$.trim($("#searchbox").val());
+    var modifiers=[];
+      modifiers.push($.trim($("#navbox .boxModifiers .current").data("value")));
+      modifiers.push($.trim($("#navbox .lineModifiersLeft .current").data("value")));
+      modifiers.push($.trim($("#navbox .lineModifiersRight .current").data("value")));
+    ret.modifier=""; modifiers.map(s => {if(s){ if(ret.modifier!="") ret.modifier+=" "; ret.modifier+=s; }});
+    return ret;
+  },
   list: function(event, howmany, noSFX){
     if(!howmany) howmany=Screenful.Navigator.stepSize;
     Screenful.Navigator.lastStepSize=howmany;
     Screenful.status(Screenful.Loc.listing, "wait"); //"getting list of entries"
     var url=Screenful.Navigator.listUrl;
-    var facets=null; if(Screenful.Facetor && $("#envelope").hasClass("leftContainerExpanded")) facets=Screenful.Facetor.report();
-    var criteria=null; if(Screenful.Navigator.critHarvester) criteria=Screenful.Navigator.critHarvester(document.getElementById("editor"));
-    var searchtext=$.trim($("#searchbox").val());
-    var modifiers=[];
-      modifiers.push($.trim($("#navbox .boxModifiers .current").data("value")));
-      modifiers.push($.trim($("#navbox .lineModifiersLeft .current").data("value")));
-      modifiers.push($.trim($("#navbox .lineModifiersRight .current").data("value")));
-    var modifier=""; modifiers.map(s => {if(s){ if(modifier!="") modifier+=" "; modifier+=s; }});
+    var listParams=Screenful.Navigator.harvestListParams();
+    var facets=listParams.facets;
+    var criteria=listParams.criteria;
+    var searchtext=listParams.searchtext;
+    var modifier=listParams.modifier;
     if(criteria!=Screenful.Navigator.critTemplate) {
       $("#butCritOpen").addClass("on");
       $("#butCritRemove").show();
@@ -588,6 +606,23 @@ Screenful.Navigator={
       });
     }
     Screenful.Navigator.showStarlist();
+  },
+
+  populateActionMenu: function(){
+    var $menu=$("#navbox .line2 .menuContainer .menu");
+    Screenful.Navigator.actions.map(action => {
+      var $a=$("<a href='javascript:void(null)' >"+action.caption+"</a>").appendTo($menu).on("click", function(e){
+        var listParams=Screenful.Navigator.harvestListParams();
+        $.ajax({url: action.url, dataType: "json", method: "POST", data: listParams}).done(function(data){
+          //abandon whatever is in the editor:
+          if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
+            window.frames["editframe"].Screenful.Editor.needsSaving=false;
+            window.frames["editframe"].Screenful.Editor.abandon();
+          }
+          Screenful.Navigator.list(null, null, true);
+        });
+      });
+    });
   },
 };
 $(window).ready(Screenful.Navigator.start);
