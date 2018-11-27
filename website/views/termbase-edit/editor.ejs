@@ -40,7 +40,7 @@
 				var json={
 					"cStatus": "0",
 				  "pStatus": "1",
-				  "dateStamp": "",
+				  "dateStamp": (new Date()).toISOString().split('T')[0],
 				  "domains": [],
 				  "desigs": [],
 				  "intros": {},
@@ -64,7 +64,7 @@
 		</script>
 
 		<script type="text/javascript">
-		Screenful.Editor.allowSourceCode=false;
+		Screenful.Editor.allowSourceCode=true;
 		Screenful.Editor.formatSourceCode=function(str){
 			return Screenful.formatJson(str);
 		};
