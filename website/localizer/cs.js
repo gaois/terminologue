@@ -120,7 +120,6 @@ function L(s, gloss){
   if(s=="LAST UPDATED") return "POSLEDNÍ ZMĚNA";
   if(s=="SEE ALSO") return "VIZ TAKÉ";
   if(s=="add to worklist") return "dát na pracovní seznam";
-
   if(s=="Lists") return "Seznamy";
   if(s=="Domains") return "Domény";
   if(s=="Part-of-speech labels") return "Slovní druhy";
@@ -131,7 +130,6 @@ function L(s, gloss){
   if(s=="Teamwork") return "Týmová práce";
   if(s=="Tags") return "Značky";
   if(s=="Extranets") return "Extranety";
-
   if(s=="Termbase settings") return "Nastavení databáze";
   if(s=="Name and description") return "Jméno a popis";
   if(s=="Features") return "Vlastnosti";
@@ -141,7 +139,6 @@ function L(s, gloss){
   if(s=="Change the termbase's URL") return "Změnit URL databáze";
   if(s=="Delete the termbase") return "Smazat databázi";
   if(s=="Careful now! You will not be able to undo this.") return "Pozor! Tohle nepůjde vrátit zpátky.";
-
   if(s=="TITLE") return "NADPIS";
   if(s=="SUBDOMAINS") return "PODDOMÉNY";
   if(s=="abbreviation") return "zkratka";
@@ -155,8 +152,10 @@ function L(s, gloss){
   if(s=="USERS") return "UŹIVATElĚ";
   if(s=="e-mail address") return "e-mailová adresa";
   if(s=="user") return "uživatel";
-
   if(s=="Alphabetical order") return "Abecední řazení";
+  if(s=="Similar terms (click to insert)") return "Podobné termíny (klinutím vložit)";
+  if(s=="Other entries that share this term") return "Ostatní hesla, se kterými se termín sdílí";
+  if(s=="stop sharing") return "přestat sdílet";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

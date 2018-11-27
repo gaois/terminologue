@@ -120,7 +120,6 @@ function L(s, gloss){
   if(s=="LAST UPDATED") return "UASDÁTÚ DEIREANACH";
   if(s=="SEE ALSO") return "FÉACH FREISIN";
   if(s=="add to worklist") return "cuir ar liosta oibre";
-
   if(s=="Lists") return "Liostaí";
   if(s=="Domains") return "Réimsí";
   if(s=="Part-of-speech labels") return "Ranna cainte";
@@ -131,7 +130,6 @@ function L(s, gloss){
   if(s=="Teamwork") return "Obair foirne";
   if(s=="Tags") return "Clibeanna";
   if(s=="Extranets") return "Eislíonta";
-
   if(s=="Termbase settings") return "Socruithe an chnuasaigh";
   if(s=="Name and description") return "Ainm agus cur síos";
   if(s=="Features") return "Gnéithe";
@@ -141,7 +139,6 @@ function L(s, gloss){
   if(s=="Change the termbase's URL") return "Athraigh URL an chnuasaigh";
   if(s=="Delete the termbase") return "Scrios an cnuasach";
   if(s=="Careful now! You will not be able to undo this.") return "Cúramach! Ní bheidh tú ábalta dul ar ais.";
-
   if(s=="TITLE") return "TEIDEAL";
   if(s=="SUBDOMAINS") return "FO-RÉIMSÍ";
   if(s=="abbreviation") return "giorrúchán";
@@ -155,8 +152,10 @@ function L(s, gloss){
   if(s=="USERS") return "ÚSÁIDEOIRÍ";
   if(s=="e-mail address") return "seoladh ríomhphoist";
   if(s=="user") return "úsáideoir";
-
   if(s=="Alphabetical order") return "Ord aibítre";
+  if(s=="Similar terms (click to insert)") return "Téarmaí cosúla (cliceáil lena gcur isteach)";
+  if(s=="Other entries that share this term") return "Iontrálacha eile a bhfuil an téarma seo iontu";
+  if(s=="stop sharing") return "dícheangail";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

@@ -6,6 +6,7 @@ const markdown = require("markdown").markdown; //https://www.npmjs.com/package/m
 
 module.exports={
   siteconfig: {}, //populated by terminologue.js on startup
+  mailtransporter: null,
 
   login: function(email, password, uilang, callnext){
     if(module.exports.siteconfig.readonly){
@@ -69,6 +70,44 @@ module.exports={
     db.run("update users set uilang=$lang where email=$email", {$lang: lang, $email: email}, function(err){
       db.close();
       callnext();
+    });
+  },
+  getRemoteAddress: function(request) {
+    var remoteIp = request.connection.remoteAddress.replace('::ffff:','');
+    if (request.headers['x-forwarded-for'] != undefined) {
+      remoteIp = request.headers['x-forwarded-for'];
+    }
+    if (request.headers['x-real-ip'] != undefined) {
+      remoteIp = request.headers['x-real-ip'];
+    }
+    if (request.headers['x-real-ip'] != undefined) {
+      remoteIp = request.headers['x-real-ip'];
+    }
+    return remoteIp;
+  },
+  sendSignupToken: function(email, remoteip, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    db.get("select email from users where email=$email", {$email: email}, function(err, row){
+      if (row==undefined) {
+        var expireDate = (new Date()); expireDate.setHours(expireDate.getHours()+48);
+        expireDate = expireDate.toISOString();
+        var token = sha1(sha1(Math.random()));
+        var tokenurl = module.exports.siteconfig.baseUrl + 'createaccount/' + token;
+        var mailSubject="Terminologue signup";
+        var mailText = `Dear Terminologue user,\n\n`;
+        mailText+=`Somebody (hopefully you, from the address ${remoteip}) requested to create a new Terminologue account. Please follow the link below to create your account:\n\n`
+        mailText+=`${tokenurl}\n\n`;
+        mailText+=`For security reasons this link is only valid for two days (until ${expireDate}). If you did not request an account, you can safely ignore this message. \n\n`;
+        mailText+=`Yours,\nThe Terminologue team`;
+        db.run("insert into register_tokens (email, requestAddress, token, expiration) values ($email, $remoteip, $token, $expire)", {$email: email, $expire: expireDate, $remoteip: remoteip, $token: token}, function(err, row){
+          module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {});
+          db.close();
+          callnext(true);
+        });
+      } else {
+        db.close();
+        callnext(false);
+      }
     });
   },
 

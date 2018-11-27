@@ -932,7 +932,6 @@ Spec.sharEnquire=function($term, termID, lang, wording){
 };
 
 Spec.sharPopup=function($term, termID, lang, wording, data){
-  console.log($term, termID, data);
   Fy.showPopup($term.find(".fy_bubble"));
 
   if(data.sharedBy && data.sharedBy.length>0){

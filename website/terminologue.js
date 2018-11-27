@@ -21,6 +21,8 @@ const localizer={
 //ops module:
 const ops=require("./ops");
  ops.siteconfig=siteconfig;
+const nodemailer = require('nodemailer');
+ ops.mailtransporter = nodemailer.createTransport(siteconfig.mailconfig);
 
 //Paths to our static files:
 app.use(siteconfig.rootPath+"views", express.static(path.join(__dirname, "views")));
@@ -140,6 +142,19 @@ app.post(siteconfig.rootPath+"make.json", function(req, res){
         res.json({success: success});
       });
     }
+  });
+});
+app.get(siteconfig.rootPath+"signup/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+    res.render("sitewide/signup.ejs", {siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+    //res.render("sitewide/signup.ejs", {redirectUrl: siteconfig.baseUrl, siteconfig: siteconfig});
+  });
+});
+app.post(siteconfig.rootPath+"signup.json", function(req, res){
+  var remoteip = ops.getRemoteAddress(req);
+  ops.sendSignupToken(req.body.email, remoteip, function(success){
+    res.json({success: success});
   });
 });
 
