@@ -35,41 +35,6 @@ app.use(siteconfig.rootPath+"localizer", express.static(path.join(__dirname, "lo
 //Path to our views:
 app.set('views', path.join(__dirname, "views")); app.set('view engine', 'ejs') //http://ejs.co/
 
-//Temporary: téarma.ie
-app.use(siteconfig.rootPath+"_tearma/furniture", express.static(path.join(__dirname, "views/_tearma/furniture")));
-app.get(siteconfig.rootPath+"_tearma/", function(req, res){
-  var db=ops.getDB("bnt", true);
-  ops.readTermbaseMetadata(db, "bnt", function(metadata){
-    db.close();
-    res.render("_tearma/home.ejs", {metadata: metadata});
-  });
-});
-app.get(siteconfig.rootPath+"_tearma/s", function(req, res){
-  var db=ops.getDB("bnt", true);
-  ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
-    ops.readTermbaseMetadata(db, "bnt", function(metadata){
-      ops.entryList(db, "bnt", {}, req.query.text, "* smart ga", 100, function(total, primeEntries, entries, suggestions){
-        db.close();
-        res.render("_tearma/search.ejs", {text: req.query.text, primeEntries: primeEntries, entries: entries, suggestions: suggestions, metadata: metadata, configs: configs});
-      });
-    });
-  });
-});
-app.get(siteconfig.rootPath+"_tearma/adv", function(req, res){
-  res.render("_tearma/advsearch.ejs", {});
-});
-app.get(siteconfig.rootPath+"_tearma/dom", function(req, res){
-  var db=ops.getDB("bnt", true);
-  ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
-    ops.readTermbaseMetadata(db, "bnt", function(metadata){
-      ops.entryList(db, "bnt", {superdomain: req.query.superID, subdomain: req.query.subID}, "", "* smart ga", 100, function(total, primeEntries, entries, suggestions){
-        db.close();
-        res.render("_tearma/domain.ejs", {metadata: metadata, superID: req.query.superID, subID: req.query.subID, entries: entries, metadata: metadata, configs: configs});
-      });
-    });
-  });
-});
-
 //Sitewide:
 app.get(siteconfig.rootPath, function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
