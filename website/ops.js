@@ -1255,8 +1255,11 @@ module.exports={
   },
   commentList: function(db, termbaseID, entryID, extranetID, callnext){
     if(extranetID){
-      var sql="select * from comments where entry_id=$entry_id and extranet_id=$extranet_id order by [when] asc";
-      var params={$entry_id: entryID, $extranet_id: extranetID};
+      //var sql="select * from comments where entry_id=$entry_id and extranet_id=$extranet_id order by [when] asc";
+      //var params={$entry_id: entryID, $extranet_id: extranetID};
+      //temporary workaround: show all comments on all extranets
+      var sql="select * from comments where entry_id=$entry_id order by [when] asc";
+      var params={$entry_id: entryID};
     } else {
       var sql="select * from comments where entry_id=$entry_id order by [when] asc";
       var params={$entry_id: entryID};
