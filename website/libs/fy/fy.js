@@ -25,7 +25,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
   var $html=$(template.html); if(typeof(template.html)=="function") $html=$(template.html());
   $html.addClass("fy_node").data("template", template);
   if(template.populate) template.populate($html);
-  if(template.set) template.set($html, data);
+  if(template.set && data) template.set($html, data);
   if(!uneditable) $html.find(".fy_adder").on("click", function(e){
     var $adder=$(e.delegateTarget);
     var subtemplateName=$adder.attr("templateName");

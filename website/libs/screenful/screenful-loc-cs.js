@@ -91,4 +91,7 @@ Screenful.Loc={
   action: "Úkon",
   purgeWorklist: "Vyprázdnit pracovní seznam",
   extranet: "EXTRANET",
+
+  doingBatch: "Provádím hromadnou editaci...",
+  batchFailed: "Nepovedlo se provést hromadnou editaci.",
 };

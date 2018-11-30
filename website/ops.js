@@ -480,7 +480,7 @@ module.exports={
       where.push(`fCommentsMe.id is null`);
     }
 
-    var params1={}; for(var key in params) params1[key]=params[key]; params1.$howmany=parseInt(howmany);
+    var params1={}; for(var key in params) params1[key]=params[key];
     var sql1=`select e.id, e.json`;
     if(searchtext!="" && modifiers[1]=="smart"){
       sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
@@ -496,7 +496,10 @@ module.exports={
     if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
     sql1+=` group by e.id\n`;
     sql1+=` order by match_quality desc, sk.key\n`;
-    sql1+=` limit $howmany`;
+    if(howmany){
+      sql1+=` limit $howmany`;
+      params1.$howmany=parseInt(howmany);
+    }
     //sql1=`select * from entries order by id limit $howmany`;
     //var params1={$howmany: howmany};
 
@@ -509,6 +512,134 @@ module.exports={
     //var params2={};
 
     callnext(sql1, params1, sql2, params2);
+  },
+  cStatus: function(db, termbaseID, facets, searchtext, modifier, val, callnext){
+    var items=[];
+    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+      db.all(sql1, params1, function(err, rows){
+        if(err || !rows) rows=[];
+        for(var i=0; i<rows.length; i++){
+          var item={id: rows[i].id, json: rows[i].json};
+          items.push(item);
+        }
+        db.run("BEGIN TRANSACTION");
+        go();
+      });
+    });
+    function go(){
+      if(items.length>0){
+        var item=items.pop();
+        var entry=JSON.parse(item.json);
+        if(entry.cStatus==val){
+          go();
+        } else {
+          entry.cStatus=val;
+          db.run("update entries set cStatus=$val, json=$json where id=$id", {$val: val, $json: JSON.stringify(entry), $id: item.id}, function(err){
+            go();
+          });
+        }
+      } else {
+        db.run("COMMIT");
+        callnext();
+      }
+    }
+  },
+  pStatus: function(db, termbaseID, facets, searchtext, modifier, val, callnext){
+    var items=[];
+    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+      db.all(sql1, params1, function(err, rows){
+        if(err || !rows) rows=[];
+        for(var i=0; i<rows.length; i++){
+          var item={id: rows[i].id, json: rows[i].json};
+          items.push(item);
+        }
+        db.run("BEGIN TRANSACTION");
+        go();
+      });
+    });
+    function go(){
+      if(items.length>0){
+        var item=items.pop();
+        var entry=JSON.parse(item.json);
+        if(entry.pStatus==val){
+          go();
+        } else {
+          entry.pStatus=val;
+          db.run("update entries set pStatus=$val, json=$json where id=$id", {$val: val, $json: JSON.stringify(entry), $id: item.id}, function(err){
+            go();
+          });
+        }
+      } else {
+        db.run("COMMIT");
+        callnext();
+      }
+    }
+  },
+  extranetAdd: function(db, termbaseID, facets, searchtext, modifier, extranetID, callnext){
+    var items=[];
+    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+      db.all(sql1, params1, function(err, rows){
+        if(err || !rows) rows=[];
+        for(var i=0; i<rows.length; i++){
+          var item={id: rows[i].id, json: rows[i].json};
+          items.push(item);
+        }
+        db.run("BEGIN TRANSACTION");
+        go();
+      });
+    });
+    function go(){
+      if(items.length>0){
+        var item=items.pop();
+        var entry=JSON.parse(item.json);
+        if(entry.extranets.indexOf(extranetID)>-1){
+          go();
+        } else {
+          entry.extranets.push(extranetID);
+          db.run("update entries set json=$json where id=$id", {$json: JSON.stringify(entry), $id: item.id}, function(err){
+            db.run("insert into entry_extranet(entry_id, extranet) values($entry_id, $extranet)", {$entry_id: item.id, $extranet: extranetID}, function(err){
+              go();
+            });
+          });
+        }
+      } else {
+        db.run("COMMIT");
+        callnext();
+      }
+    }
+  },
+  extranetRemove: function(db, termbaseID, facets, searchtext, modifier, extranetID, callnext){
+    var items=[];
+    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+      db.all(sql1, params1, function(err, rows){
+        if(err || !rows) rows=[];
+        for(var i=0; i<rows.length; i++){
+          var item={id: rows[i].id, json: rows[i].json};
+          items.push(item);
+        }
+        db.run("BEGIN TRANSACTION");
+        go();
+      });
+    });
+    function go(){
+      if(items.length>0){
+        var item=items.pop();
+        var entry=JSON.parse(item.json);
+        if(entry.extranets.indexOf(extranetID)==-1){
+          go();
+        } else {
+          entry.extranets.splice(entry.extranets.indexOf(extranetID), 1);
+          db.run("update entries set json=$json where id=$id", {$json: JSON.stringify(entry), $id: item.id}, function(err){
+            db.run("delete from entry_extranet where entry_id=$entry_id and extranet=$extranet", {$entry_id: item.id, $extranet: extranetID}, function(err){
+              go();
+            });
+          });
+        }
+      } else {
+        db.run("COMMIT");
+        callnext();
+      }
+    }
   },
 
   entryDelete: function(db, termbaseID, entryID, email, historiography, callnext){

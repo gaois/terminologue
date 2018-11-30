@@ -91,4 +91,7 @@ Screenful.Loc={
   action: "Gníomh",
   purgeWorklist: "Folmhaigh an liosta oibre",
   extranet: "EISLÍON",
+
+  doingBatch: "Iontrálacha á n-athrú...",
+  batchFailed: "Níor éirigh liom na hiontrálacha a athrú.",
 };

@@ -612,14 +612,20 @@ Screenful.Navigator={
     var $menu=$("#navbox .line2 .menuContainer .menu");
     Screenful.Navigator.actions.map(action => {
       var $a=$("<a href='javascript:void(null)' >"+action.caption+"</a>").appendTo($menu).on("click", function(e){
+        Screenful.status(Screenful.Loc.doingBatch, "wait"); //"performing batch edit"
         var listParams=Screenful.Navigator.harvestListParams();
         $.ajax({url: action.url, dataType: "json", method: "POST", data: listParams}).done(function(data){
-          //abandon whatever is in the editor:
-          if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
-            window.frames["editframe"].Screenful.Editor.needsSaving=false;
-            window.frames["editframe"].Screenful.Editor.abandon();
+          if(!data.success) {
+            Screenful.status(Screenful.Loc.batchFailed, "warn"); //"failed to perform batch edit"
+          } else {
+            Screenful.status(Screenful.Loc.ready);
+            //abandon whatever is in the editor:
+            if(window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
+              window.frames["editframe"].Screenful.Editor.needsSaving=false;
+              window.frames["editframe"].Screenful.Editor.abandon();
+            }
+            Screenful.Navigator.list(null, null, true);
           }
-          Screenful.Navigator.list(null, null, true);
         });
       });
     });

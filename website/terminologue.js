@@ -344,6 +344,66 @@ app.post(siteconfig.rootPath+":termbaseID/edit/merge.json", function(req, res){
     }
   })
 });
+app.post(siteconfig.rootPath+":termbaseID/edit/cStatus.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.cStatus(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.query.val, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/edit/pStatus.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.pStatus(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.query.val, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/edit/extranetAdd.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.extranetAdd(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.query.extranetID, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/edit/extranetRemove.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.extranetRemove(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.query.extranetID, function(){
+        db.close();
+        res.json({success: true});
+      });
+    }
+  });
+});
 
 //Term sharing:
 app.post(siteconfig.rootPath+":termbaseID/edit/sharEnquire.json", function(req, res){

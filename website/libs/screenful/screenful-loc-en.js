@@ -91,4 +91,7 @@ Screenful.Loc={
   action: "Action",
   purgeWorklist: "Remove all from worklist",
   extranet: "EXTRANET",
+
+  doingBatch: "Performing batch edit...",
+  batchFailed: "Failed to perform batch edit.",
 };

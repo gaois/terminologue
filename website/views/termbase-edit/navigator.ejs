@@ -92,29 +92,29 @@
 		Screenful.Navigator.actions=[
 			{
 				caption: "<%=L('Change checking status to')%> <strong><%=L('checked')%></strong>",
-				url: "./read.json?id=0",
+				url: "./cStatus.json?val=1",
 			},
 			{
 				caption: "<%=L('Change checking status to')%> <strong><%=L('not checked')%></strong>",
-				url: "./read.json?id=0",
+				url: "./cStatus.json?val=0",
 			},
 			{
 				caption: "<%=L('Change publishing status to')%> <strong><%=L('publishable')%></strong>",
-				url: "./read.json?id=0",
+				url: "./pStatus.json?val=1",
 			},
 			{
 				caption: "<%=L('Change publishing status to')%> <strong><%=L('hidden')%></strong>",
-				url: "./read.json?id=0",
+				url: "./pStatus.json?val=0",
 			},
 		];
 		termbaseMetadata.extranet.map(extranet => {
 			Screenful.Navigator.actions.push({
 				caption: "<span class='extranet'><strong><%=L('EXTRANET')%></strong> "+Spec.title(extranet.title, uilang)+"</span> <%=L('Add to extranet')%>",
-				url: "./read.json?id=0",
+				url: "./extranetAdd.json?extranetID="+extranet.id,
 			});
 			Screenful.Navigator.actions.push({
 				caption: "<span class='extranet'><strong><%=L('EXTRANET')%></strong> "+Spec.title(extranet.title, uilang)+"</span> <%=L('Remove from extranet')%>",
-				url: "./read.json?id=0",
+				url: "./extranetRemove.json?extranetID="+extranet.id,
 			});
 		});
 		Screenful.Navigator.starlistActions=[
