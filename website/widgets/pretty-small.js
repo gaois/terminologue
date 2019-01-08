@@ -45,6 +45,21 @@ Pretty.entry=function(entry){
     });
     if(entry.intros[lang]) $ret.append(Pretty.intro(entry.intros[lang], lang));
   });
+
+  var $bin=$("<div class='prettyBin'></div>").appendTo($ret);
+  if(entry.definitions && entry.definitions.length>0) $("<span class='boxick'>"+L("DEF")+"</span>").appendTo($bin);
+  if(entry.examples && entry.examples.length>0) $("<span class='boxick'>"+L("XMPL")+"</span>").appendTo($bin);
+  if(entry.collections && entry.collections.length>0) $("<span class='boxick'>"+L("COLL")+"</span>").appendTo($bin);
+  if(entry.extranets && entry.extranets.length>0) $("<span class='boxick'>"+L("EXT")+"</span>").appendTo($bin);
+  if(entry.xrefs && entry.xrefs.length>0) $("<img class='arrow' src='../../furniture/arrow_right.png'/>").appendTo($bin);
+
+  var $bin=$("<div class='prettyBin'></div>").appendTo($ret);
+  if(entry.cStatus=="1") $("<img class='status' src='../../furniture/tick.png'/>").appendTo($bin);
+  else                   $("<img class='status' src='../../furniture/cross.png'/>").appendTo($bin);
+  if(entry.pStatus=="1") $("<img class='status' src='../../furniture/tick.png'/>").appendTo($bin);
+  else                   $("<img class='status' src='../../furniture/cross.png'/>").appendTo($bin);
+  if(entry.dateStamp) $("<span class='date'><img src='../../furniture/date.png'/> "+entry.dateStamp+"</span>").appendTo($bin);
+
   if($ret.text()=="") $ret.html("—");
   return $ret;
 }

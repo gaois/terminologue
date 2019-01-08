@@ -34,10 +34,6 @@ function L(s, gloss){
   if(s=="PUBLISHING STATUS") return "STAV PUBLIKOVATELNOSTI";
   if(s=="TERMS") return "TERMÍNY";
   if(s=="DOMAINS") return "DOMÉNY";
-  if(s=="checked") return "zkontrolováno";
-  if(s=="not checked") return "nezkontrolováno";
-  if(s=="publishable") return "publikovatelné";
-  if(s=="hidden") return "skryté";
   if(s=="term") return "termín";
   if(s=="clarification") return "vysvětlivka";
   if(s=="acceptability") return "přijatelnost";
@@ -156,11 +152,20 @@ function L(s, gloss){
   if(s=="Similar terms (click to insert)") return "Podobné termíny (klinutím vložit)";
   if(s=="Other entries that share this term") return "Ostatní hesla, se kterými se termín sdílí";
   if(s=="stop sharing") return "přestat sdílet";
-
   if(s=="Change checking status to") return "Změnit stav zkontrolovanosti na";
   if(s=="Change publishing status to") return "Změnit stav publikovatelnosti na";
   if(s=="Add to extranet") return "Přidat na extranet";
   if(s=="Remove from extranet") return "Odebrat z extranetu";
+
+  if(s=="checked") return "zkontrolováno";
+  if(s=="not checked") return "nezkontrolováno";
+  if(s=="publishable") return "publikovatelné";
+  if(s=="hidden") return "skryté";
+
+  if(s=="CHECKED") return "ZKONTROLOVÁNO";
+  if(s=="NOT CHECKED") return "NEZKONTROLOVÁNO";
+  if(s=="PUBLISHABLE") return "PUBLIKOVATELNÉ";
+  if(s=="HIDDEN") return "SKRYTÉ";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

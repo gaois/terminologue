@@ -110,18 +110,16 @@ Pretty.entry=function(entry){
     });
   }
 
-  if(entry.dateStamp || (entry.xrefs && entry.xrefs.length>0) ){
-    var $bin=$("<div class='bin'></div>").appendTo($ret);
+  if(entry.extranets && entry.extranets.length>0) {
+    var $group=$("<div class='extranets'></div>").appendTo($ret);
+    entry.extranets.map(obj => {
+      obj=Spec.getExtranet(obj);
+      var $item=$("<div class='prettyExtranet'><a href='../x"+obj.id+"/' target='_blank' class='extranet'><strong>"+L('EXTRANET')+"</strong> "+Spec.title(obj.title, uilang)+"</a></div>").appendTo($group);
+    });
+  }
 
-    //date stamp:
-    if(entry.dateStamp){
-      var $group=$("<div class='dateStamp'></div>").appendTo($bin);
-      var $title=$("<div class='prettyDateStamp'></div>").appendTo($group);
-      $("<span class='title'>"+L("LAST UPDATED")+"</span>").appendTo($title);
-      $title.append(" ");
-      $("<span class='date'>"+entry.dateStamp+"</span>").appendTo($title);
-    }
-
+  if((entry.xrefs && entry.xrefs.length>0) ){
+    var $bin=$("<div class='bin binXrefs'></div>").appendTo($ret);
     //xrefs:
     if(entry.xrefs && entry.xrefs.length>0) {
       var $group=$("<div class='prettyXrefs'></div>").appendTo($bin);
@@ -149,6 +147,33 @@ Pretty.entry=function(entry){
       });
     }
 
+  }
+
+  if(true){
+    var $bin=$("<div class='bin binDateStamp'></div>").appendTo($ret);
+    var $group=$("<div class='dateStamp'></div>").appendTo($bin);
+    var $title=$("<div class='prettyDateStamp'></div>").appendTo($group);
+
+    if(entry.cStatus=="1") {
+      $("<span class='title'><img src='../../furniture/tick.png'/> "+L("CHECKED")+"</span>").appendTo($title);
+    } else {
+      $("<span class='title'><img src='../../furniture/cross.png'/> "+L("NOT CHECKED")+"</span>").appendTo($title);
+    }
+    $title.append(" ");
+
+    if(entry.pStatus=="1") {
+      $("<span class='title'><img src='../../furniture/tick.png'/> "+L("PUBLISHABLE")+"</span>").appendTo($title);
+    } else {
+      $("<span class='title'><img src='../../furniture/cross.png'/> "+L("HIDDEN")+"</span>").appendTo($title);
+    }
+    $title.append(" ");
+
+    //date stamp:
+    if(entry.dateStamp){
+      $("<span class='title'><img src='../../furniture/date.png'/> "+L("LAST UPDATED")+"</span>").appendTo($title);
+      $title.append(" ");
+      $("<span class='date'>"+entry.dateStamp+"</span>").appendTo($title);
+    }
   }
 
   return $ret;

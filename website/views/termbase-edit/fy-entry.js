@@ -128,8 +128,8 @@ Spec.templates["hiddenID"]={
 Spec.templates["cStatus"]={
   type: "string",
   html: `<div class="fy_node">
-    <label><input type="radio" name="cStatus" value="1" onchange="Fy.changed()"/> ${L("checked")}</label>
-    <label><input type="radio" name="cStatus" value="0" onchange="Fy.changed()"/> ${L("not checked")}</label>
+    <label><input type="radio" name="cStatus" value="1" onchange="Fy.changed()"/> <img src='../../furniture/tick.png'/> ${L("checked")}</label>
+    <label><input type="radio" name="cStatus" value="0" onchange="Fy.changed()"/> <img src='../../furniture/cross.png'/> ${L("not checked")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input[value='"+data+"']").prop("checked", true);
@@ -141,8 +141,8 @@ Spec.templates["cStatus"]={
 Spec.templates["pStatus"]={
   type: "string",
   html: `<div class="fy_node">
-    <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed()"/> ${L("publishable")}</label>
-    <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed()"/> ${L("hidden")}</label>
+    <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed()"/> <img src='../../furniture/tick.png'/> ${L("publishable")}</label>
+    <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed()"/> <img src='../../furniture/cross.png'/> ${L("hidden")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input[value='"+data+"']").prop("checked", true);
@@ -155,7 +155,7 @@ Spec.templates["dateStamp"]={
   type: "string",
   html: `<div class="fy_node">
     <div class="fy_horizon" style="width: 12em; display: inline-block; float: left;">
-      <span class="fy_textbox" style="width: 100%"><input type="date" onchange="Fy.changed()"/></span>
+      <span class="fy_textbox" style="width: 100%"><input class="date" type="date" onchange="Fy.changed()"/></span>
     </div>
     <button style="margin-top: 1px; margin-left: 1em;" onclick="$(this).closest('.fy_node').find('input').val((new Date()).toISOString().split('T')[0]); Fy.changed()">${L("set to today")}</button>
   </div>`,

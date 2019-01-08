@@ -15,6 +15,7 @@ div.prettyRow.minorTerms {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyRow.definition {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyRow.example {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyEntry div.collections {border-top: 1px solid #eeeeee; padding: 10px 5px; font-size: 0.75em; color: #999999;}
+div.prettyEntry div.extranets {border-top: 1px solid #eeeeee; padding: 10px 5px; font-size: 0.85em; color: #999999;}
 
 div.prettyEntry div.bin {border-top: 1px solid #eeeeee; padding: 10px 5px;}
 div.prettyEntry div.bin div.dateStamp {padding: 0px 0px 0px px; font-size: 0.75em; color: #999999; line-height: 2.5em;}
@@ -81,5 +82,13 @@ span.prettyEntryOneliner:hover span.term {color: var(--link);}
 span.prettyEntryOneliner:hover span.divider {color: #aaaaaa;}
 
 div.prettyDateStamp {color: #999999;}
-div.prettyDateStamp span.title {font-weight: bold;}
+div.prettyDateStamp span.title {font-weight: bold; margin-left: 1em;}
+div.prettyDateStamp span.title:first-child {margin-left: 0;}
+div.prettyDateStamp span.title img {position: relative; top: 2px; margin-right: 0.25em;}
 div.prettyDateStamp span.date {}
+
+div.prettyExtranet {padding: 5px; margin-left: -10px; font-size: 90%;}
+div.prettyExtranet a {background-color: #c1f1ec; padding: 5px 10px; border-radius: 4px; text-decoration: none; color: var(--link);}
+div.prettyExtranet a strong {color: #888888; font-weight: bold; font-size: 100%; margin-right: 0.25em;}
+div.prettyExtranet a:hover {color: var(--link-hover);}
+div.prettyExtranet a:hover strong {color: #999999;}

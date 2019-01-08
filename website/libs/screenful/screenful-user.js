@@ -19,7 +19,7 @@ Screenful.User={
       e.stopPropagation();
     });
     $(document).on("click", function(e){
-      $(".menu:visible").slideUp();
+      $(".menu:visible").not("#xonomyBubble .menu").slideUp();
     });
   },
 };
