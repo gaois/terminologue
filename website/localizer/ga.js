@@ -156,16 +156,15 @@ function L(s, gloss){
   if(s=="Change publishing status to") return "Athraigh stádas foilsithe go";
   if(s=="Add to extranet") return "Cuir ar an eislíon";
   if(s=="Remove from extranet") return "Bain den eislíon";
-
   if(s=="checked") return "seiceáilte";
   if(s=="not checked") return "neamhsheiceáilte";
   if(s=="publishable") return "infhoilsithe";
   if(s=="hidden") return "i bhfolach";
-
   if(s=="CHECKED") return "SEICEÁILTE";
   if(s=="NOT CHECKED") return "NEAMHSHEICEÁILTE";
   if(s=="PUBLISHABLE") return "INFHOILSITHE";
   if(s=="HIDDEN") return "I BHFOLACH";
+  if(s=="non-essential") return "neamhriachtanach";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

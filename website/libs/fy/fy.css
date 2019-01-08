@@ -39,6 +39,7 @@ div.fy_collapsible div.collapsor:hover {color: #333333;}
 
 div.fy_box {background-color: #dddddd; border: 2px solid #86d1c9; padding: 10px 10px 7px 10px; margin-left: -5px; margin-right: -5px; margin-bottom: 3px; border-radius: 2px; position: relative;}
 div.fy_box div.fy_box {border: 0px; border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; padding: 10px 10px 0px 10px;}
+div.fy_box.nonessential {border-color: #eeeeee; border-style: dashed;}
 
 div.fy_lineabove {border-top: 1px solid #ffffff; margin: 10px -10px 0px -10px; padding: 10px 10px 0px 10px;}
 
@@ -119,3 +120,8 @@ div#fy_popup div.actions span.action:hover {color: var(--link);}
 div#fy_popup div.clickable {border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; cursor: pointer; padding: 5px 10px; margin-bottom: -1px;}
 div#fy_popup div.clickable:hover {background-color: #eeeeee;}
 div#fy_popup div.clickable.arrow {background-image: url(../../furniture/arrow_right.png); background-position: center left 10px; padding-left: 40px; background-repeat: no-repeat;}
+
+div.fy_node.bottomRight {position: absolute; bottom: 0px; right: 0px;}
+div.fy_box div.fy_node.bottomRight {position: absolute; bottom: 5px; right: 10px;}
+div.fy label.fy_noness {color: #666666;}
+div.fy label.fy_noness input {position: relative; top: 2px;}

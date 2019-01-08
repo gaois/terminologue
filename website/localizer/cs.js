@@ -156,16 +156,15 @@ function L(s, gloss){
   if(s=="Change publishing status to") return "Změnit stav publikovatelnosti na";
   if(s=="Add to extranet") return "Přidat na extranet";
   if(s=="Remove from extranet") return "Odebrat z extranetu";
-
   if(s=="checked") return "zkontrolováno";
   if(s=="not checked") return "nezkontrolováno";
   if(s=="publishable") return "publikovatelné";
   if(s=="hidden") return "skryté";
-
   if(s=="CHECKED") return "ZKONTROLOVÁNO";
   if(s=="NOT CHECKED") return "NEZKONTROLOVÁNO";
   if(s=="PUBLISHABLE") return "PUBLIKOVATELNÉ";
   if(s=="HIDDEN") return "SKRYTÉ";
+  if(s=="non-essential") return "nedůležité";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

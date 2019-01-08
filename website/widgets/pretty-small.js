@@ -38,7 +38,7 @@ Pretty.entry=function(entry){
   var langsDone=[];
   langs.map(lang => {
     entry.desigs.map(desig => {
-      if(desig.term.lang==lang) {
+      if(desig.term.lang==lang && (desig.nonessential || "0")=="0") {
         $ret.append(Pretty.desig(desig, (langsDone.indexOf(lang)==-1)));
         langsDone.push(lang);
       }

@@ -124,6 +124,25 @@ Spec.templates["hiddenID"]={
     return $me.val();
   },
 };
+Spec.templates["nonessential"]={
+  type: "string",
+  html: `<div class="fy_node bottomRight">
+    <label class="fy_noness"><input type="checkbox" onchange="Fy.changed(); Spec.templates.nonessential.refresh($(this).closest('.fy_node'))"/> ${L("non-essential")}</label>
+  </div>`,
+  set: function($me, data){
+    $me.find("input").prop("checked", (data=="1"));
+  },
+  get: function($me){
+    return ($me.find("input").prop("checked") ? "1" : "0");
+  },
+  refresh: function($me){
+    var val=this.get($me);
+    var $box=$me.closest(".fy_box");
+    if(val=="1") $box.addClass("nonessential"); else $box.removeClass("nonessential");
+    var $box=$me.closest(".fy_container").find(".fy_box");
+    if(val=="1") $box.addClass("nonessential"); else $box.removeClass("nonessential");
+  }
+};
 
 Spec.templates["cStatus"]={
   type: "string",
@@ -275,6 +294,7 @@ Spec.templates["desig"]={
     <div class="fy_replace fy_hidable" templateName="accept" jsonName="accept"></div>
     <div class="fy_replace fy_hidable" templateName="clarif" jsonName="clarif"></div>
     <div class="fy_replace fy_hidable" templateName="sources" jsonName="sources"></div>
+    <div class="fy_replace fy_hidable" templateName="nonessential" jsonName="nonessential"></div>
   </div>`,
 };
 Spec.templates["term"]={
@@ -683,6 +703,7 @@ Spec.templates["definition"]={
         <span class="fy_downer"></span>
         <span class="fy_upper"></span>
       </div>
+      <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
   </div>`,
 };
@@ -734,6 +755,7 @@ Spec.templates["example"]={
         <span class="fy_downer"></span>
         <span class="fy_upper"></span>
       </div>
+      <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
   </div>`,
 };
