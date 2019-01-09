@@ -33,7 +33,7 @@ Screenful.Facetor.panes=[{
       else $("#facDateStampValue").hide();
     });
 
-    var $input=$(`<input type="date" class="fullwidth" id="facDateStampValue" value="${(new Date()).toISOString().split('T')[0]}"/>`).hide().appendTo($inme);
+    var $input=$(`<input type="date" class="fullwidth sub" id="facDateStampValue" value="${(new Date()).toISOString().split('T')[0]}"/>`).hide().appendTo($inme);
     $input.on("change", Screenful.Facetor.change);
 
     $inme.append(`<div class="title"><span class="tab">${L("DOM")}</span></div>`);
@@ -74,7 +74,7 @@ Screenful.Facetor.panes=[{
           }
         }
     });
-    var $select=$(`<select class="fullwidth" id="facSubdomain" style="display: none"></select>`).appendTo($inme);
+    var $select=$(`<select class="fullwidth sub" id="facSubdomain" style="display: none"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("any subdomain or no subdomain")})</option>`);
     $select.on("change", Screenful.Facetor.change);
 
