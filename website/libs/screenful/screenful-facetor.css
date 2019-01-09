@@ -1,4 +1,4 @@
-#leftbox > div {padding: 20px 15px;}
+#leftbox > div {padding: 20px 15px; position: absolute; top: 0px; left: 0px; right: 0px; bottom: 2px; overflow-y: auto;}
 
 #leftbox div.title:first-child {margin-top: 0px;}
 #leftbox div.title {font-weight: bold; border-bottom: 1px solid var(--contrast); padding: 0px 4px 0px 4px; margin: 20px 0px 5px 0px; }
