@@ -108,14 +108,16 @@
 			},
 		];
 		termbaseMetadata.extranet.map(extranet => {
-			Screenful.Navigator.actions.push({
-				caption: "<span class='extranet'><strong><%=L('EXTRANET')%></strong> "+Spec.title(extranet.title, uilang)+"</span> <%=L('Add to extranet')%>",
-				url: "./extranetAdd.json?extranetID="+extranet.id,
-			});
-			Screenful.Navigator.actions.push({
-				caption: "<span class='extranet'><strong><%=L('EXTRANET')%></strong> "+Spec.title(extranet.title, uilang)+"</span> <%=L('Remove from extranet')%>",
-				url: "./extranetRemove.json?extranetID="+extranet.id,
-			});
+			if(extranet.live=="1") {
+				Screenful.Navigator.actions.push({
+					caption: "<span class='extranet'><strong><%=L('EXTRANET')%></strong> "+Spec.title(extranet.title, uilang)+"</span> <%=L('Add to extranet')%>",
+					url: "./extranetAdd.json?extranetID="+extranet.id,
+				});
+				Screenful.Navigator.actions.push({
+					caption: "<span class='extranet'><strong><%=L('EXTRANET')%></strong> "+Spec.title(extranet.title, uilang)+"</span> <%=L('Remove from extranet')%>",
+					url: "./extranetRemove.json?extranetID="+extranet.id,
+				});
+			}
 		});
 		Screenful.Navigator.starlistActions=[
 			{

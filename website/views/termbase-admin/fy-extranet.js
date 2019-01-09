@@ -25,6 +25,8 @@ Spec.templates[":top"]={
   html: `<div class="fy_onlybody">
     <div class="goodtitle">${L("TITLE")}</div>
     <div class="fy_replace" templateName="title" jsonName="title"></div>
+    <div class="goodtitle">${L("STATUS")}</div>
+    <div class="fy_replace" templateName="live" jsonName="live"></div>
     <div class="goodtitle">${L("USERS")}</div>
     <div class="fy_replace" templateName="users" jsonName="users"></div>
   </div>`,
@@ -71,6 +73,22 @@ Spec.templates["titleStringUnlabelled"]={
     return $me.find("input").val();
   },
 };
+
+Spec.templates["live"]={
+  type: "string",
+  html: `<div class="fy_node">
+    <label><input type="radio" name="alive" value="1" onchange="Fy.changed()"/> <img src='../../../furniture/tick.png'/> ${L("live")}</label>
+    <label><input type="radio" name="alive" value="0" onchange="Fy.changed()"/> <img src='../../../furniture/cross.png'/> ${L("not live")}</label>
+  </div>`,
+  set: function($me, data){
+    if(data!="1" && data!="0") data="1";
+    $me.find("input[value='"+data+"']").prop("checked", true);
+  },
+  get: function($me){
+    return $me.find("input:checked").val();
+  },
+};
+
 
 Spec.templates["users"]={
   type: "array",

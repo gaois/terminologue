@@ -132,7 +132,8 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
       db.close();
       var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
       configs.ident.blurb=ops.markdown(configs.ident.blurb[uilang] || configs.ident.blurb.$);
-      ops.readExtranetsByUser(db, req.params.termbaseID, user.email, function(extranets){
+      ops.readExtranetsByUser(db, req.params.termbaseID, user.email, function(_extranets){
+        var extranets=[]; _extranets.map(obj => { if(obj.live=="1") extranets.push(obj); });
         res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets});
       });
     });

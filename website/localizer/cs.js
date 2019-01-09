@@ -165,6 +165,9 @@ function L(s, gloss){
   if(s=="PUBLISHABLE") return "PUBLIKOVATELNÉ";
   if(s=="HIDDEN") return "SKRYTÉ";
   if(s=="non-essential") return "nedůležité";
+  if(s=="STATUS") return "STATUS";
+  if(s=="live") return "živý";
+  if(s=="not live") return "neživý";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

@@ -165,6 +165,9 @@ function L(s, gloss){
   if(s=="PUBLISHABLE") return "INFHOILSITHE";
   if(s=="HIDDEN") return "I BHFOLACH";
   if(s=="non-essential") return "neamhriachtanach";
+  if(s=="STATUS") return "STÁDAS";
+  if(s=="live") return "beo";
+  if(s=="not live") return "neamhbheo";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
