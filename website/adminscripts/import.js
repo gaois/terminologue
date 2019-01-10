@@ -405,7 +405,6 @@ function doConcepts(db, start, stop, callnext){
       desig.nonessential="0";
       if(desig.accept && lowAcceptLabelIDs.indexOf(desig.accept)>-1 && desig.term && goodTermsCountByLang[desig.term.lang]>0){
         desig.nonessential="1";
-        console.log("TTT "+id);
       }
       //desig done:
       if(desig.term) json.desigs.push(desig);

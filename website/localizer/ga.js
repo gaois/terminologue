@@ -169,6 +169,23 @@ function L(s, gloss){
   if(s=="live") return "beo";
   if(s=="not live") return "neamhbheo";
 
+  if(s=="any clarification or no clarification") return "soiléiriú ar bith nó gan soiléiriú";
+  if(s=="any clarification") return "soiléiriú ar bith";
+  if(s=="no clarification") return "gan soiléiriú";
+  if(s=="clarification containing...") return "soiléiriú ina bhfuil...";
+  if(s=="any intro or no intro") return "intreoir ar bith nó gan intreoir";
+  if(s=="any intro") return "intreoir ar bith";
+  if(s=="no intro") return "gan intreoir";
+  if(s=="intro containing...") return "intreoir ina bhfuil...";
+  if(s=="any definition or no definition") return "sainmhíniú ar bith nó gan sainmhíniú";
+  if(s=="any definition") return "sainmhíniú ar bith";
+  if(s=="no definition") return "gan sainmhíniú";
+  if(s=="definition containing...") return "sainmhíniú ina bhfuil...";
+  if(s=="any example or no example") return "sampla ar bith nó gan sampla";
+  if(s=="any example") return "sampla ar bith";
+  if(s=="no example") return "gan sampla";
+  if(s=="example containing...") return "sampla ina bhfuil...";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

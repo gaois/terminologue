@@ -2,6 +2,8 @@ Screenful.Facetor.panes=[{
   render: function(div){
     var $inme=$(div);
 
+    //------
+
     $inme.append(`<div class="title"><span class="tab">${L("ADMIN")}</span></div>`);
 
     //cStatus:
@@ -21,8 +23,8 @@ Screenful.Facetor.panes=[{
     //dateStamp:
     var $select=$(`<select class="fullwidth" id="facDateStamp"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("any datestamp or no datestamp")})</option>`);
-    $select.append(`<option value="*">${L("any datestamp")}</option>`);
     $select.append(`<option value="-1">${L("no datestamp")}</option>`);
+    $select.append(`<option value="*">${L("any datestamp")}</option>`);
     $select.append(`<option value="before">${L("datestamp before...")}</option>`);
     $select.append(`<option value="on">${L("datestamp on...")}</option>`);
     $select.append(`<option value="after">${L("datestamp after...")}</option>`);
@@ -35,6 +37,8 @@ Screenful.Facetor.panes=[{
 
     var $input=$(`<input type="date" class="fullwidth sub" id="facDateStampValue" value="${(new Date()).toISOString().split('T')[0]}"/>`).hide().appendTo($inme);
     $input.on("change", Screenful.Facetor.change);
+
+    //------
 
     $inme.append(`<div class="title"><span class="tab">${L("DOM")}</span></div>`);
 
@@ -78,6 +82,8 @@ Screenful.Facetor.panes=[{
     $select.append(`<option value="">(${L("any subdomain or no subdomain")})</option>`);
     $select.on("change", Screenful.Facetor.change);
 
+    //------
+
     $inme.append(`<div class="title"><span class="tab">${L("TRM")}</span></div>`);
 
     //term lang:
@@ -90,7 +96,7 @@ Screenful.Facetor.panes=[{
     });
     $select.on("change", Screenful.Facetor.change);
 
-    //acceptabilty:
+    //acceptability:
     var $select=$(`<select class="fullwidth" id="facAccept"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("any acceptabilty or no acceptability")})</option>`);
     $select.append(`<option value="*">(${L("any acceptabilty")})</option>`);
@@ -101,6 +107,84 @@ Screenful.Facetor.panes=[{
       $option.appendTo($select);
     });
     $select.on("change", Screenful.Facetor.change);
+
+    //clarification:
+    var $select=$(`<select class="fullwidth" id="facClarif"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any clarification or no clarification")})</option>`);
+    $select.append(`<option value="*">${L("any clarification")}</option>`);
+    $select.append(`<option value="-1">${L("no clarification")}</option>`);
+    $select.append(`<option value="txt">${L("clarification containing...")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+    $select.on("change", function(){
+      var val=$("#facClarif").val();
+      if(val=="txt") $("#facClarifValue").show();
+      else $("#facClarifValue").hide();
+    });
+
+    var $input=$(`<input class="fullwidth sub" id="facClarifValue"/>`).hide().appendTo($inme);
+    $input.on("change", Screenful.Facetor.change);
+
+    //------
+
+    $inme.append(`<div class="title"><span class="tab">${L("INTR")}</span></div>`);
+
+    //intro:
+    var $select=$(`<select class="fullwidth" id="facIntro"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any intro or no intro")})</option>`);
+    $select.append(`<option value="*">${L("any intro")}</option>`);
+    $select.append(`<option value="-1">${L("no intro")}</option>`);
+    $select.append(`<option value="txt">${L("intro containing...")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+    $select.on("change", function(){
+      var val=$("#facIntro").val();
+      if(val=="txt") $("#facIntroValue").show();
+      else $("#facIntroValue").hide();
+    });
+
+    var $input=$(`<input class="fullwidth sub" id="facIntroValue"/>`).hide().appendTo($inme);
+    $input.on("change", Screenful.Facetor.change);
+
+    //------
+
+    $inme.append(`<div class="title"><span class="tab">${L("DEF")}</span></div>`);
+
+    //definition:
+    var $select=$(`<select class="fullwidth" id="facDef"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any definition or no definition")})</option>`);
+    $select.append(`<option value="*">${L("any definition")}</option>`);
+    $select.append(`<option value="-1">${L("no definition")}</option>`);
+    $select.append(`<option value="txt">${L("definition containing...")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+    $select.on("change", function(){
+      var val=$("#facDef").val();
+      if(val=="txt") $("#facDefValue").show();
+      else $("#facDefValue").hide();
+    });
+
+    var $input=$(`<input class="fullwidth sub" id="facDefValue"/>`).hide().appendTo($inme);
+    $input.on("change", Screenful.Facetor.change);
+
+    //------
+
+    $inme.append(`<div class="title"><span class="tab">${L("XMPL")}</span></div>`);
+
+    //examples:
+    var $select=$(`<select class="fullwidth" id="facXmpl"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any example or no example")})</option>`);
+    $select.append(`<option value="*">${L("any example")}</option>`);
+    $select.append(`<option value="-1">${L("no example")}</option>`);
+    $select.append(`<option value="txt">${L("example containing...")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+    $select.on("change", function(){
+      var val=$("#facXmpl").val();
+      if(val=="txt") $("#facXmplValue").show();
+      else $("#facXmplValue").hide();
+    });
+
+    var $input=$(`<input class="fullwidth sub" id="facXmplValue"/>`).hide().appendTo($inme);
+    $input.on("change", Screenful.Facetor.change);
+
+    //------
 
     $inme.append(`<div class="title"><span class="tab">${L("COLL")}</span></div>`);
 
@@ -117,6 +201,8 @@ Screenful.Facetor.panes=[{
     $select.on("change", Screenful.Facetor.change);
 
     $inme.append(`<div class="title"><span class="tab">${L("EXT")}</span></div>`);
+
+    //------
 
     //extranet:
     var $select=$(`<select class="fullwidth" id="facExtranet"></select>`).appendTo($inme);
@@ -136,16 +222,33 @@ Screenful.Facetor.panes=[{
   harvest: function(div){
     var $inme=$(div);
     var ret={};
+
     ret.cStatus=$("#facCStatus").val();
     ret.pStatus=$("#facPStatus").val();
     ret.dateStamp=$("#facDateStamp").val();
     ret.dateStampValue=$("#facDateStampValue").val();
-    ret.termLang=$("#facTermLang").val();
-    ret.accept=$("#facAccept").val();
+
     ret.superdomain=$("#facSuperdomain").val();
     ret.subdomain=$("#facSubdomain").val();
+
+    ret.termLang=$("#facTermLang").val();
+    ret.accept=$("#facAccept").val();
+    ret.clarif=$("#facClarif").val();
+    ret.clarifValue=$("#facClarifValue").val();
+
+    ret.intro=$("#facIntro").val();
+    ret.introValue=$("#facIntroValue").val();
+
+    ret.def=$("#facDef").val();
+    ret.defValue=$("#facDefValue").val();
+
+    ret.xmpl=$("#facXmpl").val();
+    ret.xmplValue=$("#facXmplValue").val();
+
     ret.collection=$("#facCollection").val();
+
     ret.extranet=$("#facExtranet").val();
+
     return ret;
   },
 }];

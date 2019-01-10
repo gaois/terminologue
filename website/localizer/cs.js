@@ -169,6 +169,23 @@ function L(s, gloss){
   if(s=="live") return "živý";
   if(s=="not live") return "neživý";
 
+  if(s=="any clarification or no clarification") return "jakákoliv vysvětlivka nebo žádná";
+  if(s=="any clarification") return "jakákoliv vysvětlivka";
+  if(s=="no clarification") return "žádná vysvětlivka";
+  if(s=="clarification containing...") return "vysvětlivka obsahující...";
+  if(s=="any intro or no intro") return "jakýkoliv úvod nebo žádný";
+  if(s=="any intro") return "jakýkoliv úvod";
+  if(s=="no intro") return "žádný úvod";
+  if(s=="intro containing...") return "úvod obsahující...";
+  if(s=="any definition or no definition") return "jakákoliv definice nebo žádná";
+  if(s=="any definition") return "jakákoliv definice";
+  if(s=="no definition") return "žádná definice";
+  if(s=="definition containing...") return "definice obsahující...";
+  if(s=="any example or no example") return "jakýkoliv příklad nebo žádný";
+  if(s=="any example") return "jakýkoliv příklad";
+  if(s=="no example") return "žádný příklad";
+  if(s=="example containing...") return "příklad obsahující...";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

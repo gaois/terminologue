@@ -9,6 +9,7 @@
 #leftbox select {font: inherit; font-size: 0.9em; box-sizing: border-box; padding: 4px 4px; border: 1px inset #bbbbbb; background-color: #ffffff; border-radius: 2px;}
 #leftbox select.fullwidth {width: 100%; display: block; margin: 5px 0px;}
 #leftbox select.sub {margin-top: -5px; border-top: 0px;}
+#leftbox select.empty {background-color: #dddddd;}
 
 #leftbox input {font: inherit; font-size: 0.9em; box-sizing: border-box; padding: 4px 4px; border: 1px inset #bbbbbb; background-color: #ffffff; border-radius: 2px;}
 #leftbox input.fullwidth {width: 100%; display: block; margin: 5px 0px;}

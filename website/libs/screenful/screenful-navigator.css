@@ -9,7 +9,7 @@
 
 #envelope.leftContainerExpanded > #midcontainer {left: 17%;}
 #envelope.leftContainerExpanded > #leftcontainer {width: 17%; }
-#envelope.leftContainerExpanded > #leftcontainer > .closer {color: #8e0404; font-weight: bold; position: absolute; top: 12px; right: 12px; box-sizing: border-box; height: 30px; width: 30px; text-align: center; padding-top: 5px; border-radius: 2px; cursor: pointer; z-index: 1;}
+#envelope.leftContainerExpanded > #leftcontainer > .closer {color: #8e0404; font-weight: bold; position: absolute; top: 0px; right: 0px; box-sizing: border-box; height: 30px; width: 30px; text-align: center; padding-top: 5px; border-radius: 2px; cursor: pointer; z-index: 1;}
 #envelope.leftContainerExpanded > #leftcontainer > .closer:hover {background-color: #eeeeee;}
 #envelope.leftContainerExpanded > #leftcontainer > #leftbox {display: block;}
 

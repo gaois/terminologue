@@ -406,20 +406,6 @@ module.exports={
       }
     }
 
-    if(facets.termLang || facets.accept){
-      joins.push(`inner join entry_term as f_et on f_et.entry_id=e.id`);
-      if(facets.termLang) {
-        joins.push(`inner join terms as f_t on f_t.id=f_et.term_id`);
-        where.push(`f_t.lang=$fTermLang`);
-        params[`$fTermLang`]=facets.termLang;
-      }
-      if(facets.accept){
-        if(facets.accept=="*") where.push(`f_et.accept>0`)
-        else if(facets.accept=="-1") where.push(`f_et.accept=0`)
-        else {where.push(`f_et.accept=$fAccept`); params[`$fAccept`]=parseInt(facets.accept);}
-      }
-    }
-
     if(facets.superdomain && facets.superdomain=="-1"){
       joins.push(`left outer join entry_domain as fDomain on fDomain.entry_id=e.id`);
       where.push(`fDomain.superdomain is null`);
@@ -434,6 +420,58 @@ module.exports={
         else if(facets.subdomain=="-1") where.push(`fDomain.subdomain=0`);
         else { where.push(`fDomain.subdomain=$fSubdomain`); params[`$fSubdomain`]=parseInt(facets.subdomain); }
       }
+    }
+
+    if(facets.termLang || facets.accept || facets.clarif){
+      joins.push(`inner join entry_term as f_et on f_et.entry_id=e.id`);
+      if(facets.termLang) {
+        joins.push(`inner join terms as f_t on f_t.id=f_et.term_id`);
+        where.push(`f_t.lang=$fTermLang`);
+        params[`$fTermLang`]=facets.termLang;
+      }
+      if(facets.accept){
+        if(facets.accept=="*") where.push(`f_et.accept>0`)
+        else if(facets.accept=="-1") where.push(`f_et.accept=0`)
+        else {where.push(`f_et.accept=$fAccept`); params[`$fAccept`]=parseInt(facets.accept);}
+      }
+      if(facets.clarif){
+        if(facets.clarif=="*") where.push(`f_et.clarif<>''`)
+        else if(facets.clarif=="-1") where.push(`f_et.clarif=''`)
+        else if(facets.clarif=="txt") {
+          where.push(`(f_et.clarif<>'' and f_et.clarif like $fClarif)`);
+          params[`$fClarif`]="%"+facets.clarifValue+"%";
+        }
+      }
+    }
+
+    if(facets.intro){
+      joins.push(`inner join entry_intro as f_ei on f_ei.entry_id=e.id`);
+      if(facets.intro=="*") where.push(`f_ei.text<>''`)
+      else if(facets.intro=="-1") where.push(`f_ei.text=''`)
+      else if(facets.intro=="txt") {
+        where.push(`(f_ei.text<>'' and f_ei.text like $fIntro)`);
+        params[`$fIntro`]="%"+facets.introValue+"%";
+      }
+    }
+
+    if(facets.def && facets.def=="-1"){
+      joins.push(`left outer join entry_def as fDef on fDef.entry_id=e.id`);
+      where.push(`fDef.text is null`);
+    }
+    else if(facets.def){
+      joins.push(`inner join entry_def as fDef on fDef.entry_id=e.id`);
+      if(facets.def=="*") where.push(`fDef.text<>''`);
+      else { where.push(`fDef.text like $fDef`); params[`$fDef`]="%"+facets.defValue+"%"; }
+    }
+
+    if(facets.xmpl && facets.xmpl=="-1"){
+      joins.push(`left outer join entry_xmpl as fXmpl on fXmpl.entry_id=e.id`);
+      where.push(`fXmpl.text is null`);
+    }
+    else if(facets.xmpl){
+      joins.push(`inner join entry_xmpl as fXmpl on fXmpl.entry_id=e.id`);
+      if(facets.xmpl=="*") where.push(`fXmpl.text<>''`);
+      else { where.push(`fXmpl.text like $fXmpl`); params[`$fXmpl`]="%"+facets.xmplValue+"%"; }
     }
 
     if(facets.collection && facets.collection=="-1"){
@@ -727,7 +765,16 @@ module.exports={
                     module.exports.saveCollections(db, termbaseID, entryID, entry, function(){
                       //index my extranets:
                       module.exports.saveExtranets(db, termbaseID, entryID, entry, function(){
-                        callnext(entryID);
+                        //index my intros:
+                        module.exports.saveIntros(db, termbaseID, entryID, entry, function(){
+                          //index my definitions:
+                          module.exports.saveDefinitions(db, termbaseID, entryID, entry, function(){
+                            //index my examples:
+                            module.exports.saveExamples(db, termbaseID, entryID, entry, function(){
+                              callnext(entryID);
+                            });
+                          });
+                        });
                       });
                     });
                   });
@@ -796,9 +843,12 @@ module.exports={
   },
   saveConnections: function(db, termbaseID, entryID, entryOrNull, callnext){
     var termAssigs=[]; if(entryOrNull){
-      entryOrNull.desigs.map(desig => { termAssigs.push({
-        termID: parseInt(desig.term.id),
-        accept: parseInt(desig.accept)||0})
+      entryOrNull.desigs.map(desig => {
+        termAssigs.push({
+          termID: parseInt(desig.term.id),
+          accept: parseInt(desig.accept)||0,
+          clarif: desig.clarif||"",
+        });
       });
     }
     //delete all pre-existing connections between this entry and any term:
@@ -812,7 +862,7 @@ module.exports={
     function go(){
       var termAssig=termAssigs.pop();
       if(termAssig) {
-        db.run("insert into entry_term(entry_id, term_id, accept) values($entryID, $termID, $accept)", {$entryID: entryID, $termID: termAssig.termID, $accept: termAssig.accept}, function(err, row){
+        db.run("insert into entry_term(entry_id, term_id, accept, clarif) values($entryID, $termID, $accept, $clarif)", {$entryID: entryID, $termID: termAssig.termID, $accept: termAssig.accept, $clarif: termAssig.clarif}, function(err, row){
           go();
         });
       } else {
@@ -930,6 +980,64 @@ module.exports={
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_extranet(entry_id, extranet) values($entryID, $extranet)", {$entryID: entryID, $extranet: assig}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveIntros: function(db, termbaseID, entryID, entry, callnext){
+    var assigs=[]; for(var key in entry.intros) assigs.push(entry.intros[key]);
+    db.run("delete from entry_intro where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var assig=assigs.pop();
+      if(assig || assig===""){
+        db.run("insert into entry_intro(entry_id, text) values($entryID, $text)", {$entryID: entryID, $text: assig}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveDefinitions: function(db, termbaseID, entryID, entry, callnext){
+    var assigs=[]; entry.definitions.map(def => {
+      for(var key in def.texts){
+        if(def.texts[key]) assigs.push(def.texts[key]);
+      }
+    });
+    db.run("delete from entry_def where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var assig=assigs.pop();
+      if(assig){
+        db.run("insert into entry_def(entry_id, text) values($entryID, $text)", {$entryID: entryID, $text: assig}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveExamples: function(db, termbaseID, entryID, entry, callnext){
+    var assigs=[]; entry.examples.map(ex => {
+      for(var key in ex.texts){
+        ex.texts[key].map(text => {
+          if(text) assigs.push(text);
+        });
+      }
+    });
+    db.run("delete from entry_xmpl where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var assig=assigs.pop();
+      if(assig){
+        db.run("insert into entry_xmpl(entry_id, text) values($entryID, $text)", {$entryID: entryID, $text: assig}, function(err){
           go();
         });
       } else {
