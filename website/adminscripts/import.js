@@ -12,6 +12,7 @@ db.run('PRAGMA foreign_keys=on');
 
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
+var lowAcceptLabelIDs=[];
 
 deed(1000);
 //deedAgain(1000, 2000);
@@ -149,6 +150,7 @@ function doAcceptLabels(db, callnext){
         },
         level: doc.getElementsByTagName("level")[0].getAttribute("default") || "0",
       };
+      if(parseInt(json.level)<0) lowAcceptLabelIDs.push(id);
       ops.metadataUpdate(db, "bnt", "acceptLabel", id, JSON.stringify(json), function(){
         doOne();
       })
@@ -368,6 +370,20 @@ function doConcepts(db, start, stop, callnext){
       collections: [],
       extranets: [],
     };
+    //count number of non-low-priority terms in each language:
+    var goodTermsCountByLang={};
+    var els=doc.getElementsByTagName("term");
+    for(var i=0; i<els.length; i++) { var el=els[i];
+      var accept=el.getAttribute("acceptLabel") || null;
+      if(lowAcceptLabelIDs.indexOf(accept)==-1){
+        var termID=el.getAttribute("default");
+        var term=getTerm(termID);
+        if(term) {
+          if(!goodTermsCountByLang[term.lang]) goodTermsCountByLang[term.lang]=0;
+          goodTermsCountByLang[term.lang]++;
+        }
+      }
+    }
     //desigs:
     var els=doc.getElementsByTagName("term");
     for(var i=0; i<els.length; i++) { var el=els[i];
@@ -385,6 +401,13 @@ function doConcepts(db, start, stop, callnext){
       //the term:
       var termID=el.getAttribute("default");
       desig.term=getTerm(termID);
+      //is the desig non-essential?
+      desig.nonessential="0";
+      if(desig.accept && lowAcceptLabelIDs.indexOf(desig.accept)>-1 && desig.term && goodTermsCountByLang[desig.term.lang]>0){
+        desig.nonessential="1";
+        console.log("TTT "+id);
+      }
+      //desig done:
       if(desig.term) json.desigs.push(desig);
     }
     //domains:
@@ -411,7 +434,7 @@ function doConcepts(db, start, stop, callnext){
         if(subdomain2superdomain[domainID]) domains.push({superdomain: subdomain2superdomain[domainID], subdomain: domainID});
         else domains.push({superdomain: domainID, subdomain: null});
       }
-      var obj={texts: {ga: "", en: ""}, domains: domains, sources: []};
+      var obj={texts: {ga: "", en: ""}, domains: domains, sources: [], nonessential: "0"};
       var subels=doc.getElementsByTagName("textEN");
       if(subels.length>0) {
         var text=subels[0].getAttribute("default");
@@ -505,7 +528,8 @@ function getExample(exampleID){
   var doc=domParser.parseFromString(xml, 'text/xml');
   var json={
     texts: {ga: [], en: []},
-    sources: []
+    sources: [],
+    nonessential: "0"
   };
   //English phrases:
   var els=doc.getElementsByTagName("phraseEN");
