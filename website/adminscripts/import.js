@@ -14,8 +14,8 @@ var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
 
-deed(1000);
-//deedAgain(1000, 2000);
+//deed(100);
+deed(1000000);
 
 //deed(10000);
 //deedAgain(10000, 20000);
@@ -87,10 +87,12 @@ function deedAgain(start, stop){
             doPosLabels(db, function(){
               doDomains(db, function(){
                 doCollections(db, function(){
-                  doConcepts(db, start, stop, function(){
-                    db.run("COMMIT");
-                    db.close();
-                    console.log(`finito`);
+                  doNoteTypes(db, function(){
+                    doConcepts(db, start, stop, function(){
+                      db.run("COMMIT");
+                      db.close();
+                      console.log(`finito`);
+                    });
                   });
                 });
               });
@@ -457,17 +459,92 @@ function doConcepts(db, start, stop, callnext){
     for(var i=0; i<els.length; i++) { el=els[i];
       json.collections.push(el.getAttribute("default"));
     }
-    //save it:
+    //save the entry:
     todo++;
-    console.log(`scheduling to save entry ID ${id}`);
-    ops.entrySave(db, "bnt", id, JSON.stringify(json), "", {}, function(){
-      done++;
-      console.log(`entry ID ${id} saved: ${done} of ${todo} entries done`);
-      if(done>=filenames.length) callnext();
+    fs.appendFileSync("/home/mbm/terminologue/temp/entries.txt", line([
+      id.toString(),
+      JSON.stringify(json),
+      json.cStatus,
+      json.pStatus,
+      ""
+    ]));
+    //save entry sortings:
+    var sortkeys=[];
+    ["ga", "en"].map(lang => {
+      var str="";
+      json.desigs.map(desig => { if(desig.term.lang==lang) str+=desig.term.wording; });
+      var abc=defaultAbc[lang];
+      var sortkey=toSortkey(str, abc);
+      sortkeys.push({lang: lang.abbr, key: sortkey})
+      fs.appendFileSync("/home/mbm/terminologue/temp/entry_sortkey.txt", line([
+        id.toString(),
+        lang,
+        sortkey
+      ]));
     });
+    //save connections:
+    json.desigs.map(desig => {
+      fs.appendFileSync("/home/mbm/terminologue/temp/entry_term.txt", line([
+        id.toString(),
+        desig.term.id,
+        desig.accept||"0",
+        desig.clarif||""
+      ]));
+    });
+    //save domains:
+    json.domains.map(obj => {
+      fs.appendFileSync("/home/mbm/terminologue/temp/entry_domain.txt", line([
+        id.toString(),
+        obj.superdomain,
+        obj.subdomain||"0"
+      ]));
+    });
+    //save collections:
+    json.collections.map(obj => {
+      fs.appendFileSync("/home/mbm/terminologue/temp/entry_collection.txt", line([
+        id.toString(),
+        obj
+      ]));
+    });
+    //save intros:
+    for(var key in json.intros){
+      fs.appendFileSync("/home/mbm/terminologue/temp/entry_intro.txt", line([
+        id.toString(),
+        json.intros[key]
+      ]));
+    }
+    //save definitions:
+    json.definitions.map(def => {
+      for(var key in def.texts){
+        if(def.texts[key]){
+          fs.appendFileSync("/home/mbm/terminologue/temp/entry_def.txt", line([
+            id.toString(),
+            def.texts[key]
+          ]));
+        }
+      }
+    });
+    //save examples:
+    json.examples.map(ex => {
+      for(var key in ex.texts){
+        ex.texts[key].map(text => {
+          if(text){
+            fs.appendFileSync("/home/mbm/terminologue/temp/entry_xmpl.txt", line([
+              id.toString(),
+              text
+            ]));
+          }
+        });
+      }
+    });
+
+    //concept done:
+    done++;
+    if(done>=filenames.length) callnext();
   });
-  console.log(`finished scheduling to save entries`);
+  console.log(`finished`);
 }
+var termsDone=[];
 function getTerm(termID){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.term/";
   if(!fs.existsSync(dir+termID+".xml")) return null;
@@ -518,6 +595,35 @@ function getTerm(termID){
     var inflect={label: el.getAttribute("label"), text: el.getAttribute("text")};
     json.inflects.push(inflect);
   }
+  //optionally save the term:
+  if(termsDone.indexOf(termID)==-1){
+    termsDone.push(termID);
+    fs.appendFileSync("/home/mbm/terminologue/temp/terms.txt", line([
+      termID.toString(),
+      JSON.stringify(json),
+      json.lang,
+      json.wording
+    ]));
+    //save words:
+    var words=ops.wordSplit(json.wording, json.lang);
+    words.map(word => {
+      fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+        termID.toString(),
+        word,
+        "0"
+      ]));
+      getLemmas(json.lang, word, function(lemmas){
+        lemmas.map(lemma => {
+          fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+            termID.toString(),
+            lemma,
+            "1"
+          ]));
+        });
+      });
+    });
+  }
+  //return the term:
   return json;
 }
 function getExample(exampleID){
@@ -541,4 +647,414 @@ function getExample(exampleID){
     if(el.getAttribute("default")!="") json.texts.ga.push(el.getAttribute("default"));
   }
   return json;
+}
+
+function line(arr){
+  var ret="";
+  arr.map((s, i) => {
+    if(i>0) ret+="\t";
+    ret+=s.replace(/[\t\n]/g, " ");
+  });
+  ret+="\n";
+  return ret;
+}
+
+var langDBs={};
+function getLangDB(lang){
+  if(langDBs[lang]){
+    return langDBs[lang];
+  } else {
+    var db=null;
+    if(fs.existsSync("/home/mbm/terminologue/data/lang/"+lang+".sqlite")){
+      db=new sqlite3.Database("/home/mbm/terminologue/data/lang/"+lang+".sqlite", sqlite3.OPEN_READONLY, function(err){});
+      db.serialize();
+      langDBs[lang]=db;
+    }
+    return db;
+  }
+}
+function getLemmas(lang, word, callnext){
+  var langDB=getLangDB(lang);
+  if(!langDB) callnext([]); else {
+    langDB.all("select lemma from lemmatization where token=$token", {$token: word}, function(err, rows){
+      var lemmas=[];
+      for(var i=0; i<rows.length; i++) if(lemmas.indexOf(rows[i]["lemma"])==-1) lemmas.push(rows[i]["lemma"]);
+      callnext(lemmas);
+    });
+  }
+}
+
+
+var defaultAbc={
+  "en": [
+    [
+      "a",
+      "á",
+      "à",
+      "â",
+      "ä",
+      "ă",
+      "ā",
+      "ã",
+      "å",
+      "ą",
+      "æ"
+    ],
+    [
+      "b"
+    ],
+    [
+      "c",
+      "ć",
+      "ċ",
+      "ĉ",
+      "č",
+      "ç"
+    ],
+    [
+      "d",
+      "ď",
+      "đ"
+    ],
+    [
+      "e",
+      "é",
+      "è",
+      "ė",
+      "ê",
+      "ë",
+      "ě",
+      "ē",
+      "ę"
+    ],
+    [
+      "f"
+    ],
+    [
+      "g",
+      "ġ",
+      "ĝ",
+      "ğ",
+      "ģ"
+    ],
+    [
+      "h",
+      "ĥ",
+      "ħ"
+    ],
+    [
+      "i",
+      "ı",
+      "í",
+      "ì",
+      "i",
+      "î",
+      "ï",
+      "ī",
+      "į"
+    ],
+    [
+      "j",
+      "ĵ"
+    ],
+    [
+      "k",
+      "ĸ",
+      "ķ"
+    ],
+    [
+      "l",
+      "ĺ",
+      "ŀ",
+      "ľ",
+      "ļ",
+      "ł"
+    ],
+    [
+      "m"
+    ],
+    [
+      "n",
+      "ń",
+      "ň",
+      "ñ",
+      "ņ"
+    ],
+    [
+      "o",
+      "ó",
+      "ò",
+      "ô",
+      "ö",
+      "ō",
+      "õ",
+      "ő",
+      "ø",
+      "œ"
+    ],
+    [
+      "p"
+    ],
+    [
+      "q"
+    ],
+    [
+      "r",
+      "ŕ",
+      "ř",
+      "ŗ"
+    ],
+    [
+      "s",
+      "ś",
+      "ŝ",
+      "š",
+      "ş",
+      "ș",
+      "ß"
+    ],
+    [
+      "t",
+      "ť",
+      "ţ",
+      "ț"
+    ],
+    [
+      "u",
+      "ú",
+      "ù",
+      "û",
+      "ü",
+      "ŭ",
+      "ū",
+      "ů",
+      "ų",
+      "ű"
+    ],
+    [
+      "v"
+    ],
+    [
+      "w",
+      "ẃ",
+      "ẁ",
+      "ŵ",
+      "ẅ"
+    ],
+    [
+      "x"
+    ],
+    [
+      "y",
+      "ý",
+      "ỳ",
+      "ŷ",
+      "ÿ"
+    ],
+    [
+      "z",
+      "ź",
+      "ż",
+      "ž"
+    ]
+  ],
+  "ga": [
+    [
+      "a",
+      "á",
+      "à",
+      "â",
+      "ä",
+      "ă",
+      "ā",
+      "ã",
+      "å",
+      "ą",
+      "æ"
+    ],
+    [
+      "b"
+    ],
+    [
+      "c",
+      "ć",
+      "ċ",
+      "ĉ",
+      "č",
+      "ç"
+    ],
+    [
+      "d",
+      "ď",
+      "đ"
+    ],
+    [
+      "e",
+      "é",
+      "è",
+      "ė",
+      "ê",
+      "ë",
+      "ě",
+      "ē",
+      "ę"
+    ],
+    [
+      "f"
+    ],
+    [
+      "g",
+      "ġ",
+      "ĝ",
+      "ğ",
+      "ģ"
+    ],
+    [
+      "h",
+      "ĥ",
+      "ħ"
+    ],
+    [
+      "i",
+      "ı",
+      "í",
+      "ì",
+      "i",
+      "î",
+      "ï",
+      "ī",
+      "į"
+    ],
+    [
+      "j",
+      "ĵ"
+    ],
+    [
+      "k",
+      "ĸ",
+      "ķ"
+    ],
+    [
+      "l",
+      "ĺ",
+      "ŀ",
+      "ľ",
+      "ļ",
+      "ł"
+    ],
+    [
+      "m"
+    ],
+    [
+      "n",
+      "ń",
+      "ň",
+      "ñ",
+      "ņ"
+    ],
+    [
+      "o",
+      "ó",
+      "ò",
+      "ô",
+      "ö",
+      "ō",
+      "õ",
+      "ő",
+      "ø",
+      "œ"
+    ],
+    [
+      "p"
+    ],
+    [
+      "q"
+    ],
+    [
+      "r",
+      "ŕ",
+      "ř",
+      "ŗ"
+    ],
+    [
+      "s",
+      "ś",
+      "ŝ",
+      "š",
+      "ş",
+      "ș",
+      "ß"
+    ],
+    [
+      "t",
+      "ť",
+      "ţ",
+      "ț"
+    ],
+    [
+      "u",
+      "ú",
+      "ù",
+      "û",
+      "ü",
+      "ŭ",
+      "ū",
+      "ů",
+      "ų",
+      "ű"
+    ],
+    [
+      "v"
+    ],
+    [
+      "w",
+      "ẃ",
+      "ẁ",
+      "ŵ",
+      "ẅ"
+    ],
+    [
+      "x"
+    ],
+    [
+      "y",
+      "ý",
+      "ỳ",
+      "ŷ",
+      "ÿ"
+    ],
+    [
+      "z",
+      "ź",
+      "ż",
+      "ž"
+    ]
+  ]
+};
+function toSortkey(s, abc){
+  const keylength=5;
+  var ret=s.replace(/\<[\<\>]+>/g, "").toLowerCase();
+  //replace any numerals:
+  var pat=new RegExp("[0-9]{1,"+keylength+"}", "g");
+  ret=ret.replace(pat, function(x){while(x.length<keylength+1) x="0"+x; return x;});
+  //prepare characters:
+  var chars=[];
+  var count=0;
+  for(var pos=0; pos<abc.length; pos++){
+    var key=(count++).toString(); while(key.length<keylength) key="0"+key; key="_"+key;
+    for(var i=0; i<abc[pos].length; i++){
+      if(i>0) count++;
+      chars.push({char: abc[pos][i], key: key});
+    }
+  }
+  chars.sort(function(a,b){ if(a.char.length>b.char.length) return -1; if(a.char.length<b.char.length) return 1; return 0; });
+  //replace characters:
+  for(var i=0; i<chars.length; i++){
+    if(!/^[0-9]$/.test(chars[i].char)) { //skip chars that are actually numbers
+      while(ret.indexOf(chars[i].char)>-1) ret=ret.replace(chars[i].char, chars[i].key);
+    }
+  }
+  //remove any remaining characters that aren't a number or an underscore:
+  ret=ret.replace(/[^0-9_]/g, "");
+  return ret;
 }

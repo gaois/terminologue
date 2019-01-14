@@ -362,7 +362,7 @@ module.exports={
       }
       else if(modifiers[1]=="wordstart"){
         joins.push(`inner join words as w on w.term_id=t.id`);
-        where.push(`w.word like $searchtext`);
+        where.push(`(w.word like $searchtext and w.implicit=0)`);
         params.$searchtext=searchtext+"%";
       }
       else if(modifiers[1]=="smart"){
@@ -436,7 +436,7 @@ module.exports={
       }
       if(facets.clarif){
         if(facets.clarif=="*") where.push(`f_et.clarif<>''`)
-        else if(facets.clarif=="-1") where.push(`f_et.clarif=''`)
+        else if(facets.clarif=="-1") where.push(`(f_et.clarif='' or f_et.clarif is null)`)
         else if(facets.clarif=="txt") {
           where.push(`(f_et.clarif<>'' and f_et.clarif like $fClarif)`);
           params[`$fClarif`]="%"+facets.clarifValue+"%";
@@ -447,7 +447,7 @@ module.exports={
     if(facets.intro){
       joins.push(`inner join entry_intro as f_ei on f_ei.entry_id=e.id`);
       if(facets.intro=="*") where.push(`f_ei.text<>''`)
-      else if(facets.intro=="-1") where.push(`f_ei.text=''`)
+      else if(facets.intro=="-1") where.push(`(f_ei.text='' or f_ei.text is null)`)
       else if(facets.intro=="txt") {
         where.push(`(f_ei.text<>'' and f_ei.text like $fIntro)`);
         params[`$fIntro`]="%"+facets.introValue+"%";
@@ -548,6 +548,13 @@ module.exports={
     sql2=sql2.trim();
     //var sql2=`select count(*) as total from entries`;
     //var params2={};
+
+    console.log("---");
+    console.log(params1);
+    console.log(sql1);
+    console.log("---");
+    console.log(params2);
+    console.log(sql2);
 
     callnext(sql1, params1, sql2, params2);
   },
@@ -833,8 +840,10 @@ module.exports={
     function go(){
       var word=words.pop();
       if(word){
-        db.run("insert into words(term_id, word) values($termID, $word)", {$termID: parseInt(term.id), $word: word}, function(err){
-          go();
+        db.run("insert into words(term_id, word, implicit) values($termID, $word, 0)", {$termID: parseInt(term.id), $word: word}, function(err){
+          module.exports.saveLemmas(db, termbaseID, parseInt(term.id), term.lang, word, function(){
+            go();
+          });
         });
       } else {
         callnext();
@@ -1038,6 +1047,47 @@ module.exports={
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_xmpl(entry_id, text) values($entryID, $text)", {$entryID: entryID, $text: assig}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+
+  langDBs: {},
+  getLangDB: function(lang){
+    if(module.exports.langDBs[lang]){
+      return module.exports.langDBs[lang];
+    } else {
+      var db=null;
+      if(fs.existsSync(path.join(module.exports.siteconfig.dataDir, "lang/"+lang+".sqlite"))){
+        db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "lang/"+lang+".sqlite"), sqlite3.OPEN_READONLY, function(err){});
+        module.exports.langDBs[lang]=db;
+      }
+      return db;
+    }
+  },
+  getLemmas: function(lang, word, callnext){
+    var langDB=module.exports.getLangDB(lang);
+    if(!langDB) callnext([]); else {
+      langDB.all("select lemma from lemmatization where token=$token", {$token: word}, function(err, rows){
+        var lemmas=[];
+        for(var i=0; i<rows.length; i++) if(lemmas.indexOf(rows[i]["lemma"])==-1) lemmas.push(rows[i]["lemma"]);
+        callnext(lemmas);
+      });
+    }
+  },
+  saveLemmas: function(db, termbaseID, termID, lang, word, callnext){
+    var lemmas=[];
+    module.exports.getLemmas(lang, word, function(_lemmas){
+      lemmas=_lemmas;
+      go();
+    });
+    function go(){
+      var lemma=lemmas.pop();
+      if(lemma){
+        db.run("insert into words(term_id, word, implicit) values($termID, $word, 1)", {$termID: termID, $word: lemma}, function(err){
           go();
         });
       } else {
