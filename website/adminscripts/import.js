@@ -14,9 +14,11 @@ var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
 
-//deed(100);
+deed(1000);
 //deed(1000000);
-DoLemmatize();
+//DoWords();
+//DoLemmatize();
+//DoSpelling();
 
 //deed(10000);
 //deedAgain(10000, 20000);
@@ -1052,12 +1054,37 @@ function line(arr){
   var ret="";
   arr.map((s, i) => {
     if(i>0) ret+="\t";
-    ret+=s.replace(/[\t\n]/g, " ");
+    ret+=s.toString().replace(/[\t\n]/g, " ");
   });
   ret+="\n";
   return ret;
 }
 
+function DoWords(){
+  var lineReader = require('readline').createInterface({
+    input: require('fs').createReadStream('/home/mbm/terminologue/temp/terms.txt')
+  });
+  var termCounter=0;
+  lineReader.on('line', function(_line) {
+    var columns=_line.split('\t');
+    if(columns.length==4){
+      termCounter++;
+      var termID=columns[0];
+      var lang=columns[2];
+      var wording=columns[3];
+      var words=ops.wordSplit(wording);
+      for(var i=0; i<words.length; i++){
+        var word=words[i];
+        console.log(termCounter, word);
+        fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+          termID.toString(),
+          word,
+          "0"
+        ]));
+      }
+    }
+  });
+}
 function DoLemmatize(){
   var lineReader = require('readline').createInterface({
     input: require('fs').createReadStream('/home/mbm/terminologue/temp/terms.txt')
@@ -1080,7 +1107,7 @@ function DoLemmatize(){
             for(var ii=0; ii<lemmas.length; ii++){
               var lemma=lemmas[ii];
               console.log("  -->", lemma);
-              fs.appendFileSync("/home/mbm/terminologue/temp/words-lemmatized.txt", line([
+              fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
                 termID.toString(),
                 lemma,
                 "1"
@@ -1089,6 +1116,28 @@ function DoLemmatize(){
           });
         }
       }
+    }
+  });
+}
+function DoSpelling(){
+  var lineReader = require('readline').createInterface({
+    input: require('fs').createReadStream('/home/mbm/terminologue/temp/terms.txt')
+  });
+  var termCounter=0;
+  lineReader.on('line', function(_line) {
+    var columns=_line.split('\t');
+    if(columns.length==4){
+      termCounter++;
+      var termID=columns[0];
+      var wording=columns[3];
+      var si=ops.getSpellindex(wording);
+      console.log(termCounter, wording);
+      fs.appendFileSync("/home/mbm/terminologue/temp/spelling.txt", line([
+        termID.toString(),
+        wording,
+        wording.length.toString(),
+        si.a, si.b, si.c, si.d, si.e, si.f, si.g, si.h, si.i, si.j, si.k, si.l, si.m, si.n, si.o, si.p, si.q, si.r, si.s, si.t, si.u, si.v, si.w, si.x, si.y, si.z
+      ]));
     }
   });
 }

@@ -3,6 +3,7 @@ const fs=require("fs-extra");
 const sqlite3 = require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
 const sha1 = require('sha1'); //https://www.npmjs.com/package/sha1
 const markdown = require("markdown").markdown; //https://www.npmjs.com/package/markdown
+const levenshtein = require('js-levenshtein');
 
 module.exports={
   siteconfig: {}, //populated by terminologue.js on startup
@@ -326,22 +327,27 @@ module.exports={
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         var suggestions=null;
-        var primeEntries=null;
-        var entries=[];
-        for(var i=0; i<rows.length; i++){
-          var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
-          if(rows[i].match_quality>0) {
-            if(!primeEntries) primeEntries=[];
-            primeEntries.push(item);
-          } else{
-            entries.push(item);
+        var want=(searchtext!="" && modifier.split(" ")[1]=="smart");
+        module.exports.getSpellsuggs(db, termbaseID, want, searchtext, function(suggs){
+          suggestions=suggs;
+
+          var primeEntries=null;
+          var entries=[];
+          for(var i=0; i<rows.length; i++){
+            var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+            if(rows[i].match_quality>0) {
+              if(!primeEntries) primeEntries=[];
+              primeEntries.push(item);
+            } else{
+              entries.push(item);
+            }
           }
-        }
-        //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
-        db.get(sql2, params2, function(err, row){
-          if(err) console.log(err);
-          var total=(!err && row) ? row.total : 0;
-          callnext(total, primeEntries, entries, suggestions);
+          //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
+          db.get(sql2, params2, function(err, row){
+            if(err) console.log(err);
+            var total=(!err && row) ? row.total : 0;
+            callnext(total, primeEntries, entries, suggestions);
+          });
         });
       });
     });
@@ -549,12 +555,12 @@ module.exports={
     //var sql2=`select count(*) as total from entries`;
     //var params2={};
 
-    console.log("---");
-    console.log(params1);
-    console.log(sql1);
-    console.log("---");
-    console.log(params2);
-    console.log(sql2);
+    // console.log("---");
+    // console.log(params1);
+    // console.log(sql1);
+    // console.log("---");
+    // console.log(params2);
+    // console.log(sql2);
 
     callnext(sql1, params1, sql2, params2);
   },
@@ -822,7 +828,9 @@ module.exports={
             db.run(sql, params, function(err){
               term.id=(termID || this.lastID).toString();
               module.exports.saveWords(db, termbaseID, term, function(){
-                go();
+                module.exports.saveSpelling(db, termbaseID, term, function(){
+                  go();
+                });
               });
             });
           }
@@ -1093,6 +1101,82 @@ module.exports={
       } else {
         callnext();
       }
+    }
+  },
+
+  saveSpelling: function(db, termbaseID, term, callnext){
+    db.run("delete from spelling where term_id=$termID", {$termID: parseInt(term.id)}, function(err){
+      var params={$termID: parseInt(term.id), $wording: term.wording, $length: term.wording.length};
+      var spellindex=module.exports.getSpellindex(term.wording);
+      for(var key in spellindex) params["$"+key]=spellindex[key];
+      db.run("insert into spelling(term_id, wording, length, a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z) values($termID, $wording, $length, $a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z)", params, function(err){
+        callnext();
+      });
+    });
+  },
+  getSpellindex: function(wording){
+    var ret={a:0, b:0, c:0, d:0, e:0, f:0, g:0, h:0, i:0, j:0, k:0, l:0, m:0, n:0, o:0, p:0, q:0, r:0, s:0, t:0, u:0, v:0, w:0, x:0, y:0, z:0};
+    var chars={
+      a: "aáàâäăāãåąæ",
+      b: "b",
+      c: "cćċĉčç",
+      d: "dďđ",
+      e: "eéèėêëěēęæœ",
+      f: "f",
+      g: "gġĝğģ",
+      h: "hĥħ",
+      i: "iıíìİîïīį",
+      j: "jĵ",
+      k: "kĸķ",
+      l: "lĺŀľļł",
+      m: "m",
+      n: "nńňñņ",
+      o: "oóòôöōõőøœ",
+      p: "p",
+      q: "q",
+      r: "rŕřŗ",
+      s: "sśŝšşșß",
+      t: "tťţț",
+      u: "uúùûüŭūůųű",
+      v: "v",
+      w: "wẃẁŵẅ",
+      x: "x",
+      y: "yýỳŷÿ",
+      z: "zźżž"
+    };
+    wording=wording.toLowerCase();
+    for(var i=0; i<wording.length; i++){
+      var c=wording[i];
+      for(var key in chars){
+        if(chars[key].indexOf(c)>-1) ret[key]++;
+      }
+    }
+    return ret;
+  },
+  getSpellsuggs: function(db, termbaseID, want, searchtext, callnext){
+    if(!want) callnext(null); else {
+      var si=module.exports.getSpellindex(searchtext);
+      var sql="select distinct wording from spelling";
+      var orderby="";
+      for(var key in si){
+        if(orderby!="") orderby+="+";
+        orderby+="abs("+key+"-"+si[key]+")";
+      }
+      orderby+="+abs(length-"+searchtext.length+")";
+      sql+=" order by "+orderby+" asc limit 10";
+      //console.log(sql);
+      db.all(sql, {}, function(err, rows){
+        var suggs=[];
+        rows.map(row => {
+          if(row["wording"]!=searchtext) suggs.push({text: row["wording"], lev: levenshtein(searchtext, row["wording"])})
+        })
+        suggs.sort(function(a, b){return a.lev>b.lev});
+        var ret=[];
+        suggs.map(sugg => {
+          if(ret.length<5 && sugg.lev<3) ret.push(sugg.text);
+        });
+        callnext(ret);
+      });
     }
   },
 
