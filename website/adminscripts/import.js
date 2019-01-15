@@ -15,7 +15,8 @@ var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
 
 //deed(100);
-deed(1000000);
+//deed(1000000);
+DoLemmatize();
 
 //deed(10000);
 //deedAgain(10000, 20000);
@@ -612,15 +613,15 @@ function getTerm(termID){
         word,
         "0"
       ]));
-      getLemmas(json.lang, word, function(lemmas){
-        lemmas.map(lemma => {
-          fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
-            termID.toString(),
-            lemma,
-            "1"
-          ]));
-        });
-      });
+      // getLemmas(json.lang, word, function(lemmas){
+      //   lemmas.map(lemma => {
+      //     fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+      //       termID.toString(),
+      //       lemma,
+      //       "1"
+      //     ]));
+      //   });
+      // });
     });
   }
   //return the term:
@@ -649,16 +650,6 @@ function getExample(exampleID){
   return json;
 }
 
-function line(arr){
-  var ret="";
-  arr.map((s, i) => {
-    if(i>0) ret+="\t";
-    ret+=s.replace(/[\t\n]/g, " ");
-  });
-  ret+="\n";
-  return ret;
-}
-
 var langDBs={};
 function getLangDB(lang){
   if(langDBs[lang]){
@@ -683,7 +674,6 @@ function getLemmas(lang, word, callnext){
     });
   }
 }
-
 
 var defaultAbc={
   "en": [
@@ -1057,4 +1047,48 @@ function toSortkey(s, abc){
   //remove any remaining characters that aren't a number or an underscore:
   ret=ret.replace(/[^0-9_]/g, "");
   return ret;
+}
+function line(arr){
+  var ret="";
+  arr.map((s, i) => {
+    if(i>0) ret+="\t";
+    ret+=s.replace(/[\t\n]/g, " ");
+  });
+  ret+="\n";
+  return ret;
+}
+
+function DoLemmatize(){
+  var lineReader = require('readline').createInterface({
+    input: require('fs').createReadStream('/home/mbm/terminologue/temp/terms.txt')
+  });
+  var termCounter=0;
+  lineReader.on('line', function(_line) {
+    var columns=_line.split('\t');
+    if(columns.length==4){
+      termCounter++;
+      var termID=columns[0];
+      var lang=columns[2];
+      var wording=columns[3];
+      var langDB=getLangDB(lang);
+      if(langDB){
+        var words=ops.wordSplit(wording);
+        for(var i=0; i<words.length; i++){
+          var word=words[i];
+          console.log(termCounter, word);
+          getLemmas(lang, word, function(lemmas){
+            for(var ii=0; ii<lemmas.length; ii++){
+              var lemma=lemmas[ii];
+              console.log("  -->", lemma);
+              fs.appendFileSync("/home/mbm/terminologue/temp/words-lemmatized.txt", line([
+                termID.toString(),
+                lemma,
+                "1"
+              ]));
+            }
+          });
+        }
+      }
+    }
+  });
 }
