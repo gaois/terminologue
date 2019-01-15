@@ -128,7 +128,7 @@ function L(s, gloss){
   if(s=="Extranets") return "Eislíonta";
   if(s=="Termbase settings") return "Socruithe an chnuasaigh";
   if(s=="Name and description") return "Ainm agus cur síos";
-  if(s=="Features") return "Gnéithe";
+  if(s=="Features") return "Gnéithe an bhogearra";
   if(s=="Languages") return "Teangacha";
   if(s=="Termbase access") return "Rochtain ar an chnuasach";
   if(s=="Publishing") return "Foilsiú";
@@ -168,7 +168,6 @@ function L(s, gloss){
   if(s=="STATUS") return "STÁDAS";
   if(s=="live") return "beo";
   if(s=="not live") return "neamhbheo";
-
   if(s=="any clarification or no clarification") return "soiléiriú ar bith nó gan soiléiriú";
   if(s=="any clarification") return "soiléiriú ar bith";
   if(s=="no clarification") return "gan soiléiriú";
@@ -185,6 +184,7 @@ function L(s, gloss){
   if(s=="any example") return "sampla ar bith";
   if(s=="no example") return "gan sampla";
   if(s=="example containing...") return "sampla ina bhfuil...";
+  if(s=="Automatic status changes") return "Athruithe uathoibríocha stádais";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

@@ -168,7 +168,6 @@ function L(s, gloss){
   if(s=="STATUS") return "STATUS";
   if(s=="live") return "živý";
   if(s=="not live") return "neživý";
-
   if(s=="any clarification or no clarification") return "jakákoliv vysvětlivka nebo žádná";
   if(s=="any clarification") return "jakákoliv vysvětlivka";
   if(s=="no clarification") return "žádná vysvětlivka";
@@ -185,6 +184,7 @@ function L(s, gloss){
   if(s=="any example") return "jakýkoliv příklad";
   if(s=="no example") return "žádný příklad";
   if(s=="example containing...") return "příklad obsahující...";
+  if(s=="Automatic status changes") return "Automatické změny statusu";  
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

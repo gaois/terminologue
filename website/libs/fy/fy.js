@@ -15,6 +15,7 @@ Fy.render=function($insideme, data, spec, uneditable){
   });
   Fy.refreshTabs();
   Fy.tab();
+  if(spec.changeHandler) Fy.changeHandler=spec.changeHandler;
 };
 Fy.harvest=function($insideme){
   var $html=$insideme.find("*").first();
@@ -38,7 +39,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
       if($this.data("template").refresh) $this.data("template").refresh($this);
     });
     $node.fadeIn();
-    Fy.changed();
+    Fy.changed($adder.attr("changeName"));
   });
   $html.find(".fy_remover").html("×");
   if(!uneditable) $html.find(".fy_remover").on("click", function(e){
@@ -48,7 +49,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $adder.parents(".fy_node").each(function(){
       var $node=$(this);
       if(!found && $node.data("jsonName")==":item") {
-        $node.fadeOut(function(){ $(this).remove(); Fy.changed(); })
+        $node.fadeOut(function(){ $(this).remove(); Fy.changed($adder.attr("changeName")); })
         found=true;
       }
     });
@@ -61,7 +62,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $adder.parents(".fy_node").each(function(){
       var $node=$(this);
       if(!found && $node.data("jsonName")==":item") {
-        if($node.next(".fy_node").length>0) Fy.changed();
+        if($node.next(".fy_node").length>0) Fy.changed($adder.attr("changeName"));
         $node.next(".fy_node").after($node.hide().fadeIn());
         found=true;
       }
@@ -75,7 +76,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     $adder.parents(".fy_node").each(function(){
       var $node=$(this);
       if(!found && $node.data("jsonName")==":item") {
-        if($node.prev(".fy_node").length>0) Fy.changed();
+        if($node.prev(".fy_node").length>0) Fy.changed($adder.attr("changeName"));
         $node.prev(".fy_node").before($node.hide().fadeIn());
         found=true;
       }
@@ -147,7 +148,11 @@ Fy.harvestNode=function($html){
   }
 };
 
-Fy.changed=function(){
+Fy.changed=function(changeName){
+  if(Fy.changeHandler){
+    var $insideme=$(".fy");
+    Fy.changeHandler($insideme, changeName);
+  }
   Screenful.Editor.changed();
   Fy.refreshTabs();
 }

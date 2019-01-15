@@ -61,6 +61,13 @@ Spec.getExtranet=function(id){
   return ret;
 };
 
+Spec.changeHandler=function($insideme, changeName){
+  if(triggers[changeName]){
+    if(triggers[changeName].cStatus) $insideme.find('input[name="cStatus"][value="0"]').prop("checked", true);
+    if(triggers[changeName].pStatus) $insideme.find('input[name="pStatus"][value="0"]').prop("checked", true);
+  }
+};
+
 Spec.templates[":top"]={
   type: "object",
   html: `<div>
@@ -127,7 +134,7 @@ Spec.templates["hiddenID"]={
 Spec.templates["nonessential"]={
   type: "string",
   html: `<div class="fy_node bottomRight">
-    <label class="fy_noness"><input type="checkbox" onchange="Fy.changed(); Spec.templates.nonessential.refresh($(this).closest('.fy_node'))"/> ${L("non-essential")}</label>
+    <label class="fy_noness"><input type="checkbox" onchange="Fy.changed('nonessentialChange'); Spec.templates.nonessential.refresh($(this).closest('.fy_node'))"/> ${L("non-essential")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input").prop("checked", (data=="1"));
@@ -147,8 +154,8 @@ Spec.templates["nonessential"]={
 Spec.templates["cStatus"]={
   type: "string",
   html: `<div class="fy_node">
-    <label><input type="radio" name="cStatus" value="1" onchange="Fy.changed()"/> <img src='../../furniture/tick.png'/> ${L("checked")}</label>
-    <label><input type="radio" name="cStatus" value="0" onchange="Fy.changed()"/> <img src='../../furniture/cross.png'/> ${L("not checked")}</label>
+    <label><input type="radio" name="cStatus" value="1" onchange="Fy.changed('cStatusChange')"/> <img src='../../furniture/tick.png'/> ${L("checked")}</label>
+    <label><input type="radio" name="cStatus" value="0" onchange="Fy.changed('cStatusChange')"/> <img src='../../furniture/cross.png'/> ${L("not checked")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input[value='"+data+"']").prop("checked", true);
@@ -160,8 +167,8 @@ Spec.templates["cStatus"]={
 Spec.templates["pStatus"]={
   type: "string",
   html: `<div class="fy_node">
-    <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed()"/> <img src='../../furniture/tick.png'/> ${L("publishable")}</label>
-    <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed()"/> <img src='../../furniture/cross.png'/> ${L("hidden")}</label>
+    <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed('pStatusChange')"/> <img src='../../furniture/tick.png'/> ${L("publishable")}</label>
+    <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed('pStatusChange')"/> <img src='../../furniture/cross.png'/> ${L("hidden")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input[value='"+data+"']").prop("checked", true);
@@ -174,9 +181,9 @@ Spec.templates["dateStamp"]={
   type: "string",
   html: `<div class="fy_node">
     <div class="fy_horizon" style="width: 12em; display: inline-block; float: left;">
-      <span class="fy_textbox" style="width: 100%"><input class="date" type="date" onchange="Fy.changed()"/></span>
+      <span class="fy_textbox" style="width: 100%"><input class="date" type="date" onchange="Fy.changed('dateStampChange')"/></span>
     </div>
-    <button style="margin-top: 1px; margin-left: 1em;" onclick="$(this).closest('.fy_node').find('input').val((new Date()).toISOString().split('T')[0]); Fy.changed()">${L("set to today")}</button>
+    <button style="margin-top: 1px; margin-left: 1em;" onclick="$(this).closest('.fy_node').find('input').val((new Date()).toISOString().split('T')[0]); Fy.changed('dateStampChange')">${L("set to today")}</button>
   </div>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -190,7 +197,7 @@ Spec.templates["domains"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="domain" jsonName=":item"></div>
-    <span class="fy_adder" templateName="domain">+ ${L("domain")}</span>
+    <span class="fy_adder" templateName="domain" changeName="domainAdd">+ ${L("domain")}</span>
   </div>`,
 };
 Spec.templates["domain"]={
@@ -215,12 +222,12 @@ Spec.templates["superdomain"]={
   type: "string",
   blank: "",
   html: `<div class="fy_horizon">
-    <span class="fy_remover"></span>
-    <span class="fy_downer"></span>
-    <span class="fy_upper"></span>
+    <span class="fy_remover" changeName='domainRemove'></span>
+    <span class="fy_downer"  changeName='domainReorder'></span>
+    <span class="fy_upper"   changeName='domainReorder'></span>
     <span class="fy_label" style="width: 245px;">${L("domain")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
-      <select style="font-weight: bold;" onchange="Fy.changed(); $(this).closest('.jsonName_item').data('template').refresh( $(this).closest('.jsonName_item') )"></select>
+      <select style="font-weight: bold;" onchange="Fy.changed('domainChange'); $(this).closest('.jsonName_item').data('template').refresh( $(this).closest('.jsonName_item') )"></select>
     </span>
   </div>`,
   set: function($me, data){
@@ -242,7 +249,7 @@ Spec.templates["subdomain"]={
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">${L("subdomain")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
-      <select onchange="Fy.changed()"></select>
+      <select onchange="Fy.changed('subdomainChange')"></select>
     </span>
   </div>`,
   set: function($me, data){
@@ -283,7 +290,7 @@ Spec.templates["desigs"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="desig" jsonName=":item"></div>
-    <span class="fy_adder" templateName="desig">+ ${L("term")}</span>
+    <span class="fy_adder" templateName="desig" changeName="desigAdd">+ ${L("term")}</span>
   </div>`,
 };
 Spec.templates["desig"]={
@@ -307,9 +314,9 @@ Spec.templates["term"]={
     <!-- <div class="fy_bubble fullon">2<span class="sublime">2</span></div> -->
     <!-- <div class="fy_bubble invisible">2</div> -->
     <div class="fy_horizon">
-      <span class="fy_remover"></span>
-      <span class="fy_downer"></span>
-      <span class="fy_upper"></span>
+      <span class="fy_remover" changeName="desigRemove"></span>
+      <span class="fy_downer" changeName="desigReorder"></span>
+      <span class="fy_upper" changeName="desigReorder"></span>
       <span class="fy_replace" templateName="lang" jsonName="lang"></span>
       <span class="fy_replace" templateName="wording" jsonName="wording"></span>
     </div>
@@ -326,7 +333,7 @@ Spec.templates["term"]={
 Spec.templates["lang"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select style="font-weight: bold;" onchange="Fy.changed(); Spec.templates.lang.changed(this)"></select>
+    <select style="font-weight: bold;" onchange="Fy.changed('termLangChange'); Spec.templates.lang.changed(this)"></select>
   </span>`,
   set: function($me, data){
     if(data.toString()) $me.find("select").val(data);
@@ -351,7 +358,7 @@ Spec.templates["lang"]={
 Spec.templates["wording"]={
   type: "string",
   html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;">
-    <input style="font-weight: bold;" onkeyup="Spec.templates.wording.changed(this, 'eager')" onchange="Fy.changed(); Spec.templates.wording.changed(this, 'lazy')"/>
+    <input style="font-weight: bold;" onkeyup="Spec.templates.wording.changed(this, 'eager')" onchange="Fy.changed('termWordingChange'); Spec.templates.wording.changed(this, 'lazy')"/>
   </span>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -371,7 +378,7 @@ Spec.templates["clarif"]={
   type: "string",
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">${L("clarification")}</span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>
+    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed('desigClarifChange')"/></span>
   </div>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -388,7 +395,7 @@ Spec.templates["accept"]={
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">${L("acceptability")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
-      <select onchange="Fy.changed()"></select>
+      <select onchange="Fy.changed('desigAcceptChange')"></select>
     </span>
   </div>`,
   set: function($me, data){
@@ -412,19 +419,19 @@ Spec.templates["sources"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="source" jsonName=":item"></div>
-    <span class="fy_adder" templateName="source">+ ${L("source")}</span>
+    <span class="fy_adder" templateName="source" changeName="sourceAdd">+ ${L("source")}</span>
   </div>`,
 };
 Spec.templates["source"]={
   type: "string",
   blank: "",
   html: `<div class="fy_horizon">
-    <span class="fy_remover"></span>
-    <span class="fy_downer"></span>
-    <span class="fy_upper"></span>
+    <span class="fy_remover" changeName="sourceRemove"></span>
+    <span class="fy_downer" changeName="sourceReorder"></span>
+    <span class="fy_upper" changeName="sourceReorder"></span>
     <span class="fy_label" style="width: 245px;">${L("source")}</span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
-      <select onchange="Fy.changed()"></select>
+      <select onchange="Fy.changed('sourceChange')"></select>
     </span>
   </div>`,
   set: function($me, data){
@@ -444,16 +451,16 @@ Spec.templates["inflects"]={
   type: "array",
   html: `<div class="fy_lineabove">
     <div class="fy_replace" templateName="inflect" jsonName=":item"></div>
-    <span class="fy_adder" templateName="inflect">+ ${L("inflected form")}</span>
+    <span class="fy_adder" templateName="inflect" changeName="termInflectAdd">+ ${L("inflected form")}</span>
   </div>`,
 };
 Spec.templates["inflect"]={
   type: "object",
   blank: {label: "", text: ""},
   html: `<div class="fy_horizon">
-    <span class="fy_remover"></span>
-    <span class="fy_downer"></span>
-    <span class="fy_upper"></span>
+    <span class="fy_remover" changeName="termInflectRemove"></span>
+    <span class="fy_downer" changeName="termInflectReorder"></span>
+    <span class="fy_upper" changeName="termInflectReorder"></span>
     <span class="fy_replace" templateName="inflectLabel" jsonName="label"/>
     <span class="fy_replace" templateName="inflectText" jsonName="text"/>
   </div>`,
@@ -461,7 +468,7 @@ Spec.templates["inflect"]={
 Spec.templates["inflectLabel"]={
   type: "string",
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select onchange="Fy.changed()"></select>
+    <select onchange="Fy.changed('termInflectLabelChange')"></select>
   </span>`,
   set: function($me, data){
     if(data.toString()) $me.find("select").val(data);
@@ -496,7 +503,7 @@ Spec.templates["inflectLabel"]={
 };
 Spec.templates["inflectText"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;"><input onchange="Fy.changed()"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;"><input onchange="Fy.changed('termInflectTextChange')"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },
@@ -508,16 +515,16 @@ Spec.templates["annots"]={
   type: "array",
   html: `<div class="fy_lineabove">
     <div class="fy_replace" templateName="annot" jsonName=":item"></div>
-    <span class="fy_adder" templateName="annot">+ ${L("annotation")}</span>
+    <span class="fy_adder" templateName="annot" changeName="termAnnotAdd">+ ${L("annotation")}</span>
   </div>`,
 };
 Spec.templates["annot"]={
   type: "object",
   blank: {start: "1", stop: "0", label: null},
   html: `<div class="fy_horizon">
-    <span class="fy_remover"></span>
-    <span class="fy_downer"></span>
-    <span class="fy_upper"></span>
+    <span class="fy_remover" changeName="termAnnotRemove"></span>
+    <span class="fy_downer" changeName="termAnnotReorder"></span>
+    <span class="fy_upper" changeName="termAnnotReorder"></span>
     <span class="fy_replace" templateName="annotPosition" jsonName="start"/>
     <span class="fy_replace" templateName="annotPosition" jsonName="stop"/>
     <span class="fy_textbox fy_preview" style="margin-left: 10px;"></span>
@@ -566,7 +573,7 @@ Spec.templates["annotPosition"]={
     if(val==0 && $(button).closest('.jsonName_stop')) val=$(button).closest(".jsonName_term").find(".jsonName_wording input").val().length;
     if(val>MIN) {
       $input.val(val-1);
-      Fy.changed();
+      Fy.changed("termAnnotPositionChange");
       var $annot=$input.closest(".jsonName_annots > .fy_node");
       $annot.data("template").refresh($annot);
     }
@@ -581,7 +588,7 @@ Spec.templates["annotPosition"]={
     if(val==0 && $(button).closest('.jsonName_stop')) val=$(button).closest(".jsonName_term").find(".jsonName_wording input").val().length;
     if(val<MAX) {
       $input.val(val+1);
-      Fy.changed();
+      Fy.changed("termAnnotPositionChange");
       var $annot=$input.closest(".jsonName_annots > .fy_node");
       $annot.data("template").refresh($annot);
     }
@@ -591,7 +598,7 @@ Spec.templates["annotLabel"]={
   type: "object",
   blank: {type: "", value: ""},
   html: `<span class="fy_textbox" style="width: 95px;">
-    <select onchange="Fy.changed()"></select>
+    <select onchange="Fy.changed('termAnnotLabelChange')"></select>
   </span>`,
   set: function($me, data){
     if(data) $me.find("select").val(data.value);
@@ -672,7 +679,7 @@ Spec.templates["intros"]={
 };
 Spec.templates["intro"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed('introChange')"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },
@@ -685,7 +692,7 @@ Spec.templates["definitions"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="definition" jsonName=":item"></div>
-    <span class="fy_adder" templateName="definition">+ ${L("definition")}</span>
+    <span class="fy_adder" templateName="definition" changeName="definitionAdd">+ ${L("definition")}</span>
   </div>`,
 };
 Spec.templates["definition"]={
@@ -699,9 +706,9 @@ Spec.templates["definition"]={
       </div>
       <div class="fy_replace" templateName="domains" jsonName="domains"></div>
       <div class="fy_horizon blind">
-        <span class="fy_remover"></span>
-        <span class="fy_downer"></span>
-        <span class="fy_upper"></span>
+        <span class="fy_remover" changeName="definitionRemove"></span>
+        <span class="fy_downer" changeName="definitionReorder"></span>
+        <span class="fy_upper" changeName="definitionReorder"></span>
       </div>
       <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
@@ -725,7 +732,7 @@ Spec.templates["defTexts"]={
 };
 Spec.templates["defText"]={
   type: "string",
-  html: `<span class="fy_textbox" style="margin"><textarea onchange="Fy.changed()"/></textarea></span>`,
+  html: `<span class="fy_textbox" style="margin"><textarea onchange="Fy.changed('definitionTextChange')"/></textarea></span>`,
   set: function($me, data){
     $me.find("textarea").val(data);
   },
@@ -738,7 +745,7 @@ Spec.templates["examples"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="example" jsonName=":item"></div>
-    <span class="fy_adder" templateName="example">+ ${L("example")}</span>
+    <span class="fy_adder" templateName="example" changeName="exampleAdd">+ ${L("example")}</span>
   </div>`,
 };
 Spec.templates["example"]={
@@ -751,9 +758,9 @@ Spec.templates["example"]={
         <div class="fy_replace" templateName="lingySources" jsonName="sources"></div>
       </div>
       <div class="fy_horizon blind">
-        <span class="fy_remover"></span>
-        <span class="fy_downer"></span>
-        <span class="fy_upper"></span>
+        <span class="fy_remover" changeName="exampleRemove"></span>
+        <span class="fy_downer" changeName="exampleReorder"></span>
+        <span class="fy_upper" changeName="exampleReorder"></span>
       </div>
       <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
@@ -779,18 +786,18 @@ Spec.templates["exampleText"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="exampleTextItem" jsonName=":item"></div>
-    <span class="fy_adder" templateName="exampleTextItem">+ ${L("sentence")}</span>
+    <span class="fy_adder" templateName="exampleTextItem" changeName="exampleTextAdd">+ ${L("sentence")}</span>
   </div>`,
 };
 Spec.templates["exampleTextItem"]={
   type: "string",
   html: `<span class="fy_node fy_textbox linebelow" style="position: relative;">
     <div class="fy_horizon blinder">
-      <span class="fy_remover"></span>
-      <span class="fy_downer"></span>
-      <span class="fy_upper"></span>
+      <span class="fy_remover" changeName="exampleTextRemove"></span>
+      <span class="fy_downer" changeName="exampleTextReorder"></span>
+      <span class="fy_upper" changeName="exampleTextReorder"></span>
     </div>
-    <textarea onchange="Fy.changed()" style="padding-right: 125px;"/></textarea>
+    <textarea onchange="Fy.changed('exampleTextChange')" style="padding-right: 125px;"/></textarea>
   </span>`,
   set: function($me, data){
     $me.find("textarea").val(data);
@@ -804,7 +811,7 @@ Spec.templates["collections"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="collection" jsonName=":item"></div>
-    <span class="fy_adder" templateName="collection">+ ${L("collection")}</span>
+    <span class="fy_adder" templateName="collection" changeName="collectionAdd">+ ${L("collection")}</span>
   </div>`,
 };
 Spec.templates["collection"]={
@@ -813,11 +820,11 @@ Spec.templates["collection"]={
   html: `<div class="fy_container">
     <div class="fy_box">
       <div class="fy_horizon">
-        <span class="fy_remover"></span>
-        <span class="fy_downer"></span>
-        <span class="fy_upper"></span>
+        <span class="fy_remover" changeName="collectionRemove"></span>
+        <span class="fy_downer" changeName="collectionReorder"></span>
+        <span class="fy_upper" changeName="collectionReorder"></span>
         <span class="fy_textbox" style="position: absolute; left: 0px; right: 125px;">
-          <select onchange="Fy.changed();"></select>
+          <select onchange="Fy.changed('collectionChange');"></select>
         </span>
       </div>
     </div>
@@ -840,7 +847,7 @@ Spec.templates["extranets"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="extranet" jsonName=":item"></div>
-    <span class="fy_adder" templateName="extranet">+ ${L("extranet")}</span>
+    <span class="fy_adder" templateName="extranet" changeName="extranetAdd">+ ${L("extranet")}</span>
   </div>`,
 };
 Spec.templates["extranet"]={
@@ -849,11 +856,11 @@ Spec.templates["extranet"]={
   html: `<div class="fy_container">
     <div class="fy_box">
       <div class="fy_horizon">
-        <span class="fy_remover"></span>
-        <span class="fy_downer"></span>
-        <span class="fy_upper"></span>
+        <span class="fy_remover" changeName="extranetRemove"></span>
+        <span class="fy_downer" changeName="extranetReorder"></span>
+        <span class="fy_upper" changeName="extranetReorder"></span>
         <span class="fy_textbox" style="position: absolute; left: 0px; right: 125px;">
-          <select onchange="Fy.changed();"></select>
+          <select onchange="Fy.changed('extranetChange');"></select>
         </span>
       </div>
     </div>
@@ -876,22 +883,22 @@ Spec.templates["lingySources"]={
   type: "array",
   html: `<div>
     <div class="fy_replace" templateName="lingySource" jsonName=":item"></div>
-    <span class="fy_adder" templateName="lingySource">+ ${L("source")}</span>
+    <span class="fy_adder" templateName="lingySource" changeName="sourceAdd">+ ${L("source")}</span>
   </div>`,
 };
 Spec.templates["lingySource"]={
   type: "object",
   blank: {id: "", lang: ""},
   html: `<div class="fy_horizon">
-    <span class="fy_remover"></span>
-    <span class="fy_downer"></span>
-    <span class="fy_upper"></span>
+    <span class="fy_remover" changeName="sourceRemove"></span>
+    <span class="fy_downer" changeName="sourceReorder"></span>
+    <span class="fy_upper" changeName="sourceReorder"></span>
     <span class="fy_label" style="width: 245px;">
-      <select class="hanger" onchange="Fy.changed()"></select>
+      <select class="hanger" onchange="Fy.changed('sourceLangChange')"></select>
       ${L("source")}
     </span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
-      <select class="id" onchange="Fy.changed()"></select>
+      <select class="id" onchange="Fy.changed('sourceChange')"></select>
     </span>
   </div>`,
   set: function($me, data){
