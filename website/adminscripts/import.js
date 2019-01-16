@@ -14,7 +14,7 @@ var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
 
-deed(1000);
+//deed(1000);
 //deed(1000000);
 //DoWords();
 //DoLemmatize();
@@ -608,23 +608,23 @@ function getTerm(termID){
       json.wording
     ]));
     //save words:
-    var words=ops.wordSplit(json.wording, json.lang);
-    words.map(word => {
-      fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
-        termID.toString(),
-        word,
-        "0"
-      ]));
-      // getLemmas(json.lang, word, function(lemmas){
-      //   lemmas.map(lemma => {
-      //     fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
-      //       termID.toString(),
-      //       lemma,
-      //       "1"
-      //     ]));
-      //   });
-      // });
-    });
+    // var words=ops.wordSplit(json.wording, json.lang);
+    // words.map(word => {
+    //   fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+    //     termID.toString(),
+    //     word,
+    //     "0"
+    //   ]));
+    //   // getLemmas(json.lang, word, function(lemmas){
+    //   //   lemmas.map(lemma => {
+    //   //     fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+    //   //       termID.toString(),
+    //   //       lemma,
+    //   //       "1"
+    //   //     ]));
+    //   //   });
+    //   // });
+    // });
   }
   //return the term:
   return json;
@@ -654,22 +654,30 @@ function getExample(exampleID){
 
 var langDBs={};
 function getLangDB(lang){
-  if(langDBs[lang]){
-    return langDBs[lang];
-  } else {
-    var db=null;
-    if(fs.existsSync("/home/mbm/terminologue/data/lang/"+lang+".sqlite")){
-      db=new sqlite3.Database("/home/mbm/terminologue/data/lang/"+lang+".sqlite", sqlite3.OPEN_READONLY, function(err){});
-      db.serialize();
-      langDBs[lang]=db;
+  if(lang=="ga" || lang=="en"){
+    if(langDBs[lang]){
+      return langDBs[lang];
+    } else {
+      var db=null;
+      if(fs.existsSync("/home/mbm/terminologue/data/lang/"+lang+".sqlite")){
+        db=new sqlite3.Database("/home/mbm/terminologue/data/lang/"+lang+".sqlite", sqlite3.OPEN_READONLY, function(err){});
+        db.serialize();
+        langDBs[lang]=db;
+      }
+      return db;
     }
-    return db;
   }
+  return null;
 }
-function getLemmas(lang, word, callnext){
+function getLemmasMulti(lang, words, callnext){
   var langDB=getLangDB(lang);
   if(!langDB) callnext([]); else {
-    langDB.all("select lemma from lemmatization where token=$token", {$token: word}, function(err, rows){
+    var str="";
+    words.map(word => {
+      if(str!="") str+=",";
+      str+="'"+word.replace(/'/g, "''")+"'";
+    });
+    langDB.all("select lemma from lemmatization where token in ("+str+")", {}, function(err, rows){
       var lemmas=[];
       for(var i=0; i<rows.length; i++) if(lemmas.indexOf(rows[i]["lemma"])==-1) lemmas.push(rows[i]["lemma"]);
       callnext(lemmas);
@@ -1061,6 +1069,7 @@ function line(arr){
 }
 
 function DoWords(){
+  var wordsStream=fs.createWriteStream("/home/mbm/terminologue/temp/words.txt", {flags:'a'});
   var lineReader = require('readline').createInterface({
     input: require('fs').createReadStream('/home/mbm/terminologue/temp/terms.txt')
   });
@@ -1076,7 +1085,7 @@ function DoWords(){
       for(var i=0; i<words.length; i++){
         var word=words[i];
         console.log(termCounter, word);
-        fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+        wordsStream.write(line([
           termID.toString(),
           word,
           "0"
@@ -1086,6 +1095,7 @@ function DoWords(){
   });
 }
 function DoLemmatize(){
+  var wordsStream=fs.createWriteStream("/home/mbm/terminologue/temp/words-lemmatized.txt", {flags:'a'});
   var lineReader = require('readline').createInterface({
     input: require('fs').createReadStream('/home/mbm/terminologue/temp/terms.txt')
   });
@@ -1094,20 +1104,19 @@ function DoLemmatize(){
     var columns=_line.split('\t');
     if(columns.length==4){
       termCounter++;
-      var termID=columns[0];
       var lang=columns[2];
-      var wording=columns[3];
-      var langDB=getLangDB(lang);
-      if(langDB){
-        var words=ops.wordSplit(wording);
-        for(var i=0; i<words.length; i++){
-          var word=words[i];
-          console.log(termCounter, word);
-          getLemmas(lang, word, function(lemmas){
+      if(lang=="en" || lang=="ga") {
+        var termID=columns[0];
+        var wording=columns[3];
+        var langDB=getLangDB(lang);
+        if(langDB){
+          var words=ops.wordSplit(wording);
+          console.log(termCounter, wording);
+          getLemmasMulti(lang, words, function(lemmas){
             for(var ii=0; ii<lemmas.length; ii++){
               var lemma=lemmas[ii];
               console.log("  -->", lemma);
-              fs.appendFileSync("/home/mbm/terminologue/temp/words.txt", line([
+              wordsStream.write(line([
                 termID.toString(),
                 lemma,
                 "1"

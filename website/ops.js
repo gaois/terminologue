@@ -1086,6 +1086,21 @@ module.exports={
       });
     }
   },
+  getLemmasMulti: function(lang, words, callnext){
+    var langDB=module.exports.getLangDB(lang);
+    if(!langDB) callnext([]); else {
+      var str="";
+      words.map(word => {
+        if(str!="") str+=",";
+        str+="'"+word.replace(/'/g, "''")+"'";
+      });
+      langDB.all("select lemma from lemmatization where token in ("+str+")", {}, function(err, rows){
+        var lemmas=[];
+        for(var i=0; i<rows.length; i++) if(lemmas.indexOf(rows[i]["lemma"])==-1) lemmas.push(rows[i]["lemma"]);
+        callnext(lemmas);
+      });
+    }
+  },
   saveLemmas: function(db, termbaseID, termID, lang, word, callnext){
     var lemmas=[];
     module.exports.getLemmas(lang, word, function(_lemmas){
