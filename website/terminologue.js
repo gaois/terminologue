@@ -21,8 +21,11 @@ const localizer={
 //ops module:
 const ops=require("./ops");
  ops.siteconfig=siteconfig;
-const nodemailer = require('nodemailer');
- ops.mailtransporter = nodemailer.createTransport(siteconfig.mailconfig);
+const nodemailer=require('nodemailer');
+ ops.mailtransporter=nodemailer.createTransport(siteconfig.mailconfig);
+const propagator=require("./propagator.js");
+ ops.propagator=propagator.withMsSqlConnectionStrings(siteconfig.propagatorMsSqlConnectionStrings);
+
 
 //Paths to our static files:
 app.use(siteconfig.rootPath+"views", express.static(path.join(__dirname, "views")));

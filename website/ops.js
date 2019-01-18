@@ -1,13 +1,14 @@
 const path=require("path");
 const fs=require("fs-extra");
-const sqlite3 = require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
-const sha1 = require('sha1'); //https://www.npmjs.com/package/sha1
-const markdown = require("markdown").markdown; //https://www.npmjs.com/package/markdown
-const levenshtein = require('js-levenshtein');
+const sqlite3=require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
+const sha1=require('sha1'); //https://www.npmjs.com/package/sha1
+const markdown=require("markdown").markdown; //https://www.npmjs.com/package/markdown
+const levenshtein=require('js-levenshtein');
 
 module.exports={
   siteconfig: {}, //populated by terminologue.js on startup
   mailtransporter: null,
+  propagator: null,
 
   login: function(email, password, uilang, callnext){
     if(module.exports.siteconfig.readonly){
@@ -695,6 +696,7 @@ module.exports={
 
   entryDelete: function(db, termbaseID, entryID, email, historiography, callnext){
     db.run("delete from entries where id=$id", {$id: entryID}, function(err){
+      module.exports.propagator.deleteEntry(termbaseID, entryID, function(err){});
       //delete connections from this entry to any terms, and delete any thereby orphaned terms:
       module.exports.saveConnections(db, termbaseID, entryID, null, function(){
         //tell history that have been deleted:
@@ -765,6 +767,7 @@ module.exports={
         }
         //create or change me:
         db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;
+          module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
           module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
             //save connections between me and my terms, delete any terms orphaned by this:
             module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
@@ -906,6 +909,7 @@ module.exports={
               entry.desigs.map(desig => { if(parseInt(desig.term.id)==changedTerm.id) desig.term=changedTerm; });
               var json=JSON.stringify(entry);
               db.run("update entries set json=$json where id=$id", {$id: entryID, $json: json}, function(err){
+                module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
                 module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
                   module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
                     goEntry();
@@ -1384,6 +1388,7 @@ module.exports={
     db.run("delete from metadata where id=$id and type=$type", {
       $id: entryID, $type: type
     }, function(err){
+      module.exports.propagator.deleteMetadatum(termbaseID, entryID);
       callnext();
     });
   },
@@ -1395,6 +1400,7 @@ module.exports={
       if(entryID) { sql="insert into metadata(id, type, json, sortkey) values($id, $type, $json, $sortkey)"; params.$id=entryID; }
       db.run(sql, params, function(err){
         if(!entryID) entryID=this.lastID;
+        module.exports.propagator.saveMetadatum(termbaseID, entryID, type, json);
         callnext(entryID, json);
       });
     });
@@ -1414,6 +1420,7 @@ module.exports={
           db.run("update metadata set json=$json, sortkey=$sortkey where id=$id and type=$type", {
             $id: entryID, $json: json, $type: type, $sortkey: sortkey
           }, function(err){
+            module.exports.propagator.saveMetadatum(termbaseID, entryID, type, json);
             callnext(entryID, json, true);
           });
         });
@@ -1461,6 +1468,7 @@ module.exports={
   },
   configUpdate: function(db, termbaseID, configID, json, callnext){
     db.run("update configs set json=$json where id=$id", {$id: configID, $json: json}, function(err){
+      module.exports.propagator.saveConfig(termbaseID, configID, json);
       afterwards();
     });
     var afterwards=function(){

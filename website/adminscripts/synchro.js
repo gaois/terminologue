@@ -43,14 +43,16 @@ function doMetadata(callnext){
 	function go(){
 		var row=rows.pop();
 		if(row){
-			var request=new sql.Request();
-			request.input("id", sql.Int, row["id"]);
-			request.input("type", sql.VarChar, row["type"]);
-			request.input("json", sql.NVarChar, row["json"]);
-			request.query("insert into metadata(id, type, json) values(@id, @type, @json)", function(err, result){
-				if(err) console.log(err);
-				go();
-			});
+			if(["acceptLabel", "domain", "inflectLabel", "posLabel"].indexOf(row["type"])==-1) go(); else {
+				var request=new sql.Request();
+				request.input("id", sql.Int, row["id"]);
+				request.input("type", sql.VarChar, row["type"]);
+				request.input("json", sql.NVarChar, row["json"]);
+				request.query("insert into metadata(id, type, json) values(@id, @type, @json)", function(err, result){
+					if(err) console.log(err);
+					go();
+				});
+			}
 		} else {
 			callnext();
 		}
@@ -110,10 +112,5 @@ function x_doEntries(callnext){
 			//callnext();
 		});
 	});
-	
+
 }
-
-
-
-
-
