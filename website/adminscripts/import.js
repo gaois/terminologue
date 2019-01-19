@@ -1,6 +1,9 @@
+const today="2019-01-19T20:00:00";
+
 const fs=require("fs-extra");
 const sqlite3 = require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
 const ops=require("./../ops");
+  ops.propagator=require("./../propagator.js")
 
 const xmldom=require("xmldom"); //https://www.npmjs.com/package/xmldom
 const domParser=new xmldom.DOMParser();
@@ -13,23 +16,13 @@ db.run('PRAGMA foreign_keys=on');
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
+var changeID=2000000;
 
-//deed(1000);
+//deed(1);
 //deed(1000000);
 //DoWords();
 //DoLemmatize();
 //DoSpelling();
-
-//deed(10000);
-//deedAgain(10000, 20000);
-//deedAgain(20000, 30000);
-//deedAgain(30000, 40000);
-//deedAgain(40000, 50000);
-//deedAgain(50000, 60000);
-//deedAgain(60000, 70000);
-//deedAgain(70000, 80000);
-//deedAgain(80000, 90000);
-//deedAgain(90000, 100000);
 
 function deed(stop){
   db.exec("delete from entries; delete from history; delete from metadata; delete from terms; delete from entry_term; delete from sqlite_sequence", function(err){
@@ -69,33 +62,6 @@ function deed(stop){
                       console.log(`finito`);
                     });
                   });
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-}
-function deedAgain(start, stop){
-  db.run("BEGIN TRANSACTION");
-  db.exec("delete from metadata", function(err){
-    console.log(`metadata emptied`);
-    doLanguages(db, function(){
-      doAcceptLabels(db, function(){
-        doInflectLabels(db, function(){
-          doSources(db, function(){
-            doPosLabels(db, function(){
-              doDomains(db, function(){
-                doCollections(db, function(){
-                  doNoteTypes(db, function(){
-                    doConcepts(db, start, stop, function(){
-                      db.run("COMMIT");
-                      db.close();
-                      console.log(`finito`);
-                    });
                   });
                 });
               });
@@ -470,6 +436,16 @@ function doConcepts(db, start, stop, callnext){
       json.cStatus,
       json.pStatus,
       ""
+    ]));
+    //save entry into history:
+    fs.appendFileSync("/home/mbm/terminologue/temp/history.txt", line([
+      (++changeID),
+      id.toString(),
+      "update",
+      today,
+      "",
+      "",
+      JSON.stringify({diff: [{desc: "iompórtáilte as Léacslann"}]})
     ]));
     //save entry sortings:
     var sortkeys=[];

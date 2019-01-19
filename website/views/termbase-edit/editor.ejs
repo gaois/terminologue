@@ -102,11 +102,22 @@
 			content+="</div>";
 			if(revision.email) content+=`<div style='white-space: nowrap'><b>${L("By")}:</b> ${revision.email}</div>`;
 			content+=`<div style='white-space: nowrap'><b>${L("When")}:</b> ${revision.when}</div>`;
+			if(revision.historiography.diff){
+				revision.historiography.diff.map(change => {
+					content+=`<div style='margin-top: 3px; color: #999999; padding-left: 20px; position: relative;'>`;
+					content+=`<div style='position: absolute; top: 0px; left: 0px;'>■</div>`;
+					content+=`<div style='font-weight: bold;'>${change.desc}</div>`;
+					if(change.oldVal) content+=`<div style='text-decoration: line-through'>${change.oldVal}</div>`;
+					if(change.newVal) content+=`<div style=''>${change.newVal}</div>`;
+					content+=`</div>`;
+				});
+			}
 			return content;
 			//return revision.action+", "+revision.email+", "+revision.when+", "+JSON.stringify(revision.historiography, null, "<br/>");
 		};
 		Screenful.History.fakeEntry=function(revision){
-			return {id: revision.entry_id, content: revision.content};
+			if(revision.content) return {id: revision.entry_id, content: revision.content};
+			else return null;
 		};
 		</script>
 

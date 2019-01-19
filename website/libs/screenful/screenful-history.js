@@ -31,7 +31,7 @@ Screenful.History={
         e.stopPropagation();
       });
     }
-    if(!isLatest) {
+    if(!isLatest && hist.content) {
       $div.append("<span class='revive'>"+Screenful.Loc.revive+"</span>");
       $div.find(".revive").on("click", function(e){
         Screenful.History.reviveRevision(Screenful.History.getRevisionID(hist), false);
