@@ -444,7 +444,7 @@ function doConcepts(db, start, stop, callnext){
       "update",
       today,
       "",
-      "",
+      JSON.stringify(json),
       JSON.stringify({diff: [{desc: "iompórtáilte as Léacslann"}]})
     ]));
     //save entry sortings:
