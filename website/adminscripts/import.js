@@ -43,6 +43,7 @@ function deed(stop){
                         en: "Terms that need to be looked at",
                         $: "Téarmaí that need to be looked at"
                       },
+                      live: "1",
                       users: [
                         "valselob@gmail.com",
                         "tester1@terminologue.org",
