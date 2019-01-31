@@ -127,7 +127,7 @@ function L(s, gloss){
   if(s=="Tags") return "Clibeanna";
   if(s=="Extranets") return "Eislíonta";
   if(s=="Termbase settings") return "Socruithe an chnuasaigh";
-  if(s=="Name and description") return "Ainm agus cur síos";
+  if(s=="Name and blurb") return "Ainm agus blurba";
   if(s=="Features") return "Gnéithe an bhogearra";
   if(s=="Languages") return "Teangacha";
   if(s=="Termbase access") return "Rochtain ar an chnuasach";
@@ -185,6 +185,7 @@ function L(s, gloss){
   if(s=="no example") return "gan sampla";
   if(s=="example containing...") return "sampla ina bhfuil...";
   if(s=="Automatic status changes") return "Athruithe uathoibríocha stádais";
+  if(s=="BLURB") return "BLURBA";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

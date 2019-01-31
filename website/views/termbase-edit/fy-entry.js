@@ -732,7 +732,7 @@ Spec.templates["defTexts"]={
 };
 Spec.templates["defText"]={
   type: "string",
-  html: `<span class="fy_textbox" style="margin"><textarea onchange="Fy.changed('definitionTextChange')"/></textarea></span>`,
+  html: `<span class="fy_textbox"><textarea onchange="Fy.changed('definitionTextChange')"/></textarea></span>`,
   set: function($me, data){
     $me.find("textarea").val(data);
   },

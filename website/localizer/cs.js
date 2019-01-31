@@ -127,7 +127,7 @@ function L(s, gloss){
   if(s=="Tags") return "Značky";
   if(s=="Extranets") return "Extranety";
   if(s=="Termbase settings") return "Nastavení databáze";
-  if(s=="Name and description") return "Jméno a popis";
+  if(s=="Name and blurb") return "Jméno a úvod";
   if(s=="Features") return "Vlastnosti";
   if(s=="Languages") return "Jazyky";
   if(s=="Termbase access") return "Přístup k databázi";
@@ -184,7 +184,8 @@ function L(s, gloss){
   if(s=="any example") return "jakýkoliv příklad";
   if(s=="no example") return "žádný příklad";
   if(s=="example containing...") return "příklad obsahující...";
-  if(s=="Automatic status changes") return "Automatické změny statusu";  
+  if(s=="Automatic status changes") return "Automatické změny statusu";
+  if(s=="BLURB") return "ÚVOD";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
