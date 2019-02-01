@@ -187,6 +187,13 @@ function L(s, gloss){
   if(s=="Automatic status changes") return "Athruithe uathoibríocha stádais";
   if(s=="BLURB") return "BLURBA";
 
+  if(s=="level") return "leibhéal";
+  if(s=="reader") return "léitheoir";
+  if(s=="editor") return "eagarthóir";
+  if(s=="creator") return "cruthaitheoir";
+  if(s=="administrator") return "riarathóir";
+  if(s=="configurator") return "cumraitheoir";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

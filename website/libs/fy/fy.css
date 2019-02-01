@@ -18,6 +18,9 @@ div.fy_onlybody div.title {padding: 0px 0px 0px 0px; margin-bottom: -5px; margin
 div.fy_onlybody div.title:first-child {margin-top: 0px;}
 div.fy_onlybody div.title span.link {color: #aaaaaa; font-weight: normal; margin-left: 0.5em; cursor: pointer;}
 div.fy_onlybody div.title span.link:hover {color: var(--link);}
+div.fy_onlybody > *:last-child {margin-bottom: 20px;}
+
+div.fy_pillar {xmargin: 0px auto; max-width: 1200px;}
 
 div.fy_onlybody div.goodtitle {border-bottom: 1px solid #cccccc; padding: 0px 0px 5px 0px; margin-bottom: 15px; margin-top: 25px; font-weight: bold; color: #666666;}
 div.fy_onlybody div.goodtitle:first-child {margin-top: 0px;}

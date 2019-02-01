@@ -23,10 +23,12 @@ Spec.blank={
 Spec.templates[":top"]={
   type: "object",
   html: `<div class="fy_onlybody">
-    <div class="goodtitle">${L("TITLE")}</div>
-    <div class="fy_replace" templateName="title" jsonName="title"></div>
-    <div class="goodtitle">${L("BLURB")}</div>
-    <div class="fy_replace" templateName="blurb" jsonName="blurb"></div>
+    <div class="fy_pillar">
+      <div class="goodtitle">${L("TITLE")}</div>
+      <div class="fy_replace" templateName="title" jsonName="title"></div>
+      <div class="goodtitle">${L("BLURB")}</div>
+      <div class="fy_replace" templateName="blurb" jsonName="blurb"></div>
+    </div>
   </div>`,
 };
 

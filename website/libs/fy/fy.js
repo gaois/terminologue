@@ -26,6 +26,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
   var $html=$(template.html); if(typeof(template.html)=="function") $html=$(template.html());
   $html.addClass("fy_node").data("template", template);
   if(template.populate) template.populate($html);
+  if(template.preprocess && data) data=template.preprocess(data);
   if(template.set && data) template.set($html, data);
   if(!uneditable) $html.find(".fy_adder").on("click", function(e){
     var $adder=$(e.delegateTarget);
@@ -132,20 +133,21 @@ Fy.renderNode=function(data, template, spec, uneditable){
 };
 Fy.harvestNode=function($html){
   var template=$html.data("template");
+  var data=null;
   if(template.get) {
-    return template.get($html);
+    data=template.get($html);
   } else {
     var $subnodes=$html.find(".fy_node").not($html.find(".fy_node .fy_node"));
     if(template.type=="array"){
-      var ret=[];
-      $subnodes.each(function(){ ret.push(Fy.harvestNode($(this))) });
-      return ret;
+      data=[];
+      $subnodes.each(function(){ data.push(Fy.harvestNode($(this))) });
     } else {
-      var ret={};
-      $subnodes.each(function(){ ret[$(this).data("jsonName")]=Fy.harvestNode($(this)) });
-      return ret;
+      data={};
+      $subnodes.each(function(){ data[$(this).data("jsonName")]=Fy.harvestNode($(this)) });
     }
   }
+  if(template.postprocess) data=template.postprocess(data);
+  return data;
 };
 
 Fy.changed=function(changeName){
