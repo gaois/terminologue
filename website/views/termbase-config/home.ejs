@@ -37,22 +37,22 @@
 				<div class="signposts">
 					<div class="title"><%=L('Termbase settings')%></div>
 					<div class="signpost"><a href="./ident/"><%=L('Name and blurb')%></a></div>
-					<div class="signpost"><a href="./lingo/"><%=L('Languages')%></a></div>
-					<div class="signpost"><a href="./abc/"><%=L('Alphabetical order')%></a></div>
-					<div class="signpost"><a href="./features/"><%=L('Features')%></a></div>
-					<div class="signpost"><a href="./triggers/"><%=L('Automatic status changes')%></a></div>
+					<div class="signpost disabled"><a xhref="./lingo/"><%=L('Languages')%></a></div>
+					<div class="signpost disabled"><a xhref="./abc/"><%=L('Alphabetical order')%></a></div>
+					<div class="signpost disabled"><a xhref="./features/"><%=L('Features')%></a></div>
+					<div class="signpost disabled"><a xhref="./triggers/"><%=L('Automatic status changes')%></a></div>
         </div>
         <div class="signposts">
 					<div class="title"><%=L('Termbase access')%></div>
 					<div class="signpost"><a href="./users/"><%=L('Users')%></a></div>
-					<div class="signpost"><a href="./publico/"><%=L('Publishing')%></a></div>
+					<div class="signpost disabled"><a xhref="./publico/"><%=L('Publishing')%></a></div>
 				</div>
 				<div class="clear"></div>
 			</div>
 			<div class="dangerzone">
 				<div class="inside">
-					<a href="./url/" class="changeUrl"><%=L('Change the termbase\'s URL')%></a>
-					<a href="javascript:void(null)" class="destroy" onclick="destroy()"><%=L('Delete the termbase')%></a>
+					<a xhref="./url/" class="disabled changeUrl"><%=L('Change the termbase\'s URL')%></a>
+					<a xhref="javascript:void(null)" class="disabled destroy" onclick="destroy()"><%=L('Delete the termbase')%></a>
 					<script type="text/javascript">
 					function destroy(){
 						if(confirm("<%=L('Careful now! You will not be able to undo this.')%>")){

@@ -56,6 +56,8 @@ div.signposts div.signpost {background-image: url(signpost.png); background-posi
 div.signposts div.signpost:hover {background-image: url(signpost-on.png);}
 div.signposts div.signpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: var(--link)}
 div.signposts div.signpost a:hover {color: var(--link-hover);}
+div.signposts div.signpost.disabled a {color: #999999; cursor: not-allowed;}
+div.signposts div.signpost.disabled:hover {background-image: url(signpost.png);}
 div.field > div.clear {clear: left;}
 
 div.dangerzone {position: absolute; bottom: 40px; left: 0px; right: 0px; color: #999999;}
@@ -67,6 +69,9 @@ div.dangerzone a.destroy {background-image: url(cross_bw.png); }
 div.dangerzone a.destroy:hover {background-image: url(cross.png);}
 div.dangerzone a.changeUrl {background-image: url(pencil_bw.png); }
 div.dangerzone a.changeUrl:hover {background-image: url(pencil.png);}
+div.dangerzone a.disabled {color: #999999; cursor: not-allowed;}
+div.dangerzone a.destroy.disabled:hover {background-image: url(cross_bw.png);}
+div.dangerzone a.changeUrl.disabled:hover {background-image: url(pencil_bw.png);}
 
 #listbox div.entry {color: #666666; }
 #listbox div.entry span.headword {font-weight: bold; color: #000000; }
