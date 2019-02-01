@@ -128,7 +128,7 @@ function L(s, gloss){
   if(s=="Extranets") return "Extranety";
   if(s=="Termbase settings") return "Nastavení databáze";
   if(s=="Name and blurb") return "Jméno a úvod";
-  if(s=="Features") return "Vlastnosti";
+  if(s=="Features") return "Vlastnosti databáze";
   if(s=="Languages") return "Jazyky";
   if(s=="Termbase access") return "Přístup k databázi";
   if(s=="Publishing") return "Publikování";
@@ -186,6 +186,16 @@ function L(s, gloss){
   if(s=="example containing...") return "příklad obsahující...";
   if(s=="Automatic status changes") return "Automatické změny statusu";
   if(s=="BLURB") return "ÚVOD";
+  if(s=="level") return "úroveň";
+  if(s=="reader") return "čtenář";
+  if(s=="editor") return "měnitel";
+  if(s=="creator") return "tvořitel";
+  if(s=="administrator") return "administrátor";
+  if(s=="configurator") return "konfigurátor";
+  if(s=="no change") return "bez změny";
+  if(s=="change to 'not checked'") return "změnit na 'nezkontrolováno'";
+  if(s=="change to 'hidden'") return "změnit na 'skryté'";
+  if(s=="change to 'not checked' and 'hidden'") return "změnit na 'nezkontrolováno' a 'skryté'";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

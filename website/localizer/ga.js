@@ -186,13 +186,16 @@ function L(s, gloss){
   if(s=="example containing...") return "sampla ina bhfuil...";
   if(s=="Automatic status changes") return "Athruithe uathoibríocha stádais";
   if(s=="BLURB") return "BLURBA";
-
   if(s=="level") return "leibhéal";
   if(s=="reader") return "léitheoir";
   if(s=="editor") return "eagarthóir";
   if(s=="creator") return "cruthaitheoir";
   if(s=="administrator") return "riarathóir";
   if(s=="configurator") return "cumraitheoir";
+  if(s=="no change") return "gan athrú";
+  if(s=="change to 'not checked'") return "athraigh go 'neamhsheiceáilte'";
+  if(s=="change to 'hidden'") return "athraigh go 'i bhfolach'";
+  if(s=="change to 'not checked' and 'hidden'") return "athraigh go 'neamhsheiceáilte' and 'i bhfolach'";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

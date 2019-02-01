@@ -41,7 +41,6 @@ Spec.templates[":top"]={
       ret[obj.email]=obj;
       delete obj.email;
     });
-    console.log(ret);
     return ret;
   },
 };
