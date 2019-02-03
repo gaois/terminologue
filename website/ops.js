@@ -1,5 +1,6 @@
 const path=require("path");
 const fs=require("fs-extra");
+const xmldom=require("xmldom"); //https://www.npmjs.com/package/xmldom
 const sqlite3=require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
 const sha1=require('sha1'); //https://www.npmjs.com/package/sha1
 const markdown=require("markdown").markdown; //https://www.npmjs.com/package/markdown
@@ -1588,6 +1589,84 @@ module.exports={
     });
   },
 
+  listUsers: function(searchtext, howmany, callnext){
+    var sql1=`select * from users where email like $like order by email limit $howmany`;
+    var sql2=`select count(*) as total from users where email like $like`;
+    var like="%"+searchtext+"%";
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READONLY);
+    db.all(sql1, {$howmany: howmany, $like: like}, function(err, rows){
+      var entries=[];
+      for(var i=0; i<rows.length; i++){
+        var item={id: rows[i].email, title: rows[i].email};
+        entries.push(item);
+      }
+      db.get(sql2, {$like: like}, function(err, row){
+        var total=row.total;
+        db.close();
+        callnext(total, entries);
+      });
+    });
+  },
+  readUser: function(email, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READONLY);
+    db.get("select * from users where email=$email", {$email: email}, function(err, row){
+      if(!row) callnext("", ""); else {
+        email=row.email;
+        var lastSeen=""; if(row.sessionLast) lastSeen=row.sessionLast;
+        db.all("select d.id, d.title from user_termbase as ud inner join termbases as d on d.id=ud.termbase_id  where ud.user_email=$email order by d.title", {$email: email}, function(err, rows){
+          xml="<user"; if(lastSeen) xml+=" lastSeen='"+lastSeen+"'"; xml+=">";
+          for(var i=0; i<rows.length; i++){
+            var title=JSON.parse(rows[i].title).$;
+            xml+="<dict id='"+rows[i].id+"' title='"+clean4xml(title)+"'/>";
+          }
+          xml+="</user>";
+          db.close();
+          callnext(email, xml);
+        });
+      }
+    });
+  },
+  deleteUser: function(email, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
+    db.run("delete from users where email=$email", {
+      $email: email,
+    }, function(err){
+      db.close();
+      callnext();
+    });
+  },
+  createUser: function(xml, callnext){
+    var doc=(new xmldom.DOMParser()).parseFromString(xml, 'text/xml');
+    var email=doc.documentElement.getAttribute("email");
+    var passwordHash=sha1(doc.documentElement.getAttribute("password"));
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
+    db.run("insert into users(email, passwordHash) values($email, $passwordHash)", {
+      $email: email,
+      $passwordHash: passwordHash,
+    }, function(err){
+      db.close();
+      module.exports.readUser(email, function(email, xml){ callnext(email, xml); });
+    });
+  },
+  updateUser: function(email, xml, callnext){
+    var doc=(new xmldom.DOMParser()).parseFromString(xml, 'text/xml');
+    if(!doc.documentElement.getAttribute("password")){
+      module.exports.readUser(email, function(email, xml){ callnext(email, xml); });
+    } else {
+      var passwordHash=sha1(doc.documentElement.getAttribute("password"));
+      var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
+      db.run("update users set passwordHash=$passwordHash where email=$email", {
+        $email: email,
+        $passwordHash: passwordHash,
+      }, function(err){
+        db.close();
+        module.exports.readUser(email, function(email, xml){
+          callnext(email, xml);
+        });
+      });
+    }
+  },
+
 }
 
 function generateKey(){
@@ -1636,6 +1715,15 @@ function generateTermbaseID(){
     id+=alphabet[i]
   }
   return "z"+id;
+}
+
+function clean4xml(txt){
+  return txt
+		.replace(/&/g, '&amp;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&apos;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;');
 }
 
 const prohibitedTermbaseIDs=["login", "logout", "make", "signup", "forgotpwd", "changepwd", "users", "termbases", "recoverpwd", "createaccount"];

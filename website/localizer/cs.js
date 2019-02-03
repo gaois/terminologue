@@ -185,6 +185,7 @@ function L(s, gloss){
   if(s=="no example") return "žádný příklad";
   if(s=="example containing...") return "příklad obsahující...";
   if(s=="Automatic status changes") return "Automatické změny statusu";
+  if(s=="NAME") return "JMÉNO";
   if(s=="BLURB") return "ÚVOD";
   if(s=="level") return "úroveň";
   if(s=="reader") return "čtenář";
@@ -196,6 +197,9 @@ function L(s, gloss){
   if(s=="change to 'not checked'") return "změnit na 'nezkontrolováno'";
   if(s=="change to 'hidden'") return "změnit na 'skryté'";
   if(s=="change to 'not checked' and 'hidden'") return "změnit na 'nezkontrolováno' a 'skryté'";
+  if(s=="LAST SEEN") return "NAPOSLED VIDĚN";
+  if(s=="NEVER") return "NIKDY";
+  if(s=="No termbases") return "Nemá žádné terminologické databáze.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

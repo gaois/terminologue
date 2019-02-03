@@ -185,6 +185,7 @@ function L(s, gloss){
   if(s=="no example") return "gan sampla";
   if(s=="example containing...") return "sampla ina bhfuil...";
   if(s=="Automatic status changes") return "Athruithe uathoibríocha stádais";
+  if(s=="NAME") return "AINM";
   if(s=="BLURB") return "BLURBA";
   if(s=="level") return "leibhéal";
   if(s=="reader") return "léitheoir";
@@ -196,6 +197,9 @@ function L(s, gloss){
   if(s=="change to 'not checked'") return "athraigh go 'neamhsheiceáilte'";
   if(s=="change to 'hidden'") return "athraigh go 'i bhfolach'";
   if(s=="change to 'not checked' and 'hidden'") return "athraigh go 'neamhsheiceáilte' and 'i bhfolach'";
+  if(s=="LAST SEEN") return "CUAIRT DHEIREANACH";
+  if(s=="NEVER") return "CHOÍCHE";
+  if(s=="No termbases") return "Gan cnuasach ar bith";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

@@ -126,6 +126,69 @@ app.post(siteconfig.rootPath+"signup.json", function(req, res){
   });
 });
 
+//Users:
+app.get(siteconfig.rootPath+"users/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.isAdmin) res.redirect(siteconfig.baseUrl); else {
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      res.render("users/navigator.ejs", {user: user, siteconfig: siteconfig, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+    }
+  });
+});
+app.get(siteconfig.rootPath+"users/editor.html", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.isAdmin) res.redirect("about:blank"); else {
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      res.render("users/editor.ejs", {user: user, siteconfig: siteconfig, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+    }
+  });
+});
+app.post(siteconfig.rootPath+"users/list.json", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.isAdmin) res.json({success: false}); else {
+      ops.listUsers(req.body.searchtext, req.body.howmany, function(total, entries){
+        res.json({success: true, total: total, entries: entries});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+"users/create.json", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.isAdmin) res.json({success: false}); else {
+      ops.createUser(req.body.content, function(entryID, adjustedXml){
+        res.json({success: true, id: entryID, content: adjustedXml});
+      })
+    }
+  });
+});
+app.post(siteconfig.rootPath+"users/read.json", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.isAdmin) res.json({success: false}); else {
+      ops.readUser(req.body.id, function(adjustedEntryID, xml){
+        res.json({success: (adjustedEntryID!=""), id: adjustedEntryID, content: xml});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+"users/update.json", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.isAdmin) res.json({success: false}); else {
+      ops.updateUser(req.body.id, req.body.content, function(adjustedEntryID, adjustedXml){
+        res.json({success: true, id: adjustedEntryID, content: adjustedXml});
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+"users/delete.json", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.isAdmin) res.json({success: false}); else {
+      ops.deleteUser(req.body.id, function(){
+        res.json({success: true, id: req.body.id});
+      });
+    }
+  });
+});
+
 //Termbase home:
 app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
