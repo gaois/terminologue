@@ -50,7 +50,7 @@ Screenful.Editor={
   },
   populateToolbar: function(){
     var $toolbar=$("#toolbar");
-    if(Screenful.History) $("<button id='butHistory' class='iconOnly' title='"+Screenful.Loc.history+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.history);
+    if(Screenful.History && Screenful.Editor.editor) $("<button id='butHistory' class='iconOnly' title='"+Screenful.Loc.history+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.history);
     if(Screenful.Editor.allowSourceCode) $("<button id='butSourceCode' class='iconOnly' title='"+Screenful.Loc.sourceCode+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.sourceCode);
     if(Screenful.Editor.allowCommenting) $("<button id='butCommenting' class='iconOnly' title='"+Screenful.Loc.comments+"'>&nbsp;<span class='bubble'></span></button>").appendTo($toolbar).on("click", Screenful.Editor.commenting);
     if(window.parent!=window && window.parent.Screenful && window.parent.Screenful.Navigator && window.parent.Screenful.Navigator.listByIdUrl){

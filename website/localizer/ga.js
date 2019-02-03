@@ -198,7 +198,7 @@ function L(s, gloss){
   if(s=="change to 'hidden'") return "athraigh go 'i bhfolach'";
   if(s=="change to 'not checked' and 'hidden'") return "athraigh go 'neamhsheiceáilte' and 'i bhfolach'";
   if(s=="LAST SEEN") return "CUAIRT DHEIREANACH";
-  if(s=="NEVER") return "CHOÍCHE";
+  if(s=="NEVER") return "NÍ RAIBH RIAMH";
   if(s=="No termbases") return "Gan cnuasach ar bith";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);

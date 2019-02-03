@@ -31,6 +31,7 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #dictheader div.titleContainer div.editLinks {margin-top: -5px; position: relative;}
 #dictheader div.titleContainer div.editLinks a.editLink {font-size: 16px; border: 1px solid transparent; border-radius: 100px; border-color: #666666; color: #666666; background-color: #ffffff; padding: 5px 10px; text-decoration: none; }
 #dictheader div.titleContainer div.editLinks a.editLink:hover {color: #666666; box-shadow: 0px 0px 2px #999999;}
+#dictheader div.titleContainer div.editLinks a.editLink.disabled {cursor: not-allowed; color: #dddddd; border-color: #aaaaaa;}
 
 #dictheader form.searchContainer {margin-top: 40px;}
 @media (max-width: 800px) { body.entrypage #dictheader form.searchContainer {margin-top: 15px;} }

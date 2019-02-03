@@ -65,7 +65,7 @@ Screenful.Commenting={
     if(userID==Screenful.Commenting.userID){
       var $form=$("<form onsubmit='return false'></form>").val(text).appendTo($ret); if(commentID) $form.hide();
       var $input=$("<input type='hidden' name='commentID'>").val(commentID).appendTo($form);
-      if(Screenful.Commenting.tags){
+      if(Screenful.Commenting.allowTags && Screenful.Commenting.tags){
         var $select=$("<select class='tagID' name='tagID'></select>").appendTo($form);
         $("<option value=''></option>").appendTo($select);
         Screenful.Commenting.tags.map(tag => { $("<option></option>").attr("value", tag.id).html(tag.title).appendTo($select); });

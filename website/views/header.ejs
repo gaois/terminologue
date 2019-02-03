@@ -18,7 +18,7 @@
           if(subsectionID=="tag") subtitle=L('Tags');
           if(subsectionID=="extranet") subtitle=L('Extranets');
         %>
-        <a href="<%-rootPath%><%=termbaseID%>/metadata/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
+        <a href="<%-rootPath%><%=termbaseID%>/admin/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>
 
     <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%> <%if(user.level<5 && !user.isAdmin){%>disabled<%}%>"><%=L("Configuration")%></a>

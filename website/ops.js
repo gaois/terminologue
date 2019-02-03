@@ -220,10 +220,11 @@ module.exports={
           db.close();
           module.exports.readTermbaseConfigs(termbaseDB, termbaseID, function(configs){
             if(!configs.users[email] && module.exports.siteconfig.admins.indexOf(email)==-1){
-              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, isAdmin: false, level: configs.users[email].level});
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, isAdmin: false, level: 0});
             } else {
               var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
-              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, isAdmin: isAdmin, level: configs.users[email].level});
+              var level=0; if(configs.users[email]) level=configs.users[email].level; if(isAdmin) level=5;
+              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, isAdmin: isAdmin, level: level});
             }
           });
         });

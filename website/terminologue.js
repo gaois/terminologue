@@ -489,9 +489,9 @@ app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!user.termbaseAccess) {
+    if(!user.termbaseAccess || (user.level<5 && !user.isAdmin)) {
       db.close();
-      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
@@ -505,9 +505,9 @@ app.get(siteconfig.rootPath+":termbaseID/config/url/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!user.termbaseAccess) {
+    if(!user.termbaseAccess || (user.level<5 && !user.isAdmin)) {
       db.close();
-      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
@@ -521,9 +521,9 @@ app.get(siteconfig.rootPath+":termbaseID/config/:configType/", function(req, res
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!user.termbaseAccess) {
+    if(!user.termbaseAccess || (user.level<5 && !user.isAdmin)) {
       db.close();
-      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
@@ -597,14 +597,14 @@ app.post(siteconfig.rootPath+":termbaseID/config/move.json", function(req, res){
   });
 });
 
-//Termbase admin/metadata:
+//Termbase admin:
 app.get(siteconfig.rootPath+":termbaseID/admin/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!user.termbaseAccess) {
+    if(!user.termbaseAccess || (user.level<4 && !user.isAdmin)) {
       db.close();
-      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
@@ -618,9 +618,9 @@ app.get(siteconfig.rootPath+":termbaseID/admin/:metadataType/", function(req, re
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!user.termbaseAccess) {
+    if(!user.termbaseAccess || (user.level<4 && !user.isAdmin)) {
       db.close();
-      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
+      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
@@ -634,7 +634,7 @@ app.get(siteconfig.rootPath+":termbaseID/admin/:metadataType/editor.html", funct
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!user.termbaseAccess) {
+    if(!user.termbaseAccess || (user.level<4 && !user.isAdmin)) {
       db.close();
       res.redirect("about:blank");
     } else {
@@ -807,7 +807,7 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentSave.json", function(r
     } else {
       ops.commentSave(db, req.params.termbaseID, req.body.entryID, req.params.xnetID, req.body.commentID, req.body.userID, req.body.body, null, function(commentID, when, body, bodyMarkdown, tagID){
         db.close();
-        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown, tagID: tagID});
+        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown, tagID: tagID, extranetID: req.params.xnetID});
       });
     }
   });
