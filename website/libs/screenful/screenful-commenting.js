@@ -42,7 +42,7 @@ Screenful.Commenting={
   draw: function(commentID, userID, when, text, textMarkdown, extranetID, tagID){
     var $ret=$("<div class='comment'></<div>");
     var $header=$("<div class='header'></div>").appendTo($ret);
-    if(commentID && userID==Screenful.Commenting.userID && !(extranetID && Screenful.Commenting.getExtranetTitle)){
+    if(commentID && userID==Screenful.Commenting.userID){
       if(Screenful.Commenting.deleteUrl) var $deleteButton=$("<button class='iconOnly butDelete' title='"+Screenful.Loc["delete"]+"'>&nbsp;</button>").appendTo($header);
       if(Screenful.Commenting.saveUrl) var $editButton=$("<button class='iconOnly butEdit' title='"+Screenful.Loc["edit"]+"'>&nbsp;</button>").appendTo($header);
     }
