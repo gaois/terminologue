@@ -8,7 +8,7 @@ Fy.render=function($insideme, data, spec, uneditable){
   if(uneditable) $insideme.addClass("fy_uneditable");
   $insideme.find(".fy_node").each(function(){
     var $this=$(this);
-    if($this.data("template").refresh) $this.data("template").refresh($this);
+    if($this.data("template") && $this.data("template").refresh) $this.data("template").refresh($this);
   });
   $insideme.find(".fy_tab").on("click", function(e){
     Fy.tab($(e.delegateTarget).attr("data-name"));
@@ -37,7 +37,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     if(subtemplate.refresh) subtemplate.refresh($node);
     $node.find(".fy_node").each(function(){
       var $this=$(this);
-      if($this.data("template").refresh) $this.data("template").refresh($this);
+      if($this.data("template") && $this.data("template").refresh) $this.data("template").refresh($this);
     });
     $node.fadeIn();
     Fy.changed($adder.attr("changeName"));
@@ -172,11 +172,11 @@ Fy.refreshTabs=function(){
 };
 Fy.tab=function(tabName){
   if(!tabName) tabName=Cookies.get("entryEditorTab");
-  if(!tabName || $(".fy_tab[data-name='"+tabName+"']").length==0) tabName=$(".fy_tab.on").attr("data-name");
-  if(!tabName) tabName=$(".fy_tab").attr("data-name");
+  if(!tabName || $(".fy_tab[data-name='"+tabName+"']:visible").length==0) tabName=$(".fy_tab.on").attr("data-name");
+  if(!tabName) tabName=$(".fy_tab:visible").attr("data-name");
   if(tabName) {
     $(".fy_tab").removeClass("on");
-    $(".fy_tab[data-name='"+tabName+"']").addClass("on");
+    $(".fy_tab[data-name='"+tabName+"']:visible").addClass("on");
     $(".fy_body").hide();
     $(".fy_body[data-name='"+tabName+"']").fadeIn();
     Cookies.set("entryEditorTab", tabName);

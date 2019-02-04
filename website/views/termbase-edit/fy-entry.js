@@ -17,11 +17,13 @@ Spec.title=function(title, lang){
 };
 Spec.getDomain=function(id){
   var ret=null;
+  termbaseMetadata.domain=(termbaseMetadata.domain || []);
   termbaseMetadata.domain.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
 Spec.getAcceptLabel=function(id){
   var ret=null;
+  termbaseMetadata.acceptLabel=(termbaseMetadata.acceptLabel || []);
   termbaseMetadata.acceptLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
@@ -37,26 +39,31 @@ Spec.getLang=function(abbr){
 };
 Spec.getInflectLabel=function(id){
   var ret=null;
+  termbaseMetadata.inflectLabel=(termbaseMetadata.inflectLabel || []);
   termbaseMetadata.inflectLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
 Spec.getPosLabel=function(id){
   var ret=null;
+  termbaseMetadata.posLabel=(termbaseMetadata.posLabel || []);
   termbaseMetadata.posLabel.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
 Spec.getCollection=function(id){
   var ret=null;
+  termbaseMetadata.collection=(termbaseMetadata.collection || []);
   termbaseMetadata.collection.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
 Spec.getSource=function(id){
   var ret=null;
+  termbaseMetadata.source=(termbaseMetadata.source || []);
   termbaseMetadata.source.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
 Spec.getExtranet=function(id){
   var ret=null;
+  termbaseMetadata.extranet=(termbaseMetadata.extranet || []);
   termbaseMetadata.extranet.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
@@ -120,6 +127,30 @@ Spec.templates[":top"]={
     </div>
     <div class="fy_replace" templateName="xrefs" jsonName="xrefs"></div>
   </div>`,
+  refresh: function($me){
+    if(termbaseMetadata.domain.length==0){
+      $me.find("*.fy_tab[data-name='domains']").hide();
+      $me.find("*.fy_body[data-name='domains']").hide();
+    }
+    if(termbaseConfigs.lingo.languages.length==0){
+      $me.find("*.fy_tab[data-name='terms']").hide();
+      $me.find("*.fy_body[data-name='terms']").hide();
+      $me.find("*.fy_tab[data-name='intros']").hide();
+      $me.find("*.fy_body[data-name='intros']").hide();
+      $me.find("*.fy_tab[data-name='definitions']").hide();
+      $me.find("*.fy_body[data-name='definitions']").hide();
+      $me.find("*.fy_tab[data-name='examples']").hide();
+      $me.find("*.fy_body[data-name='examples']").hide();
+    }
+    if(termbaseMetadata.collection.length==0){
+      $me.find("*.fy_tab[data-name='collections']").hide();
+      $me.find("*.fy_body[data-name='collections']").hide();
+    }
+    if(termbaseMetadata.extranet.length==0){
+      $me.find("*.fy_tab[data-name='extranets']").hide();
+      $me.find("*.fy_body[data-name='extranets']").hide();
+    }
+  },
 };
 Spec.templates["hiddenID"]={
   type: "string",
@@ -303,6 +334,18 @@ Spec.templates["desig"]={
     <div class="fy_replace fy_hidable" templateName="sources" jsonName="sources"></div>
     <div class="fy_replace fy_hidable" templateName="nonessential" jsonName="nonessential"></div>
   </div>`,
+  refresh: function($me){
+    if(termbaseMetadata.source.length==0){
+      $me.find(".jsonName_sources > .fy_adder").replaceWith("&nbsp;");
+    }
+    if(termbaseMetadata.acceptLabel.length==0){
+      $me.find(".jsonName_accept").remove();
+    }
+  },
+  postprocess: function(data){
+    if(!data.accept) data.accept=null;
+    return data;
+  },
 };
 Spec.templates["term"]={
   type: "object",
@@ -328,6 +371,13 @@ Spec.templates["term"]={
     var lang=$me.find(".jsonName_lang").first().find("select").val();
     var wording=$me.find(".jsonName_wording").first().find("input").val();
     Spec.sharEnquire($me, termID, lang, wording);
+    if(termbaseMetadata.inflectLabel.length==0){
+      $me.find(".jsonName_inflects").remove();
+    }
+  },
+  postprocess: function(data){
+    if(!data.inflects) data.inflects=[];
+    return data;
   },
 };
 Spec.templates["lang"]={
@@ -611,18 +661,24 @@ Spec.templates["annotLabel"]={
   },
   populate: function($me){
     var $select=$me.find("select");
-    var $optgroup=$(`<optgroup label='${L("part of speech")}'></optgroup>`).appendTo($select);
-    termbaseMetadata.posLabel.map(datum => {
-      $optgroup.append(`<option data-type="posLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
-    });
-    var $optgroup=$(`<optgroup label='${L("inflection")}'></optgroup>`).appendTo($select);
-    termbaseMetadata.inflectLabel.map(datum => {
-      $optgroup.append(`<option data-type="inflectLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
-    });
-    var $optgroup=$(`<optgroup label='${L("language of origin")}'></optgroup>`).appendTo($select);
-    termbaseConfigs.lingo.languages.map(lang => {
-      $optgroup.append(`<option data-type="langLabel" value="${lang.abbr}" title="${Spec.title(lang.title)}">${lang.abbr.toUpperCase()}</option>`)
-    });
+    if(termbaseMetadata.posLabel.length>0){
+      var $optgroup=$(`<optgroup label='${L("part of speech")}'></optgroup>`).appendTo($select);
+      termbaseMetadata.posLabel.map(datum => {
+        $optgroup.append(`<option data-type="posLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
+      });
+    }
+    if(termbaseMetadata.inflectLabel.length>0){
+      var $optgroup=$(`<optgroup label='${L("inflection")}'></optgroup>`).appendTo($select);
+      termbaseMetadata.inflectLabel.map(datum => {
+        $optgroup.append(`<option data-type="inflectLabel" value="${datum.id}" title="${Spec.title(datum.title)}" data-isfor='${JSON.stringify(datum.isfor)}'>${datum.abbr}</option>`)
+      });
+    }
+    if(termbaseConfigs.lingo.languages.length>1){
+      var $optgroup=$(`<optgroup label='${L("language of origin")}'></optgroup>`).appendTo($select);
+      termbaseConfigs.lingo.languages.map(lang => {
+        $optgroup.append(`<option data-type="langLabel" value="${lang.abbr}" title="${Spec.title(lang.title)}">${lang.abbr.toUpperCase()}</option>`)
+      });
+    }
     var $optgroup=$(`<optgroup label='${L("symbol")}'></optgroup>`).appendTo($select);
     $optgroup.append(`<option data-type="symbol" value="tm" title="${L("trademark")}">TM</option>`);
     $optgroup.append(`<option data-type="symbol" value="regtm" title="${L("registered trademark")}">®</option>`);
@@ -713,6 +769,18 @@ Spec.templates["definition"]={
       <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
   </div>`,
+  refresh: function($me){
+    if(termbaseMetadata.source.length==0){
+      $me.find(".jsonName_sources").remove();
+    }
+    if(termbaseMetadata.domain.length==0){
+      $me.find(".jsonName_domains > .fy_adder").replaceWith("&nbsp;");
+    }
+  },
+  postprocess: function(data){
+    if(!data.sources) data.sources=[];
+    return data;
+  },
 };
 Spec.templates["defTexts"]={
   type: "object",
@@ -765,6 +833,11 @@ Spec.templates["example"]={
       <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
   </div>`,
+  refresh: function($me){
+    if(termbaseMetadata.source.length==0){
+      $me.find(".jsonName_sources > .fy_adder").replaceWith("&nbsp;");
+    }
+  },
 };
 Spec.templates["exampleTexts"]={
   type: "object",

@@ -267,12 +267,22 @@ module.exports={
       db.all("select * from configs", {}, function(err, rows){
         if(!err) for(var i=0; i<rows.length; i++) configs[rows[i].id]=JSON.parse(rows[i].json);
         db.termbaseConfigs=configs;
+
         callnext(configs);
       });
     }
   },
   readTermbaseMetadata: function(db, termbaseID, callnext){
-    var metadata={};
+    var metadata={
+      domain: [],
+      posLabel: [],
+      inflectLabel: [],
+      acceptLabel: [],
+      source: [],
+      collection: [],
+      tag: [],
+      extranet: [],
+    };
     db.all("select * from metadata order by sortkey", {}, function(err, rows){
       if(!err) for(var i=0; i<rows.length; i++) {
         var type=rows[i].type;
@@ -361,20 +371,20 @@ module.exports={
     if(searchtext!="") {
       joins.push(`inner join entry_term as et on et.entry_id=e.id`);
       joins.push(`inner join terms as t on t.id=et.term_id`);
-      if(modifiers[1]=="start"){
+      if(searchtext!="" && modifiers[1]=="start"){
         where.push(`t.wording like $searchtext`);
         params.$searchtext=searchtext+"%";
       }
-      else if(modifiers[1]=="substring"){
+      else if(searchtext!="" && modifiers[1]=="substring"){
         where.push(`t.wording like $searchtext`);
         params.$searchtext="%"+searchtext+"%";
       }
-      else if(modifiers[1]=="wordstart"){
+      else if(searchtext!="" && modifiers[1]=="wordstart"){
         joins.push(`inner join words as w on w.term_id=t.id`);
         where.push(`(w.word like $searchtext and w.implicit=0)`);
         params.$searchtext=searchtext+"%";
       }
-      else if(modifiers[1]=="smart"){
+      else if(searchtext!="" && modifiers[1]=="smart"){
         var words=module.exports.wordSplit(searchtext);
         words.map((word, index) => {
           joins.push(`inner join words as w${index} on w${index}.term_id=t.id`);
@@ -383,7 +393,7 @@ module.exports={
         });
       }
 
-      if(modifiers[0]!="*"){
+      if(searchtext!="" && modifiers[0]!="*"){
         where.push(`t.lang=$searchlang`);
         params.$searchlang=modifiers[0];
       }
@@ -538,7 +548,7 @@ module.exports={
     sql1+=` as match_quality\n`;
     sql1+=` from entries as e\n`;
     joins.map(s => {sql1+=" "+s+"\n"});
-    sql1+=` inner join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
+    sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
     params1.$sortlang=modifiers[2];
     if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
     sql1+=` group by e.id\n`;

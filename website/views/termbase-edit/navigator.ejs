@@ -108,6 +108,7 @@
 					url: "./pStatus.json?val=0",
 				},
 			];
+			termbaseMetadata.extranet=(termbaseMetadata.extranet || []);
 			termbaseMetadata.extranet.map(extranet => {
 				if(extranet.live=="1") {
 					Screenful.Navigator.actions.push({

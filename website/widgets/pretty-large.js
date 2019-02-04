@@ -41,7 +41,7 @@ Pretty.entry=function(entry){
 
   //terms in major languages:
   var langsDone=[];
-  var $row=$("<div class='prettyRow majorTerms'></div>").appendTo($ret);
+  var $row=$("<div class='prettyRow majorTerms'></div>");
   majorlangs.map(lang => {
     var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
     entry.desigs.map(desig => {
@@ -53,6 +53,7 @@ Pretty.entry=function(entry){
     if(entry.intros[lang]) $cell.append(Pretty.intro(entry.intros[lang], lang));
   });
   $("<div class='clear'></div>").appendTo($row);
+  if($row.text()!="") $row.appendTo($ret);
 
   //terms in minor languages:
   var langsDone=[];

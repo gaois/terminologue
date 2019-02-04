@@ -51,8 +51,8 @@
 			</div>
 			<div class="dangerzone">
 				<div class="inside">
-					<a xhref="./url/" class="disabled changeUrl"><%=L('Change the termbase\'s URL')%></a>
-					<a xhref="javascript:void(null)" class="disabled destroy" onclick="destroy()"><%=L('Delete the termbase')%></a>
+					<a href="./url/" class="changeUrl"><%=L('Change the termbase\'s URL')%></a>
+					<a href="javascript:void(null)" class="destroy" onclick="destroy()"><%=L('Delete the termbase')%></a>
 					<script type="text/javascript">
 					function destroy(){
 						if(confirm("<%=L('Careful now! You will not be able to undo this.')%>")){
