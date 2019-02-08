@@ -113,6 +113,39 @@ module.exports={
       }
     });
   },
+  sendToken: function(email, remoteip, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    db.get("select email from users where email=$email", {$email: email}, function(err, row){
+      if (row) {
+        var expireDate = (new Date()); expireDate.setHours(expireDate.getHours()+48);
+        expireDate = expireDate.toISOString();
+        var token = sha1(sha1(Math.random()));
+        var tokenurl = module.exports.siteconfig.baseUrl + 'recoverpwd/' + token;
+        var mailSubject="Terminologue password reset";
+        var mailText = `Dear Terminologue user,\n\n`;
+        mailText+=`Somebody (hopefully you, from the address ${remoteip}) requested a new password for the Terminologue account ${email}. You can reset your password by clicking the link below:\n\n`
+        mailText+=`${tokenurl}\n\n`;
+        mailText+=`For security reasons this link is only valid for two days (until ${expireDate}). If you did not request a password reset, you can safely ignore this message. No changes have been made to your account.\n\n`;
+        mailText+=`Yours,\nThe Terminologue team`;
+        db.run("insert into recovery_tokens (email, requestAddress, token, expiration) values ($email, $remoteip, $token, $expire)", {$email: email, $expire: expireDate, $remoteip: remoteip, $token: token}, function(err, row){
+          module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {});
+          db.close();
+          callnext(true);
+        });
+      } else {
+        db.close();
+        callnext(false);
+      }
+    });
+  },
+  changePwd: function(email, password, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    var hash=sha1(password);
+    db.run("update users set passwordHash=$hash where email=$email", {$hash: hash, $email: email}, function(err, row){
+      db.close();
+      callnext(true);
+    });
+  },
 
   suggestTermbaseID: function(callnext){
     var id;

@@ -3,10 +3,11 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<link rel="icon" type="image/x-icon" href="../furniture/favicon.ico"/>
-		<title><%=L("Log in")%></title>
-		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<title><%=L("Change your password")%></title>
+    <script type="text/javascript" src="../libs/jquery.js"></script>
 		<script type="text/javascript" src="../libs/screenful/screenful.js"></script>
 		<link type="text/css" rel="stylesheet" href="../libs/screenful/screenful.css" />
+    <link type="text/css" rel="stylesheet" href="../libs/screenful/screenful-login.css" />
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
 		<link type="text/css" rel="stylesheet" href="../furniture/public.css" />
 		<script type="text/javascript">var rootPath="../";</script>
@@ -27,16 +28,16 @@
 		</script>
 		<script type="text/javascript" src="../furniture/screenful-user-config.js"></script>
 
-		<script type="text/javascript" src="../libs/screenful/screenful-login.js"></script>
-		<link type="text/css" rel="stylesheet" href="../libs/screenful/screenful-login.css" />
-		<script type="text/javascript" src="../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
-		<script type="text/javascript">
-		Screenful.Login.loginUrl="../login.json";
-		Screenful.Login.redirectUrl="<%=redirectUrl%>";
+    <script type="text/javascript" src="../libs/screenful/screenful-changepwd.js"></script>
+    <link type="text/css" rel="stylesheet" href="../libs/screenful/screenful-changepwd.css" />
+    <script type="text/javascript" src="../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+    <script type="text/javascript">
+		Screenful.ChangePwd.actionUrl="../changepwd.json";
+		Screenful.ChangePwd.returnUrl="<%=redirectUrl%>";
 		</script>
 	</head>
 	<body>
-		<div id="header">
+    <div id="header">
 			<a class="sitehome" href="../"><%if(siteconfig.readonly){%><span class="readonly"><%=L("READ-ONLY")%></span><%}%></a>
 			<div class="topright">
 		    <div class="one ScreenfulUilang"></div>

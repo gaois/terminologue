@@ -116,13 +116,59 @@ app.get(siteconfig.rootPath+"signup/", function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
     res.render("sitewide/signup.ejs", {siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
-    //res.render("sitewide/signup.ejs", {redirectUrl: siteconfig.baseUrl, siteconfig: siteconfig});
   });
 });
 app.post(siteconfig.rootPath+"signup.json", function(req, res){
   var remoteip = ops.getRemoteAddress(req);
   ops.sendSignupToken(req.body.email, remoteip, function(success){
     res.json({success: success});
+  });
+});
+app.get(siteconfig.rootPath+"changepwd/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(/\/changepwd\/$/.test(req.headers.referer)) req.headers.referer=null;
+    var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+    res.render("sitewide/changepwd.ejs", {user: user, redirectUrl: req.headers.referer || siteconfig.baseUrl, siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+  });
+});
+app.post(siteconfig.rootPath+"changepwd.json", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    if(!user.loggedin) res.redirect(siteconfig.baseUrl); else {
+      ops.changePwd(user.email, req.body.password, function(success){
+        res.json({success: success});
+      });
+    }
+  });
+});
+app.get(siteconfig.rootPath+"forgotpwd/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+    res.render("sitewide/forgotpwd.ejs", {user: user, redirectUrl: siteconfig.baseUrl, siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+  });
+});
+app.post(siteconfig.rootPath+"forgotpwd.json", function(req, res){
+  var remoteip = ops.getRemoteAddress(req);
+  ops.sendToken(req.body.email, remoteip, function(success){
+    res.json({success: success});
+  });
+});
+
+app.get(siteconfig.rootPath+"createaccount/:token/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    ops.verifyToken(req.params.token, "register", function(valid){
+      var tokenValid = valid;
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      res.render("sitewide/createaccount.ejs", {user: user, redirectUrl: siteconfig.baseUrl, siteconfig: siteconfig, token: req.params.token, tokenValid: tokenValid, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+    });
+  });
+});
+app.get(siteconfig.rootPath+"recoverpwd/:token/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    ops.verifyToken(req.params.token, "recovery", function(valid){
+      var tokenValid = valid;
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      res.render("sitewide/recoverpwd.ejs", {user: user, redirectUrl: siteconfig.baseUrl, siteconfig: siteconfig, token: req.params.token, tokenValid: tokenValid, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+    });
   });
 });
 

@@ -67,13 +67,12 @@ Screenful.Loc={
   changePwdMsg: "Is féidir leat do phasfhocal a athrú anseo.",
   invalidToken: "Níl an nasc seo bailí. Seans go bhfuil sé imithe in éag, nó b'fhéidir gur baineadh úsáid as cheana.",
 
-  signupInfoEmail: "To get a new account, enter your e-mail address and we will send you instructions.",
-  signupButton: "Create new account",
-  signupTokenSent: "We have sent you an e-mail with instructions on how to create a new account.",
-  invalidSignupToken: "This signup link is invalid. It may have expired or has been used before.",
-  setPwdMsg: "Please set your password now.",
-  accountCreated: "We have created your account. You can now log in with your e-mail address and password.",
-  signupAccountExists: "You are trying to create an account for e-mail address that already has an account.",
+  signupInfoEmail: "Chun cuntas nua a fháil, cuir do sheoladh ríomhphoist isteach anseo. Cuirfidh muidne treoracha chugat maidir leis an dóigh chun do chuntas a chruthú.",
+  signupButton: "Cruthaigh cuntas",
+  signupTokenSent: "Tá treoracha seolta againn chugat maidir leis an dóigh chun do chuntas a chruthú.",
+  invalidSignupToken: "Níl an nasc seo bailí. Seans go bhfuil sé imithe in éag, nó b'fhéidir gur baineadh úsáid as cheana.",
+  setPwdMsg: "Cruthaigh pasfhocal duit féin anois, le do thoil.",
+  accountCreated: "Tá do chuntas cruthaithe. Is féidir leat logáil isteach anois.",
 
   autosave: "Sábháil uathoibríoch",
 

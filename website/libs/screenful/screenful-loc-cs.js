@@ -67,13 +67,12 @@ Screenful.Loc={
   changePwdMsg: "Tady si můžete změnit heslo.",
   invalidToken: "Tento odkaz je neplatný. Možná už vypršel, nebo byl už použit.",
 
-  signupInfoEmail: "To get a new account, enter your e-mail address and we will send you instructions.",
-  signupButton: "Create new account",
-  signupTokenSent: "We have sent you an e-mail with instructions on how to create a new account.",
-  invalidSignupToken: "This signup link is invalid. It may have expired or has been used before.",
-  setPwdMsg: "Please set your password now.",
-  accountCreated: "We have created your account. You can now log in with your e-mail address and password.",
-  signupAccountExists: "You are trying to create an account for e-mail address that already has an account.",
+  signupInfoEmail: "Zadejte tady svoji e-mailovou adresu a my vám pošleme instrukce, jak si otevřít účet.",
+  signupButton: "Chci účet",
+  signupTokenSent: "Poslali jsme vám instrukce, jak si otevřít účet.",
+  invalidSignupToken: "Tento odkaz je neplatný. Možná už vypršel, nebo byl už použit.",
+  setPwdMsg: "A teď si laskavě nasavte heslo.",
+  accountCreated: "Váš účet je hotob! Teď se můžete přhlásit.",
 
   autosave: "Ukládat automaticky",
 
