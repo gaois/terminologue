@@ -66,8 +66,7 @@
     ["y", "ý", "ỳ", "ŷ", "ÿ"],
     ["z", "ź", "ż", "ž"]
   ],
-  "propagatorMsSqlConnectionStrings": {},
-  "x-propagatorMsSqlConnectionStrings": {
+  "propagatorMsSqlConnectionStrings": {
     "bnt": "Server=localhost\\SQLEXPRESS;Database=tearma;User Id=sa;Password=triPEStri"
   }
 }

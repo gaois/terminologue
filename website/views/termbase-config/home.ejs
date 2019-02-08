@@ -45,25 +45,27 @@
         <div class="signposts">
 					<div class="title"><%=L('Termbase access')%></div>
 					<div class="signpost"><a href="./users/"><%=L('Users')%></a></div>
-					<div class="signpost"><a href="./publico/"><%=L('Publishing')%></a></div>
+					<%if(!locked){%><div class="signpost"><a href="./publico/"><%=L('Publishing')%></a></div><%}%>
 				</div>
 				<div class="clear"></div>
 			</div>
-			<div class="dangerzone">
-				<div class="inside">
-					<a href="./url/" class="changeUrl"><%=L('Change the termbase\'s URL')%></a>
-					<a href="javascript:void(null)" class="destroy" onclick="destroy()"><%=L('Delete the termbase')%></a>
-					<script type="text/javascript">
-					function destroy(){
-						if(confirm("<%=L('Careful now! You will not be able to undo this.')%>")){
-							$.ajax({url: "./destroy.json", dataType: "json", method: "POST", data: {}}).done(function(data){
-								if(data.success) window.location="../../";
-							});
+			<%if(!locked){%>
+				<div class="dangerzone">
+					<div class="inside">
+						<a href="./url/" class="changeUrl"><%=L('Change the termbase\'s URL')%></a>
+						<a href="javascript:void(null)" class="destroy" onclick="destroy()"><%=L('Delete the termbase')%></a>
+						<script type="text/javascript">
+						function destroy(){
+							if(confirm("<%=L('Careful now! You will not be able to undo this.')%>")){
+								$.ajax({url: "./destroy.json", dataType: "json", method: "POST", data: {}}).done(function(data){
+									if(data.success) window.location="../../";
+								});
+							}
 						}
-					}
-					</script>
+						</script>
+					</div>
 				</div>
-			</div>
+			<%}%>
 		</div>
 	</body>
 </html>

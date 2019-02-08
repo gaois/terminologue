@@ -496,7 +496,8 @@ app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
         var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-        res.render("termbase-config/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+        var locked=(siteconfig.propagatorMsSqlConnectionStrings[req.params.termbaseID] ? true : false);
+        res.render("termbase-config/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, locked: locked});
       });
     }
   });
