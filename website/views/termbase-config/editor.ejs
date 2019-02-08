@@ -41,6 +41,8 @@
 
 		<script type="text/javascript">
 		uilangs=<%-JSON.stringify(uilangs)%>;
+		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
+		var defaultAbc=<%-JSON.stringify(defaultAbc)%>;
 		</script>
 
 		<link type="text/css" rel="stylesheet" href="../../../libs/fy/fy.css" />
@@ -85,11 +87,6 @@
 		<%}%>
 
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
-
-		<script type="text/javascript">
-		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
-		</script>
-
 	</head>
 	<body>
     <%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "config", subsectionID: configType, rootPath: "../../../"})%>
