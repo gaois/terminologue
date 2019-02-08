@@ -528,7 +528,7 @@ app.get(siteconfig.rootPath+":termbaseID/config/:configType/", function(req, res
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         db.close();
         var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-        res.render("termbase-config/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: req.params.configType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, defaultAbc: siteconfig.defaultAbc});
+        res.render("termbase-config/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: req.params.configType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, defaultAbc: siteconfig.defaultAbc, licences: siteconfig.licences});
       });
     }
   });
