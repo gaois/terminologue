@@ -53,6 +53,10 @@
 				document.title=(ident.title["<%-uilang%>"] || ident.title.$);
 				$("#header .dicTitle").html(ident.title["<%-uilang%>"] || ident.title.$);
 			}
+			if(Screenful.Editor.entryID=="lingo") {
+				var lingo=JSON.parse(entry.content);
+				termbaseConfigs.lingo=lingo;
+			}
 			if(!entry) entry={content: JSON.stringify(Spec.blank)};
 			Fy.render($(div), JSON.parse(entry.content), Spec, false);
       // $(div).html("<textarea style='padding: 10px; box-sizing: border-box; width: 100%; height: 400px; resize: vertical; border: 0px; box-shadow: inset 0px 0px 5px #999999; color: var(--link); border-radius: 4px; margin-top: 10px; font-size: 0.9rem;'></textarea>");
@@ -65,19 +69,27 @@
 		};
     </script>
 
-		<script type="text/javascript">
-		Screenful.Editor.allowSourceCode=true;
-		Screenful.Editor.formatSourceCode=function(str){
-			return Screenful.formatJson(str);
-		};
-		Screenful.Editor.validateSourceCode=function(str){
-			return Screenful.isWellFormedJson(str);
-		};
-		Screenful.Editor.cleanupSourceCode=function(str){
-			return str;
-		};
-		</script>
+		<%if(user.isAdmin){%>
+			<script type="text/javascript">
+				Screenful.Editor.allowSourceCode=true;
+				Screenful.Editor.formatSourceCode=function(str){
+					return Screenful.formatJson(str);
+				};
+				Screenful.Editor.validateSourceCode=function(str){
+					return Screenful.isWellFormedJson(str);
+				};
+				Screenful.Editor.cleanupSourceCode=function(str){
+					return str;
+				};
+			</script>
+		<%}%>
+
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
+
+		<script type="text/javascript">
+		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
+		</script>
+
 	</head>
 	<body>
     <%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "config", subsectionID: configType, rootPath: "../../../"})%>
