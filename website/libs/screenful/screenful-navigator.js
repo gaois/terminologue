@@ -232,7 +232,7 @@ Screenful.Navigator={
         Screenful.status(Screenful.Loc.listingFailed, "warn"); //"failed to get list of entries"
       } else {
         $("#countcaption").html(data.total);
-        var $listbox=$("#listbox").html("");
+        var $listbox=$("#listbox").hide().html("");
         if(data.suggestions && data.suggestions.length>0){
           var $suggs=$("<div class='suggs'></div>").appendTo($listbox);
           data.suggestions.map(sugg => {
@@ -252,7 +252,7 @@ Screenful.Navigator={
           $listbox.append("<div class='intertitle'>"+Screenful.Loc.partialMatches+"</div>");
         }
         if(data.entries) data.entries.forEach(function(entry){ Screenful.Navigator.printEntry(entry, $listbox, searchtext, modifier); });
-        if(!noSFX) $listbox.hide().fadeIn();
+        if(!noSFX) $listbox.fadeIn(); else $listbox.show();
         if(data.entries.length+(data.primeEntries?data.primeEntries.length:0)<data.total){
           $listbox.append("<div id='divMore'><button class='iconYes' id='butMore'>"+Screenful.Loc.more+"</button></div>");
           $("#butMore").on("click", Screenful.Navigator.more);
@@ -347,6 +347,8 @@ Screenful.Navigator={
   },
   lastStepSize: 0,
   more: function(event){
+    $("#listbox .entry").last().focus();
+    Screenful.Navigator.lastFocusedEntryID=$("#listbox .entry:focus").attr("data-id");
     Screenful.Navigator.list(event, Screenful.Navigator.lastStepSize+Screenful.Navigator.stepSize);
   },
   openEntry: function(event){
