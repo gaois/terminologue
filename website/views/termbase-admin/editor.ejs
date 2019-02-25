@@ -51,18 +51,20 @@
 		};
 		</script>
 
-		<script type="text/javascript">
-		Screenful.Editor.allowSourceCode=false;
-		Screenful.Editor.formatSourceCode=function(str){
-			return Screenful.formatJson(str);
-		};
-		Screenful.Editor.validateSourceCode=function(str){
-			return Screenful.isWellFormedJson(str);
-		};
-		Screenful.Editor.cleanupSourceCode=function(str){
-			return str;
-		};
-		</script>
+		<%if(user.isAdmin){%>
+			<script type="text/javascript">
+				Screenful.Editor.allowSourceCode=true;
+				Screenful.Editor.formatSourceCode=function(str){
+					return Screenful.formatJson(str);
+				};
+				Screenful.Editor.validateSourceCode=function(str){
+					return Screenful.isWellFormedJson(str);
+				};
+				Screenful.Editor.cleanupSourceCode=function(str){
+					return str;
+				};
+			</script>
+		<%}%>
 
 	</head>
 	<body>

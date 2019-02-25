@@ -45,11 +45,11 @@ div.notification a {text-decoration: none; color: #004f9b; font-weight: bold;}
 div.notification a:hover {color: #006ed7;}
 @media(max-width: 1300px) {div.notification {margin: 20px 20px 30px 20px;}}
 
-#pagebody div.field {max-width: 1200px; margin: 100px auto 50px auto; font-size: 1rem; }
+#pagebody div.field {max-width: 1200px; margin: 150px auto 50px auto; font-size: 1rem; }
 @media(max-width: 1300px) {#pagebody div.field {margin: 30px 20px 50px 20px;}}
-div.signposts {float: left; margin-right: 70px; margin-bottom: 40px; }
+div.signposts {float: left; margin-right: 70px; margin-bottom: 40px; min-width: 250px;}
 @media(max-width: 1300px) {div.signposts {margin-bottom: 20px; margin-right: 20px;}}
-div.signposts div.title {border-bottom: 1px dotted #cccccc; padding: 0px 100px 15px 0px; margin: 60px 0px 20px 0px; font-size: 1.25rem; color: #666666;}
+div.signposts div.title {border-bottom: 1px dotted #cccccc; padding: 0px 0px 15px 0px; margin: 60px 0px 20px 0px; font-size: 1.25rem; color: #666666;}
 div.signposts div.title:first-child {margin-top: 0px;}
 @media(max-width: 1300px) {div.signposts div.title {padding-right: 0px;}}
 div.signposts div.signpost {background-image: url(signpost.png); background-position: 0px 0px; background-repeat: no-repeat; min-height: 30px; margin: 0px 30px 20px 0px;  }

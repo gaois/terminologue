@@ -1507,12 +1507,13 @@ module.exports={
 
   configRead: function(db, termbaseID, configID, callnext){
     db.get("select * from configs where id=$id", {$id: configID}, function(err, row){
-      config=row.json;
+      config=(row ? row.json : "{}");
       callnext(config);
     });
   },
   configUpdate: function(db, termbaseID, configID, json, callnext){
-    db.run("update configs set json=$json where id=$id", {$id: configID, $json: json}, function(err){
+    //db.run("update configs set json=$json where id=$id", {$id: configID, $json: json}, function(err){
+    db.run("insert or replace into configs(id, json) values($id, $json)", {$id: configID, $json: json}, function(err){
       module.exports.propagator.saveConfig(termbaseID, configID, json);
       afterwards();
     });

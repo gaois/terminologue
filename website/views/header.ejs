@@ -31,7 +31,9 @@
           if(subsectionID=="features") subtitle=L("Features");
           if(subsectionID=="users") subtitle=L("Users");
           if(subsectionID=="publico") subtitle=L("Publishing");
-          if(subsectionID=="triggers") subtitle=L("Automatic status changes");
+          if(subsectionID=="triggers") subtitle=L("Automatic changes");
+          if(subsectionID=="tod") subtitle=L("Term of the day");
+          if(subsectionID=="news") subtitle=L("News and announcements");
         %>
         <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
     <%}%>

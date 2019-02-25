@@ -35,22 +35,30 @@ Spec.templates[":top"]={
 Spec.templates["title"]={
   type: "object",
   html: function(){
-    var html=`<div class="fy_container fy_collapsible">
-      <div class="fy_box">
-        <div class="fy_horizon">
-          <span class="fy_replace" templateName="titleStringUnlabelled" jsonName="$"></span>
-        </div>
-        <div class="fy_lineabove fy_hidable">`;
-          uilangs.map(lang => {
+    var html=`<div class="fy_container">
+      <div class="fy_box">`;
+        var langCount=0;
+        termbaseConfigs.lingo.languages.map(lang => {
+          if(lang.role=="major" && uilangs.map(obj => obj.abbr).indexOf(lang.abbr)>-1){
+            langCount++;
             html+=`<div class="fy_horizon">
-                <span class="fy_label" style="width: 245px;">${lang.abbr.toUpperCase()} (${lang.caption})</span>
+                <span class="fy_label" style="width: 245px;">${lang.abbr.toUpperCase()} (${Spec.title(lang.title)})</span>
                 <span class="fy_replace" templateName="titleString" jsonName="${lang.abbr}"></span>
               </div>`;
-          });
-        html+=`</div>
-      </div>
+            }
+        });
+        if(langCount==0){
+          html+=`<div class="fy_horizon">
+            <span class="fy_replace" templateName="titleStringUnlabelled" jsonName="$"></span>
+          </div>`;
+        }
+      html+=`</div>
     </div>`;
     return html;
+  },
+  postprocess: function(data){
+    if(!data.$) for(var key in data){ data.$=data[key]; break; }
+    return data;
   },
 };
 Spec.templates["titleString"]={
@@ -77,22 +85,30 @@ Spec.templates["titleStringUnlabelled"]={
 Spec.templates["blurb"]={
   type: "object",
   html: function(){
-    var html=`<div class="fy_container fy_collapsible">
-      <div class="fy_box">
-        <div class="fy_horizon textarea">
-          <span class="fy_replace" templateName="blurbStringUnlabelled" jsonName="$"></span>
-        </div>
-        <div class="fy_lineabove fy_hidable">`;
-          uilangs.map(lang => {
+    var html=`<div class="fy_container">
+      <div class="fy_box">`;
+        var langCount=0;
+        termbaseConfigs.lingo.languages.map(lang => {
+          if(lang.role=="major" && uilangs.map(obj => obj.abbr).indexOf(lang.abbr)>-1){
+            langCount++;
             html+=`<div class="fy_horizon textarea">
-                <div class="fy_label">${lang.abbr.toUpperCase()} (${lang.caption})</div>
+                <div class="fy_label">${lang.abbr.toUpperCase()} (${Spec.title(lang.title)})</div>
                 <span class="fy_replace" templateName="blurbString" jsonName="${lang.abbr}"></span>
               </div>`;
-          });
+            }
+        });
+        if(langCount==0){
+          html+=`<div class="fy_horizon textarea">
+            <span class="fy_replace" templateName="blurbStringUnlabelled" jsonName="$"></span>
+          </div>`;
+        }
         html+=`</div>
-      </div>
     </div>`;
     return html;
+  },
+  postprocess: function(data){
+    if(!data.$) for(var key in data){ data.$=data[key]; break; }
+    return data;
   },
 };
 Spec.templates["blurbString"]={
