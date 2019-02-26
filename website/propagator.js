@@ -60,7 +60,7 @@ module.exports={
   },
 
   saveConfig: function(termbaseID, id, obj){
-    if(["lingo"].indexOf(id)>-1){
+    if(["lingo", "news", "tod"].indexOf(id)>-1){
       if(module.exports.msSqlConnectionStrings[termbaseID]){
         var json=obj; if(typeof(json)!="string") json=JSON.parse(json);
         sql.connect(module.exports.msSqlConnectionStrings[termbaseID], function(err){

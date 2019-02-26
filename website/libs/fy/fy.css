@@ -64,6 +64,7 @@ span.fy_textbox select {display: inline-block; box-sizing: border-box; padding: 
 span.fy_textbox select:focus {background-color: #f1f1e0;}
 span.fy_label select {float: right; display: inline-block; box-sizing: border-box; padding: 2px 4px; border: 0px; font: inherit; font-size: 0.8em; background-color: #ffffff; font-weight: bold; margin-right: -2px;}
 span.fy_textbox input.date {background-image: url(../../furniture/date.png); background-repeat: no-repeat; background-position: 10px; padding-left: 30px;}
+span.fy_textbox input.time {background-image: url(../../furniture/time.png); background-repeat: no-repeat; background-position: 10px; padding-left: 30px;}
 
 span.fy_textbox.linebelow {border-bottom: 1px solid #cccccc;}
 div.fy_horizon span.fy_adder {margin: 10px;}
