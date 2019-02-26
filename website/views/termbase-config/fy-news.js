@@ -32,7 +32,7 @@ Spec.templates[":top"]={
             <span class="fy_replace" templateName="when" jsonName="from"></span>
           </div>
           <div class="fy_horizon">
-            <span class="fy_label" style="width: 245px;">${L("Display till")}</span>
+            <span class="fy_label" style="width: 245px;">${L("Display until")}</span>
             <span class="fy_replace" templateName="when" jsonName="till"></span>
           </div>
         </div>

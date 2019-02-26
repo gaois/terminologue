@@ -34,6 +34,12 @@
 		<script type="text/javascript">
 		var user=<%-JSON.stringify(user)%>;
 		var triggers=<%-JSON.stringify(termbaseConfigs.triggers)%>;
+		var todNextAvailableDate="<%-todNextAvailableDate%>";
+		function todNextAvailableDateIncrement(){
+			var date=new Date(todNextAvailableDate);
+			date.setDate(date.getDate()+1);
+			todNextAvailableDate=date.toISOString().split('T')[0];
+		}
 		</script>
 		<link type="text/css" rel="stylesheet" href="../../libs/fy/fy.css" />
 		<script type="text/javascript" src="../../libs/fy/fy.js"></script>

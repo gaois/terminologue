@@ -71,15 +71,8 @@ function L(s, gloss){
   if(s=="any subdomain or no subdomain") return "jakákoliv poddoména nebo žádná";
   if(s=="any subdomain") return "jakákoliv poddoména";
   if(s=="no subdomain") return "žádná poddoména";
-  if(s=="DATESTAMP") return "DATUM";
-  if(s=="LAST MAJOR UPDATE") return "POSLEDNÍ PODSTATNÁ ZMÉNA";
+  if(s=="LAST MAJOR UPDATE") return "POSLEDNÍ VELKÁ ZMÉNA";
   if(s=="set to today") return "změnit na dnešek";
-  if(s=="any datestamp or no datestamp") return "jakékoliv datum nebo žádné";
-  if(s=="any datestamp") return "jakékoliv datum";
-  if(s=="no datestamp") return "žádné datum";
-  if(s=="datestamp before...") return "datum před...";
-  if(s=="datestamp on...") return "datum přesně...";
-  if(s=="datestamp after...") return "datum po...";
   if(s=="Invalid e-mail address or password.") return "Neplatná e-mailová adresa nebo neplatné heslo.";
   if(s=="INTR") return "ÚVD";
   if(s=="COLL") return "SBÍR";
@@ -113,7 +106,6 @@ function L(s, gloss){
   if(s=="Create mutual cross-references") return "Propojit vzájemnými odkazy";
   if(s=="Remove mutual cross-references") return "Rozpojit vzájemné odkazy";
   if(s=="Merge into a single entry") return "Sloučit do jednoho hesla";
-  if(s=="LAST UPDATED") return "POSLEDNÍ ZMĚNA";
   if(s=="SEE ALSO") return "VIZ TAKÉ";
   if(s=="add to worklist") return "dát na pracovní seznam";
   if(s=="Domains") return "Domény";
@@ -253,7 +245,6 @@ function L(s, gloss){
   if(s=="trigger_sourceReorder") return "změněno přadí zdrojů něčeho v hesle";
   if(s=="trigger_sourceChange") return "změněn zdroj něčeho v hesle";
   if(s=="trigger_nonessentialChange") return "změněna nedůležitost něčeho v hesle";
-
   if(s=="(blank)") return "(prázdná)";
   if(s=="Simple Multilingual Termbase") return "Jednoduchá mnohojazyčná terminologická databáze";
   if(s=="Simple Bilingual Termbase") return "Jednoduchá dvojjazyčná terminologická databáze";
@@ -262,6 +253,11 @@ function L(s, gloss){
   if(s=="This will be your termbase's address on the web. You will be able to change this later.") return "Tohle bude internetová adresa vaší databáze. Kdykoliv ji budete moci změnit.";
   if(s=="You can choose a template here to start you off. Each template comes with a few sample entries. You will be able to change or delete those and to customize the template.") return "Vyberte si šablonu, ze které chcete začít. Každá šablona má pár ukázkových hesel. Ukázková hesla můžete změnit nebo vymazat a celou šablonu si můžete přizpůsobit svým potřebám.";
   if(s=="Your termbase is ready.") return "Vaše databáze je připravená.";
+  if(s=="TERM OF THE DAY") return "TERMÍN DNE";
+  if(s=="set to next available date") return "změnit na nejbližší volné datum";
+  if(s=="Display from") return "Zobrazovat od";
+  if(s=="Display until") return "Zobrazovat do";
+  if(s=="News and announcements") return "Zprávy a oznámení";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

@@ -292,8 +292,10 @@ app.get(siteconfig.rootPath+":termbaseID/edit/editor.html", function(req, res){
       res.redirect("about:blank");
     } else {
       ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
-        db.close();
-        res.render("termbase-edit/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs});
+        ops.todNextAvailableDate(db, req.params.termbaseID, function(todNextAvailableDate){
+          db.close();
+          res.render("termbase-edit/editor.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: user.uilang, uilangs: siteconfig.uilangs, todNextAvailableDate: todNextAvailableDate});
+        });
       });
     }
   });

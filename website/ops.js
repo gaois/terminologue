@@ -441,23 +441,6 @@ module.exports={
       params[`$fPStatus`]=parseInt(facets.pStatus);
     }
 
-    if(facets.dateStamp){
-      if(facets.dateStamp=="*") where.push("e.dateStamp<>''");
-      if(facets.dateStamp=="-1") where.push("(e.dateStamp='' or e.dateStamp is null)");
-      if(facets.dateStamp=="before" && facets.dateStampValue){
-        where.push("e.dateStamp<$fDateStamp");
-        params[`$fDateStamp`]=facets.dateStampValue;
-      }
-      if(facets.dateStamp=="on" && facets.dateStampValue){
-        where.push("e.dateStamp=$fDateStamp");
-        params[`$fDateStamp`]=facets.dateStampValue;
-      }
-      if(facets.dateStamp=="after" && facets.dateStampValue){
-        where.push("e.dateStamp>$fDateStamp");
-        params[`$fDateStamp`]=facets.dateStampValue;
-      }
-    }
-
     if(facets.superdomain && facets.superdomain=="-1"){
       joins.push(`left outer join entry_domain as fDomain on fDomain.entry_id=e.id`);
       where.push(`fDomain.superdomain is null`);
@@ -832,7 +815,10 @@ module.exports={
                           module.exports.saveDefinitions(db, termbaseID, entryID, entry, function(){
                             //index my examples:
                             module.exports.saveExamples(db, termbaseID, entryID, entry, function(){
-                              callnext(entryID);
+                              //save dates:
+                              module.exports.saveDates(db, termbaseID, entryID, entry, function(){
+                                callnext(entryID);
+                              });
                             });
                           });
                         });
@@ -1110,6 +1096,39 @@ module.exports={
         callnext();
       }
     }
+  },
+  saveDates: function(db, termbaseID, entryID, entry, callnext){
+    db.run("delete from entry_tod where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(!entry.tod){
+        step2();
+      } else {
+        db.run("insert into entry_tod(entry_id, date) values($entryID, $date)", {$entryID: entryID, $date: entry.tod}, function(err){
+          step2();
+        });
+      }
+    });
+    function step2(){
+      db.run("delete from entry_dateStamp where entry_id=$entryID", {$entryID: entryID}, function(err){
+        if(!entry.dateStamp){
+          callnext();
+        } else {
+          db.run("insert into entry_dateStamp(entry_id, date) values($entryID, $date)", {$entryID: entryID, $date: entry.dateStamp}, function(err){
+            callnext();
+          });
+        }
+      });
+    }
+  },
+
+  todNextAvailableDate: function(db, termbaseID, callnext){
+    db.get("select max(date) as maxDate from entry_tod", {}, function(err, row){
+      var date=new Date();
+      if(row){
+        date=new Date(row["maxDate"]);
+        date.setDate(date.getDate()+1);
+      }
+      callnext(date.toISOString().split('T')[0]);
+    });
   },
 
   langDBs: {},

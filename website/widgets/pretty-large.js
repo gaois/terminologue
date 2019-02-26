@@ -171,9 +171,16 @@ Pretty.entry=function(entry){
 
     //date stamp:
     if(entry.dateStamp){
-      $("<span class='title'><img src='../../furniture/date.png'/> "+L("LAST UPDATED")+"</span>").appendTo($title);
+      $("<span class='title'><img src='../../furniture/date.png'/> "+L("LAST MAJOR UPDATE")+"</span>").appendTo($title);
       $title.append(" ");
       $("<span class='date'>"+entry.dateStamp+"</span>").appendTo($title);
+    }
+
+    //term of the day:
+    if(entry.tod){
+      $("<span class='title'><img src='../../furniture/asterisk_orange.png'/> "+L("TERM OF THE DAY")+"</span>").appendTo($title);
+      $title.append(" ");
+      $("<span class='date'>"+entry.tod+"</span>").appendTo($title);
     }
   }
 

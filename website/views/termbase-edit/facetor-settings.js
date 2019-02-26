@@ -20,24 +20,6 @@ Screenful.Facetor.panes=[{
     $select.append(`<option value="0">${L("hidden")}</option>`);
     $select.on("change", Screenful.Facetor.change);
 
-    //dateStamp:
-    var $select=$(`<select class="fullwidth" id="facDateStamp"></select>`).appendTo($inme);
-    $select.append(`<option value="">(${L("any datestamp or no datestamp")})</option>`);
-    $select.append(`<option value="-1">${L("no datestamp")}</option>`);
-    $select.append(`<option value="*">${L("any datestamp")}</option>`);
-    $select.append(`<option value="before">${L("datestamp before...")}</option>`);
-    $select.append(`<option value="on">${L("datestamp on...")}</option>`);
-    $select.append(`<option value="after">${L("datestamp after...")}</option>`);
-    $select.on("change", Screenful.Facetor.change);
-    $select.on("change", function(){
-      var val=$("#facDateStamp").val();
-      if(val=="before" || val=="on" || val=="after") $("#facDateStampValue").show();
-      else $("#facDateStampValue").hide();
-    });
-
-    var $input=$(`<input type="date" class="fullwidth sub" id="facDateStampValue" value="${(new Date()).toISOString().split('T')[0]}"/>`).hide().appendTo($inme);
-    $input.on("change", Screenful.Facetor.change);
-
     //------
 
     if(termbaseMetadata.domain.length>0){
@@ -244,8 +226,6 @@ Screenful.Facetor.panes=[{
 
     ret.cStatus=$("#facCStatus").val();
     ret.pStatus=$("#facPStatus").val();
-    ret.dateStamp=$("#facDateStamp").val();
-    ret.dateStampValue=$("#facDateStampValue").val();
 
     ret.superdomain=$("#facSuperdomain").val();
     ret.subdomain=$("#facSubdomain").val();

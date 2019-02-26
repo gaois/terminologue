@@ -71,15 +71,8 @@ function L(s, gloss){
   if(s=="any subdomain or no subdomain") return "foréimse ar bith nó gan foréimse";
   if(s=="any subdomain") return "foréimse ar bith";
   if(s=="no subdomain") return "gan foréimse";
-  if(s=="DATESTAMP") return "DÁTSTAMPA";
   if(s=="LAST MAJOR UPDATE") return "MÓR-ATHRÚ DEIREANACH";
   if(s=="set to today") return "athraigh go inniu";
-  if(s=="any datestamp or no datestamp") return "dátstampa ar bith nó gan dátstampa";
-  if(s=="any datestamp") return "dátstampa ar bith";
-  if(s=="no datestamp") return "gan dátstampa";
-  if(s=="datestamp before...") return "dátstampa roimh...";
-  if(s=="datestamp on...") return "dátstampa ar...";
-  if(s=="datestamp after...") return "dátstampa tar éis...";
   if(s=="Invalid e-mail address or password.") return "Seoladh ríomhphoist mícheart nó pasfhocal mícheart.";
   if(s=="INTR") return "INTR";
   if(s=="COLL") return "BAIL";
@@ -113,7 +106,6 @@ function L(s, gloss){
   if(s=="Create mutual cross-references") return "Cruthaigh crostagairtí eatarthu";
   if(s=="Remove mutual cross-references") return "Bris crostagairtí eatarthu";
   if(s=="Merge into a single entry") return "Cumaisc go hiontráil amháin";
-  if(s=="LAST UPDATED") return "UASDÁTÚ DEIREANACH";
   if(s=="SEE ALSO") return "FÉACH FREISIN";
   if(s=="add to worklist") return "cuir ar liosta oibre";
   if(s=="Domains") return "Réimsí";
@@ -261,6 +253,11 @@ function L(s, gloss){
   if(s=="This will be your termbase's address on the web. You will be able to change this later.") return "Seo seoladh idirlín do chnuasaigh. Beidh tú ábalta é seo a athrú níos déanaí.";
   if(s=="You can choose a template here to start you off. Each template comes with a few sample entries. You will be able to change or delete those and to customize the template.") return "Roghnaigh teimpléad anseo chun tús a chur le do chnuasach. I ngach teimpléad tá cúpla iontráil shamplach. Beidh tú ábalta iad a athrú nó iad a scrios, agus beidh tú ábalta an teimpléad a chur in oiriúint duit féin.";
   if(s=="Your termbase is ready.") return "Tá do chnuasach réidh.";
+  if(s=="TERM OF THE DAY") return "TÉARMA AN LAE";
+  if(s=="set to next available date") return "athraigh go dtí an chéad dáta eile atá saor";
+  if(s=="Display from") return "Ar taispeáint ó";
+  if(s=="Display until") return "Ar taispeáint go";
+  if(s=="News and announcements") return "Fógraí nuachta";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
