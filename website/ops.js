@@ -1644,7 +1644,7 @@ module.exports={
   markdown: function(str){
     var tree=markdown.parse(str);
     str=markdown.renderJsonML(markdown.toHTMLTree(tree));
-    str=str.replace("<a href=\"http", "<a target=\"_blank\" href=\"http");
+    str=str.replace(/\<a href=\"http/g, "<a target=\"_blank\" href=\"http");
     return str;
   },
 
