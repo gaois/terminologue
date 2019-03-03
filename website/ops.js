@@ -627,6 +627,7 @@ module.exports={
         } else {
           entry.cStatus=val;
           db.run("update entries set cStatus=$val, json=$json where id=$id", {$val: val, $json: JSON.stringify(entry), $id: item.id}, function(err){
+            module.exports.propagator.saveEntry(termbaseID, item.id, entry, function(err){});
             go();
           });
         }
@@ -658,6 +659,7 @@ module.exports={
         } else {
           entry.pStatus=val;
           db.run("update entries set pStatus=$val, json=$json where id=$id", {$val: val, $json: JSON.stringify(entry), $id: item.id}, function(err){
+            module.exports.propagator.saveEntry(termbaseID, item.id, entry, function(err){});
             go();
           });
         }
@@ -1328,6 +1330,7 @@ module.exports={
         var entryID=ids.pop();
         var json=JSON.stringify(entries[entryID]);
         db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
+          module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){});
           module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
             save();
           });
@@ -1354,6 +1357,7 @@ module.exports={
         var entryID=ids.pop();
         var json=JSON.stringify(entries[entryID]);
         db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
+          module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){});
           module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
             save();
           });
