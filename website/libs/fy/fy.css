@@ -130,3 +130,5 @@ div.fy_node.bottomRight {position: absolute; bottom: 0px; right: 0px;}
 div.fy_box div.fy_node.bottomRight {position: absolute; bottom: 5px; right: 10px;}
 div.fy label.fy_noness {color: #666666;}
 div.fy label.fy_noness input {position: relative; top: 2px;}
+
+div.fy_node {clear: left;}
