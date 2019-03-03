@@ -20,9 +20,13 @@ function L(s, gloss){
   if(s=="Users") return "Úsáideoirí";
   if(s=="Termbases") return "Cnuasaigh";
   if(s=="smart search") return "cuardach cliste";
-  if(s=="starts like this") return "tosaíonn mar seo";
-  if(s=="contains a word that starts like this") return "tiomsaíonn focal a thosaíonn mar seo";
-  if(s=="contains this sequence of characters") return "tiomsaíonn an teaghrán seo de charachtair";
+
+  if(s=="complete term") return "téarma iomlán";
+  if(s=="start of term") return "tús téarma";
+  if(s=="end of term") return "deireadh téarma";
+  if(s=="any part of term") return "cuid ar bith de théarma";
+  if(s=="any part except start or end") return "cuid ar bith seachas tús nó deireadh";
+
   if(s=="search in all languages") return "cuardaigh i ngach teanga";
   if(s=="Configuration") return "Cumrú";
   if(s=="ADMIN") return "RIAR";

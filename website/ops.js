@@ -404,19 +404,31 @@ module.exports={
     if(searchtext!="") {
       joins.push(`inner join entry_term as et on et.entry_id=e.id`);
       joins.push(`inner join terms as t on t.id=et.term_id`);
-      if(searchtext!="" && modifiers[1]=="start"){
+      if(searchtext!="" && modifiers[1]=="complete"){
+        where.push(`t.wording like $searchtext`);
+        params.$searchtext=searchtext;
+      }
+      else if(searchtext!="" && modifiers[1]=="start"){
         where.push(`t.wording like $searchtext`);
         params.$searchtext=searchtext+"%";
       }
-      else if(searchtext!="" && modifiers[1]=="substring"){
+      else if(searchtext!="" && modifiers[1]=="end"){
+        where.push(`t.wording like $searchtext`);
+        params.$searchtext="%"+searchtext;
+      }
+      else if(searchtext!="" && modifiers[1]=="part"){
         where.push(`t.wording like $searchtext`);
         params.$searchtext="%"+searchtext+"%";
       }
-      else if(searchtext!="" && modifiers[1]=="wordstart"){
-        joins.push(`inner join words as w on w.term_id=t.id`);
-        where.push(`(w.word like $searchtext and w.implicit=0)`);
-        params.$searchtext=searchtext+"%";
+      else if(searchtext!="" && modifiers[1]=="midpart"){
+        where.push(`t.wording like $searchtext`);
+        params.$searchtext="_%"+searchtext+"%_";
       }
+      // else if(searchtext!="" && modifiers[1]=="wordstart"){
+      //   joins.push(`inner join words as w on w.term_id=t.id`);
+      //   where.push(`(w.word like $searchtext and w.implicit=0)`);
+      //   params.$searchtext=searchtext+"%";
+      // }
       else if(searchtext!="" && modifiers[1]=="smart"){
         var words=module.exports.wordSplit(searchtext);
         words.map((word, index) => {

@@ -42,9 +42,11 @@
 		Screenful.Navigator.editorUrl="./editor.html";
 		Screenful.Navigator.modifiers=[
 			{position: "left", value: "smart", caption: "<%=L("smart search")%>"},
-			{position: "left", value: "start", caption: "<%=L("starts like this")%>"},
-			{position: "left", value: "wordstart", caption: "<%=L("contains a word that starts like this")%>"},
-			{position: "left", value: "substring", caption: "<%=L("contains this sequence of characters")%>"},
+			{position: "left", value: "complete", caption: "<%=L("complete term")%>"},
+			{position: "left", value: "start", caption: "<%=L("start of term")%>"},
+			{position: "left", value: "end", caption: "<%=L("end of term")%>"},
+			{position: "left", value: "part", caption: "<%=L("any part of term")%>"},
+			{position: "left", value: "midpart", caption: "<%=L("any part except start or end")%>"},
 			{position: "box", value: "*", abbr: "—", caption: "<%=L("search in all languages")%>"},
 		];
 		termbaseConfigs.lingo.languages.map(lang => {

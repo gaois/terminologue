@@ -20,9 +20,13 @@ function L(s, gloss){
   if(s=="Users") return "Uživateĺé";
   if(s=="Termbases") return "Terminologické databáze";
   if(s=="smart search") return "chytré hledání";
-  if(s=="starts like this") return "začíná takhle";
-  if(s=="contains a word that starts like this") return "obsahuje slovo, které takhle začíná";
-  if(s=="contains this sequence of characters") return "obsahuje tuto posloupnost znaků";
+
+  if(s=="complete term") return "celý termín";
+  if(s=="start of term") return "začátek termínu";
+  if(s=="end of term") return "konec termínu";
+  if(s=="any part of term") return "jakákoliv část termínu";
+  if(s=="any part except start or end") return "jakákoliv část kromě začátku a konce";
+
   if(s=="search in all languages") return "hledat ve všech jazycích";
   if(s=="Configuration") return "Konfigurace";
   if(s=="ADMIN") return "ADMIN";
