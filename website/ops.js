@@ -796,16 +796,16 @@ module.exports={
         module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
         var sql=""; var params={};
         if(dowhat=="create"){
-          sql="insert into entries(json, cStatus, pStatus, dateStamp) values($json, $cStatus, $pStatus, $dateStamp)";
-          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp};
+          sql="insert into entries(json, cStatus, pStatus, dateStamp, tod) values($json, $cStatus, $pStatus, $dateStamp, $tod)";
+          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
         }
         if(dowhat=="recreate"){
-          sql="insert into entries(id, json, cStatus, pStatus, dateStamp) values($id, $json, $cStatus, $pStatus, $dateStamp)";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp};
+          sql="insert into entries(id, json, cStatus, pStatus, dateStamp, tod) values($id, $json, $cStatus, $pStatus, $dateStamp, $tod)";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
         }
         if(dowhat=="change"){
-          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus, dateStamp=$dateStamp where id=$id";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp};
+          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus, dateStamp=$dateStamp, tod=$tod where id=$id";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
         }
         //create or change me:
         db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;
@@ -829,10 +829,7 @@ module.exports={
                           module.exports.saveDefinitions(db, termbaseID, entryID, entry, function(){
                             //index my examples:
                             module.exports.saveExamples(db, termbaseID, entryID, entry, function(){
-                              //save dates:
-                              module.exports.saveDates(db, termbaseID, entryID, entry, function(){
-                                callnext(entryID);
-                              });
+                              callnext(entryID);
                             });
                           });
                         });
@@ -1109,28 +1106,6 @@ module.exports={
       } else {
         callnext();
       }
-    }
-  },
-  saveDates: function(db, termbaseID, entryID, entry, callnext){
-    db.run("delete from entry_tod where entry_id=$entryID", {$entryID: entryID}, function(err){
-      if(!entry.tod){
-        step2();
-      } else {
-        db.run("insert into entry_tod(entry_id, date) values($entryID, $date)", {$entryID: entryID, $date: entry.tod}, function(err){
-          step2();
-        });
-      }
-    });
-    function step2(){
-      db.run("delete from entry_dateStamp where entry_id=$entryID", {$entryID: entryID}, function(err){
-        if(!entry.dateStamp){
-          callnext();
-        } else {
-          db.run("insert into entry_dateStamp(entry_id, date) values($entryID, $date)", {$entryID: entryID, $date: entry.dateStamp}, function(err){
-            callnext();
-          });
-        }
-      });
     }
   },
 
