@@ -21,15 +21,22 @@ Screenful.History={
   },
   drawRevision: function($div, hist, versionNumber, isLatest){
     $div.data("hist", hist);
-    $div.on("click", function(e){
-      Screenful.History.zoomRevision(Screenful.History.getRevisionID(hist), true);
-    });
-    if(Screenful.Editor.viewer){
-      $div.append(" <span class='pretty'></span>")
-      $div.find(".pretty").on("click", function(e){
-        Screenful.History.zoomRevision(Screenful.History.getRevisionID(hist), false);
-        e.stopPropagation();
+    var fakeentry=Screenful.History.fakeEntry(hist);
+    if(!fakeentry){
+      $div.addClass("unclickable");
+    }
+    else{
+      $div.on("click", function(e){
+        console.log("hello");
+        Screenful.History.zoomRevision(Screenful.History.getRevisionID(hist), true);
       });
+      if(Screenful.Editor.viewer){
+        $div.append(" <span class='pretty'></span>")
+        $div.find(".pretty").on("click", function(e){
+          Screenful.History.zoomRevision(Screenful.History.getRevisionID(hist), false);
+          e.stopPropagation();
+        });
+      }
     }
     if(!isLatest && hist.content) {
       $div.append("<span class='revive'>"+Screenful.Loc.revive+"</span>");

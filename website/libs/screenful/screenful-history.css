@@ -4,6 +4,8 @@ div#history div.revision {background-color: #f0f0f0; margin: 0px 15px; padding: 
 div#history div.revision:hover {color: var(--link-hover);}
 div#history div.revision span.label {display: inline-block; padding: 10px 0px; vertical-align: middle;}
 div#history div.revision.current {background-color: #ffffff; margin-left: 0px; padding-left: 30px; box-shadow: 0px 0px 5px #666666; border-radius: 0px 4px 4px 0px; z-index: 10;}
+div#history div.revision.unclickable {cursor: default;}
+div#history div.revision:hover {color: var(--link);}
 
 div#history div.revision span.revive {visibility: hidden; display: inline-block; padding: 5px 30px 5px 10px; margin: 5px 0px 0px 0px; vertical-align: middle; float: right; background-image: url(lightning.png); background-position: center right+5px; background-repeat: no-repeat; border-radius: 4px;}
 div#history div.revision:hover span.revive { visibility: visible;}
