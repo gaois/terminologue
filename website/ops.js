@@ -352,7 +352,7 @@ module.exports={
   },
 
   wordSplit: function(wording, langOrNull){
-    var words=[]; wording.split(/[\s\.\,\(\)\[\]\{\}0-9]/).map(w => { if(w) words.push(w); });
+    var words=[]; wording.split(/[\s\.\,\(\)\[\]\{\}\'\-0-9]/).map(w => { if(w) words.push(w); });
     return words;
   },
 
