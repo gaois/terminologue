@@ -9,23 +9,25 @@ module.exports={
 
   saveEntry: function(termbaseID, entryID, entry){
     if(module.exports.msSqlConnectionStrings[termbaseID]){
-      sql.connect(module.exports.msSqlConnectionStrings[termbaseID], function(err){
-        var request=new sql.Request();
+      var pool=new sql.ConnectionPool(module.exports.msSqlConnectionStrings[termbaseID]);
+      pool.connect(function(err){
+		var request=new sql.Request(pool);
       	request.input("entryID", sql.Int, entryID);
       	request.input("json", sql.NVarChar, JSON.stringify(entry));
       	request.execute("propag_saveEntry", function(err){
-      		sql.close();
+			pool.close();
       	});
       });
     }
   },
   deleteEntry: function(termbaseID, entryID){
     if(module.exports.msSqlConnectionStrings[termbaseID]){
-      sql.connect(module.exports.msSqlConnectionStrings[termbaseID], function(err){
-        var request=new sql.Request();
+      var pool=new sql.ConnectionPool(module.exports.msSqlConnectionStrings[termbaseID]);
+	  pool.connect(function(err){
+        var request=new sql.Request(pool);
       	request.input("entryID", sql.Int, entryID);
       	request.execute("propag_deleteEntry", function(err){
-      		sql.close();
+      		pool.close();
       	});
       });
     }
@@ -35,13 +37,14 @@ module.exports={
     if(["acceptLabel", "domain", "inflectLabel", "posLabel"].indexOf(type)>-1){
       if(module.exports.msSqlConnectionStrings[termbaseID]){
         var json=obj; if(typeof(json)!="string") json=JSON.parse(json);
-        sql.connect(module.exports.msSqlConnectionStrings[termbaseID], function(err){
-          var request=new sql.Request();
+		var pool=new sql.ConnectionPool(module.exports.msSqlConnectionStrings[termbaseID]);
+		pool.connect(function(err){
+			var request=new sql.Request(pool);
         	request.input("id", sql.Int, id);
         	request.input("type", sql.VarChar, type);
         	request.input("json", sql.NVarChar, json);
         	request.execute("propag_saveMetadatum", function(err){
-        		sql.close();
+        		pool.close();
         	});
         });
       }
@@ -49,26 +52,28 @@ module.exports={
   },
   deleteMetadatum: function(termbaseID, id){
     if(module.exports.msSqlConnectionStrings[termbaseID]){
-      sql.connect(module.exports.msSqlConnectionStrings[termbaseID], function(err){
-        var request=new sql.Request();
+      var pool=new sql.ConnectionPool(module.exports.msSqlConnectionStrings[termbaseID]);
+	  pool.connect(function(err){	
+        var request=new sql.Request(pool);
       	request.input("id", sql.Int, id);
       	request.execute("propag_deleteMetadatum", function(err){
-      		sql.close();
+      		pool.close();
       	});
       });
     }
   },
 
   saveConfig: function(termbaseID, id, obj){
-    if(["lingo", "news", "tod"].indexOf(id)>-1){
+    if(["lingo", "news"].indexOf(id)>-1){
       if(module.exports.msSqlConnectionStrings[termbaseID]){
         var json=obj; if(typeof(json)!="string") json=JSON.parse(json);
-        sql.connect(module.exports.msSqlConnectionStrings[termbaseID], function(err){
-          var request=new sql.Request();
+        var pool=new sql.ConnectionPool(module.exports.msSqlConnectionStrings[termbaseID]);
+        pool.connect(function(err){
+          var request=new sql.Request(pool);
         	request.input("id", sql.VarChar, id);
         	request.input("json", sql.NVarChar, json);
         	request.execute("propag_saveConfig", function(err){
-        		sql.close();
+        		pool.close();
         	});
         });
       }
