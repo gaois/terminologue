@@ -33,7 +33,7 @@ function readChanges(callnext){
     if(line.length==7){
       var entryIDs=[];
       if(line[2]=="focal.concept") entryIDs=[line[1]];
-      if(line[2]=="focal.tern") entryIDs=term2entry[line[1]];
+      if(line[2]=="focal.term") entryIDs=term2entry[line[1]];
       if(entryIDs && entryIDs.length>0) entryIDs.map(entry_id => {
         var when=line[3].replace(" ", "T");
         //var email=line[4];
