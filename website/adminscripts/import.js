@@ -17,52 +17,55 @@ var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
 var changeID=2000000;
+var xrefs={}; //conceptID -> [conceptID]
 
 //deed(1);
-//deed(1000000);
+deed(1000000);
 //DoWords();
 //DoLemmatize();
 //DoSpelling();
 
 function deed(stop){
+  readXrefs();
   db.exec("delete from entries; delete from history; delete from metadata; delete from terms; delete from entry_term; delete from sqlite_sequence", function(err){
-    console.log(`database emptied`);
-    db.run("BEGIN TRANSACTION");
-    doLanguages(db, function(){
-      doAcceptLabels(db, function(){
-        doInflectLabels(db, function(){
-          doSources(db, function(){
-            doPosLabels(db, function(){
-              doDomains(db, function(){
-                doCollections(db, function(){
-                  doNoteTypes(db, function(){
-                    doConcepts(db, 0, stop, function(){
-                    var obj={
-                      title: {
-                        ga: "Téarmaí ar gá féachaint orthu",
-                        en: "Terms that need to be looked at",
-                        $: "Téarmaí that need to be looked at"
-                      },
-                      live: "1",
-                      users: [
-                        "valselob@gmail.com",
-                        "tester1@terminologue.org",
-                        "tester2@terminologue.org",
-                        "tester3@terminologue.org",
-                        "tester4@terminologue.org",
-                        "tester5@terminologue.org",
-                        "tester6@terminologue.org",
-                        "fnag1@terminologue.org",
-                        "fnag2@terminologue.org",
-                        "fnag3@terminologue.org"
-                       ]
-                    };
-                    ops.metadataCreate(db, "bnt", "extranet", null, JSON.stringify(obj), function(){
-                      db.run("COMMIT");
-                      db.close();
-                      console.log(`finito`);
+    db.run("update configs set json=$json where id='ident'", {$json: JSON.stringify({
+      "title": {
+        "ga": "Bunachar Náisiúnta Téarmaíochta don Ghaeilge",
+        "en": "National Terminology Database for Irish",
+        "$": "Bunachar Náisiúnta Téarmaíochta don Ghaeilge"
+      },
+      "blurb": {
+        "ga": "Is é seo an Bunachar Náisiúnta Téarmaíochta don Ghaeilge, arna fhorbairt ag Fiontar & Scoil na Gaeilge, DCU i gcomhar leis an gCoiste Téarmaíochta, Foras na Gaeilge. Tá os cionn 373,000 téarma ar fáil sa bhunachar agus iad inchuardaithe faoi na leaganacha Gaeilge agus Béarla. Tá comhéadan poiblí den bhunachar ag [www.tearma.ie](http://www.tearma.ie/).",
+        "en": "This is the National Terminology Database for Irish, developed by Fiontar & Scoil na Gaeilge, DCU in collaboration with An Coiste Téarmaíochta, Foras na Gaeilge. The database contains over 373,000 terms, searchable under both Irish and English versions. The public interface is at [www.tearma.ie](http://www.tearma.ie/).",
+        "$": "Is é seo an Bunachar Náisiúnta Téarmaíochta don Ghaeilge, arna fhorbairt ag Fiontar & Scoil na Gaeilge, DCU i gcomhar leis an gCoiste Téarmaíochta, Foras na Gaeilge. Tá os cionn 373,000 téarma ar fáil sa bhunachar agus iad inchuardaithe faoi na leaganacha Gaeilge agus Béarla. Tá comhéadan poiblí den bhunachar ag [www.tearma.ie](http://www.tearma.ie/)."
+      }
+    })}, function(){
+      console.log(`database emptied`);
+      db.run("BEGIN TRANSACTION");
+      doLanguages(db, function(){
+        doAcceptLabels(db, function(){
+          doInflectLabels(db, function(){
+            doSources(db, function(){
+              doPosLabels(db, function(){
+                doDomains(db, function(){
+                  doCollections(db, function(){
+                    doNoteTypes(db, function(){
+                      doConcepts(db, 0, stop, function(){
+                        db.run("COMMIT");
+                        db.close();
+                        console.log(`finito`);
+                        // var obj={
+                        //   title: {ga: "Téarmaí ar gá féachaint orthu", en: "Terms that need to be looked at", $: "Téarmaí ar gá féachaint orthu"},
+                        //   live: "1",
+                        //   users: ["valselob@gmail.com"]
+                        // };
+                        // ops.metadataCreate(db, "bnt", "extranet", null, JSON.stringify(obj), function(){
+                        //   db.run("COMMIT");
+                        //   db.close();
+                        //   console.log(`finito`);
+                        // });
                     });
-                  });
+                    });
                   });
                 });
               });
@@ -74,11 +77,38 @@ function deed(stop){
   });
 }
 
+function readXrefs(){
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.xrefgroup/";
+  var filenames=fs.readdirSync(dir);
+  filenames.map(filename => {
+    if(filename.match(/\.xml$/)){
+      var xrefGroupID=filename.replace(/\.xml$/, "");
+      var xml=fs.readFileSync(dir+filename, "utf8");
+      var doc=domParser.parseFromString(xml, 'text/xml');
+      var els=doc.getElementsByTagName("concept");
+      var conceptIDs=[];
+      for(var i=0; i<els.length; i++){
+        var el=els[i];
+        var conceptID=el.getAttribute("default");
+        conceptIDs.push(conceptID);
+      }
+      if(conceptIDs.length>0){
+        conceptIDs.map(motherID => {
+          if(!xrefs[motherID]) xrefs[motherID]=[];
+          conceptIDs.map(childID => {
+            if(childID!=motherID) xrefs[motherID].push(childID);
+          });
+        });
+      }
+    }
+  });
+}
+
 function doLanguages(db, callnext){
   var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.language/";
   var lingo={languages: [
-    {abbr: "ga", role: "major",title: {ga: "Gaeilge", en: "Irish"}},
-    {abbr: "en", role: "major",title: {ga: "Béarla", en: "English"}},
+    {abbr: "ga", role: "major", title: {ga: "Gaeilge", en: "Irish"}},
+    {abbr: "en", role: "major", title: {ga: "Béarla", en: "English"}},
   ]};
   var filenames=fs.readdirSync(dir);
   filenames.map(filename => {
@@ -334,6 +364,7 @@ function doConcepts(db, start, stop, callnext){
       cStatus: (doc.documentElement.getAttribute("checked")=="0" ? "0" : "1"),
       pStatus: (doc.documentElement.getAttribute("hidden")=="1" ? "0" : "1"),
       dateStamp: "",
+      tod: "",
       domains: [],
       desigs: [],
       intros: {ga: "", en: ""},
@@ -341,7 +372,10 @@ function doConcepts(db, start, stop, callnext){
       examples: [],
       collections: [],
       extranets: [],
+      xrefs: [],
     };
+    //xrefs:
+    if(xrefs[id]) json.xrefs=xrefs[id];
     //count number of non-low-priority terms in each language:
     var goodTermsCountByLang={};
     var els=doc.getElementsByTagName("term");
@@ -516,6 +550,13 @@ function doConcepts(db, start, stop, callnext){
           }
         });
       }
+    });
+    //save xrefs:
+    json.xrefs.map(targetID => {
+      fs.appendFileSync("/home/mbm/terminologue/temp/entry_xref.txt", line([
+        id.toString(),
+        targetID
+      ]));
     });
 
     //concept done:

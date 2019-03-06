@@ -212,7 +212,7 @@ Spec.templates["pStatus"]={
 };
 Spec.templates["dateStamp"]={
   type: "string",
-  html: `<div class="fy_node">
+  html: `<div class="fy_node" style="min-height: 2em;">
     <div class="fy_horizon" style="width: 12em; display: inline-block; float: left;">
       <span class="fy_textbox" style="width: 100%"><input class="date" type="date" onchange="Fy.changed('dateStampChange')"/></span>
     </div>
@@ -227,7 +227,7 @@ Spec.templates["dateStamp"]={
 };
 Spec.templates["tod"]={
   type: "string",
-  html: `<div class="fy_node">
+  html: `<div class="fy_node" style="min-height: 2em;">
     <div class="fy_horizon" style="width: 12em; display: inline-block; float: left;">
       <span class="fy_textbox" style="width: 100%"><input class="asterisk" type="date" onchange="Fy.changed('todChange')"/></span>
     </div>

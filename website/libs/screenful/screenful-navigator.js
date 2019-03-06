@@ -38,6 +38,7 @@ Screenful.Navigator={
     });
 
     $("#editbox").html("<iframe name='editframe' frameborder='0' scrolling='no' src='"+Screenful.Navigator.editorUrl+"'/>");
+
     $("#navbox").html("<div class='line1'><button class='iconOnly' id='butCritOpen'>&nbsp;</button><div class='modifiers boxModifiers' style='display: none'><span class='clickable'><span class='current'></span> <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div><input id='searchbox' title='Ctrl + Shift + T'/><button id='butSearch' class='iconOnly mergeLeft noborder'>&nbsp;</buttton><button class='iconOnly noborder' id='butCritRemove' style='display: none;'></button></div>");
     $("#navbox").append("<div class='modifiers lineModifiers lineModifiersRight' style='display: none'><span class='clickable'><span class='current'></span> <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div>");
     $("#navbox").append("<div class='modifiers lineModifiers lineModifiersLeft' style='display: none'><span class='clickable'><span class='current'></span> <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div>");
@@ -47,6 +48,10 @@ Screenful.Navigator={
       if(event.which==13) Screenful.Navigator.critGo(event);
     });
     $("#butSearch").on("click", Screenful.Navigator.critGo);
+    if(Screenful.Navigator.hideSearchbox){
+      $("#navbox").addClass("noSearchbox");
+      $("#listbox").addClass("noSearchbox");
+    }
     $("#navbox").append("<div class='line2'><span id='starbox' style='display: none'></span><div class='menuContainer'><span id='countContainer'><span id='countcaption'>0</span><span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div><button class='iconYes noborder' id='butReload'>"+Screenful.Loc.reload+"</button></div>");
     if(Screenful.Navigator.actions && Screenful.Navigator.actions.length>0){
       Screenful.Navigator.populateActionMenu();

@@ -829,7 +829,10 @@ module.exports={
                           module.exports.saveDefinitions(db, termbaseID, entryID, entry, function(){
                             //index my examples:
                             module.exports.saveExamples(db, termbaseID, entryID, entry, function(){
-                              callnext(entryID);
+                              //index my xrefs:
+                              module.exports.saveXrefs(db, termbaseID, entryID, entry, function(){
+                                callnext(entryID);
+                              });
                             });
                           });
                         });
@@ -1108,6 +1111,24 @@ module.exports={
       }
     }
   },
+  saveXrefs: function(db, termbaseID, entryID, entry, callnext){
+    var assigs=[]; entry.xrefs.map(targetID => {
+      assigs.push(targetID);
+    });
+    db.run("delete from entry_xref where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var assig=assigs.pop();
+      if(assig){
+        db.run("insert into entry_xref(entry_id, target_entry_id) values($entryID, $targetID)", {$entryID: entryID, $targetID: assig}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
 
   todNextAvailableDate: function(db, termbaseID, callnext){
     db.get("select max(date) as maxDate from entry_tod", {}, function(err, row){
@@ -1307,7 +1328,9 @@ module.exports={
         db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
           module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){});
           module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
-            save();
+            module.exports.saveXrefs(db, termbaseID, entryID, entries[entryID], function(){
+              save();
+            });
           });
         });
       } else {
@@ -1334,7 +1357,9 @@ module.exports={
         db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
           module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){});
           module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
-            save();
+            module.exports.saveXrefs(db, termbaseID, entryID, entries[entryID], function(){
+              save();
+            });
           });
         });
       } else {

@@ -21,9 +21,16 @@
 #starlist > div.inside > div.listbox {position: absolute; top: 40px; left: 10px; right: 10px; bottom: 10px; background-color: #ffffff; overflow-x: hidden; overflow-y: auto; padding-top: 10px;}
 #starlist > div.inside > div.title {position: absolute; top: 10px; left: 10px; right: 10px; height: 30px; padding: 0px 10px;}
 #starlist > div.inside > div.title > span.title {font-weight: bold; color: #666666; text-shadow: 1px 1px 0px #ffffff;}
+
 #navbox.hasSearchModifiers {height: 125px;}
 #listbox.hasSearchModifiers {top: 125px;}
 #starlist.hasSearchModifiers {top: 115px;}
+
+#navbox.noSearchbox .line1 {display: none;}
+#navbox.noSearchbox .line2 {padding-top: 5px;}
+#navbox.noSearchbox {height: 53px;}
+#listbox.noSearchbox {top: 53px;}
+
 #editbox { position: absolute; top: 1px; left: 30%; right: 0px; bottom: 0px; border-left: 1px solid var(--border, #aaaaaa); }
 #editbox iframe { width: 100%; height: 100%; border: 0px; }
 #critbox { position: absolute; top: 70px; left: 15px; bottom: 30px; max-height: 600px; width: 60%; background-color: #ffffff; box-shadow: 0px 0px 5px #666666; border-radius: 4px; z-index: 10;}
