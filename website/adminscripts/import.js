@@ -20,7 +20,7 @@ var changeID=2000000;
 var xrefs={}; //conceptID -> [conceptID]
 
 //deed(1);
-deed(1000000);
+//deed(1000000);
 //DoWords();
 //DoLemmatize();
 //DoSpelling();
@@ -470,6 +470,7 @@ function doConcepts(db, start, stop, callnext){
       JSON.stringify(json),
       json.cStatus,
       json.pStatus,
+      "",
       ""
     ]));
     //save entry into history:
