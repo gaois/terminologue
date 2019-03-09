@@ -88,7 +88,7 @@ module.exports={
     }
     return remoteIp;
   },
-  sendSignupToken: function(email, remoteip, callnext){
+  sendSignupToken: function(email, remoteip, mailSubject, mailText, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select email from users where email=$email", {$email: email}, function(err, row){
       if (row==undefined) {
@@ -96,12 +96,9 @@ module.exports={
         expireDate = expireDate.toISOString();
         var token = sha1(sha1(Math.random()));
         var tokenurl = module.exports.siteconfig.baseUrl + 'createaccount/' + token;
-        var mailSubject="Terminologue signup";
-        var mailText = `Dear Terminologue user,\n\n`;
-        mailText+=`Somebody (hopefully you, from the address ${remoteip}) requested to create a new Terminologue account. Please follow the link below to create your account:\n\n`
-        mailText+=`${tokenurl}\n\n`;
-        mailText+=`For security reasons this link is only valid for two days (until ${expireDate}). If you did not request an account, you can safely ignore this message. \n\n`;
-        mailText+=`Yours,\nThe Terminologue team`;
+        // var mailSubject="Terminologue signup";
+        // var mailText=`Please follow the link below to create your Terminologue account:`
+        mailText+=`\n\n${tokenurl}\n\n`;
         db.run("insert into register_tokens (email, requestAddress, token, expiration) values ($email, $remoteip, $token, $expire)", {$email: email, $expire: expireDate, $remoteip: remoteip, $token: token}, function(err, row){
           module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {});
           db.close();
@@ -113,7 +110,7 @@ module.exports={
       }
     });
   },
-  sendToken: function(email, remoteip, callnext){
+  sendToken: function(email, remoteip, mailSubject, mailText, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select email from users where email=$email", {$email: email}, function(err, row){
       if (row) {
@@ -121,12 +118,9 @@ module.exports={
         expireDate = expireDate.toISOString();
         var token = sha1(sha1(Math.random()));
         var tokenurl = module.exports.siteconfig.baseUrl + 'recoverpwd/' + token;
-        var mailSubject="Terminologue password reset";
-        var mailText = `Dear Terminologue user,\n\n`;
-        mailText+=`Somebody (hopefully you, from the address ${remoteip}) requested a new password for the Terminologue account ${email}. You can reset your password by clicking the link below:\n\n`
-        mailText+=`${tokenurl}\n\n`;
-        mailText+=`For security reasons this link is only valid for two days (until ${expireDate}). If you did not request a password reset, you can safely ignore this message. No changes have been made to your account.\n\n`;
-        mailText+=`Yours,\nThe Terminologue team`;
+        // var mailSubject="Terminologue password reset";
+        // var mailText=`Please click the link below to reset your Terminologue password:\n\n`
+        mailText+=`\n\n${tokenurl}\n\n`;
         db.run("insert into recovery_tokens (email, requestAddress, token, expiration) values ($email, $remoteip, $token, $expire)", {$email: email, $expire: expireDate, $remoteip: remoteip, $token: token}, function(err, row){
           module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {});
           db.close();
@@ -144,6 +138,49 @@ module.exports={
     db.run("update users set passwordHash=$hash where email=$email", {$hash: hash, $email: email}, function(err, row){
       db.close();
       callnext(true);
+    });
+  },
+  verifyToken: function(token, type, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    db.get("select * from "+type+"_tokens where token=$token and expiration>=datetime('now') and usedDate is null", {$token: token}, function(err, row){
+      db.close();
+      if(!row) callnext(false); else callnext(true);
+    });
+  },
+  createAccount: function(token, password, remoteip, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    db.get("select * from register_tokens where token=$token and expiration>=datetime('now') and usedDate is null", {$token: token}, function(err, row){
+      if (row) {
+        var email = row.email;
+        db.get("select * from users where email=$email", {$email: email}, function(err, row){
+          if (row==undefined) {
+            var hash = sha1(password);
+            db.run("insert into users (email,passwordHash) values ($email,$hash)", {$hash: hash, $email: email}, function(err, row){
+              db.run("update register_tokens set usedDate=datetime('now'), usedAddress=$remoteip where token=$token", {$remoteip: remoteip, $token: token}, function(err, row){
+                db.close();
+                callnext(true);
+              });
+            });
+          } else {
+            callnext(false);
+          }
+        });
+      }
+    });
+  },
+  resetPwd: function(token, password, remoteip, callnext){
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
+    db.get("select * from recovery_tokens where token=$token and expiration>=datetime('now') and usedDate is null", {$token: token}, function(err, row){
+      if (row) {
+        var email = row.email;
+        var hash = sha1(password);
+        db.run("update users set passwordHash=$hash where email=$email", {$hash: hash, $email: email}, function(err, row){
+          db.run("update recovery_tokens set usedDate=datetime('now'), usedAddress=$remoteip where token=$token", {$remoteip: remoteip, $token: token}, function(err, row){
+            db.close();
+            callnext(true);
+          });
+        });
+      }
     });
   },
 

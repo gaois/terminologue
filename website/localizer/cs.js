@@ -262,6 +262,12 @@ function L(s, gloss){
   if(s=="Display from") return "Zobrazovat od";
   if(s=="Display until") return "Zobrazovat do";
   if(s=="News and announcements") return "Zprávy a oznámení";
+  if(s=="Create your account") return "Vytvořit účet";
+  if(s=="Reset your password") return "Nové heslo";
+  if(s=="Terminologue signup") return "Váš nový účet pro Terminologue";
+  if(s=="Please follow the link below to create your Terminologue account:") return "Chcete-li su vytvořit účet v systému Terminologue, klikněte laskavě na tento odkaz:";
+  if(s=="Terminologue password reset") return "Zapomenuté heslo pro Terminologue";
+  if(s=="Please follow the link below to reset your Terminologue password:") return "Chcete-li si vytvořit nové heslo v systému Terminologue, klikněte laskavě na tento odkaz:";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

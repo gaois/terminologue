@@ -1,4 +1,4 @@
-const today="2019-01-19T20:00:00";
+const today="2019-03-09T20:00:00";
 
 const fs=require("fs-extra");
 const sqlite3 = require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
@@ -18,14 +18,16 @@ var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
 var changeID=2000000;
 var xrefs={}; //conceptID -> [conceptID]
+var todDates={}; //termID -> [date]
 
-//deed(1);
+//deed(100);
 //deed(1000000);
 //DoWords();
 //DoLemmatize();
 //DoSpelling();
 
 function deed(stop){
+  readTOD();
   readXrefs();
   db.exec("delete from entries; delete from history; delete from metadata; delete from terms; delete from entry_term; delete from sqlite_sequence", function(err){
     db.run("update configs set json=$json where id='ident'", {$json: JSON.stringify({
@@ -74,6 +76,20 @@ function deed(stop){
         });
       });
     });
+  });
+}
+
+function readTOD(){
+  var txt=fs.readFileSync("/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-in/tod.txt", "utf8");
+  var lines=txt.split("\r\n");
+  lines.map(line => {
+    var cols=line.split("\t");
+    if(cols.length==2 && cols[0].startsWith("2")){
+      var date=cols[0].substring(0, 10);
+      var termID=cols[1];
+      if(!todDates[termID]) todDates[termID]=[];
+      todDates[termID].push(date);
+    }
   });
 }
 
@@ -415,6 +431,18 @@ function doConcepts(db, start, stop, callnext){
       //desig done:
       if(desig.term) json.desigs.push(desig);
     }
+
+    //tod:
+    json.desigs.map(desig => {
+      if(todDates[desig.term.id]){
+        todDates[desig.term.id].map(date => {
+          if(date>json.tod){
+            json.tod=date;
+          }
+        });
+      }
+    });
+
     //domains:
     var els=doc.getElementsByTagName("domain");
     for(var i=0; i<els.length; i++) { el=els[i];
@@ -471,7 +499,7 @@ function doConcepts(db, start, stop, callnext){
       json.cStatus,
       json.pStatus,
       "",
-      ""
+      json.tod
     ]));
     //save entry into history:
     fs.appendFileSync("/home/mbm/terminologue/temp/history.txt", line([

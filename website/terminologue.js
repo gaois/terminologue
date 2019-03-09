@@ -120,7 +120,10 @@ app.get(siteconfig.rootPath+"signup/", function(req, res){
 });
 app.post(siteconfig.rootPath+"signup.json", function(req, res){
   var remoteip = ops.getRemoteAddress(req);
-  ops.sendSignupToken(req.body.email, remoteip, function(success){
+  var uilang=req.cookies.uilang || siteconfig.uilangDefault;
+  var mailSubject=localizer[uilang].L("Terminologue signup");
+  var mailText=localizer[uilang].L("Please follow the link below to create your Terminologue account:");
+  ops.sendSignupToken(req.body.email, remoteip, mailSubject, mailText, function(success){
     res.json({success: success});
   });
 });
@@ -148,11 +151,13 @@ app.get(siteconfig.rootPath+"forgotpwd/", function(req, res){
 });
 app.post(siteconfig.rootPath+"forgotpwd.json", function(req, res){
   var remoteip = ops.getRemoteAddress(req);
-  ops.sendToken(req.body.email, remoteip, function(success){
+  var uilang=req.cookies.uilang || siteconfig.uilangDefault;
+  var mailSubject=localizer[uilang].L("Terminologue password reset");
+  var mailText=localizer[uilang].L("Please follow the link below to reset your Terminologue password:");
+  ops.sendToken(req.body.email, remoteip, mailSubject, mailText, function(success){
     res.json({success: success});
   });
 });
-
 app.get(siteconfig.rootPath+"createaccount/:token/", function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     ops.verifyToken(req.params.token, "register", function(valid){
@@ -162,6 +167,12 @@ app.get(siteconfig.rootPath+"createaccount/:token/", function(req, res){
     });
   });
 });
+app.post(siteconfig.rootPath+"createaccount.json", function(req, res){
+  var remoteip = ops.getRemoteAddress(req);
+  ops.createAccount(req.body.token, req.body.password, remoteip, function(success){
+    res.json({success: success});
+  });
+});
 app.get(siteconfig.rootPath+"recoverpwd/:token/", function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     ops.verifyToken(req.params.token, "recovery", function(valid){
@@ -169,6 +180,12 @@ app.get(siteconfig.rootPath+"recoverpwd/:token/", function(req, res){
       var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
       res.render("sitewide/recoverpwd.ejs", {user: user, redirectUrl: siteconfig.baseUrl, siteconfig: siteconfig, token: req.params.token, tokenValid: tokenValid, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
     });
+  });
+});
+app.post(siteconfig.rootPath+"recoverpwd.json", function(req, res){
+  var remoteip = ops.getRemoteAddress(req);
+  ops.resetPwd(req.body.token, req.body.password, remoteip, function(success){
+    res.json({success: success});
   });
 });
 

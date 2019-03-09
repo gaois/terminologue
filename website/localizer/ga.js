@@ -262,6 +262,12 @@ function L(s, gloss){
   if(s=="Display from") return "Ar taispeáint ó";
   if(s=="Display until") return "Ar taispeáint go";
   if(s=="News and announcements") return "Fógraí nuachta";
+  if(s=="Create your account") return "Cuntas a chruthú";
+  if(s=="Reset your password") return "Pasfhocal a athshocrú";
+  if(s=="Terminologue signup") return "Cuntas a chruthú in Terminologue";
+  if(s=="Please follow the link below to create your Terminologue account:") return "Cliceáil an nasc thíos, le do thoil, chun do chuntas a chruthú in Terminologue:";
+  if(s=="Terminologue password reset") return "Pasfhocal a athshocrú in Terminologue";
+  if(s=="Please follow the link below to reset your Terminologue password:") return "Cliceáil an nasc thíos, le do thoil, chun do phasfhocal a athshocrú in Terminologue:";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
