@@ -183,7 +183,7 @@ function L(s, gloss){
   if(s=="reader") return "léitheoir";
   if(s=="editor") return "eagarthóir";
   if(s=="creator") return "cruthaitheoir";
-  if(s=="administrator") return "riarathóir";
+  if(s=="administrator") return "riarthóir";
   if(s=="configurator") return "cumraitheoir";
   if(s=="no change") return "gan athrú";
   if(s=="change to 'not checked'") return "athraigh go 'neamhsheiceáilte'";
