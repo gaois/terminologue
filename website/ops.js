@@ -76,17 +76,18 @@ module.exports={
     });
   },
   getRemoteAddress: function(request) {
-    var remoteIp = request.connection.remoteAddress.replace('::ffff:','');
-    if (request.headers['x-forwarded-for'] != undefined) {
-      remoteIp = request.headers['x-forwarded-for'];
-    }
-    if (request.headers['x-real-ip'] != undefined) {
-      remoteIp = request.headers['x-real-ip'];
-    }
-    if (request.headers['x-real-ip'] != undefined) {
-      remoteIp = request.headers['x-real-ip'];
-    }
-    return remoteIp;
+    // var remoteIp = request.connection.remoteAddress.replace('::ffff:','');
+    // if (request.headers['x-forwarded-for'] != undefined) {
+      // remoteIp = request.headers['x-forwarded-for'];
+    // }
+    // if (request.headers['x-real-ip'] != undefined) {
+      // remoteIp = request.headers['x-real-ip'];
+    // }
+    // if (request.headers['x-real-ip'] != undefined) {
+      // remoteIp = request.headers['x-real-ip'];
+    // }
+    // return remoteIp;
+	return "XYZ";
   },
   sendSignupToken: function(email, remoteip, mailSubject, mailText, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
