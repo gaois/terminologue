@@ -117,9 +117,9 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #critbox .buttons { position: absolute; left: 15px; right: 10px; bottom: 0px; text-align: right; }
 #critbox .buttons *:last-child {margin-right: 0px;}
 
-#listbox div.suggs {padding: 5px 15px; font-size: 0.9em; line-height: 2em;}
-#listbox span.sugg {color: var(--link); cursor: pointer; margin-right: 0.75em; white-space: nowrap;}
-#listbox span.sugg:hover {color: var(--link-hover);}
+span#suggs {font-size: 0.9em; display: inline-block; white-space: normal; position: absolute; top: 17px; height: 1.5em; overflow-y: hidden;}
+span#suggs span.sugg {color: #999999; cursor: pointer; margin-right: 0.75em; white-space: nowrap;}
+span#suggs span.sugg:hover {color: var(--link-hover);}
 
 #listbox div.intertitle {padding: 5px 10px; margin: 10px 10px 5px 10px; background-color: var(--contrast); color: #ffffff; border-radius: 2px;}
 #listbox div.intertitle:first-child {margin-top: 0px;}
@@ -158,3 +158,13 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 
 .menu a strong {color: var(--link); font-weight: normal;}
 .menu {max-height: 400px; overflow-y: auto;}
+
+.listbox .pager {text-align: center; position: relative; background-color: #eeeeee; border: 1px solid var(--contrast); border-radius: 2px; padding: 5px 10px; margin: 20px 10px; box-shadow: 0px 0px 4px #999999; color: #999999; }
+.listbox .pager:first-child {margin-top: 10px;}
+.listbox .pager span.arrow {background-color: var(--contrast); color: #ffffff; padding: 6px 15px; font-weight: bold; cursor: pointer;}
+.listbox .pager span.arrow:active {box-shadow: inset 0px 0px 2px #ffffff;}
+.listbox .pager span.left {position: absolute; top: 1px; left: 1px; bottom: 1px; border-radius: 2px 0px 0px 2px;}
+.listbox .pager span.right {position: absolute; top: 1px; right: 1px; bottom: 1px; border-radius: 0px 2px 2px 0px;}
+.listbox .pager input.page {font: inherit; font-size: .95em; border: 0; margin: 0; padding: 2px 6px; width: 4em; text-align: right; color: #333333; box-shadow: inset 0px 0px 2px #999999; border-radius: 2px; margin-right: 0.5em;}
+.listbox .pager span.pages {margin-left: 0.25em;}
+.listbox .pager span.clear {clear: both;}

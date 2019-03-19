@@ -328,9 +328,9 @@ app.post(siteconfig.rootPath+":termbaseID/edit/list.json", function(req, res){
       db.close();
       res.json({success: false});
     } else {
-      ops.entryList(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.body.howmany, function(total, primeEntries, entries, suggestions){
+      ops.entryList(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.body.page, function(total, pages, page, primeEntries, entries, suggestions){
         db.close();
-        res.json({success: true, total: total, primeEntries: primeEntries, entries: entries, suggestions: suggestions});
+        res.json({success: true, total: total, pages: pages, page: page, primeEntries: primeEntries, entries: entries, suggestions: suggestions});
       });
     }
   });

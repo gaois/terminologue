@@ -87,7 +87,7 @@ module.exports={
       // remoteIp = request.headers['x-real-ip'];
     // }
     // return remoteIp;
-	return "XYZ";
+	   return "XYZ";
   },
   sendSignupToken: function(email, remoteip, mailSubject, mailText, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
@@ -406,7 +406,10 @@ module.exports={
       callnext(entries);
     });
   },
-  entryList: function(db, termbaseID, facets, searchtext, modifier, howmany, callnext){
+  entryList: function(db, termbaseID, facets, searchtext, modifier, page, callnext){
+    page=parseInt(page);
+    var howmany=page*100;
+    var startAt=(page-1)*100;
     module.exports.composeSqlQueries(facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
@@ -418,19 +421,22 @@ module.exports={
           var primeEntries=null;
           var entries=[];
           for(var i=0; i<rows.length; i++){
-            var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
-            if(rows[i].match_quality>0) {
-              if(!primeEntries) primeEntries=[];
-              primeEntries.push(item);
-            } else{
-              entries.push(item);
+            if(i>=startAt){
+              var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+              if(rows[i].match_quality>0) {
+                if(!primeEntries) primeEntries=[];
+                primeEntries.push(item);
+              } else{
+                entries.push(item);
+              }
             }
           }
           //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
           db.get(sql2, params2, function(err, row){
             if(err) console.log(err);
             var total=(!err && row) ? row.total : 0;
-            callnext(total, primeEntries, entries, suggestions);
+            var pages=Math.floor(total/100); if(total%100 > 0) pages++;
+            callnext(total, pages, page, primeEntries, entries, suggestions);
           });
         });
       });
@@ -1304,7 +1310,7 @@ module.exports={
         suggs.sort(function(a, b){return a.lev>b.lev});
         var ret=[];
         suggs.map(sugg => {
-          if(ret.length<5 && sugg.lev<3) ret.push(sugg.text);
+          if(ret.length<3 && sugg.lev<3) ret.push(sugg.text);
         });
         callnext(ret);
       });

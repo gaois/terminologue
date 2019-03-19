@@ -1,4 +1,6 @@
 Screenful.Navigator={
+  regime: "stepped",
+  stepSize: 10,
   start: function(){
     Screenful.createEnvelope();
     $("#envelope").html("<div id='midcontainer'></div><div id='leftcontainer'><span class='closer'>×</span><div id='leftbox'></div></div>");
@@ -39,7 +41,7 @@ Screenful.Navigator={
 
     $("#editbox").html("<iframe name='editframe' frameborder='0' scrolling='no' src='"+Screenful.Navigator.editorUrl+"'/>");
 
-    $("#navbox").html("<div class='line1'><button class='iconOnly' id='butCritOpen'>&nbsp;</button><div class='modifiers boxModifiers' style='display: none'><span class='clickable'><span class='current'></span> <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div><input id='searchbox' title='Ctrl + Shift + T'/><button id='butSearch' class='iconOnly mergeLeft noborder'>&nbsp;</buttton><button class='iconOnly noborder' id='butCritRemove' style='display: none;'></button></div>");
+    $("#navbox").html("<div class='line1'><button class='iconOnly' id='butCritOpen'>&nbsp;</button><div class='modifiers boxModifiers' style='display: none'><span class='clickable'><span class='current'></span> <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div><input id='searchbox' title='Ctrl + Shift + T'/><button id='butSearch' class='iconOnly mergeLeft noborder'>&nbsp;</buttton><button class='iconOnly noborder' id='butCritRemove' style='display: none;'></button><span id='suggs'></span></div>");
     $("#navbox").append("<div class='modifiers lineModifiers lineModifiersRight' style='display: none'><span class='clickable'><span class='current'></span> <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div>");
     $("#navbox").append("<div class='modifiers lineModifiers lineModifiersLeft' style='display: none'><span class='clickable'><span class='current'></span> <span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div>");
     $("#searchbox").on("keydown", function(e){if(!e.altKey && !((e.ctrlKey || e.metaKey) && e.shiftKey)) e.stopPropagation()});
@@ -214,8 +216,9 @@ Screenful.Navigator={
     ret.modifier=""; modifiers.map(s => {if(s){ if(ret.modifier!="") ret.modifier+=" "; ret.modifier+=s; }});
     return ret;
   },
-  list: function(event, howmany, noSFX){
-    if(!howmany) howmany=Screenful.Navigator.stepSize;
+  list: function(event, howmanyOrPage, noSFX){
+    var howmany=howmanyOrPage || Screenful.Navigator.stepSize;
+    var page=howmanyOrPage || 1;
     Screenful.Navigator.lastStepSize=howmany;
     Screenful.status(Screenful.Loc.listing, "wait"); //"getting list of entries"
     var url=Screenful.Navigator.listUrl;
@@ -232,14 +235,20 @@ Screenful.Navigator={
       $("#butCritRemove").hide();
     }
     if(searchtext!="") $("#butCritRemove").show();
-    $.ajax({url: url, dataType: "json", method: "POST", data: {facets: facets, criteria: criteria, searchtext: searchtext, modifier: modifier, howmany: howmany}}).done(function(data){
+    if(searchtext=="") $("#suggs").html("");
+    var data={facets: facets, criteria: criteria, searchtext: searchtext, modifier: modifier};
+    if(Screenful.Navigator.regime=="stepped") data.howmany=howmany;
+    else if(Screenful.Navigator.regime=="paged") data.page=page;
+    $.ajax({url: url, dataType: "json", method: "POST", data: data}).done(function(data){
       if(!data.success) {
         Screenful.status(Screenful.Loc.listingFailed, "warn"); //"failed to get list of entries"
       } else {
         $("#countcaption").html(data.total);
         var $listbox=$("#listbox").hide().html("");
+
+        var $suggs=$("#suggs").html("");
         if(data.suggestions && data.suggestions.length>0){
-          var $suggs=$("<div class='suggs'></div>").appendTo($listbox);
+          //var $suggs=$("<div class='suggs'></div>").appendTo($listbox);
           data.suggestions.map(sugg => {
             var $sugg=$("<span class='sugg'></span>").html(sugg);
             $suggs.append($sugg).append(" ");
@@ -249,6 +258,11 @@ Screenful.Navigator={
             });
           });
         }
+
+        if(Screenful.Navigator.regime=="paged"){
+          Screenful.Navigator.printPager($listbox, data.page, data.pages);
+        }
+
         if(data.primeEntries && data.primeEntries.length>0 && data.entries.length>0){
           $listbox.append("<div class='intertitle'>"+Screenful.Loc.exactMatches+"</div>");
         }
@@ -258,16 +272,23 @@ Screenful.Navigator={
         }
         if(data.entries) data.entries.forEach(function(entry){ Screenful.Navigator.printEntry(entry, $listbox, searchtext, modifier); });
         if(!noSFX) $listbox.fadeIn(); else $listbox.show();
-        if(data.entries.length+(data.primeEntries?data.primeEntries.length:0)<data.total){
-          $listbox.append("<div id='divMore'><button class='iconYes' id='butMore'>"+Screenful.Loc.more+"</button></div>");
-          $("#butMore").on("click", Screenful.Navigator.more);
+
+        if(Screenful.Navigator.regime=="stepped"){
+          if(data.entries.length+(data.primeEntries?data.primeEntries.length:0)<data.total){
+            $listbox.append("<div id='divMore'><button class='iconYes' id='butMore'>"+Screenful.Loc.more+"</button></div>");
+            $("#butMore").on("click", Screenful.Navigator.more);
+          }
+        } else if(Screenful.Navigator.regime=="paged"){
+          Screenful.Navigator.printPager($listbox, data.page, data.pages);
         }
+
         if(window.frames["editframe"] && window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
           var currentEntryID=window.frames["editframe"].Screenful.Editor.entryID;
           Screenful.Navigator.setEntryAsCurrent(currentEntryID);
         }
         Screenful.status(Screenful.Loc.ready);
         Screenful.Navigator.focusEntryList();
+        if(Screenful.Navigator.regime=="paged") $("#listbox").scrollTop(0);
 
         //keyboard nav:
         $("#listbox .entry").on("keydown", function(e){
@@ -370,6 +391,30 @@ Screenful.Navigator={
     var id=$(".listbox .entry.current").attr("data-id");
     $(".listbox .entry").removeClass("current")
     $("div.entry[data-id=\""+id+"\"]").addClass("current");
+  },
+
+  printPager: function($listbox, page, pages){
+    if(pages>1){
+      var $pager=$(`<div class="pager">
+        <span class="arrow left" style="display: none">«</span>
+        <span class="arrow right" style="display: none">»</span>
+        <input class="page"/>/<span class="pages"></span>
+        <span class="clear"></span>
+      </div>`);
+      if(page>1){
+        $pager.find(".arrow.left").show().on("click", function(event){
+          Screenful.Navigator.list(event, page-1, false);
+        });
+      }
+      if(page<pages){
+        $pager.find(".arrow.right").show().on("click", function(event){
+          Screenful.Navigator.list(event, page+1, false);
+        });
+      }
+      $pager.find("input.page").val(page);
+      $pager.find(".pages").html(pages);
+      $listbox.append($pager);
+    }
   },
 
   previousCrit: null,
