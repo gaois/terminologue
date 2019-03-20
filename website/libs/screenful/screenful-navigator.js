@@ -411,7 +411,24 @@ Screenful.Navigator={
           Screenful.Navigator.list(event, page+1, false);
         });
       }
-      $pager.find("input.page").val(page);
+      $pager.find("input.page").val(page).data("origVal", page).on("blur", function(e){
+        var $input=$(e.delegateTarget);
+        $input.val($input.data("origVal"));
+      }).on("keypress", function(e){
+        if(e.key=="Enter"){
+          var $input=$(e.delegateTarget);
+          var newVal=$input.val();
+          if(isNaN(newVal)){
+            $input.val($input.data("origVal"));
+          } else {
+            newVal=Math.floor(newVal);
+            if(newVal<1) newVal=1;
+            if(newVal>pages) newVal=pages;
+            $input.val(newVal);
+            Screenful.Navigator.list(e, newVal, false);
+          }
+        }
+      });
       $pager.find(".pages").html(pages);
       $listbox.append($pager);
     }
