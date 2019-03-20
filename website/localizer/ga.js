@@ -269,6 +269,8 @@ function L(s, gloss){
   if(s=="Terminologue password reset") return "Pasfhocal a athshocrú in Terminologue";
   if(s=="Please follow the link below to reset your Terminologue password:") return "Cliceáil an nasc thíos, le do thoil, chun do phasfhocal a athshocrú in Terminologue:";
 
+  if(s=="This page is only available in English.") return "Ár leithscéal, tá an leathanach seo ar fáil i mBéarla amháin.";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

@@ -26,14 +26,14 @@ const nodemailer=require('nodemailer');
 const propagator=require("./propagator.js");
  ops.propagator=propagator.withMsSqlConnectionStrings(siteconfig.propagatorMsSqlConnectionStrings);
 
- //redirect to https (stolen from https://stackoverflow.com/a/49176816 )
- app.use(function (req, res, next){
-   if(req.secure || siteconfig.baseUrl.startsWith("http://")){
-     next();
-   } else {
-     res.redirect('https://' + req.headers.host + req.url);
-   }
- });
+//redirect to https (stolen from https://stackoverflow.com/a/49176816 )
+app.use(function (req, res, next){
+ if(req.secure || siteconfig.baseUrl.startsWith("http://")){
+   next();
+ } else {
+   res.redirect('https://' + req.headers.host + req.url);
+ }
+});
 
 //Paths to our static files:
 app.use(siteconfig.rootPath+"views", express.static(path.join(__dirname, "views")));
@@ -60,7 +60,6 @@ app.get(siteconfig.rootPath+"login/", function(req, res){
     if(/\/login\/$/.test(req.headers.referer)) req.headers.referer=null;
     var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
     res.render("sitewide/login.ejs", {siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, redirectUrl: req.headers.referer || siteconfig.baseUrl});
-    //res.render("sitewide/login.ejs", {user: user, redirectUrl: req.headers.referer || siteconfig.baseUrl, siteconfig: siteconfig, uilang: user.uilang || req.cookies.uilang || siteconfig.uilangDefault, uilangs: siteconfig.uilangs});
   });
 });
 app.get(siteconfig.rootPath+"logout/", function(req, res){
@@ -194,6 +193,16 @@ app.post(siteconfig.rootPath+"recoverpwd.json", function(req, res){
   var remoteip = ops.getRemoteAddress(req);
   ops.resetPwd(req.body.token, req.body.password, remoteip, function(success){
     res.json({success: success});
+  });
+});
+
+//Docs:
+app.get(siteconfig.rootPath+"docs/:docID/", function(req, res){
+  ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
+    var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+    ops.getDoc(req.params.docID, function(doc){
+      res.render("sitewide/doc.ejs", {doc: doc, siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+    });
   });
 });
 

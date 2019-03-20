@@ -173,6 +173,7 @@ div.adminlink a {text-decoration: none; color: #047063; background-image: url(co
 div.adminlink a:hover {color: #059080;}
 
 body.doc div.markdown {max-width: 900px; margin-top: 70px; }
+body.doc div.markdown div.nouilang {color: #999999; margin-bottom: 10px;}
 @media (max-width: 800px){
   body.doc div.markdown {margin-top: 50px;}
 }

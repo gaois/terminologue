@@ -1689,6 +1689,17 @@ module.exports={
     });
   },
 
+  getDoc: function(docID, callnext){
+    var doc={id: docID, title: "", html: ""};
+    fs.readFile("docs/"+docID+".md", "utf8", function(err, content){
+      if(!err) {
+        var tree=markdown.parse(content);
+        doc.title=tree[1][2];
+        doc.html=markdown.renderJsonML(markdown.toHTMLTree(tree));
+      }
+      callnext(doc);
+    });
+  },
   markdown: function(str){
     var tree=markdown.parse(str);
     str=markdown.renderJsonML(markdown.toHTMLTree(tree));

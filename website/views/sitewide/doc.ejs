@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link rel="icon" type="image/x-icon" href="../../furniture/favicon.ico"/>
+		<title>Terminologue</title>
+		<meta property="og:title" content="Terminologue" />
+		<meta property="og:site_name" content="Terminologue"/>
+		<meta name="description" content="Your termninology management platform" />
+		<meta property="og:description" content="Your termninology management platform" />
+		<meta property="og:image" content="<%-siteconfig.baseUrl%>furniture/preview.gif" />
+		<meta property="og:url" content="<%-siteconfig.baseUrl%>" />
+		<meta name="twitter:url" content="<%-siteconfig.baseUrl%>" />
+		<script type="text/javascript" src="../../libs/jquery.js"></script>
+		<script type="text/javascript" src="../../libs/screenful/screenful.js"></script>
+		<script type="text/javascript" src="../../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
+		<script type="text/javascript">var rootPath="../../";</script>
+
+		<script type="text/javascript" src="../../libs/screenful/screenful-uilang.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-uilang.css" />
+		<script type="text/javascript">
+		Screenful.Uilang.url="../../uilang?lang=$",
+		Screenful.Uilang.languages=<%-JSON.stringify(uilangs)%>;
+		Screenful.Uilang.current="<%-uilang%>";
+		</script>
+
+		<script type="text/javascript" src="../../libs/screenful/screenful-user.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-user.css" />
+		<script type="text/javascript">
+		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
+		Screenful.User.username="<%=user.email%>";
+		</script>
+		<script type="text/javascript" src="../../furniture/screenful-user-config.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="../../furniture/public.css" />
+		<link type="text/css" rel="stylesheet" href="../../furniture/markdown.css" />
+	</head>
+	<body class="doc">
+		<div id="header">
+			<a class="sitehome" href="../../"><%if(siteconfig.readonly){%><span class="readonly"><%=L("READ-ONLY")%></span><%}%></a>
+			<div class="topright">
+		    <div class="one ScreenfulUilang"></div>
+		    <div class="one ScreenfulUser"></div>
+		  </div>
+		</div>
+
+		<div class="invelope top">
+			<div class="markdown">
+				<%if(uilang!="en"){%>
+					<div class="nouilang"><%=L("This page is only available in English.")%></div>
+				<%}%>
+				<div class="markdown-body">
+					<%-doc.html.replace(/=\"\//g, "=\"../../")%>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="invelope bottom">
+			<div id="sitefooter">
+				<div class="right"><a href="https://github.com/dcufsg/terminologue" class="github" title="GitHub" target="_blank"></a></div>
+				<div>Terminologue &copy; <a href="https://www.dcu.ie/" target="_blank"><%=L("Dublin City University")%></a> 2018</div>
+				<div class="logolint">
+					<a class="dcu" target="_blank" href="https://www.dcu.ie/" title="<%=L("Dublin City University")%>"></a>
+				</div>
+			</div>
+		</div>
+
+		<%-siteconfig.trackingCode%>
+	</body>
+</html>

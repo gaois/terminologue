@@ -269,6 +269,8 @@ function L(s, gloss){
   if(s=="Terminologue password reset") return "Zapomenuté heslo pro Terminologue";
   if(s=="Please follow the link below to reset your Terminologue password:") return "Chcete-li si vytvořit nové heslo v systému Terminologue, klikněte laskavě na tento odkaz:";
 
+  if(s=="This page is only available in English.") return "Tato stránka je k dostání jen v angličtině. Sorry jako.";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;
