@@ -3,6 +3,7 @@ Screenful.Navigator={
   stepSize: 10,
   start: function(){
     Screenful.createEnvelope();
+    //$("body").addClass("printable");
     $("#envelope").html("<div id='midcontainer'></div><div id='leftcontainer'><span class='closer'>×</span><div id='leftbox'></div></div>");
 
     if(Screenful.Navigator.enableLeftPanel){

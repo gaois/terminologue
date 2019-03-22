@@ -90,26 +90,27 @@
 		<script type="text/javascript" src="../../views/termbase-edit/fy-entry.js"></script>
 		<script type="text/javascript" src="../../views/termbase-edit/facetor-settings.js"></script>
 
+		<script type="text/javascript">
+		Screenful.Navigator.actions=[];
+		</script>
 		<%if(user.level>1){%>
 			<script type="text/javascript">
-			Screenful.Navigator.actions=[
-				{
-					caption: "<%=L('Change checking status to')%> <strong><%=L('checked')%></strong>",
-					url: "./cStatus.json?val=1",
-				},
-				{
-					caption: "<%=L('Change checking status to')%> <strong><%=L('not checked')%></strong>",
-					url: "./cStatus.json?val=0",
-				},
-				{
-					caption: "<%=L('Change publishing status to')%> <strong><%=L('publishable')%></strong>",
-					url: "./pStatus.json?val=1",
-				},
-				{
-					caption: "<%=L('Change publishing status to')%> <strong><%=L('hidden')%></strong>",
-					url: "./pStatus.json?val=0",
-				},
-			];
+			Screenful.Navigator.actions.push({
+				caption: "<%=L('Change checking status to')%> <strong><%=L('checked')%></strong>",
+				url: "./cStatus.json?val=1",
+			});
+			Screenful.Navigator.actions.push({
+				caption: "<%=L('Change checking status to')%> <strong><%=L('not checked')%></strong>",
+				url: "./cStatus.json?val=0",
+			});
+			Screenful.Navigator.actions.push({
+				caption: "<%=L('Change publishing status to')%> <strong><%=L('publishable')%></strong>",
+				url: "./pStatus.json?val=1",
+			});
+			Screenful.Navigator.actions.push({
+				caption: "<%=L('Change publishing status to')%> <strong><%=L('hidden')%></strong>",
+				url: "./pStatus.json?val=0",
+			});
 			termbaseMetadata.extranet=(termbaseMetadata.extranet || []);
 			termbaseMetadata.extranet.map(extranet => {
 				if(extranet.live=="1") {

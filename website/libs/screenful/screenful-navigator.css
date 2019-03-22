@@ -168,3 +168,14 @@ span#suggs span.sugg:hover {color: var(--link-hover);}
 .listbox .pager input.page {font: inherit; font-size: .95em; border: 0; margin: 0; padding: 2px 6px; width: 4em; text-align: right; color: #333333; box-shadow: inset 0px 0px 2px #999999; border-radius: 2px; margin-right: 0.5em;}
 .listbox .pager span.pages {margin-left: 0.25em;}
 .listbox .pager span.clear {clear: both;}
+
+body.printable {overflow: auto;}
+body.printable #header {display: none;}
+body.printable #footer {display: none;}
+body.printable #statusbar {display: none;}
+body.printable #envelope {position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important;}
+body.printable #midcontainer {position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important;}
+body.printable #editbox {display: none;}
+body.printable #leftcontainer {display: none !important;}
+body.printable #navbox {display: none !important;}
+body.printable #listbox {position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important;}
