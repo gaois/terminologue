@@ -26,15 +26,6 @@ const nodemailer=require('nodemailer');
 const propagator=require("./propagator.js");
  ops.propagator=propagator.withMsSqlConnectionStrings(siteconfig.propagatorMsSqlConnectionStrings);
 
-//redirect to https (stolen from https://stackoverflow.com/a/49176816 )
-app.use(function (req, res, next){
- if(req.secure || siteconfig.baseUrl.startsWith("http://")){
-   next();
- } else {
-   res.redirect('https://' + req.headers.host + req.url);
- }
-});
-
 //Paths to our static files:
 app.use(siteconfig.rootPath+"views", express.static(path.join(__dirname, "views")));
 app.use(siteconfig.rootPath+"widgets", express.static(path.join(__dirname, "widgets")));
