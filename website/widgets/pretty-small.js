@@ -1,6 +1,6 @@
-var Pretty={};
+var PrettySmall={};
 
-Pretty.metadatum=function(metadatum, lingo){
+PrettySmall.metadatum=function(metadatum, lingo){
   var ret="";
   if(metadatum.abbr) ret+="<span class='abbr'>"+metadatum.abbr+"</span> ";
   if(typeof(metadatum.title)=="string") {
@@ -11,7 +11,7 @@ Pretty.metadatum=function(metadatum, lingo){
     var strings=[];
     lingo.languages.map(lang => {
       if(lang.role=="major" && metadatum.title[lang.abbr]){
-        var string=Pretty.clean4html(metadatum.title[lang.abbr]);
+        var string=PrettySmall.clean4html(metadatum.title[lang.abbr]);
         if(strings.indexOf(string)==-1){
           if(strings.length>0) ret+="/"
           ret+="<span>"+string+"</span>";
@@ -26,11 +26,11 @@ Pretty.metadatum=function(metadatum, lingo){
 
 //---
 
-Pretty.entry=function(entry){
-  var $ret=$("<div class='prettyEntry'></div>");
+PrettySmall.entry=function(entry){
+  var $ret=$("<div class='prettyEntry small'></div>");
 
   entry.domains.map(obj => {
-    $ret.append(Pretty.domain(obj));
+    $ret.append(PrettySmall.domain(obj));
   });
 
   var langs=[$(".lineModifiersRight .current").data("value")];
@@ -39,11 +39,11 @@ Pretty.entry=function(entry){
   langs.map(lang => {
     entry.desigs.map(desig => {
       if(desig.term.lang==lang && (desig.nonessential || "0")=="0") {
-        $ret.append(Pretty.desig(desig, (langsDone.indexOf(lang)==-1)));
+        $ret.append(PrettySmall.desig(desig, (langsDone.indexOf(lang)==-1)));
         langsDone.push(lang);
       }
     });
-    if(entry.intros[lang]) $ret.append(Pretty.intro(entry.intros[lang], lang));
+    if(entry.intros[lang]) $ret.append(PrettySmall.intro(entry.intros[lang], lang));
   });
 
   var $bin=$("<div class='prettyBin'></div>").appendTo($ret);
@@ -65,39 +65,39 @@ Pretty.entry=function(entry){
   return $ret;
 }
 
-Pretty.desig=function(desig, withLangLabel){
+PrettySmall.desig=function(desig, withLangLabel){
   var $ret=$("<div class='prettyDesig'></div>");
   var lang=Spec.getLang(desig.term.lang); if(lang && lang.role=="minor") $ret.addClass("minor");;
   var acceptLabel=Spec.getAcceptLabel(desig.accept); if(acceptLabel && acceptLabel.level<0) $ret.addClass("grey");
-  if(withLangLabel) $ret.append(Pretty.lang(desig.term.lang));
-  $ret.append(Pretty.wording(desig.term.wording, desig.term.annots));
-  if(desig.accept) $ret.append(" ").append(Pretty.accept(desig.accept));
-  if(desig.clarif) $ret.append(" ").append(Pretty.clarif(desig.clarif));
+  if(withLangLabel) $ret.append(PrettySmall.lang(desig.term.lang));
+  $ret.append(PrettySmall.wording(desig.term.wording, desig.term.annots));
+  if(desig.accept) $ret.append(" ").append(PrettySmall.accept(desig.accept));
+  if(desig.clarif) $ret.append(" ").append(PrettySmall.clarif(desig.clarif));
   if(desig.term.inflects.length>0){
     var $inflects=$("<div class='inflects'></div>").appendTo($ret);
     desig.term.inflects.map((obj, i) => {
       if(i>0) $inflects.append(", ");
-      $inflects.append(Pretty.inflect(obj));
+      $inflects.append(PrettySmall.inflect(obj));
     });
   }
   return $ret;
 };
 
-Pretty.inflect=function(obj){
+PrettySmall.inflect=function(obj){
   var $ret=$("<span class='inflect'></span>");
-  $ret.append("<span class='abbr'>"+Pretty.clean4html(Spec.getInflectLabel(obj.label).abbr)+":</span>")
+  $ret.append("<span class='abbr'>"+PrettySmall.clean4html(Spec.getInflectLabel(obj.label).abbr)+":</span>")
   $ret.append("&nbsp;")
-  $ret.append("<span class='wording'>"+Pretty.clean4html(obj.text)+"</span>")
+  $ret.append("<span class='wording'>"+PrettySmall.clean4html(obj.text)+"</span>")
   return $ret;
 };
 
-Pretty.lang=function(str){
+PrettySmall.lang=function(str){
   var $ret=$("<span class='prettyLang'></span>");
   $ret.append(str.toUpperCase());
   return $ret;
 }
 
-Pretty.wording=function(str, annots){
+PrettySmall.wording=function(str, annots){
   var chars=[]; for(var i=0; i<str.length; i++) chars.push({char: str[i], markupBefore: "", markupAfter: "", labelsAfter: ""});
   annots.map((annot, index) => {
     var start=parseInt(annot.start)-1; if(start<0) start=0;
@@ -108,20 +108,20 @@ Pretty.wording=function(str, annots){
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var label=Spec.getPosLabel(annot.label.value);
         var symbol=(label ? label.abbr : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='PrettySmall.hon(this, "+index+")' onmouseout='PrettySmall.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="inflectLabel"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var label=Spec.getInflectLabel(annot.label.value);
         var symbol=(label ? label.abbr : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='PrettySmall.hon(this, "+index+")' onmouseout='PrettySmall.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="langLabel"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var symbol=(annot.label.value ? annot.label.value.toUpperCase() : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='PrettySmall.hon(this, "+index+")' onmouseout='PrettySmall.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="symbol"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
@@ -130,7 +130,7 @@ Pretty.wording=function(str, annots){
         if(annot.label.value=="tm") symbol="<span style='position: relative; top: -5px; font-size: 0.5em'>TM</span>";
         if(annot.label.value=="regtm") symbol="®";
         if(annot.label.value=="proper") symbol="¶";
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='Pretty.hon(this, "+index+")' onmouseout='Pretty.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label "+annot.label.type+"' onmouseover='PrettySmall.hon(this, "+index+")' onmouseout='PrettySmall.hoff(this, "+index+")'>"+symbol+"</span>"
       }
       else if(annot.label.type=="formatting"){
         chars[i].markupBefore="<span style='font-style: italic'>"+chars[i].markupBefore;
@@ -143,20 +143,20 @@ Pretty.wording=function(str, annots){
   var $ret=$("<span class='prettyWording'>"+str+"</span>");
   return $ret;
 }
-Pretty.hon=function(label, i){
+PrettySmall.hon=function(label, i){
   $(label).addClass("on").closest(".prettyWording").find(".h"+i).addClass("on");
 };
-Pretty.hoff=function(label, i){
+PrettySmall.hoff=function(label, i){
   $(label).removeClass("on").closest(".prettyWording").find(".h"+i).removeClass("on");
 };
 
-Pretty.clarif=function(str){
+PrettySmall.clarif=function(str){
   var $ret=$("<span class='clarif'></span>");
   $ret.append("("+str+")");
   return $ret;
 }
 
-Pretty.accept=function(str){
+PrettySmall.accept=function(str){
   var label=Spec.getAcceptLabel(str);
   if(!label) return $("");
   var $ret=$("<span class='accept'></span>");
@@ -164,25 +164,25 @@ Pretty.accept=function(str){
   return $ret;
 }
 
-Pretty.domain=function(obj){
+PrettySmall.domain=function(obj){
   var $ret=$("<div class='prettyDomain'></div>");
   var domain=Spec.getDomain(obj.superdomain);
   if(domain){
-    $ret.append("<span class='step'>"+Pretty.title(domain.title)+"</span>");
+    $ret.append("<span class='step'>"+PrettySmall.title(domain.title)+"</span>");
     if(obj.subdomain){
-      var subdomain=Pretty.findSubdomain(domain, obj.subdomain);
+      var subdomain=PrettySmall.findSubdomain(domain, obj.subdomain);
       subdomain._parents.map(d => {
         $ret.append("&nbsp; »&nbsp; ");
-        $ret.append("<span class='step'>"+Pretty.title(d.title)+"</span>");
+        $ret.append("<span class='step'>"+PrettySmall.title(d.title)+"</span>");
       });
       $ret.append("&nbsp; »&nbsp; ");
-      $ret.append("<span class='step'>"+Pretty.title(subdomain.title)+"</span>");
+      $ret.append("<span class='step'>"+PrettySmall.title(subdomain.title)+"</span>");
     }
   }
   return $ret;
 };
 
-Pretty.intro=function(str, lang){
+PrettySmall.intro=function(str, lang){
   var $ret=$("<div class='prettyIntro' lang='"+lang+"'></div>");
   $ret.append("("+str+")");
   return $ret;
@@ -191,11 +191,11 @@ Pretty.intro=function(str, lang){
 
 //---
 
-Pretty.clean4html=function(str){
+PrettySmall.clean4html=function(str){
   return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-Pretty.title=function(title){
+PrettySmall.title=function(title){
   var ret="";
   var done=[];
   termbaseConfigs.lingo.languages.map(lang => {
@@ -208,7 +208,7 @@ Pretty.title=function(title){
   return ret;
 };
 
-Pretty.findSubdomain=function(domain, subdomainID){
+PrettySmall.findSubdomain=function(domain, subdomainID){
   if(!domain._reverseSubdomains) {
     domain._reverseSubdomains={}; //lid => {_parents: [{...}], ...},
     go(null, domain.subdomains)

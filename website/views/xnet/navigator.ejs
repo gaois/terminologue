@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
+		<script type="text/javascript">var uilang="<%=uilang%>";</script>
 		<link rel="icon" type="image/x-icon" href="../../furniture/favicon.ico"/>
 		<title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
 		<script type="text/javascript" src="../../libs/jquery.js"></script>
@@ -55,17 +56,32 @@
 				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sorting language")%>: "+Spec.title(lang.title, "<%=uilang%>")},);
 			}
 		});
+		Screenful.Navigator.allowPrintable=true;
 		</script>
 
 		<link type="text/css" rel="stylesheet" href="../../widgets/pretty-small.css" />
 		<script type="text/javascript" src="../../widgets/pretty-small.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../widgets/pretty-large.css" />
+		<script type="text/javascript" src="../../widgets/pretty-large.js"></script>
 		<style>
-		div.prettyEntry div.prettyBin {display: none;}
+			div.prettyEntry.small div.prettyBin {display: none;}
+
+			div.prettyEntry.large div.extranets {display: none;}
+			div.prettyEntry.large div.binDateStamp {display: none;}
+			div.prettyEntry.large div.prettyXrefs div.title .link {display: none;}
+
+			div.prettyEntry.small {display: block;}
+			div.prettyEntry.large {display: none;}
+			body.printable div.prettyEntry.small {display: none;}
+			body.printable div.prettyEntry.large {display: block;}
 		</style>
 		<script type="text/javascript">
 		Screenful.Navigator.renderer=function(div, entry, searchtext, modifier){
 			//$(div).html(entry.id);
-			$(div).html( Pretty.entry(JSON.parse(entry.json)) );
+			//$(div).html( PrettySmall.entry(JSON.parse(entry.json)) );
+			$(div).html("");
+			$(div).append(PrettySmall.entry(JSON.parse(entry.json)));
+			$(div).append(PrettyLarge.entry(JSON.parse(entry.json)));
 		};
 		</script>
 

@@ -3,8 +3,9 @@ Screenful.Navigator={
   stepSize: 10,
   start: function(){
     Screenful.createEnvelope();
-    //$("body").addClass("printable");
-    $("#envelope").html("<div id='midcontainer'></div><div id='leftcontainer'><span class='closer'>×</span><div id='leftbox'></div></div>");
+    $("#envelope").html("<div id='printableToolbar'><button class='iconYes noborder' id='butPrintableOff'>"+Screenful.Loc.printableOff+"</button></div>");
+    $("#butPrintableOff").on("click", Screenful.Navigator.printableOff);
+    $("#envelope").append("<div id='midcontainer'></div><div id='leftcontainer'><span class='closer'>×</span><div id='leftbox'></div></div>");
 
     if(Screenful.Navigator.enableLeftPanel){
       $("#envelope").addClass("leftContainerCollapsed");
@@ -55,7 +56,12 @@ Screenful.Navigator={
       $("#navbox").addClass("noSearchbox");
       $("#listbox").addClass("noSearchbox");
     }
-    $("#navbox").append("<div class='line2'><span id='starbox' style='display: none'></span><div class='menuContainer'><span id='countContainer'><span id='countcaption'>0</span><span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div><button class='iconYes noborder' id='butReload'>"+Screenful.Loc.reload+"</button></div>");
+    $("#navbox").append("<div class='line2'><span id='starbox' style='display: none'></span><div class='menuContainer'><span id='countContainer'><span id='countcaption'>0</span><span class='arrow'>▼</span></span><div class='menu' style='display: none'></div></div><button class='iconOnly noborder' id='butReload' title='"+Screenful.Loc.reload+"'>&nbsp;</button><button class='iconOnly noborder' id='butPrintable' title='"+Screenful.Loc.printable+"'>&nbsp;</button></div>");
+    if(Screenful.Navigator.allowPrintable){
+      $("#butPrintable").on("click", Screenful.Navigator.printableOn);
+    } else {
+      $("#butPrintable").hide();
+    }
     if(Screenful.Navigator.actions && Screenful.Navigator.actions.length>0){
       Screenful.Navigator.populateActionMenu();
       $("#countContainer").addClass("clickable").on("click", function(e){
@@ -699,6 +705,13 @@ Screenful.Navigator={
         });
       });
     });
+  },
+
+  printableOn: function(event){
+    $("body").addClass("printable");
+  },
+  printableOff: function(event){
+    $("body").removeClass("printable");
   },
 };
 $(window).ready(Screenful.Navigator.start);

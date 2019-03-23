@@ -59,29 +59,23 @@ Screenful.Loc={
   unsavedConfirm: "Más neuložené změny. Opravdu o ně chceš přijít?",
   doItLater: "Udělej to jindy",
   badEmailError: "Nesprávná e-mailová adresa.",
-
   forgotPwdEmail: "Zapomněli-li jste svoje heslo, zadejte tady svoji e-mailovou adresu a my vám pošleme instrukce, jak si získat nové heslo.",
   recoverPwd: "Chci nové heslo",
   tokenSent: "Poslali jsme vám instrukce, jak si získat nové heslo.",
   recoverPwdMsg: "Nyní si můžete změnit heslo.",
   changePwdMsg: "Tady si můžete změnit heslo.",
   invalidToken: "Tento odkaz je neplatný. Možná už vypršel, nebo byl už použit.",
-
   signupInfoEmail: "Zadejte tady svoji e-mailovou adresu a my vám pošleme instrukce, jak si otevřít účet.",
   signupButton: "Chci účet",
   signupTokenSent: "Poslali jsme vám instrukce, jak si otevřít účet.",
   invalidSignupToken: "Tento odkaz je neplatný. Možná už vypršel, nebo byl už použit.",
   setPwdMsg: "A teď si laskavě nasavte heslo.",
   accountCreated: "Váš účet je hotob! Teď se můžete přhlásit.",
-
   autosave: "Ukládat automaticky",
-
   flagging: "Flagging...",
   flaggingFailed: "Failed to flag the entry.",
-
   exactMatches: "Přesné výsledky",
   partialMatches: "Přibližné výsledky",
-
   comments: "Komentáře",
   newComment: "nový komentář",
   revive: "Znovu oživit",
@@ -90,7 +84,8 @@ Screenful.Loc={
   action: "Úkon",
   purgeWorklist: "Vyprázdnit pracovní seznam",
   extranet: "EXTRANET",
-
   doingBatch: "Provádím hromadnou editaci...",
   batchFailed: "Nepovedlo se provést hromadnou editaci.",
+  printable: "Verze pro tisk",
+  printableOff: "Zpátky",
 };

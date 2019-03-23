@@ -59,29 +59,23 @@ Screenful.Loc={
   unsavedConfirm: "Tá athruithe déanta agat nach bhfuil sábháilte go fóill. An cuma leat go gcaillfear iad?",
   doItLater: "Déan níos déanaí é",
   badEmailError: "Seoladh ríomhphoist mícheart.",
-
   forgotPwdEmail: "Má tá do phasfhocal dearmadta agat, cuir do sheoladh ríomhphoist isteach anseo. Cuirfidh muidne treoracha chugat maidir leis an dóigh chun do phasfhocal a athrú.",
   recoverPwd: "Faigh pasfhocal nua",
   tokenSent: "Tá treoracha seolta againn chugat maidir leis an dóigh chun do phasfhocal a athrú.",
   recoverPwdMsg: "Is féidir leat do phasfhocal a athrú anois.",
   changePwdMsg: "Is féidir leat do phasfhocal a athrú anseo.",
   invalidToken: "Níl an nasc seo bailí. Seans go bhfuil sé imithe in éag, nó b'fhéidir gur baineadh úsáid as cheana.",
-
   signupInfoEmail: "Chun cuntas nua a fháil, cuir do sheoladh ríomhphoist isteach anseo. Cuirfidh muidne treoracha chugat maidir leis an dóigh chun do chuntas a chruthú.",
   signupButton: "Cruthaigh cuntas",
   signupTokenSent: "Tá treoracha seolta againn chugat maidir leis an dóigh chun do chuntas a chruthú.",
   invalidSignupToken: "Níl an nasc seo bailí. Seans go bhfuil sé imithe in éag, nó b'fhéidir gur baineadh úsáid as cheana.",
   setPwdMsg: "Cruthaigh pasfhocal duit féin anois, le do thoil.",
   accountCreated: "Tá do chuntas cruthaithe. Is féidir leat logáil isteach anois.",
-
   autosave: "Sábháil uathoibríoch",
-
   flagging: "Flagging...",
   flaggingFailed: "Failed to flag the entry.",
-
   exactMatches: "Torthaí beachta",
   partialMatches: "Torthaí gaolmhara",
-
   comments: "Nótaí tráchta",
   newComment: "nóta nua",
   revive: "Tabhair ar ais",
@@ -90,7 +84,8 @@ Screenful.Loc={
   action: "Gníomh",
   purgeWorklist: "Folmhaigh an liosta oibre",
   extranet: "EISLÍON",
-
   doingBatch: "Iontrálacha á n-athrú...",
   batchFailed: "Níor éirigh liom na hiontrálacha a athrú.",
+  printable: "Leagan oiriúnach le priontáil",
+  printableOff: "Ar ais",
 };
