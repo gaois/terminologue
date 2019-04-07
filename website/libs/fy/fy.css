@@ -113,6 +113,7 @@ div.fy_bubble.fullon {background-color: #03A491; color: #dddddd;}
 div.fy_bubble.sublime {background-color: #aaaaaa; color: #dddddd;}
 div.fy_bubble.invisible {background-color: #aaaaaa; color: #dddddd; opacity: 0;}
 div.fy_bubble.invisible:hover {opacity: 1;}
+.uneditable div.fy_bubble {display: none !important;}
 
 div.fy_column {margin: 10px 0px;}
 

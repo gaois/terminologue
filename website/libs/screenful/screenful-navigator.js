@@ -224,7 +224,7 @@ Screenful.Navigator={
     return ret;
   },
   list: function(event, howmanyOrPage, noSFX){
-    var howmany=howmanyOrPage || Screenful.Navigator.stepSize;
+    var howmany=howmanyOrPage || Screenful.Navigator.lastStepSize || Screenful.Navigator.stepSize;
     var page=howmanyOrPage || 1;
     Screenful.Navigator.lastStepSize=howmany;
     Screenful.status(Screenful.Loc.listing, "wait"); //"getting list of entries"
@@ -491,7 +491,7 @@ Screenful.Navigator={
         }
       });
     } else {
-      Screenful.Navigator.list(null, Screenful.Navigator.lastStepSize, true);
+      Screenful.Navigator.list(null, null, true);
     }
   },
 

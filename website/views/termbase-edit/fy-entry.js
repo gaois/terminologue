@@ -1071,7 +1071,8 @@ Spec.sharPopup=function($term, termID, lang, wording, data){
     data.sharedBy.map(entry => {
       if(entry.entryID!=Screenful.Editor.entryID){
         var entryID=entry.entryID; entry=JSON.parse(entry.json);
-        var $div=$("<div class='clickable arrow'></div>").appendTo($("#fy_popup")).html(Pretty.entryOneliner(entry)).on("click", function(e){
+        var $div=$("<div class='clickable arrow prettyEntry large'></div>").appendTo($("#fy_popup")).html(PrettyLarge.entryOneliner(entry)).on("click", function(e){
+          Fy.hidePopup();
           Screenful.Editor.open(e, entryID);
         });
       }
@@ -1081,8 +1082,8 @@ Spec.sharPopup=function($term, termID, lang, wording, data){
   if(data.similarTo && data.similarTo.length>0){
     $("#fy_popup").append("<div class='title'>"+L("Similar terms (click to insert)")+"</div>");
     data.similarTo.map(term => {
-      var termID=term.termID; term=JSON.parse(term.json);
-      var $div=$("<div class='clickable'></div>").appendTo($("#fy_popup")).html(Pretty.desig({term: term}, true)).on("click", function(e){
+      var termID=term.termID; term=JSON.parse(term.json); term.id=termID;
+      var $div=$("<div class='clickable prettyEntry large'></div>").appendTo($("#fy_popup")).html(PrettyLarge.desig({term: term}, true)).on("click", function(e){
         //replace:
         var $replacer=Fy.renderNode(term, Spec.templates.term, Spec, false).data("jsonName", "term").addClass("jsonName_term");
         $term.replaceWith($replacer);

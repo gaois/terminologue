@@ -124,6 +124,7 @@ Fy.renderNode=function(data, template, spec, uneditable){
     });
   }
   if(uneditable) {
+    $html.addClass("uneditable");
     $html.find("input").prop("disabled", true);
     $html.find("textarea").prop("disabled", true);
     $html.find("select").prop("disabled", true);
@@ -187,4 +188,7 @@ Fy.showPopup=function($anchor){
   $("#fy_popup").remove();
   var $popup=$("<div id='fy_popup'></div>").appendTo($("body")).css({top: ($anchor.offset().top+35)+"px", right: "140px"}).hide().slideDown("fast");
   $("body").on("click", function(e){ if($(e.target).closest("#fy_popup").length==0) $("#fy_popup").remove(); });
+};
+Fy.hidePopup=function(){
+  $("#fy_popup").remove();
 };

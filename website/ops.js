@@ -1177,7 +1177,7 @@ module.exports={
   todNextAvailableDate: function(db, termbaseID, callnext){
     db.get("select max(tod) as maxDate from entries", {}, function(err, row){
       var date=new Date();
-      if(row){
+      if(row && /^[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]/.test(row["maxDate"])){
         date=new Date(row["maxDate"]);
         date.setDate(date.getDate()+1);
       }
