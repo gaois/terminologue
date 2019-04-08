@@ -56,6 +56,14 @@ Spec.templates["title"]={
     </div>`;
     return html;
   },
+  preprocess: function(data){
+    termbaseConfigs.lingo.languages.map(lang => {
+      if(lang.role=="major" && uilangs.map(obj => obj.abbr).indexOf(lang.abbr)>-1){
+        if(!data[lang.abbr]) data[lang.abbr]=data.$;
+      }
+    });
+    return data;
+  },
   postprocess: function(data){
     if(!data.$) for(var key in data){ data.$=data[key]; break; }
     return data;
@@ -105,6 +113,14 @@ Spec.templates["blurb"]={
         html+=`</div>
     </div>`;
     return html;
+  },
+  preprocess: function(data){
+    termbaseConfigs.lingo.languages.map(lang => {
+      if(lang.role=="major" && uilangs.map(obj => obj.abbr).indexOf(lang.abbr)>-1){
+        if(!data[lang.abbr]) data[lang.abbr]=data.$;
+      }
+    });
+    return data;
   },
   postprocess: function(data){
     if(!data.$) for(var key in data){ data.$=data[key]; break; }

@@ -997,14 +997,18 @@ module.exports={
               var entry=JSON.parse(row["json"]);
               entry.desigs.map(desig => { if(parseInt(desig.term.id)==changedTerm.id) desig.term=changedTerm; });
               var json=JSON.stringify(entry);
-              db.run("update entries set json=$json where id=$id", {$id: entryID, $json: json}, function(err){
-                module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
-                module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
-                  module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
-                    goEntry();
+              if(row["json"]==json){
+                goEntry();
+              } else {
+                db.run("update entries set json=$json where id=$id", {$id: entryID, $json: json}, function(err){
+                  module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
+                  module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
+                    module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
+                      goEntry();
+                    });
                   });
                 });
-              });
+              }
             } else {
               goTerm();
             }

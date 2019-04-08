@@ -227,7 +227,7 @@ PrettyLarge.lingySources=function(sources, lang){
     if(obj.lang==lang || obj.lang=="") {
       obj=Spec.getSource(obj.id);
       var $item=$("<div class='source'></div>").appendTo($group);
-      $item.append("— "+PrettyLarge.title(obj.title));
+      if(obj) $item.append("— "+PrettyLarge.title(obj.title));
     }
   });
   if($group.text()!="") return $group;
