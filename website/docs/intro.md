@@ -8,13 +8,13 @@ You can create as many termbases as you want and you can always delete them late
 
 ![Creating a new termbase in Terminologue.](/docs/intro02.png)
 
-If you are new to Terminologue, it is recommended that you select a template in the drop-down list, for example *Basic multilingual termbase*. Your termbase will come preconfigured with certain settings (which you can change any time later) as well as a few sample entries (which you can delete).
+If you are new to Terminologue, it is recommended that you select a template in the drop-down list, for example *Simple Bilingual Termbase*. Your termbase will come preconfigured with certain settings (which you can change any time later) as well as a few sample entries (which you can delete).
 
-Once your termbase has been created you can go to its homepage and from there to the editing interface. This is where you create and edit terminological entries. There is a list of entries on the left-hand side. You can delete the sample entries if you want, and you can create as many new entries as you want. There is no upper limit on the number of entries your termbase can contain. To edit an entry, click on it and it will appear on the space on the right hand-side.
+Once your termbase has been created you can go to its homepage and from there to the editing interface. This is where you create and edit terminological entries. There is a list of entries on the left-hand side. You can delete the sample entries if you want, and you can create as many new entries as you want. There is no upper limit on the number of entries your termbase can contain. To open an entry, click on it and it will appear on the space on the right hand-side.
 
 ![Terminologue’s editing interface, showing the list of entries on the left and one entry open on the right.](/docs/intro03.png)
 
-What you see here is a formatted rendering of the entry. This is what the entry will look like if and when you decide to make your termbase public. To edit the entry, click the Edit button at the top. Terminologue opens the entry for editing.
+What you see here is a formatted rendering of the entry. This is what the entry will look like if and when you decide to make your termbase public. To edit the entry, click the *Edit* button at the top. Terminologue opens the entry for editing.
 
 ![An entry open for editing.](/docs/intro04.png)
 
@@ -28,7 +28,7 @@ Other properties of your termbase can be configured in the *Configuration* secti
 
 ![Configuring who can access your termbase.](/docs/intro06.png)
 
-Terminologue is not just a tool for editing termbases, it is a tool for making termbases publicly available on the web, too. To make a termbase publicly viewable, go into *Publising* in the *Configuration* section and change the setting from *private* to *Public*. You can also change the termbase back to *private* any time. You can even decide which entries are publicly visible and which not: any entry can be labelled as *hidden* in the editing interface and it will then not be visible publicly, even if the termbase as a whole is public.
+Terminologue is not just a tool for editing termbases, it is a tool for making termbases publicly available on the web, too. To make a termbase publicly viewable, go into *Publising* in the *Configuration* section and change the setting from *Private* to *Public*. You can also change the termbase back to *private* any time. You can even decide which entries are publicly visible and which not: any entry can be labelled as *hidden* in the editing interface and it will then not be visible publicly, even if the termbase as a whole is public.
 
 ![Making a termbase publicly viewable.](/docs/intro07.png)
 
@@ -46,7 +46,7 @@ A drop-down list underneath the search box allows you select the search mode. Th
 
 ![Smart search in action.](/docs/intro09.png)
 
-Searching is not the only way to navigate around a termbase. Terminologue also offers faceted filtering when you can filter the entry list by various criteria such as domains, editorial status and others.
+Searching is not the only way to navigate around a termbase. Terminologue also offers faceted filtering where you can filter the entry list by various criteria such as domains, editorial status and others.
 
 ![Filtering entries by domain in Terminologue’s faceted filtering feature.](/docs/intro10.png)
 
@@ -107,4 +107,4 @@ It is not advisable to use the TBX format for transferring data from one Termino
 
 ## Conclusion
 
-This brings us to the end of this introduction. Terminologue has a number of other features which we did not cover here and you will surely discover them as you use Terminologue. But most importantly, keep building great termbases!
+This brings us to the end of this introduction. Terminologue has a number of other features which we did not cover here and you will surely discover them as you use Terminologue. But most importantly, build great termbases!
