@@ -95,7 +95,7 @@ Entries in Terminologue can be annotated with arbitrary *tags* and *notes*. Thes
 
 ## Extranets
 
-An extranet is a special section on the Terminologue website where a subset of a termbase has been made available for commenting to a closed group of external users. An example can be seen in Figure 15. Users of a termbase with Administrator privileges can create new extranets, decide which entries go on which extranet, and decide which users have access to which extranet. Extranet users are completely separate from other users of the termbase: they must have an account in Terminologue but, apart from that, they do not (need to) have access to the termbase itself. Comments left by extranet users are visible in the editing interface (as *notes*) and their purpose is to inform the termbase editor’s decisions.
+An extranet is a special section on the Terminologue website where a subset of a termbase has been made available for commenting to a closed group of external users. Users of a termbase with Administrator privileges can create new extranets, decide which entries go on which extranet, and decide which users have access to which extranet. Extranet users are completely separate from other users of the termbase: they must have an account in Terminologue but, apart from that, they do not (need to) have access to the termbase itself. Comments left by extranet users are visible in the editing interface (as *notes*) and their purpose is to inform the termbase editor’s decisions.
 
 ![An extranet in Terminologue.](/docs/intro15.png)
 
