@@ -64,3 +64,4 @@ typings/
 *.sqlite-wal
 temp/*
 data/lang/*
+scripts/_entrylist.txt
