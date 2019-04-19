@@ -88,4 +88,5 @@ Screenful.Loc={
   batchFailed: "Failed to perform batch edit.",
   printable: "Printer-friendly version",
   printableOff: "Back",
+  batchConfirm: "Careful now! This change will be made on all entries listed here ($X in total). Are you sure?",
 };

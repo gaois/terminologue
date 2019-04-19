@@ -88,4 +88,5 @@ Screenful.Loc={
   batchFailed: "Níor éirigh liom na hiontrálacha a athrú.",
   printable: "Leagan oiriúnach le priontáil",
   printableOff: "Ar ais",
+  batchConfirm: "Cúramach! Déanfar an t-athrú seo ar gach iontráil atá liostaithe anseo ($X san iomlán). An bhfuil tú cinnte?",
 };
