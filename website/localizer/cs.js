@@ -91,6 +91,10 @@ function L(s, gloss){
   if(s=="any collection or no collection") return "jakákoliv sbírka nebo žádná";
   if(s=="any collection") return "jakákoliv sbírka";
   if(s=="no collection") return "žádná sbírka";
+  if(s=="comments") return "komentáře";
+  if(s=="with or without comments") return "má komentář nebo nemá";
+  if(s=="with comments") return "má komentář";
+  if(s=="without comments") return "nemá komentář";
   if(s=="my comments") return "komentáře ode mě";
   if(s=="with or without my comments") return "má komentář ode mě nebo nemá";
   if(s=="with my comments") return "má komentář ode mě";

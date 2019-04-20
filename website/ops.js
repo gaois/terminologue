@@ -585,6 +585,16 @@ module.exports={
       else { where.push(`fExtranet.extranet=$fExtranet`); params[`$fExtranet`]=parseInt(facets.extranet); }
     }
 
+    if(facets.hasComments=="1"){
+      joins.push(`inner join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
+      params[`$fExtranet`]=parseInt(facets.extranet);
+    }
+    if(facets.hasComments=="0"){
+      joins.push(`left outer join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
+      params[`$fExtranet`]=parseInt(facets.extranet);
+      where.push(`fComments.id is null`);
+    }
+
     if(facets.me=="1" && facets.extranet && facets.email){
       joins.push(`inner join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email=$fEmail and fCommentsMe.extranet_id=$fExtranet`);
       params[`$fEmail`]=facets.email;

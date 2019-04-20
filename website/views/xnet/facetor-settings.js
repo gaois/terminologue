@@ -2,6 +2,13 @@ Screenful.Facetor.panes=[{
   render: function(div){
     var $inme=$(div);
 
+    $inme.append(`<div class="title"><span class="tab">${L("comments")}</span></div>`);
+    var $select=$(`<select class="fullwidth" id="facComments"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("with or without comments")})</option>`);
+    $select.append(`<option value="1">${L("with comments")}</option>`);
+    $select.append(`<option value="0">${L("without comments")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+
     $inme.append(`<div class="title"><span class="tab">${L("my comments")}</span></div>`);
     var $select=$(`<select class="fullwidth" id="facMe"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("with or without my comments")})</option>`);
@@ -60,6 +67,7 @@ Screenful.Facetor.panes=[{
   harvest: function(div){
     var $inme=$(div);
     var ret={};
+    ret.hasComments=$("#facComments").val();
     ret.me=$("#facMe").val();
     ret.oth=$("#facOth").val();
     ret.superdomain=$("#facSuperdomain").val();

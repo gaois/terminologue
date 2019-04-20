@@ -91,6 +91,10 @@ function L(s, gloss){
   if(s=="any collection or no collection") return "bailiúchán ar bith nó gan bailiúchán";
   if(s=="any collection") return "bailiúchán ar bith";
   if(s=="no collection") return "gan bailiúchán";
+  if(s=="comments") return "nótaí";
+  if(s=="with or without comments") return "le nó gan nótaí";
+  if(s=="with comments") return "le nótaí";
+  if(s=="without comments") return "gan nótaí";
   if(s=="my comments") return "mo chuid nótaí";
   if(s=="with or without my comments") return "le nó gan nótaí uaimse";
   if(s=="with my comments") return "le nótaí uaimse";
