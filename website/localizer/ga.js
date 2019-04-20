@@ -272,8 +272,13 @@ function L(s, gloss){
   if(s=="Please follow the link below to create your Terminologue account:") return "Cliceáil an nasc thíos, le do thoil, chun do chuntas a chruthú in Terminologue:";
   if(s=="Terminologue password reset") return "Pasfhocal a athshocrú in Terminologue";
   if(s=="Please follow the link below to reset your Terminologue password:") return "Cliceáil an nasc thíos, le do thoil, chun do phasfhocal a athshocrú in Terminologue:";
-
   if(s=="This page is only available in English.") return "Ár leithscéal, tá an leathanach seo ar fáil i mBéarla amháin.";
+  if(s=="DRAFTING STATUS") return "STÁDAS DRÉACHTAITHE";
+  if(s=="draft entry") return "dréachtiontráil";
+  if(s=="finished entry") return "iontráil chríochnaithe";
+  if(s=="DRAFT") return "DRÉACHTIONTRÁIL";
+  if(s=="FINISHED") return "CRÍOCHNAITHE";
+  if(s=="any drafting status") return "stádas dréachtaithe ar bith";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

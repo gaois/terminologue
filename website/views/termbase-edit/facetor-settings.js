@@ -20,6 +20,13 @@ Screenful.Facetor.panes=[{
     $select.append(`<option value="0">${L("hidden")}</option>`);
     $select.on("change", Screenful.Facetor.change);
 
+    //dStatus:
+    var $select=$(`<select class="fullwidth" id="facDStatus"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("any drafting status")})</option>`);
+    $select.append(`<option value="1">${L("finished entry")}</option>`);
+    $select.append(`<option value="0">${L("draft entry")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+
     //------
 
     if(termbaseMetadata.domain.length>0){
@@ -226,6 +233,7 @@ Screenful.Facetor.panes=[{
 
     ret.cStatus=$("#facCStatus").val();
     ret.pStatus=$("#facPStatus").val();
+    ret.dStatus=$("#facDStatus").val();
 
     ret.superdomain=$("#facSuperdomain").val();
     ret.subdomain=$("#facSubdomain").val();

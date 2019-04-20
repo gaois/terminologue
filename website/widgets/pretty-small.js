@@ -58,6 +58,8 @@ PrettySmall.entry=function(entry){
   else                   $("<img class='status' src='../../furniture/cross.png'/>").appendTo($bin);
   if(entry.pStatus=="1") $("<img class='status' src='../../furniture/tick.png'/>").appendTo($bin);
   else                   $("<img class='status' src='../../furniture/cross.png'/>").appendTo($bin);
+  if(entry.dStatus=="1" || entry.dStatus==undefined) $("<img class='status' src='../../furniture/tick.png'/>").appendTo($bin);
+  else                   $("<img class='status' src='../../furniture/cross.png'/>").appendTo($bin);
   if(entry.dateStamp) $("<span class='date'><img src='../../furniture/date.png'/> "+entry.dateStamp+"</span>").appendTo($bin);
   if(entry.tod)       $("<span class='date'><img src='../../furniture/asterisk_orange.png'/> "+entry.tod+"</span>").appendTo($bin);
 

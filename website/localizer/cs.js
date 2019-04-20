@@ -63,8 +63,8 @@ function L(s, gloss){
   if(s=="while uploading") return "během nahrávání";
   if(s=="By") return "Kým";
   if(s=="When") return "Kdy";
-  if(s=="any checking status") return "jakýkoliv status zkontrolovanosti";
-  if(s=="any publishing status") return "jakýkoliv status publikovatelnosti";
+  if(s=="any checking status") return "jakýkoliv stav zkontrolovanosti";
+  if(s=="any publishing status") return "jakýkoliv stav publikovatelnosti";
   if(s=="any language") return "jakýkoliv jazyk";
   if(s=="any acceptabilty or no acceptability") return "jakákoliv přijatelnost nebo žádná";
   if(s=="any acceptabilty") return "jakákoliv přijatelnost";
@@ -272,8 +272,13 @@ function L(s, gloss){
   if(s=="Please follow the link below to create your Terminologue account:") return "Chcete-li su vytvořit účet v systému Terminologue, klikněte laskavě na tento odkaz:";
   if(s=="Terminologue password reset") return "Zapomenuté heslo pro Terminologue";
   if(s=="Please follow the link below to reset your Terminologue password:") return "Chcete-li si vytvořit nové heslo v systému Terminologue, klikněte laskavě na tento odkaz:";
-
   if(s=="This page is only available in English.") return "Tato stránka je k dostání jen v angličtině. Sorry jako.";
+  if(s=="DRAFTING STATUS") return "STAV ROZPRACOVANOSTI";
+  if(s=="draft entry") return "pracovní verze";
+  if(s=="finished entry") return "konečná verze";
+  if(s=="DRAFT") return "PRACOVNÍ VERZE";
+  if(s=="FINISHED") return "KONEČNÁ VERZE";
+  if(s=="any drafting status") return "jakýkoliv stav rozpracovanosti";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

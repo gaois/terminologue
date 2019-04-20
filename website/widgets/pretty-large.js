@@ -169,6 +169,13 @@ PrettyLarge.entry=function(entry){
     }
     $title.append(" ");
 
+    if(entry.dStatus=="1" || entry.dStatus===undefined) {
+      $("<span class='title'><img src='../../furniture/tick.png'/> "+L("FINISHED")+"</span>").appendTo($title);
+    } else {
+      $("<span class='title'><img src='../../furniture/cross.png'/> "+L("DRAFT")+"</span>").appendTo($title);
+    }
+    $title.append(" ");
+
     //date stamp:
     if(entry.dateStamp){
       $("<span class='title'><img src='../../furniture/date.png'/> "+L("LAST MAJOR UPDATE")+"</span>").appendTo($title);

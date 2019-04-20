@@ -496,6 +496,10 @@ module.exports={
       where.push(`e.pStatus=$fPStatus`);
       params[`$fPStatus`]=parseInt(facets.pStatus);
     }
+    if(facets.dStatus){
+      where.push(`e.dStatus=$fDStatus`);
+      params[`$fDStatus`]=parseInt(facets.dStatus);
+    }
 
     if(facets.superdomain && facets.superdomain=="-1"){
       joins.push(`left outer join entry_domain as fDomain on fDomain.entry_id=e.id`);
@@ -850,16 +854,16 @@ module.exports={
         module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
         var sql=""; var params={};
         if(dowhat=="create"){
-          sql="insert into entries(json, cStatus, pStatus, dateStamp, tod) values($json, $cStatus, $pStatus, $dateStamp, $tod)";
-          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
+          sql="insert into entries(json, cStatus, pStatus, dStatus, dateStamp, tod) values($json, $cStatus, $pStatus, $dStatus, $dateStamp, $tod)";
+          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
         }
         if(dowhat=="recreate"){
-          sql="insert into entries(id, json, cStatus, pStatus, dateStamp, tod) values($id, $json, $cStatus, $pStatus, $dateStamp, $tod)";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
+          sql="insert into entries(id, json, cStatus, pStatus, dStatus, dateStamp, tod) values($id, $json, $cStatus, $pStatus, $dStatus, $dateStamp, $tod)";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
         }
         if(dowhat=="change"){
-          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus, dateStamp=$dateStamp, tod=$tod where id=$id";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
+          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus, dStatus=$dStatus, dateStamp=$dateStamp, tod=$tod where id=$id";
+          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
         }
         //create or change me:
         db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;

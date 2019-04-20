@@ -94,6 +94,8 @@ Spec.templates[":top"]={
       <div class="fy_replace" templateName="cStatus" jsonName="cStatus"></div>
       <div class="title">${L("PUBLISHING STATUS")}</div>
       <div class="fy_replace" templateName="pStatus" jsonName="pStatus"></div>
+      <div class="title">${L("DRAFTING STATUS")}</div>
+      <div class="fy_replace" templateName="dStatus" jsonName="dStatus"></div>
       <div class="title">${L("LAST MAJOR UPDATE")}</div>
       <div class="fy_replace" templateName="dateStamp" jsonName="dateStamp"></div>
       <div class="title">${L("TERM OF THE DAY")}</div>
@@ -153,6 +155,10 @@ Spec.templates[":top"]={
       $me.find("*.fy_body[data-name='extranets']").hide();
     }
   },
+  preprocess: function(data){
+    if(data.dStatus===undefined) data.dStatus="1"; //some entries have no dStatus field
+    return data;
+  },
 };
 Spec.templates["hiddenID"]={
   type: "string",
@@ -202,6 +208,19 @@ Spec.templates["pStatus"]={
   html: `<div class="fy_node">
     <label><input type="radio" name="pStatus" value="1" onchange="Fy.changed('pStatusChange')"/> <img src='../../furniture/tick.png'/> ${L("publishable")}</label>
     <label><input type="radio" name="pStatus" value="0" onchange="Fy.changed('pStatusChange')"/> <img src='../../furniture/cross.png'/> ${L("hidden")}</label>
+  </div>`,
+  set: function($me, data){
+    $me.find("input[value='"+data+"']").prop("checked", true);
+  },
+  get: function($me){
+    return $me.find("input:checked").val();
+  },
+};
+Spec.templates["dStatus"]={
+  type: "string",
+  html: `<div class="fy_node">
+    <label><input type="radio" name="dStatus" value="1" onchange="Fy.changed('dStatusChange')"/> <img src='../../furniture/tick.png'/> ${L("finished entry")}</label>
+    <label><input type="radio" name="dStatus" value="0" onchange="Fy.changed('dStatusChange')"/> <img src='../../furniture/cross.png'/> ${L("draft entry")}</label>
   </div>`,
   set: function($me, data){
     $me.find("input[value='"+data+"']").prop("checked", true);
