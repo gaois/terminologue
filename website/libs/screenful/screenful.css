@@ -30,4 +30,7 @@ span.smallscreen {display: none;}
 @media (max-width: 1200px){
   .bigscreen {display: none !important;}
   span.smallscreen {display: inline;}
+
+  #envelope button.iconYes {background-position: left+10px center; width: 35px; overflow-x: hidden; padding-left: 0px;}
+  #envelope button.iconYes > span {visibility: hidden;}
 }
