@@ -27,7 +27,6 @@ Screenful.History={
     }
     else{
       $div.on("click", function(e){
-        console.log("hello");
         Screenful.History.zoomRevision(Screenful.History.getRevisionID(hist), true);
       });
       if(Screenful.Editor.viewer){
@@ -69,6 +68,7 @@ Screenful.History={
             Screenful.Editor.editor(document.getElementById("editor"), fakeentry, true);
           }
           $("#container").hide().fadeIn();
+          Screenful.Editor.makeResizable();
         }
       }
     });

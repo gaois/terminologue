@@ -1,8 +1,10 @@
 div#commenting {background-color: #eeeeee; font-size: 0.85rem; padding: 20px 20px; overflow: auto; overflow-x: hidden;}
 
 div#commenting div.comment {margin-bottom: 20px;}
-div#commenting div.comment div.header {padding: 0px 0px 0px 30px; background-image: url(homunculus.png); background-position: left; background-repeat: no-repeat; text-shadow: 1px 1px 0px #ffffff; color: #666666;}
-div#commenting div.comment div.header button {float: right; margin-top: 5px;}
+div#commenting div.comment div.header {padding: 0px 0px 0px 30px; background-image: url(homunculus.png); background-position: left; background-repeat: no-repeat; text-shadow: 1px 1px 0px #ffffff; color: #666666; position: relative;}
+div#commenting div.comment div.header button {position: absolute; top: -5px;}
+div#commenting div.comment div.header button.butDelete {right: 0px;}
+div#commenting div.comment div.header button.butEdit {right: 45px;}
 div#commenting div.comment div.header div.userID {font-weight: bold;}
 div#commenting div.comment div.header div.when {}
 div#commenting div.comment div.text {margin: 5px 0px; border: 1px solid #999999; border-radius: 4px; padding: 0px 10px; background-color: #ffffff; color: #333333; box-shadow: 1px 1px solid #ffffff;}

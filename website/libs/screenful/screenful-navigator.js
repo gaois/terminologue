@@ -24,6 +24,8 @@ Screenful.Navigator={
         }
         e.stopPropagation();
         if(needReload) Screenful.Navigator.list(e);
+        $("#leftcontainer").css("width", "");
+        $("#midcontainer").css("left", "");
       });
     }
 
@@ -200,6 +202,59 @@ Screenful.Navigator={
           window.frames["editframe"].focus();
         }
       }
+    });
+
+    Screenful.Navigator.makeResizable();
+  },
+
+  makeResizable: function(){
+    var $resizerOverlay=$("<div id='resizerOverlay'></div>");
+    $("body").append($resizerOverlay);
+    $resizerOverlay.hide();
+
+    //resizer on the left-hand side of the editor:
+    var $resizer1=$("<div class='resizer'></div>");
+    $("#editbox").append($resizer1);
+    $resizer1.mousedown(function(){
+      $resizerOverlay.show();
+      $("body").css("user-select", "none");
+      $resizer1.addClass("active");
+      $(window).mousemove(function(e){
+        var newWidth=e.pageX;
+        if($("#envelope").hasClass("leftContainerExpanded")){
+          newWidth=newWidth-($("#leftcontainer").width());
+        }
+        $("#navbox").css("width", newWidth);
+        $("#listbox").css("width", newWidth);
+        $("#starlist").css("width", newWidth);
+        $("#editbox").css("left", newWidth);
+      });
+    });
+
+    //resizer on the right-hand side of the faceted filter:
+    var $resizer2=$("<div class='resizer'></div>");
+    $("#midcontainer").append($resizer2);
+    $resizer2.mousedown(function(){
+      $resizerOverlay.show();
+      $("body").css("-webkit-user-select", "none");
+      $("body").css("-moz-user-select", "none");
+      $("body").css("-ms-user-select", "none");
+      $("body").css("user-select", "none");
+      $resizer2.addClass("active");
+      $(window).mousemove(function(e){
+        var newWidth=e.pageX;
+        $("#leftcontainer").css("width", newWidth);
+        $("#midcontainer").css("left", newWidth);
+      });
+    });
+
+    $(window).mouseup(function(){
+      $(window).off("mousemove");
+      $resizerOverlay.hide();
+      $("body").css("-webkit-user-select", "");
+      $("body").css("-moz-user-select", "");
+      $("body").css("-ms-user-select", "");
+      $(".resizer").removeClass("active");
     });
   },
 

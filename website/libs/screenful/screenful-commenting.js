@@ -73,8 +73,8 @@ Screenful.Commenting={
       }
       var $textarea=$("<textarea rows='1'></textarea>").appendTo($form);
       autosize($textarea);
-      var $markdownLink=$("<a class='markdownLink' target='_blank' href='https://www.markdownguide.org/cheat-sheet/'>Markdown</a>").appendTo($form);
-      var $editButton=$("<button class='iconYes butSave'>"+Screenful.Loc["save"]+"</button>").appendTo($form);
+      var $markdownLink=$("<a class='markdownLink bigscreen' target='_blank' href='https://www.markdownguide.org/cheat-sheet/'>Markdown</a>").appendTo($form);
+      var $editButton=$("<button class='iconYes butSave'><span>"+Screenful.Loc["save"]+"</span></button>").appendTo($form);
       $ret.find(".butDelete").on("click", function(event){
         var $button=$(event.delegateTarget);
         var $comment=$button.closest(".comment");

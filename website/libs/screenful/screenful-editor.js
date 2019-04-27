@@ -48,6 +48,7 @@ Screenful.Editor={
       }
     });
   },
+
   populateToolbar: function(){
     var $toolbar=$("#toolbar");
     if(Screenful.History && Screenful.Editor.editor) $("<button id='butHistory' class='iconOnly' title='"+Screenful.Loc.history+"'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.history);
@@ -418,6 +419,7 @@ Screenful.Editor={
   },
   history: function(){
     $("#butHistory").blur();
+    Screenful.Editor.makeUnresizable();
     if(!Screenful.Editor.needsSaving || confirm(Screenful.Loc.unsavedConfirm)){ //"are you sure?"
       $("#container").css("right", ""); //remove room for xonomy layby
       Screenful.Editor.needsSaving=false;
@@ -439,6 +441,7 @@ Screenful.Editor={
     $("#history").hide();
     if($("#container").hasClass("withHistory")) $("#container").removeClass("withHistory").html("<div id='viewer'></div>");
     Screenful.Editor.updateToolbar();
+    Screenful.Editor.makeUnresizable();
   },
   clone: function(event){
     if(Screenful.Editor.entryID && $("#editor").length>0){ //we have an existing entry open for editing
@@ -495,6 +498,7 @@ Screenful.Editor={
 
   commenting: function(){
     $("#butCommenting").blur();
+    Screenful.Editor.makeUnresizable();
     if($("#container").hasClass("withCommenting")) {
       Screenful.Editor.hideHCommenting();
     } else {
@@ -502,12 +506,14 @@ Screenful.Editor={
       $("#commenting").show();
       Screenful.Editor.updateToolbar();
       Screenful.Commenting.go();
+      Screenful.Editor.makeResizable();
     }
   },
   hideHCommenting: function(){
     $("#commenting").hide();
     if($("#container").hasClass("withCommenting")) $("#container").removeClass("withCommenting");
     Screenful.Editor.updateToolbar();
+    Screenful.Editor.makeUnresizable();
   },
 
   starClick: function(event){
@@ -519,6 +525,55 @@ Screenful.Editor={
     if(window.parent && window.parent.Screenful && window.parent.Screenful.Navigator){
       window.parent.Screenful.Navigator.addToStarlist(list);
     }
+  },
+
+  makeResizable: function(){
+    var $resizerOverlay=$("<div id='resizerOverlay'></div>");
+    $("body").append($resizerOverlay);
+    $resizerOverlay.hide();
+
+    //resizer on the right-hand side of the editor:
+    var $resizer1=$("<div class='resizer'></div>");
+    $("#container").append($resizer1);
+    $resizer1.mousedown(function(){
+      $resizerOverlay.show();
+      $("body").css("-webkit-user-select", "none");
+      $("body").css("-moz-user-select", "none");
+      $("body").css("-ms-user-select", "none");
+      $("body").css("user-select", "none");
+      $resizer1.addClass("active");
+      $(window).mousemove(function(e){
+        var newWidth=e.pageX-25;
+        $("#container").css("width", newWidth);
+        $("#commenting").css("width", $(document).width()-newWidth-75);
+        $("#history").css("width", $(document).width()-newWidth-45);
+      });
+    });
+
+    $(window).mouseup(function(){
+      $(window).off("mousemove");
+      $resizerOverlay.hide();
+      $("body").css("-webkit-user-select", "");
+      $("body").css("-moz-user-select", "");
+      $("body").css("-ms-user-select", "");
+      $("body").css("user-select", "");
+      $(".resizer").removeClass("active");
+    });
+
+    $(window).on("resize", function(){
+      var newWidth=$("#container").width();
+      $("#commenting").css("width", $(document).width()-newWidth-75);
+      $("#history").css("width", $(document).width()-newWidth-45);
+    });
+
+  },
+  makeUnresizable: function(){
+    $(window).off("resize");
+    $("#resizerOverlay").hide();
+    $(".resizer").remove();
+    $("#container").css("width", "");
+    $("#commenting").css("width", "");
+    $("#history").css("width", "");
   },
 
 };
