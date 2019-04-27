@@ -1,3 +1,5 @@
+//set cStatus=0 for each entry in _entrylist.txt
+
 var entryIDs=[];
 
 var lineReader=require('readline').createInterface({
