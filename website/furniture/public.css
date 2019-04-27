@@ -7,7 +7,6 @@ body {background-image: url(header-back.gif); background-position: right top; ba
 #header div.topright {display: inline-block; position: absolute; top: 18px; right: 20px; color: #666666; z-index: 1;}
 #header div.topright > div.one {display: inline-block; margin-left: 1em;}
 @media (max-width: 800px){
-  #header div.topright {display: none;}
   #header a.sitehome span.readonly {display: none;}
 }
 
@@ -17,9 +16,11 @@ body {background-image: url(header-back.gif); background-position: right top; ba
 .invelope > .clear {clear: both;}
 
 #dictheader {margin-bottom: 20px;}
+body.homepage { overflow: auto !important;}
+body.homepage .invelope.top { padding-top: 50px;}
 body.homepage #dictheader {text-align: center; margin-top: 100px; margin-bottom: 50px;}
 body.entrypage #dictheader {margin-top: -10px;}
-@media (max-width: 800px){ body.homepage #dictheader {margin-top: 20px; margin-bottom: 60px;} }
+@media (max-width: 800px){ body.homepage #dictheader {margin-top: 75px; margin-bottom: 60px;} }
 @media (min-width: 1550px){ body.entrypage #dictheader {margin-top: -30px;} }
 #dictheader div.titleContainer {}
 #dictheader div.titleContainer span.dictTitle {display: inline-block; position: relative;}
@@ -115,7 +116,8 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 .error404 .num {font-size: 8rem; color: #dddddd; text-shadow: 2px 2px 0px #cccccc; }
 .error404 .desc {color: #666666; margin-top: 10px}
 
-body.sitehome .invelope.top {margin: 50px auto 25px auto;}
+body.sitehome { overflow: auto !important;}
+body.sitehome .invelope.top {margin: 50px auto 25px auto; padding-top: 50px;}
 body.sitehome .invelope.top > div.clear {clear: left;}
 div.leftie {float: left; width: 50%; box-sizing: border-box; padding: 20px 40px 0px 0px; border-right: 1px solid #03A491;}
 div.rightie {float: left; width: 50%; box-sizing: border-box; border-left: 1px solid #03A491; padding: 20px 0px 20px 40px; position: relative; left: -1px;}
@@ -172,6 +174,7 @@ div.adminlink {margin-top: 15px; color: #999999;}
 div.adminlink a {text-decoration: none; color: #047063; background-image: url(cog.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px; margin-right: 0.75em;}
 div.adminlink a:hover {color: #059080;}
 
+body.doc {padding-top: 50px;}
 body.doc div.markdown {max-width: 900px; margin-top: 70px; }
 body.doc div.markdown div.nouilang {color: #999999; margin-bottom: 10px;}
 @media (max-width: 800px){

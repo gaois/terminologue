@@ -1,11 +1,11 @@
 <div id="header" style="padding: 10px 10px; height: 38px; border-bottom: 1px solid var(--border);">
-  <a href="<%-rootPath%><%=termbaseID%>/" class="dicTitle"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a>
+  <a href="<%-rootPath%><%=termbaseID%>/" class="dicTitle"><span class="bigscreen"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></span><span class="smallscreen"><%=(termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$).substring(0, 1)%></span></a>
 
   <span class="dicLinks">
 
-    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%> <%if(user.level<1 && !user.isAdmin){%>disabled<%}%>"><%=L("Editing")%></a>
+    <a href="<%-rootPath%><%=termbaseID%>/edit/" class="dicLink <%if(sectionID=='edit'){%>current<%}%> <%if(user.level<1 && !user.isAdmin){%>disabled<%}%>"><span class="bigscreen"><%=L("Editing")%></span><span class="smallscreen"><%=L("Editing").substring(0, 1)%></span></a>
 
-    <a href="<%-rootPath%><%=termbaseID%>/admin/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%> <%if(user.level<4 && !user.isAdmin){%>disabled<%}%>"><%=L("Administration")%></a>
+    <a href="<%-rootPath%><%=termbaseID%>/admin/" class="dicLink <%if(sectionID=='metadata'){%>current<%}%> <%if(user.level<4 && !user.isAdmin){%>disabled<%}%>"><span class="bigscreen"><%=L("Administration")%></span><span class="smallscreen"><%=L("Administration").substring(0, 1)%></span></a>
     <%if(sectionID=="metadata" && subsectionID){%>
         <%
           var subtitle=subsectionID;
@@ -18,10 +18,10 @@
           if(subsectionID=="tag") subtitle=L('Tags');
           if(subsectionID=="extranet") subtitle=L('Extranets');
         %>
-        <a href="<%-rootPath%><%=termbaseID%>/admin/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
+        <a href="<%-rootPath%><%=termbaseID%>/admin/<%=subsectionID%>/" class="dicLink current mergeleft bigscreen"><%=subtitle%></a>
     <%}%>
 
-    <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%> <%if(user.level<5 && !user.isAdmin){%>disabled<%}%>"><%=L("Configuration")%></a>
+    <a href="<%-rootPath%><%=termbaseID%>/config/" class="dicLink <%if(sectionID=='config'){%>current<%}%> <%if(user.level<5 && !user.isAdmin){%>disabled<%}%>"><span class="bigscreen"><%=L("Configuration")%></span><span class="smallscreen"><%=L("Configuration").substring(0, 1)%></span></a>
     <%if(sectionID=="config" && subsectionID){%>
         <%
           var subtitle=subsectionID;
@@ -35,7 +35,7 @@
           if(subsectionID=="tod") subtitle=L("Term of the day");
           if(subsectionID=="news") subtitle=L("News and announcements");
         %>
-        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft"><%=subtitle%></a>
+        <a href="<%-rootPath%><%=termbaseID%>/config/<%=subsectionID%>/" class="dicLink current mergeleft bigscreen"><%=subtitle%></a>
     <%}%>
 
   </span>

@@ -1,5 +1,6 @@
 div.ScreenfulUser {position: relative;}
 div.ScreenfulUser div.clickable { color: #666666; cursor: pointer;}
+div.ScreenfulUser div.clickable span.smallscreen { position: relative; top: -2px;}
 div.ScreenfulUser div.clickable:hover {color: var(--link); }
 div.ScreenfulUser div.clickable span.arrow {color: #666666; font-size: 85%; position: relative; top: -2px; margin-left: 5px; }
 div.ScreenfulUser div.clickable:hover span.arrow {color: var(--link); }

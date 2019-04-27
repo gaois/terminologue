@@ -98,7 +98,7 @@
 	<body>
 		<div id="header">
 		  <span class="xnetTitleContainer">
-				<a href="../" class="dic"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a><a href="./" class="xnet"><span class="label"><%=L("EXTRANET")%></span> <%=xnet.title[uilang] || xnet.title.$%></a>
+				<a href="../" class="dic"><span class="bigscreen"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></span><span class="smallscreen"><%=(termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$).substring(0, 1)%></span></a><a href="./" class="xnet"><span class="label bigscreen"><%=L("EXTRANET")%></span> <%=xnet.title[uilang] || xnet.title.$%></a>
 			</span>
 			<div class="topright">
 		    <div class="one ScreenfulUilang"></div>

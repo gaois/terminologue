@@ -5,7 +5,7 @@ Screenful.Uilang={
       var lang=Screenful.Uilang.languages[i];
       if(lang.abbr==Screenful.Uilang.current) caption=lang.caption;
     }
-    $(".ScreenfulUilang").html("<div class='clickable'>"+caption+" <span class='arrow'>▼</span></div><div class='menu' style='display: none'></div>");
+    $(".ScreenfulUilang").html("<div class='clickable'><span class='bigscreen'>"+caption+"</span><span class='smallscreen'>"+Screenful.Uilang.current.toUpperCase()+"</span> <span class='arrow'>▼</span></div><div class='menu' style='display: none'></div>");
     for(var i=0; i<Screenful.Uilang.languages.length; i++){
       var lang=Screenful.Uilang.languages[i];
       $(".ScreenfulUilang .menu").append("<a href='"+Screenful.Uilang.url.replace("$", lang.abbr)+"'>"+lang.caption+"</a>");
