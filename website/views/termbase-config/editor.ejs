@@ -54,7 +54,7 @@
 			if(Screenful.Editor.entryID=="ident") {
 				var ident=JSON.parse(entry.content);
 				document.title=(ident.title["<%-uilang%>"] || ident.title.$);
-				$("#header .dicTitle").html(ident.title["<%-uilang%>"] || ident.title.$);
+				$("#header .dicTitle .bigscreen").html(ident.title["<%-uilang%>"] || ident.title.$);
 			}
 			if(Screenful.Editor.entryID=="lingo") {
 				var lingo=JSON.parse(entry.content);
