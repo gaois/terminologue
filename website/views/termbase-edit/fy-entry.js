@@ -85,6 +85,7 @@ Spec.templates[":top"]={
       <span class="fy_tab" data-name="intros">${L("INTR")}</span>
       <span class="fy_tab" data-name="definitions">${L("DEF")}</span>
       <span class="fy_tab" data-name="examples">${L("XMPL")}</span>
+      <span class="fy_tab" data-name="notes">${L("NOT")}</span>
       <span class="fy_tab" data-name="collections">${L("COLL")}</span>
       <span class="fy_tab" data-name="extranets">${L("EXT")}</span>
       <div class="clear"></div>
@@ -120,6 +121,10 @@ Spec.templates[":top"]={
     <div class="fy_body" data-name="examples">
       <div class="title">${L("EXAMPLES")}</div>
       <div class="fy_replace" templateName="examples" jsonName="examples"></div>
+    </div>
+    <div class="fy_body" data-name="notes">
+      <div class="title">${L("NOTES")}</div>
+      <div class="fy_replace" templateName="notes" jsonName="notes"></div>
     </div>
     <div class="fy_body" data-name="collections">
       <div class="title">${L("COLLECTIONS")}</div>
@@ -837,6 +842,97 @@ Spec.templates["defTexts"]={
 Spec.templates["defText"]={
   type: "string",
   html: `<span class="fy_textbox"><textarea onchange="Fy.changed('definitionTextChange')"/></textarea></span>`,
+  set: function($me, data){
+    $me.find("textarea").val(data);
+  },
+  get: function($me){
+    return $me.find("textarea").val();
+  },
+};
+
+Spec.templates["notes"]={
+  type: "array",
+  html: `<div>
+    <div class="fy_replace" templateName="note" jsonName=":item"></div>
+    <span class="fy_adder" templateName="note" changeName="noteAdd">+ ${L("note")}</span>
+  </div>`,
+};
+Spec.templates["note"]={
+  type: "object",
+  blank: {texts: {}, domains: [], sources: []},
+  html: `<div class="fy_container fy_collapsible">
+      <div class="fy_box">
+        <div class="fy_replace" templateName="noteType" jsonName="type"></div>
+        <div class="fy_box fy_hidable">
+          <div class="fy_replace" templateName="noteTexts" jsonName="texts"></div>
+        </div>
+        <div class="fy_box fy_hidable">
+          <div class="fy_replace" templateName="lingySources" jsonName="sources"></div>
+        </div>
+        <div class="fy_replace fy_hidable" templateName="nonessential" jsonName="nonessential"></div>
+      </div>
+  </div>`,
+  refresh: function($me){
+    if(termbaseMetadata.source.length==0){
+      $me.find(".jsonName_sources").remove();
+    }
+  },
+  postprocess: function(data){
+    if(!data.sources) data.sources=[];
+    return data;
+  },
+};
+Spec.templates["noteType"]={
+  type: "object",
+  blank: "",
+  html: `<div class="fy_container">
+    <span style="display: none;"></span>
+    <div class="fy_horizon">
+      <span class="fy_textbox" style="position: absolute; left: 0px; right: 125px;">
+        <select onchange="Fy.changed('noteTypeChange');"></select>
+      </span>
+      <span class="fy_remover" changeName="noteRemove"></span>
+      <span class="fy_downer" changeName="noteReorder"></span>
+      <span class="fy_upper" changeName="noteReorder"></span>
+    </div>
+    <span style="display: none;"></span>
+  </div>`,
+  set: function($me, data){
+    if(data.toString()) $me.find("select").val(data);
+  },
+  get: function($me){
+    return $me.find("select").val();
+  },
+  populate: function($me){
+    var $select=$me.find("select");
+    termbaseMetadata.noteType.map(datum => {
+      var levelLabel="";
+      if(datum.level=="0") levelLabel=L("private note, not shown on extranets");
+      if(datum.level=="1") levelLabel=L("private note, shown on extranets");
+      if(datum.level=="2") levelLabel=L("public note");
+      $select.append(`<option value="${datum.id}">${Spec.title(datum.title)} (${levelLabel})</option>`)
+    });
+  },
+};
+Spec.templates["noteTexts"]={
+  type: "object",
+  html: function(){
+    var html=`<div class="fy_container">`;
+      termbaseConfigs.lingo.languages.map(lang => {
+        if(lang.role=="major"){
+          html+=`<div class="fy_horizon textarea">
+              <div class="fy_label">${lang.abbr.toUpperCase()} (${Spec.title(lang.title)})</div>
+              <span class="fy_replace" templateName="noteText" jsonName="${lang.abbr}"></span>
+            </div>`;
+        }
+      });
+      html+=`</div>`;
+    return html;
+  },
+};
+Spec.templates["noteText"]={
+  type: "string",
+  html: `<span class="fy_textbox"><textarea onchange="Fy.changed('noteTextChange')"/></textarea></span>`,
   set: function($me, data){
     $me.find("textarea").val(data);
   },
