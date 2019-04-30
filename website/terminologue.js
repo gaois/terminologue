@@ -879,9 +879,11 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/commentSave.json", function(r
       db.close();
       res.json({success: false});
     } else {
-      ops.commentSave(db, req.params.termbaseID, req.body.entryID, req.params.xnetID, req.body.commentID, req.body.userID, req.body.body, null, function(commentID, when, body, bodyMarkdown, tagID){
+      console.log(req.body.tagID);
+      ops.commentSave(db, req.params.termbaseID, req.body.entryID, req.params.xnetID, req.body.commentID, req.body.userID, req.body.body, req.body.tagID, function(commentID, when, body, bodyMarkdown, extranetID, tagID){
+        console.log(tagID);
         db.close();
-        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown, tagID: tagID, extranetID: req.params.xnetID});
+        res.json({success: true, commentID: commentID, when: when, body: body, bodyMarkdown: bodyMarkdown, tagID: tagID, extranetID: extranetID});
       });
     }
   });

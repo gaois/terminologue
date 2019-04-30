@@ -20,13 +20,11 @@ function L(s, gloss){
   if(s=="Users") return "Uživateĺé";
   if(s=="Termbases") return "Terminologické databáze";
   if(s=="smart search") return "chytré hledání";
-
   if(s=="complete term") return "celý termín";
   if(s=="start of term") return "začátek termínu";
   if(s=="end of term") return "konec termínu";
   if(s=="any part of term") return "jakákoliv část termínu";
   if(s=="any part except start or end") return "jakákoliv část kromě začátku a konce";
-
   if(s=="search in all languages") return "hledat ve všech jazycích";
   if(s=="Configuration") return "Konfigurace";
   if(s=="ADMIN") return "ADMIN";
@@ -279,6 +277,7 @@ function L(s, gloss){
   if(s=="DRAFT") return "PRACOVNÍ VERZE";
   if(s=="FINISHED") return "KONEČNÁ VERZE";
   if(s=="any drafting status") return "jakýkoliv stav rozpracovanosti";
+  if(s=="Prefabricated comments") return "Předpřipravené komentáře";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

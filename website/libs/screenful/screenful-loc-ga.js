@@ -77,7 +77,7 @@ Screenful.Loc={
   exactMatches: "Torthaí beachta",
   partialMatches: "Torthaí gaolmhara",
   comments: "Nótaí tráchta",
-  newComment: "nóta nua",
+  newComment: "nóta tráchta nua",
   revive: "Tabhair ar ais",
   addToWorklist: "Cuir ar liosta oibre",
   worklist: "LIOSTA OIBRE",

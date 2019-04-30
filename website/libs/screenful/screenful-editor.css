@@ -4,6 +4,7 @@
 #container.withCommenting {right: 430px; margin-right: 10px;}
 #container.withSourceCode {left: 0px;}
 #container #editor { margin-bottom: 20px; padding-bottom: 300px; }
+#container #viewer { position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; overflow-y: auto; padding: 10px 5px 5px 0px;}
 #container.empty {}
 
 /*override positioning of Xonomy's layby*/

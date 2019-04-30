@@ -58,7 +58,7 @@
 			var ret=Spec.title(xnet.title, uilang);
 			return ret;
 		};
-		Screenful.Commenting.allowTags=false;
+		Screenful.Commenting.allowTags=true;
 		Screenful.Commenting.tags=[]; termbaseMetadata.tag.map(tag => {
 			Screenful.Commenting.tags.push({id: tag.id, title: tag.title});
 		});

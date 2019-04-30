@@ -91,18 +91,18 @@ function L(s, gloss){
   if(s=="any collection or no collection") return "bailiúchán ar bith nó gan bailiúchán";
   if(s=="any collection") return "bailiúchán ar bith";
   if(s=="no collection") return "gan bailiúchán";
-  if(s=="comments") return "nótaí";
-  if(s=="with or without comments") return "le nó gan nótaí";
-  if(s=="with comments") return "le nótaí";
-  if(s=="without comments") return "gan nótaí";
-  if(s=="my comments") return "mo chuid nótaí";
-  if(s=="with or without my comments") return "le nó gan nótaí uaimse";
-  if(s=="with my comments") return "le nótaí uaimse";
-  if(s=="without my comments") return "gan nótaí uaimse";
-  if(s=="other people's comments") return "nótaí daoine eile";
-  if(s=="with or without other people's comments") return "le nó gan nótaí ó dhaoine eile";
-  if(s=="with other people's comments") return "le nótaí ó dhaoine eile";
-  if(s=="without other people's comments") return "gan nótaí ó dhaoine eile";
+  if(s=="comments") return "nótaí tráchta";
+  if(s=="with or without comments") return "le nó gan nótaí tráchta";
+  if(s=="with comments") return "le nótaí tráchta";
+  if(s=="without comments") return "gan nótaí tráchta";
+  if(s=="my comments") return "mo chuid nótaí tráchta";
+  if(s=="with or without my comments") return "le nó gan nótaí tráchta uaimse";
+  if(s=="with my comments") return "le nótaí tráchta uaimse";
+  if(s=="without my comments") return "gan nótaí tráchta uaimse";
+  if(s=="other people's comments") return "nótaí tráchta daoine eile";
+  if(s=="with or without other people's comments") return "le nó gan nótaí tráchta ó dhaoine eile";
+  if(s=="with other people's comments") return "le nótaí tráchta ó dhaoine eile";
+  if(s=="without other people's comments") return "gan nótaí tráchta ó dhaoine eile";
   if(s=="EXTRANET") return "EISLÍON";
   if(s=="EXT") return "EIS";
   if(s=="EXTRANETS") return "EISLÍONTA";
@@ -279,6 +279,8 @@ function L(s, gloss){
   if(s=="DRAFT") return "DRÉACHTIONTRÁIL";
   if(s=="FINISHED") return "CRÍOCHNAITHE";
   if(s=="any drafting status") return "stádas dréachtaithe ar bith";
+  if(s=="Prefabricated comments") return "Nótaí tráchta réamhdhéanta";
+
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
