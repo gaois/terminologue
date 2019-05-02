@@ -129,8 +129,10 @@ PrettyLarge.entry=function(entry){
     var $group=$("<div class='collections'></div>").appendTo($ret);
     entry.collections.map(obj => {
       obj=Spec.getCollection(obj);
-      var $item=$("<div class='collection'></div>").appendTo($group);
-      $item.append(PrettyLarge.title(obj.title));
+      if(obj) {
+        var $item=$("<div class='collection'></div>").appendTo($group);
+        $item.append(PrettyLarge.title(obj.title));
+      }
     });
   }
 
@@ -138,7 +140,7 @@ PrettyLarge.entry=function(entry){
     var $group=$("<div class='extranets'></div>").appendTo($ret);
     entry.extranets.map(obj => {
       obj=Spec.getExtranet(obj);
-      var $item=$("<div class='prettyExtranet'><a href='../x"+obj.id+"/' target='_blank' class='extranet'><strong>"+L('EXTRANET')+"</strong> "+Spec.title(obj.title, uilang)+"</a></div>").appendTo($group);
+      if(obj) var $item=$("<div class='prettyExtranet'><a href='../x"+obj.id+"/' target='_blank' class='extranet'><strong>"+L('EXTRANET')+"</strong> "+Spec.title(obj.title, uilang)+"</a></div>").appendTo($group);
     });
   }
 
