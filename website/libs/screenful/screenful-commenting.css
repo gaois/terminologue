@@ -24,6 +24,6 @@ div#commenting div.comment form textarea {margin: 5px 0px 0px 0px; border: 1px s
 div#commenting div.comment form a.markdownLink {float: right; color: #999999; text-decoration: none; margin-top: 5px; padding: 5px 5px 5px 5px; display: block;}
 div#commenting div.comment form a.markdownLink:hover {color: var(--link);}
 
-div#commenting button.butEdit {background-image: url(cut.png);}
+div#commenting button.butEdit {background-image: url(pencil.png);}
 div#commenting button.butDelete {background-image: url(delete.png); background-position: 8px center;}
 div#commenting button.butSave {background-image: url(disk.png);}

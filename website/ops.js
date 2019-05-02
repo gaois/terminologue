@@ -589,14 +589,24 @@ module.exports={
       else { where.push(`fExtranet.extranet=$fExtranet`); params[`$fExtranet`]=parseInt(facets.extranet); }
     }
 
-    if(facets.hasComments=="1"){
-      joins.push(`inner join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
-      params[`$fExtranet`]=parseInt(facets.extranet);
-    }
-    if(facets.hasComments=="0"){
-      joins.push(`left outer join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
-      params[`$fExtranet`]=parseInt(facets.extranet);
-      where.push(`fComments.id is null`);
+    if(facets.extranet){
+      if(facets.hasComments=="1"){
+        joins.push(`inner join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
+        params[`$fExtranet`]=parseInt(facets.extranet);
+      }
+      if(facets.hasComments=="0"){
+        joins.push(`left outer join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
+        params[`$fExtranet`]=parseInt(facets.extranet);
+        where.push(`fComments.id is null`);
+      }
+    } else {
+      if(facets.hasComments=="1"){
+        joins.push(`inner join comments as fComments on fComments.entry_id=e.id`);
+      }
+      if(facets.hasComments=="0"){
+        joins.push(`left outer join comments as fComments on fComments.entry_id=e.id`);
+        where.push(`fComments.id is null`);
+      }
     }
 
     if(facets.me=="1" && facets.extranet && facets.email){
@@ -621,6 +631,17 @@ module.exports={
       params[`$fEmail`]=facets.email;
       params[`$fExtranet`]=parseInt(facets.extranet);
       where.push(`fCommentsMe.id is null`);
+    }
+
+    if(facets.note=="0"){
+      joins.push(`left outer join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
+      where.push(`fEntryNote.text is null`);
+    } else if(facets.note=="1"){
+      joins.push(`inner join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
+      if(facets.noteType){
+        where.push(`fEntryNote.type=$fNoteType`);
+        params[`$fNoteType`]=parseInt(facets.noteType);
+      }
     }
 
     var params1={}; for(var key in params) params1[key]=params[key];

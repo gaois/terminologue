@@ -187,6 +187,32 @@ Screenful.Facetor.panes=[{
       $input.on("change", Screenful.Facetor.change);
     }
 
+    //---
+
+    //notes:
+    $inme.append(`<div class="title"><span class="tab">${L("NOT")}</span></div>`);
+    var $select=$(`<select class="fullwidth" id="facNote"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("with or without notes")})</option>`);
+    $select.append(`<option value="1">${L("with a note")}</option>`);
+    $select.append(`<option value="0">${L("without notes")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+    $select.on("change", function(){
+      var val=$("#facNote").val();
+      if(val=="1") $("#facNoteType").show();
+      else $("#facNoteType").hide();
+    });
+
+    //note types:
+    var $select=$(`<select class="fullwidth sub" id="facNoteType"></select>`).hide().appendTo($inme);
+    termbaseMetadata.noteType=(termbaseMetadata.noteType || []);
+    $select.append(`<option value="">(${L("any type")})</option>`);
+    termbaseMetadata.noteType.map(datum => {
+      var $option=$(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
+      $option.data("datum", datum);
+      $option.appendTo($select);
+    });
+    $select.on("change", Screenful.Facetor.change);
+
     //------
 
     if(termbaseMetadata.collection.length>0){
@@ -225,6 +251,15 @@ Screenful.Facetor.panes=[{
       $select.on("change", Screenful.Facetor.change);
     }
 
+    //comments:
+    $inme.append(`<div class="title"><span class="tab">${L("comments")}</span></div>`);
+    var $select=$(`<select class="fullwidth" id="facComments"></select>`).appendTo($inme);
+    $select.append(`<option value="">(${L("with or without comments")})</option>`);
+    $select.append(`<option value="1">${L("with comments")}</option>`);
+    $select.append(`<option value="0">${L("without comments")}</option>`);
+    $select.on("change", Screenful.Facetor.change);
+
+
   },
 
   harvest: function(div){
@@ -252,9 +287,13 @@ Screenful.Facetor.panes=[{
     ret.xmpl=$("#facXmpl").val();
     ret.xmplValue=$("#facXmplValue").val();
 
+    ret.note=$("#facNote").val();
+    ret.noteType=$("#facNoteType").val();
+
     ret.collection=$("#facCollection").val();
 
     ret.extranet=$("#facExtranet").val();
+    ret.hasComments=$("#facComments").val();
 
     return ret;
   },

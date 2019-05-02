@@ -22,7 +22,15 @@ function migrateDBs(dirPath){
       type     INTEGER,
       lang     CHAR (10),
       text     TEXT
-    );`).run();
+    )`).run();
+
+    //create indexes in entry_note table:
+    db.prepare(`CREATE INDEX IF NOT EXISTS ix_entry_note_entry_id ON entry_note (
+        entry_id
+    )`).run();
+    db.prepare(`CREATE INDEX IF NOT EXISTS ix_entry_note_type ON entry_note (
+        type
+    )`).run();
 
     db.close();
     console.log(` - done ${filename}, ${--count} databases remaining`);

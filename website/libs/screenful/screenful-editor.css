@@ -17,12 +17,12 @@
 #toolbar button.iconOnly#butOpen {background-image: url(resultset_next.png);}
 #toolbar button.iconYes#butSave {background-image: url(disk.png);}
 #toolbar button.iconYes#butSave span.star {color: #ff0000; position: relative; top: 2px;}
-#toolbar button.iconYes#butEdit {background-image: url(cut.png);}
+#toolbar button.iconYes#butEdit {background-image: url(pencil.png);}
 #toolbar button.iconYes#butView {background-image: url(arrow_left.png);}
 #toolbar button.iconYes#butLeave {background-image: url(arrow_left.png);}
 #toolbar button.iconYes#butNonew {background-image: url(arrow_left.png);}
 #toolbar button.iconYes#butDelete {background-image: url(delete.png);}
-#toolbar button.iconYes#butClone {background-image: url(lightning.png);}
+#toolbar button.iconYes#butClone {background-image: url(wand.png);}
 #toolbar button.iconOnly#butSourceCode {background-image: url(page_white_text.png); float: right;}
 #toolbar button.iconOnly#butCommenting {background-image: url(comment.png); float: right;}
 #toolbar button.iconOnly#butHistory {background-image: url(time.png); float: right;}
