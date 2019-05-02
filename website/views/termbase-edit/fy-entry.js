@@ -67,6 +67,12 @@ Spec.getExtranet=function(id){
   termbaseMetadata.extranet.map(datum => {  if(!ret && datum.id==id) ret=datum; });
   return ret;
 };
+Spec.getNoteType=function(id){
+  var ret=null;
+  termbaseMetadata.noteType=(termbaseMetadata.noteType || []);
+  termbaseMetadata.noteType.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
 
 Spec.changeHandler=function($insideme, changeName){
   if(triggers[changeName]){

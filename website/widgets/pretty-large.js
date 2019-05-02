@@ -75,12 +75,16 @@ PrettyLarge.entry=function(entry){
   if(entry.definitions && entry.definitions.length>0) {
     entry.definitions.map(obj => {
       var $row=$("<div class='prettyRow definition'></div>").appendTo($ret);
+      var _cellWidth=cellWidth;
+        var langCount=0; majorlangs.map(lang => { if(obj.texts[lang]) langCount++ });
+        if(langCount<2) _cellWidth=100;
       majorlangs.map(lang => {
-        var $cell=$("<div class='prettyCell' style='width: "+cellWidth+"%'></div>").appendTo($row);
+        var $cell=$("<div class='prettyCell' style='width: "+_cellWidth+"%'></div>");
         if(obj.texts[lang]) {
           $cell.append(PrettyLarge.definition(obj, lang));
           $cell.append(PrettyLarge.lingySources(obj.sources, lang));
         }
+        if(obj.texts[lang] || langCount>1) $cell.appendTo($row);
       });
       $("<div class='clear'></div>").appendTo($row);
     });
@@ -96,6 +100,25 @@ PrettyLarge.entry=function(entry){
           $cell.append(PrettyLarge.example(obj, lang));
           $cell.append(PrettyLarge.lingySources(obj.sources, lang));
         }
+      });
+      $("<div class='clear'></div>").appendTo($row);
+    });
+  }
+
+  //notes:
+  if(entry.notes && entry.notes.length>0) {
+    entry.notes.map(obj => {
+      var $row=$("<div class='prettyRow note'></div>").appendTo($ret);
+      var _cellWidth=cellWidth;
+        var langCount=0; majorlangs.map(lang => { if(obj.texts[lang]) langCount++ });
+        if(langCount<2) _cellWidth=100;
+      majorlangs.map(lang => {
+        var $cell=$("<div class='prettyCell' style='width: "+_cellWidth+"%'></div>");
+        if(obj.texts[lang]) {
+          $cell.append(PrettyLarge.note(obj, lang));
+          $cell.append(PrettyLarge.lingySources(obj.sources, lang));
+        }
+        if(obj.texts[lang] || langCount>1) $cell.appendTo($row);
       });
       $("<div class='clear'></div>").appendTo($row);
     });
@@ -260,6 +283,19 @@ PrettyLarge.definition=function(def, lang){
   return $ret;
 };
 
+PrettyLarge.note=function(note, lang){
+  var $ret=$("<span class='prettyNote'></span>");
+  if(note.type){
+    var metadatum=Spec.getNoteType(note.type);
+    if(metadatum){
+      $("<span class='type'></span>").html(PrettyLarge.type(metadatum, lang)).appendTo($ret);
+      $ret.append(" ");
+    }
+  }
+  $ret.append("<span class='text'>"+PrettyLarge.clean4html(note.texts[lang])+"</span>");
+  return $ret;
+};
+
 PrettyLarge.desig=function(desig, withLangLabel){
   var $ret=$("<div class='prettyDesig'></div>");
   var acceptLabel=Spec.getAcceptLabel(desig.accept); if(acceptLabel && acceptLabel.level<0) $ret.addClass("grey");
@@ -377,6 +413,12 @@ PrettyLarge.domain=function(obj, lang){
       $ret.append("<span class='step'>"+PrettyLarge.titleInLang(subdomain.title, lang)+"</span>");
     }
   }
+  return $ret;
+};
+
+PrettyLarge.type=function(obj, lang){
+  var $ret=$("<span></span>");
+  $ret.append("<span class='step'>"+PrettyLarge.titleInLang(obj.title, lang)+"</span>");
   return $ret;
 };
 

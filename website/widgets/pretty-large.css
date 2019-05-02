@@ -16,6 +16,7 @@ div.prettyEntry.large div.prettyRow.domain {font-size: 0.8em; position: relative
 div.prettyEntry.large div.prettyRow.majorTerms {border-top: 1px solid #eeeeee; padding: 3px 0px;}
 div.prettyEntry.large div.prettyRow.minorTerms {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyEntry.large div.prettyRow.definition {border-top: 1px solid #eeeeee; padding: 13px 0px;}
+div.prettyEntry.large div.prettyRow.note {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyEntry.large div.prettyRow.example {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyEntry.large div.collections {border-top: 1px solid #eeeeee; padding: 10px 5px; font-size: 0.75em; color: #999999;}
 div.prettyEntry.large div.extranets {border-top: 1px solid #eeeeee; padding: 10px 5px; font-size: 0.85em; color: #999999;}
@@ -60,6 +61,11 @@ div.prettyEntry.large span.prettyDefinition {display: block; font-size: 0.8em; p
 div.prettyEntry.large span.prettyDefinition span.domain {display: inline-block; background-color: #d7edeb; padding: 2px 6px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
 div.prettyEntry.large span.prettyDefinition span.domain:first-child {margin-left: -5px;}
 div.prettyEntry.large span.prettyDefinition span.text {}
+
+div.prettyEntry.large span.prettyNote {display: block; font-size: 0.8em; padding-left: 5px;}
+div.prettyEntry.large span.prettyNote span.type {display: inline-block; background-color: #ececec; padding: 2px 6px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
+div.prettyEntry.large span.prettyNote span.type:first-child {margin-left: -5px;}
+div.prettyEntry.large span.prettyNote span.text {}
 
 div.prettyEntry.large div.prettyExample {display: block; font-size: 0.8em; padding-left: 5px;}
 div.prettyEntry.large div.prettyExample div.sentence {font-weight: bold; color: #333333; margin-top: 5px;}

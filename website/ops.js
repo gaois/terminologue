@@ -889,7 +889,10 @@ module.exports={
                             module.exports.saveExamples(db, termbaseID, entryID, entry, function(){
                               //index my xrefs:
                               module.exports.saveXrefs(db, termbaseID, entryID, entry, function(){
-                                callnext(entryID);
+                                //index my notes:
+                                module.exports.saveNotes(db, termbaseID, entryID, entry, function(){
+                                  callnext(entryID);
+                                });
                               });
                             });
                           });
@@ -1184,6 +1187,27 @@ module.exports={
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_xref(entry_id, target_entry_id) values($entryID, $targetID)", {$entryID: entryID, $targetID: assig}, function(err){
+          go();
+        });
+      } else {
+        callnext();
+      }
+    }
+  },
+  saveNotes: function(db, termbaseID, entryID, entry, callnext){
+    var objs=[]; entry.notes.map(note => {
+      for(var lang in note.texts){
+        objs.push({typeID: note.type, lang: lang, text: note.texts[lang]});
+      }
+    });
+    db.run("delete from entry_note where entry_id=$entryID", {$entryID: entryID}, function(err){
+      go();
+    });
+    function go(){
+      var obj=objs.pop();
+      if(obj){
+        db.run("insert into entry_note(entry_id, type, lang, text) values($entryID, $typeID, $lang, $text)", {$entryID: entryID, $typeID: obj.typeID, $lang: obj.lang, $text: obj.text}, function(err){
+          if(err) console.log(err);
           go();
         });
       } else {
