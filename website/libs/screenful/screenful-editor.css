@@ -1,5 +1,5 @@
 #toolbar { position: absolute; top: 0px; left: 0px; right: 0px; height: 52px; box-shadow: -2px 2px 2px #999999; overflow-x: hidden; white-space: nowrap; overflow-y: hidden; z-index: 1; padding: 0px 10px; }
-#container { position: absolute; top: 54px; bottom: 0px; left: 15px; right: 0px; padding: 5px 20px 5px 0px; overflow-x: inherit; overflow-y: inherit; }
+#container { position: absolute; top: 54px; bottom: 0px; left: 15px; right: 0px; padding: 5px 20px 5px 0px; overflow-x: inherit; overflow-y: auto; }
 #container.withHistory {right: 350px; margin-right: 10px;}
 #container.withCommenting {right: 430px; margin-right: 10px;}
 #container.withSourceCode {left: 0px;}
