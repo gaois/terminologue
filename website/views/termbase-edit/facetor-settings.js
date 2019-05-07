@@ -194,14 +194,17 @@ Screenful.Facetor.panes=[{
     var $select=$(`<select class="fullwidth" id="facNote"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("with or without notes")})</option>`);
     $select.append(`<option value="1">${L("with a note")}</option>`);
+    $select.append(`<option value="txt">${L("with a note containing...")}</option>`);
     $select.append(`<option value="0">${L("without notes")}</option>`);
     $select.on("change", Screenful.Facetor.change);
     $select.on("change", function(){
       var val=$("#facNote").val();
-      if(val=="1") $("#facNoteType").show();
-      else $("#facNoteType").hide();
+      if(val=="1" || val=="txt") $("#facNoteType").show(); else $("#facNoteType").hide();
+      if(val=="txt") $("#facNoteText").show(); else $("#facNoteText").hide();
     });
-
+    //note text:
+    var $input=$(`<input class="fullwidth sub" id="facNoteText"/>`).hide().appendTo($inme);
+    $input.on("change", Screenful.Facetor.change);
     //note types:
     var $select=$(`<select class="fullwidth sub" id="facNoteType"></select>`).hide().appendTo($inme);
     termbaseMetadata.noteType=(termbaseMetadata.noteType || []);
@@ -255,9 +258,17 @@ Screenful.Facetor.panes=[{
     $inme.append(`<div class="title"><span class="tab">${L("comments")}</span></div>`);
     var $select=$(`<select class="fullwidth" id="facComments"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("with or without comments")})</option>`);
-    $select.append(`<option value="1">${L("with comments")}</option>`);
+    $select.append(`<option value="1">${L("with a comment")}</option>`);
+    $select.append(`<option value="txt">${L("with a comment contaning...")}</option>`);
     $select.append(`<option value="0">${L("without comments")}</option>`);
     $select.on("change", Screenful.Facetor.change);
+    $select.on("change", function(){
+      var val=$("#facComments").val();
+      if(val=="txt") $("#facCommentText").show(); else $("#facCommentText").hide();
+    });
+    //comment text:
+    var $input=$(`<input class="fullwidth sub" id="facCommentText"/>`).hide().appendTo($inme);
+    $input.on("change", Screenful.Facetor.change);
 
 
   },
@@ -289,11 +300,13 @@ Screenful.Facetor.panes=[{
 
     ret.note=$("#facNote").val();
     ret.noteType=$("#facNoteType").val();
+    ret.noteText=$("#facNoteText").val();
 
     ret.collection=$("#facCollection").val();
 
     ret.extranet=$("#facExtranet").val();
     ret.hasComments=$("#facComments").val();
+    ret.commentText=$("#facCommentText").val();
 
     return ret;
   },

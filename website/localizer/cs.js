@@ -279,6 +279,22 @@ function L(s, gloss){
   if(s=="any drafting status") return "jakýkoliv stav rozpracovanosti";
   if(s=="Prefabricated comments") return "Předpřipravené komentáře";
 
+  if(s=="NOTES") return "POZNÁMKY";
+  if(s=="note") return "poznámka";
+  if(s=="NOT") return "POZN";
+  if(s=="with or without notes") return "má nebo nemá poznámky";
+  if(s=="with a note") return "má poznámku";
+  if(s=="with a note containing...") return "má poznámku obsahující...";
+  if(s=="without notes") return "nemá poznámku";
+  if(s=="any type") return "jakýkoliv typ";
+  if(s=="private note, not shown on extranets") return "soukromá poznámka, neukazuje se na extranetech";
+  if(s=="private note, shown on extranets") return "soukromá poznámka, ukazuje se na extranetech";
+  if(s=="public note") return "veřejná poznámka";
+  if(s=="Note types") return "Typy poznámek";
+  if(s=="LEVEL") return "ÚROVEŇ";
+  if(s=="with a comment") return "nemá komentář";
+  if(s=="with a comment contaning...") return "má komentář obsahující...";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

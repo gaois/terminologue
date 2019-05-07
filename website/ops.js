@@ -600,8 +600,12 @@ module.exports={
         where.push(`fComments.id is null`);
       }
     } else {
-      if(facets.hasComments=="1"){
+      if(facets.hasComments=="1" || facets.hasComments=="txt"){
         joins.push(`inner join comments as fComments on fComments.entry_id=e.id`);
+        if(facets.hasComments=="txt"){
+          where.push(`(fComments.body<>'' and fComments.body like $fCommentText)`);
+          params[`$fCommentText`]="%"+facets.commentText+"%";
+        }
       }
       if(facets.hasComments=="0"){
         joins.push(`left outer join comments as fComments on fComments.entry_id=e.id`);
@@ -636,11 +640,15 @@ module.exports={
     if(facets.note=="0"){
       joins.push(`left outer join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
       where.push(`fEntryNote.text is null`);
-    } else if(facets.note=="1"){
+    } else if(facets.note=="1" || facets.note=="txt"){
       joins.push(`inner join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
       if(facets.noteType){
         where.push(`fEntryNote.type=$fNoteType`);
         params[`$fNoteType`]=parseInt(facets.noteType);
+      }
+      if(facets.note=="txt"){
+        where.push(`(fEntryNote.text<>'' and fEntryNote.text like $fNoteText)`);
+        params[`$fNoteText`]="%"+facets.noteText+"%";
       }
     }
 

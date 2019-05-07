@@ -281,6 +281,21 @@ function L(s, gloss){
   if(s=="any drafting status") return "stádas dréachtaithe ar bith";
   if(s=="Prefabricated comments") return "Nótaí tráchta réamhdhéanta";
 
+  if(s=="NOTES") return "NÓTAÍ EOLAIS";
+  if(s=="note") return "nóta eolais";
+  if(s=="NOT") return "NÓT";
+  if(s=="with or without notes") return "le nótaí eolais nó gan";
+  if(s=="with a note") return "le nóta eolais";
+  if(s=="with a note containing...") return "le nóta eolais ina bhfuil...";
+  if(s=="without notes") return "gan nótaí eolais";
+  if(s=="any type") return "cineál ar bith";
+  if(s=="private note, not shown on extranets") return "nóta eolais príobháideach, gan taispeáint ar na heislíonta";
+  if(s=="private note, shown on extranets") return "nóta eolais príobháideach, ar taispeáint ar na heislíonta";
+  if(s=="public note") return "nóta eolais poiblí";
+  if(s=="Note types") return "Cineálacha nótaí eolais";
+  if(s=="LEVEL") return "LEIBHÉAL";
+  if(s=="with a comment") return "le nóta tráchta";
+  if(s=="with a comment contaning...") return "le nóta tráchta ina bhfuil...";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
