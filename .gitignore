@@ -65,3 +65,4 @@ typings/
 temp/*
 data/lang/*
 scripts/_entrylist.txt
+scripts/fiat.txt
