@@ -55,4 +55,5 @@ div#resizerOverlay {position: absolute; top: 0px; left: 0px; right: 0px; bottom:
 div.resizer {position: absolute; width: 8px; z-index: 10; cursor: ew-resize; }
 div.resizer:hover {background-color: #a9c8cb; }
 div.resizer.active {background-color: #a9c8cb; }
-#container > div.resizer {top: 0px; bottom: 0px; right: -9px; }
+#container > div.resizer {top: 0px; bottom: 0px; right: 5px; }
+#container.withCommenting > div.resizer {right: 15px; }
