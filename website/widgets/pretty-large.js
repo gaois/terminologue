@@ -317,10 +317,12 @@ PrettyLarge.desig=function(desig, withLangLabel){
 };
 
 PrettyLarge.inflect=function(obj){
-  var metadatum=Spec.getInflectLabel(obj.label);
   var $ret=$("<span class='inflect'></span>");
-  $ret.append("<span class='abbr hintable' title='"+PrettyLarge.clean4html(PrettyLarge.title(metadatum.title))+"'>"+PrettyLarge.clean4html(metadatum.abbr)+":</span>")
-  $ret.append("&nbsp;")
+  var metadatum=Spec.getInflectLabel(obj.label);
+  if(metadatum){
+    $ret.append("<span class='abbr hintable' title='"+PrettyLarge.clean4html(PrettyLarge.title(metadatum.title))+"'>"+PrettyLarge.clean4html(metadatum.abbr)+":</span>")
+    $ret.append("&nbsp;");
+  }
   $ret.append("<span class='wording'>"+PrettyLarge.clean4html(obj.text)+"</span>")
   return $ret;
 };

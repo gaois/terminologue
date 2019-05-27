@@ -88,8 +88,10 @@ PrettySmall.desig=function(desig, withLangLabel){
 
 PrettySmall.inflect=function(obj){
   var $ret=$("<span class='inflect'></span>");
-  $ret.append("<span class='abbr'>"+PrettySmall.clean4html(Spec.getInflectLabel(obj.label).abbr)+":</span>")
-  $ret.append("&nbsp;")
+  if(Spec.getInflectLabel(obj.label)){
+    $ret.append("<span class='abbr'>"+PrettySmall.clean4html(Spec.getInflectLabel(obj.label).abbr)+":</span>")
+    $ret.append("&nbsp;")
+  }
   $ret.append("<span class='wording'>"+PrettySmall.clean4html(obj.text)+"</span>")
   return $ret;
 };
