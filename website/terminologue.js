@@ -260,35 +260,6 @@ app.post(siteconfig.rootPath+"users/delete.json", function(req, res){
   });
 });
 
-//Termbase home:
-app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
-  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
-  var db=ops.getDB(req.params.termbaseID, true);
-  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.dictID, function(user){
-    ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
-      db.close();
-      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-      configs.ident.blurb=ops.markdown(configs.ident.blurb[uilang] || configs.ident.blurb.$);
-      ops.readExtranetsByUser(db, req.params.termbaseID, user.email, function(_extranets){
-        var extranets=[]; _extranets.map(obj => { if(obj.live=="1") extranets.push(obj); });
-        res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets});
-      });
-    });
-  });
-});
-app.post(siteconfig.rootPath+":termbaseID/random.json", function(req, res){
-  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
-  var db=ops.getDB(req.params.termbaseID, true);
-  ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
-    if(!configs.publico.public) res.json({more: false, entries: []}); else {
-      ops.readRandoms(db, req.params.termbaseID, function(more, entries){
-        db.close();
-        res.json({more: more, entries: entries});
-      });
-    }
-  });
-});
-
 //Termbase editing:
 app.get(siteconfig.rootPath+":termbaseID/edit/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
@@ -976,6 +947,42 @@ app.post(siteconfig.rootPath+":termbaseID/edit/commentDelete.json", function(req
       ops.commentDelete(db, req.params.termbaseID, null, req.body.commentID, function(){
         db.close();
         res.json({success: true});
+      });
+    }
+  });
+});
+
+//Termbase home (and search):
+app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.dictID, function(user){
+    ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      if(!req.query.q){
+        //termbase home page:
+        db.close();
+        configs.ident.blurb=ops.markdown(configs.ident.blurb[uilang] || configs.ident.blurb.$);
+        ops.readExtranetsByUser(db, req.params.termbaseID, user.email, function(_extranets){
+          var extranets=[]; _extranets.map(obj => { if(obj.live=="1") extranets.push(obj); });
+          res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets});
+        });
+      } else {
+        //search results page:
+        db.close();
+        res.render("termbase/search.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, results: {} });
+      }
+    });
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/random.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
+    if(!configs.publico.public) res.json({more: false, entries: []}); else {
+      ops.readRandoms(db, req.params.termbaseID, function(more, entries){
+        db.close();
+        res.json({more: more, entries: entries});
       });
     }
   });
