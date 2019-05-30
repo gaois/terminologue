@@ -654,17 +654,17 @@ module.exports={
 
     var params1={}; for(var key in params) params1[key]=params[key];
     var sql1=`select e.id, e.json`;
-    if(searchtext!="" && modifiers[1]=="smart"){
-      sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
-      params1.$searchtext_matchquality=searchtext;
-    } else {
-      sql1+=`, 0`;
-    }
+    sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
+    params1.$searchtext_matchquality=searchtext;
     sql1+=` as match_quality\n`;
     sql1+=` from entries as e\n`;
     joins.map(s => {sql1+=" "+s+"\n"});
-    sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
-    params1.$sortlang=modifiers[2];
+    if(modifiers[2]){
+      sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
+      params1.$sortlang=modifiers[2];
+    } else {
+      sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
+    }
     if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
     sql1+=` group by e.id\n`;
     sql1+=` order by match_quality desc, sk.key\n`;
@@ -1873,6 +1873,52 @@ module.exports={
     }
   },
 
+  pubSearch: function(db, termbaseID, searchtext, page, callnext){
+    page=parseInt(page);
+    var howmany=page*100;
+    var startAt=(page-1)*100;
+    var sortlang=db.termbaseConfigs.lingo.languages[0].abbr;
+    module.exports.composeSqlQueries({pStatus: "1"}, searchtext, "* smart "+sortlang, howmany, function(sql1, params1, sql2, params2){
+      console.log(sql1, params1);
+      db.all(sql1, params1, function(err, rows){
+        if(err || !rows) rows=[];
+        var suggestions=null;
+        var want=true;
+        module.exports.getSpellsuggs(db, termbaseID, want, searchtext, function(suggs){
+          suggestions=suggs;
+
+          var primeEntries=null;
+          var entries=[];
+          for(var i=0; i<rows.length; i++){
+            if(i>=startAt){
+              var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+              if(rows[i].match_quality>0) {
+                if(!primeEntries) primeEntries=[];
+                primeEntries.push(item);
+              } else{
+                entries.push(item);
+              }
+            }
+          }
+          //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
+          db.get(sql2, params2, function(err, row){
+            if(err) console.log(err);
+            var total=(!err && row) ? row.total : 0;
+            var pages=Math.floor(total/100); if(total%100 > 0) pages++;
+            // callnext(total, pages, page, primeEntries, entries, suggestions);
+            callnext({
+              q: searchtext,
+              pages: pages,
+              page: page,
+              primeEntries: primeEntries,
+              entries: entries,
+              suggestions: suggestions,
+            });
+          });
+        });
+      });
+    });
+  },
 }
 
 function generateKey(){

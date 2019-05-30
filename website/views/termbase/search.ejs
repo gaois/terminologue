@@ -52,12 +52,35 @@
 						<a class="dictTitle" href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a>
 					</span>
 				</div>
-				<form class="searchContainer" action="./" method="GET"><span class="searchbox"><input class="searchbox" name="q"/><input type="submit" class="submit" value="&nbsp;"/></span></form>
+				<form class="searchContainer" action="./" method="GET"><span class="searchbox"><input class="searchbox" name="q" value="<%=results.q%>"/><input type="submit" class="submit" value="&nbsp;"/></span></form>
 			</div>
 		</div>
 
 		<div class="invelope">
-			Bla bla...
+
+			<%if(results.suggestions.length>0){%>
+				<div class="suggestions">
+					<%for(var i=0; i<results.suggestions.length; i++){%>
+						<a href="?q=<%-results.suggestions[i]%>"><%-results.suggestions[i]%></a>
+					<%}%>
+				</div>
+			<%}%>
+
+			<div class="entries">
+				<%if((results.primeEntries||[]).length==0 && (results.entries||[]).length==0){%>
+					<div class="nojoy">Ø</div>
+				<%}%>
+				<%for(var i=0; i<(results.primeEntries||[]).length; i++){%>
+					<p><a href="?id=<%=results.primeEntries[i].id%>">#</a> <%-results.primeEntries[i].json%></p>
+				<%}%>
+				<%if(results.primeEntries && results.entries.length>0){%>
+					<div class="hr">~~~</div>
+				<%}%>
+				<%for(var i=0; i<(results.entries||[]).length; i++){%>
+					<p><a href="?id=<%=results.entries[i].id%>">#</a> <%-results.entries[i].json%></p>
+				<%}%>
+			</div>
+
 		</div>
 
 

@@ -970,7 +970,9 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
       } else {
         //search results page:
         db.close();
-        res.render("termbase/search.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, results: {} });
+        ops.pubSearch(db, req.params.termbaseID, req.query.q, (req.query.p || 1), function(results){
+          res.render("termbase/search.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, results: results});
+        });
       }
     });
   });

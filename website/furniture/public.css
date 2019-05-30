@@ -15,7 +15,7 @@ body {background-image: url(header-back.gif); background-position: right top; ba
 .invelope.bottom {margin-top: 100px; border-top: 1px dotted #999999;  }
 .invelope > .clear {clear: both;}
 
-#dictheader {margin-bottom: 20px;}
+#dictheader {margin-bottom: 20px; z-index: 10; position: relative;}
 body.homepage { overflow: auto !important;}
 body.homepage .invelope.top { padding-top: 50px;}
 body.homepage #dictheader {text-align: center; margin-top: 100px; margin-bottom: 50px;}
@@ -162,3 +162,11 @@ body.doc div.markdown div.nouilang {color: #999999; margin-bottom: 10px;}
 
 div.readonly { text-align: center; padding: 115px 0px 0px 0px; background-image: url(maintenance.png); background-position: center top; background-repeat: no-repeat; line-height: 1.5em; color: #666666;}
 div.readonly div.readonlyTitle { color: #bd6c73; font-size: 1.25rem; margin-bottom: 0.75em;}
+
+div.suggestions {margin-top: -10px;}
+div.suggestions a {color: #999999; text-decoration: none; margin-right: 0.5em;}
+div.suggestions a:hover {color: var(--link)}
+
+div.entries {margin-top: 75px;}
+div.entries > div.nojoy {color: #999999; font-size: 2em;}
+div.entries > div.hr {color: #cccccc; margin: 50px 0px; text-align: center;}
