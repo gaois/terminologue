@@ -35,6 +35,7 @@
 		<script type="text/javascript" src="../furniture/screenful-user-config.js"></script>
 
 		<link type="text/css" rel="stylesheet" href="../furniture/public.css" />
+		<link type="text/css" rel="stylesheet" href="../widgets/pretty-public.css" />
 	</head>
 	<body class="entrypage">
 		<div id="header">
@@ -71,13 +72,13 @@
 					<div class="nojoy">Ø</div>
 				<%}%>
 				<%for(var i=0; i<(results.primeEntries||[]).length; i++){%>
-					<p><a href="?id=<%=results.primeEntries[i].id%>">#</a> <%-results.primeEntries[i].json%></p>
+					<%-results.primeEntries[i].html%>
 				<%}%>
 				<%if(results.primeEntries && results.entries.length>0){%>
 					<div class="hr">~~~</div>
 				<%}%>
 				<%for(var i=0; i<(results.entries||[]).length; i++){%>
-					<p><a href="?id=<%=results.entries[i].id%>">#</a> <%-results.entries[i].json%></p>
+					<%-results.entries[i].html%>
 				<%}%>
 			</div>
 
@@ -88,6 +89,9 @@
 			<div id="dictfooter">
 				<div class="right"><a href="../">Terminologue</a></div>
 				<div><a href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a></div>
+				<%if(termbaseConfigs.siteconfig.licences[termbaseConfigs.publico.licence]){ var lic=termbaseConfigs.siteconfig.licences[termbaseConfigs.publico.licence];%>
+					<a href="<%-lic.url%>" target="_blank"><img src="../<%-lic.icon%>" alt="<%=lic.title%>"/></a>
+				<%}%>
 			</div>
 		</div>
 

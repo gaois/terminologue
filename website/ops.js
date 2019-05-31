@@ -5,6 +5,7 @@ const sqlite3=require('sqlite3').verbose(); //https://www.npmjs.com/package/sqli
 const sha1=require('sha1'); //https://www.npmjs.com/package/sha1
 const markdown=require("markdown").markdown; //https://www.npmjs.com/package/markdown
 const levenshtein=require('js-levenshtein');
+const pp=require('./widgets/pretty-public.js');
 
 module.exports={
   siteconfig: {}, //populated by terminologue.js on startup
@@ -1879,7 +1880,6 @@ module.exports={
     var startAt=(page-1)*100;
     var sortlang=db.termbaseConfigs.lingo.languages[0].abbr;
     module.exports.composeSqlQueries({pStatus: "1"}, searchtext, "* smart "+sortlang, howmany, function(sql1, params1, sql2, params2){
-      console.log(sql1, params1);
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         var suggestions=null;
@@ -1891,7 +1891,7 @@ module.exports={
           var entries=[];
           for(var i=0; i<rows.length; i++){
             if(i>=startAt){
-              var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+              var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json)};
               if(rows[i].match_quality>0) {
                 if(!primeEntries) primeEntries=[];
                 primeEntries.push(item);
@@ -1917,6 +1917,15 @@ module.exports={
           });
         });
       });
+    });
+  },
+  pubEntry: function(db, termbaseID, entryID, callnext){
+    db.get("select * from entries where id=$id and pStatus=1", {$id: entryID}, function(err, row){
+      if(!row) {
+        callnext({id: 0, json: "", html: ""});
+      } else {
+        callnext({id: row.id, json: row.json, html: pp.renderEntry(row.id, row.json)});
+      }
     });
   },
 }

@@ -959,19 +959,25 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.dictID, function(user){
     ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
       var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-      if(!req.query.q){
-        //termbase home page:
-        db.close();
-        configs.ident.blurb=ops.markdown(configs.ident.blurb[uilang] || configs.ident.blurb.$);
-        ops.readExtranetsByUser(db, req.params.termbaseID, user.email, function(_extranets){
-          var extranets=[]; _extranets.map(obj => { if(obj.live=="1") extranets.push(obj); });
-          res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets});
+      if(req.query.q){
+        //search results page:
+        ops.pubSearch(db, req.params.termbaseID, req.query.q, (req.query.p || 1), function(results){
+          db.close();
+          res.render("termbase/search.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, results: results});
+        });
+      } else if(req.query.id) {
+        //individual entry page:
+        ops.pubEntry(db, req.params.termbaseID, req.query.id, function(entry){
+          db.close();
+          res.render("termbase/entry.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, entry: entry});
         });
       } else {
-        //search results page:
-        db.close();
-        ops.pubSearch(db, req.params.termbaseID, req.query.q, (req.query.p || 1), function(results){
-          res.render("termbase/search.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, results: results});
+        //termbase home page:
+        configs.ident.blurb=ops.markdown(configs.ident.blurb[uilang] || configs.ident.blurb.$);
+        ops.readExtranetsByUser(db, req.params.termbaseID, user.email, function(_extranets){
+          db.close();
+          var extranets=[]; _extranets.map(obj => { if(obj.live=="1") extranets.push(obj); });
+          res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets});
         });
       }
     });
