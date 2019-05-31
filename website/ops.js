@@ -1886,33 +1886,34 @@ module.exports={
         var want=true;
         module.exports.getSpellsuggs(db, termbaseID, want, searchtext, function(suggs){
           suggestions=suggs;
-
-          var primeEntries=null;
-          var entries=[];
-          for(var i=0; i<rows.length; i++){
-            if(i>=startAt){
-              var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json)};
-              if(rows[i].match_quality>0) {
-                if(!primeEntries) primeEntries=[];
-                primeEntries.push(item);
-              } else{
-                entries.push(item);
+          module.exports.readTermbaseMetadata(db, termbaseID, function(metadata){
+            var primeEntries=null;
+            var entries=[];
+            for(var i=0; i<rows.length; i++){
+              if(i>=startAt){
+                var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs)};
+                if(rows[i].match_quality>0) {
+                  if(!primeEntries) primeEntries=[];
+                  primeEntries.push(item);
+                } else{
+                  entries.push(item);
+                }
               }
             }
-          }
-          //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
-          db.get(sql2, params2, function(err, row){
-            if(err) console.log(err);
-            var total=(!err && row) ? row.total : 0;
-            var pages=Math.floor(total/100); if(total%100 > 0) pages++;
-            // callnext(total, pages, page, primeEntries, entries, suggestions);
-            callnext({
-              q: searchtext,
-              pages: pages,
-              page: page,
-              primeEntries: primeEntries,
-              entries: entries,
-              suggestions: suggestions,
+            //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
+            db.get(sql2, params2, function(err, row){
+              if(err) console.log(err);
+              var total=(!err && row) ? row.total : 0;
+              var pages=Math.floor(total/100); if(total%100 > 0) pages++;
+              // callnext(total, pages, page, primeEntries, entries, suggestions);
+              callnext({
+                q: searchtext,
+                pages: pages,
+                page: page,
+                primeEntries: primeEntries,
+                entries: entries,
+                suggestions: suggestions,
+              });
             });
           });
         });
@@ -1924,7 +1925,9 @@ module.exports={
       if(!row) {
         callnext({id: 0, json: "", html: ""});
       } else {
-        callnext({id: row.id, json: row.json, html: pp.renderEntry(row.id, row.json)});
+        module.exports.readTermbaseMetadata(db, termbaseID, function(metadata){
+          callnext({id: row.id, json: row.json, html: pp.renderEntry(row.id, row.json, metadata, db.termbaseConfigs)});
+        });
       }
     });
   },
