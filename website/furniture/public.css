@@ -169,4 +169,4 @@ div.suggestions a:hover {color: var(--link)}
 
 div.entries {margin-top: 75px;}
 div.entries > div.nojoy {color: #999999; font-size: 2em;}
-div.entries > div.hr {color: #999999; margin: 50px 0px; text-align: center;}
+div.entries > div.hr {color: #999999; margin: 50px 0px 20px 0px; font-weight: bold;}

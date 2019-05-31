@@ -655,8 +655,12 @@ module.exports={
 
     var params1={}; for(var key in params) params1[key]=params[key];
     var sql1=`select e.id, e.json`;
-    sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
-    params1.$searchtext_matchquality=searchtext;
+    if(searchtext!=""){
+      sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
+      params1.$searchtext_matchquality=searchtext;
+    } else {
+      sql1+=", 0";
+    }
     sql1+=` as match_quality\n`;
     sql1+=` from entries as e\n`;
     joins.map(s => {sql1+=" "+s+"\n"});

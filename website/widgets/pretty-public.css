@@ -1,6 +1,6 @@
-div.prettyEntry {font-size: 1.15em; padding: 15px 10px; line-height: 1.25em; color: #333333; position: relative;}
+div.prettyEntry {font-size: 1.15em; padding: 15px 0px; line-height: 1.25em; color: #333333; position: relative;}
 
-div.prettyEntry a.prettyAnchor {position: absolute; top: 17px; left: -20px; color: #999999; text-decoration: none;}
+div.prettyEntry a.prettyAnchor {position: absolute; top: 17px; left: -25px; color: #999999; text-decoration: none;}
 div.prettyEntry a.prettyAnchor:hover {color: var(--link)}
 
 div.prettyEntry .hintable {cursor: default;}
@@ -12,10 +12,17 @@ div.prettyEntry div.prettySources div.source {}
 
 div.prettyEntry div.prettyRow {}
 div.prettyEntry div.prettyRow > div.clear {clear: left;}
-div.prettyEntry div.prettyCell {float: left; box-sizing: border-box; padding-left: 15px; min-height: 1em;}
+div.prettyEntry div.prettyCell {float: left; box-sizing: border-box; padding-left: 15px; min-height: 1em; overflow-x: hidden;}
 div.prettyEntry div.prettyCell:first-child {padding-left: 0px;}
+@media (max-width: 800px){
+  div.prettyEntry div.prettyCell {float: none; padding-left: 0px; width: auto !important;}
+}
 
 div.prettyEntry div.prettyRow.domain {font-size: 0.8em; position: relative; background: linear-gradient(to right, #bbe2de 0%, transparent 100%); padding: 2px 6px; margin: 0px 0px 8px 0px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
+@media (max-width: 800px){
+  div.prettyEntry div.prettyRow.domain div.prettyCell {border-top: 1px dashed #ffffff; padding-top: 2px; margin-bottom: 2px;}
+  div.prettyEntry div.prettyRow.domain div.prettyCell:first-child {border-top: 0px; padding-top: 0px; margin-top: 0px;}
+}
 
 div.prettyEntry div.prettyRow.definition {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyEntry span.prettyDefinition {display: block; font-size: 0.8em; padding-left: 5px;}
@@ -35,6 +42,9 @@ div.prettyEntry span.prettyNote span.type:first-child {margin-left: -5px;}
 div.prettyEntry span.prettyNote span.text {}
 
 div.prettyEntry div.collections {border-top: 1px solid #eeeeee; padding: 10px 5px; font-size: 0.75em; color: #999999;}
+@media (max-width: 800px){
+  div.prettyEntry div.collections div {margin-bottom: 10px;}
+}
 
 div.prettyEntry div.prettyRow.majorTerms {border-top: 1px solid #eeeeee; padding: 3px 0px;}
 div.prettyEntry div.prettyRow.minorTerms {border-top: 1px solid #eeeeee; padding: 13px 0px;}
@@ -47,26 +57,27 @@ div.prettyEntry div.prettyDesig div.inflects {font-size: 0.8em;}
 div.prettyEntry div.prettyDesig div.inflects span.inflect {}
 div.prettyEntry div.prettyDesig div.inflects span.inflect span.abbr {font-style: italic; color: #536d94;}
 div.prettyEntry div.prettyDesig div.inflects span.inflect span.wording {}
-div.prettyEntry div.prettyDesig span.prettyWording {font-weight: bold; color: #333333;}
-div.prettyEntry div.prettyDesig span.prettyWording span.char {}
-div.prettyEntry div.prettyDesig span.prettyWording span.char.on {background-color: #eff5ca; box-shadow: 0px 0px 5px #e4e3af;}
-div.prettyEntry div.prettyDesig span.prettyWording span.label.on {background-color: #eff5ca;}
-div.prettyEntry div.prettyDesig span.prettyWording span.label {font-style: italic; color: #536d94; font-weight: normal; padding-left: 0.4em; padding-right: 0.4em; margin-right: -0.3em; cursor: default;}
-div.prettyEntry div.prettyDesig span.prettyWording span.label.posLabel {}
-div.prettyEntry div.prettyDesig span.prettyWording span.label.inflectLabel {}
-div.prettyEntry div.prettyDesig span.prettyWording span.label.langLabel {}
-div.prettyEntry div.prettyDesig span.prettyWording span.label.symbol {font-style: normal;}
+div.prettyEntry div.prettyDesig a.prettyWording {font-weight: bold; color: #333333; text-decoration: none;}
+div.prettyEntry div.prettyDesig a.prettyWording:hover {color: var(--link);}
+div.prettyEntry div.prettyDesig a.prettyWording span.char {}
+div.prettyEntry div.prettyDesig a.prettyWording span.char.on {background-color: #eff5ca; box-shadow: 0px 0px 5px #e4e3af;}
+div.prettyEntry div.prettyDesig a.prettyWording span.label.on {background-color: #eff5ca;}
+div.prettyEntry div.prettyDesig a.prettyWording span.label {font-style: italic; color: #536d94; font-weight: normal; padding-left: 0.4em; padding-right: 0.4em; margin-right: -0.3em; cursor: default;}
+div.prettyEntry div.prettyDesig a.prettyWording span.label.posLabel {}
+div.prettyEntry div.prettyDesig a.prettyWording span.label.inflectLabel {}
+div.prettyEntry div.prettyDesig a.prettyWording span.label.langLabel {}
+div.prettyEntry div.prettyDesig a.prettyWording span.label.symbol {font-style: normal;}
 
 div.prettyEntry div.prettyDesig.grey {color: #999999;}
-div.prettyEntry div.prettyDesig.grey span.prettyWording {color: #999999;}
+div.prettyEntry div.prettyDesig.grey a.prettyWording {color: #999999;}
 div.prettyEntry div.prettyDesig.grey div.inflects span.inflect span.wording {color: #999999;}
 div.prettyEntry div.prettyDesig.grey div.inflects span.inflect span.abbr {color: #999999;}
-div.prettyEntry div.prettyDesig.grey span.prettyWording span.label {color: #999999;}
+div.prettyEntry div.prettyDesig.grey a.prettyWording span.label {color: #999999;}
 div.prettyEntry div.prettyDesig.grey span.clarif {color: #999999;}
 div.prettyEntry div.prettyDesig.grey span.accept {color: #999999;}
 
 div.prettyEntry .minorTerms div.prettyDesig {margin: 0px; margin-right: 0em; }
 div.prettyEntry .minorTerms div.prettyDesig span.prettyLang {font-size: 0.7em; width: 1.75em; padding: 0px 8px; border: 0px;}
-div.prettyEntry .minorTerms div.prettyDesig span.prettyWording {font-size: 0.8em; color: #666666; white-space: nowrap;}
+div.prettyEntry .minorTerms div.prettyDesig a.prettyWording {font-size: 0.8em; color: #666666; white-space: nowrap;}
 
 div.prettyEntry div.prettyIntro {position: relative; padding-left: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em; color: #666666;}

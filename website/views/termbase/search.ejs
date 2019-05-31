@@ -76,7 +76,7 @@
 					<%-results.primeEntries[i].html%>
 				<%}%>
 				<%if(results.primeEntries && results.entries.length>0){%>
-					<div class="hr">~~~</div>
+					<div class="hr"><%=L("RELATED TERMS")%></div>
 				<%}%>
 				<%for(var i=0; i<(results.entries||[]).length; i++){%>
 					<%-results.entries[i].html%>

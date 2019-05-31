@@ -57,7 +57,6 @@ function FindSubdomain(domain, subdomainID){
 function Clean4Html(str){
   return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
-//---
 function LingySources(sources, lang, md, cg){
   var ret=`<div class='prettySources'>`;
   sources.map(obj => {
@@ -75,7 +74,6 @@ function Type(obj, lang){
   var ret=`<span><span class='step'>${TitleInLang(obj.title, lang)}</span></span>`;
   return ret;
 };
-
 //---
 
 function Entry(entryID, json, md, cg){
@@ -341,8 +339,8 @@ function Wording(str, annots, md, cg){
     }
   });
 
-  str=""; chars.map(c => { str+=c.markupBefore+c.char+c.markupAfter+c.labelsAfter; });
-  var ret=`<span class='prettyWording'>${str}</span>`;
+  astr=""; chars.map(c => { astr+=c.markupBefore+c.char+c.markupAfter+c.labelsAfter; });
+  var ret=`<a class="prettyWording" href="./?q=${encodeURIComponent(str)}">${astr}</a>`;
   return ret;
 }
 function Inflect(obj, md, cg){
