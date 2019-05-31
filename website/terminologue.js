@@ -562,6 +562,38 @@ app.get(siteconfig.rootPath+":termbaseID/config/url/", function(req, res){
     }
   });
 });
+app.get(siteconfig.rootPath+":termbaseID/config/tbxout/", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess || (user.level<5 && !user.isAdmin)) {
+      db.close();
+      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
+    } else {
+      ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+        db.close();
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-config/tbxout.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: "tbxout", uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+      });
+    }
+  });
+});
+app.get(siteconfig.rootPath+":termbaseID/config/tbxin/", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID, true);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess || (user.level<5 && !user.isAdmin)) {
+      db.close();
+      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
+    } else {
+      ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
+        db.close();
+        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+        res.render("termbase-config/tbxin.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: "tbxout", uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+      });
+    }
+  });
+});
 app.get(siteconfig.rootPath+":termbaseID/config/:configType/", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
@@ -636,6 +668,22 @@ app.post(siteconfig.rootPath+":termbaseID/config/move.json", function(req, res){
       db.close(function(){
         ops.renameTermbase(req.params.termbaseID, req.body.url, function(success){
           res.json({success: success});
+        });
+      });
+    }
+  });
+});
+app.post(siteconfig.rootPath+":termbaseID/config/purge.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(false) {
+      db.close();
+      res.json({success: false});
+    } else {
+      db.close(function(){
+        ops.purgeTermbase(req.params.termbaseID, function(){
+          res.json({success: true});
         });
       });
     }

@@ -66,6 +66,8 @@ div.dangerzone > div.inside {max-width: 1200px; margin: 0px auto 0px auto; }
 @media(max-width: 1300px) {div.dangerzone {position: relative; bottom: auto; margin: 20px 20px;}}
 div.dangerzone a {text-decoration: none; color: var(--link); display: inline-block; background-position: left center; background-repeat: no-repeat; padding-left: 25px; min-height: 16px; background-color: #ffffff; margin-right: 1em;}
 div.dangerzone a:hover {color: var(--link-hover);}
+div.dangerzone a.purge {background-image: url(bin_closed_bw.png); }
+div.dangerzone a.purge:hover {background-image: url(bin_closed.png);}
 div.dangerzone a.destroy {background-image: url(cross_bw.png); }
 div.dangerzone a.destroy:hover {background-image: url(cross.png);}
 div.dangerzone a.changeUrl {background-image: url(pencil_bw.png); }

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="icon" type="image/x-icon" href="../../../furniture/favicon.ico"/>
+    <title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
+		<script type="text/javascript" src="../../../libs/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-theme-green.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+		<script type="text/javascript" src="../../../localizer/<%-uilang%>.js"></script>
+		<script type="text/javascript">var rootPath="../../../";</script>
+
+		<script type="text/javascript" src="../../../libs/screenful/screenful-uilang.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-uilang.css" />
+		<script type="text/javascript">
+		Screenful.Uilang.url="../../../uilang?lang=$",
+		Screenful.Uilang.languages=<%-JSON.stringify(uilangs)%>;
+		Screenful.Uilang.current="<%-uilang%>";
+		</script>
+
+		<script type="text/javascript" src="../../../libs/screenful/screenful-user.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-user.css" />
+		<script type="text/javascript">
+		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
+		Screenful.User.username="<%=user.email%>";
+		</script>
+		<script type="text/javascript" src="../../../furniture/screenful-user-config.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-upload.css" />
+		<script type="text/javascript" src="../../../libs/screenful/screenful-upload.js"></script>
+		<script type="text/javascript">
+		Screenful.Upload.url="./upload.html";
+		</script>
+
+		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
+	</head>
+	<body>
+    <%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "config", subsectionID: configType, rootPath: "../../../"})%>
+	</body>
+</html>

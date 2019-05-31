@@ -266,6 +266,29 @@ module.exports={
       });
     }
   },
+  purgeTermbase: function(termbaseID, callnext){
+    var db=module.exports.getDB(termbaseID);
+    var sql=`delete from comments;
+    delete from entries;
+    delete from entry_collection;
+    delete from entry_def;
+    delete from entry_domain;
+    delete from entry_extranet;
+    delete from entry_intro;
+    delete from entry_note;
+    delete from entry_sortkey;
+    delete from entry_xmpl;
+    delete from entry_xref;
+    delete from entry_term;
+    delete from history;
+    delete from spelling;
+    delete from terms;
+    delete from words`;
+    db.exec(sql, function(err){
+      if(err) console.log(err);
+      callnext();
+    });
+  },
 
   termbaseExists: function(termbaseID){
     return fs.existsSync(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"));

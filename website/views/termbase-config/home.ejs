@@ -38,15 +38,17 @@
 					<div class="signpost"><a href="./ident/"><%=L('Name and blurb')%></a></div>
 					<div class="signpost"><a href="./lingo/"><%=L('Languages')%></a></div>
 					<div class="signpost"><a href="./abc/"><%=L('Alphabetical order')%></a></div>
+					<div class="signpost"><a href="./triggers/"><%=L('Automatic changes')%></a></div>
         </div>
         <div class="signposts">
 					<div class="signpost"><a href="./users/"><%=L('Users')%></a></div>
-					<div class="signpost"><a href="./triggers/"><%=L('Automatic changes')%></a></div>
-				</div>
-        <div class="signposts">
 					<%if(!locked){%><div class="signpost"><a href="./publico/"><%=L('Publishing')%></a></div><%}%>
 					<div class="signpost"><a href="./news/"><%=L('News and announcements')%></a></div>
 				</div>
+				<div class="signposts">
+					<div class="signpost disabled"><a href="javascript:void(null)" xhref="./tbxout/"><%=L('TBX export')%></a></div>
+					<div class="signpost disabled"><a href="javascript:void(null)" xhref="./tbxin/"><%=L('TBX import')%></a></div>
+        </div>
 				<div class="clear"></div>
 			</div>
 			<%if(!locked){%>
@@ -54,15 +56,25 @@
 					<div class="inside">
 						<a href="./url/" class="changeUrl"><%=L('Change the termbase\'s URL')%></a>
 						<a href="javascript:void(null)" class="destroy" onclick="destroy()"><%=L('Delete the termbase')%></a>
-						<script type="text/javascript">
-						function destroy(){
-							if(confirm("<%=L('Careful now! You will not be able to undo this.')%>")){
-								$.ajax({url: "./destroy.json", dataType: "json", method: "POST", data: {}}).done(function(data){
-									if(data.success) window.location="../../";
-								});
+							<script type="text/javascript">
+							function destroy(){
+								if(confirm("<%=L('Careful now! You are about to delete this termbase. You will not be able to undo this.')%>")){
+									$.ajax({url: "./destroy.json", dataType: "json", method: "POST", data: {}}).done(function(data){
+										if(data.success) window.location="../../";
+									});
+								}
 							}
-						}
-						</script>
+							</script>
+						<a href="javascript:void(null)" class="purge" onclick="purge()"><%=L('Empty the termbase')%></a>
+							<script type="text/javascript">
+							function purge(){
+								if(confirm("<%=L('Careful now! You are about to delete all entries and their history. You will not be able to undo this.')%>")){
+									$.ajax({url: "./purge.json", dataType: "json", method: "POST", data: {}}).done(function(data){
+										if(data.success) window.location="../edit/";
+									});
+								}
+							}
+							</script>
 					</div>
 				</div>
 			<%}%>

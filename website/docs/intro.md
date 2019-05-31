@@ -99,12 +99,6 @@ An extranet is a special section on the Terminologue website where a subset of a
 
 ![An extranet in Terminologue.](/docs/intro15.png)
 
-## Downloading and uploading
-
-Last but not least, Terminologue makes it possible for users (who have the appropriate privileges) to download and upload the termbase, either in its entirety or a subset. Data can be downloaded and uploaded either in Terminologue’s internal JSON format, or in TBX format. The JSON format is intended for transferring data from one Terminologue termbase to another, while the TBX format is for importing from and exporting into third-party software such as other terminology management tools, CAT tools or term extraction tools.
-
-It is not advisable to use the TBX format for transferring data from one Terminologue termbase to into another because the conversion from Terminologue’s internal format to TBX is not lossless: some details are lost in the conversion. For example, TBX does not support inline grammatical annotations, so these are converted to TBX as if they were attached to the whole term.
-
 ## Conclusion
 
 This brings us to the end of this introduction. Terminologue has a number of other features which we did not cover here and you will surely discover them as you use Terminologue. But most importantly, build great termbases!
