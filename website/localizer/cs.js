@@ -128,7 +128,6 @@ function L(s, gloss){
   if(s=="Publishing") return "Publikování";
   if(s=="Change the termbase's URL") return "Změnit URL databáze";
   if(s=="Delete the termbase") return "Smazat databázi";
-  if(s=="Careful now! You will not be able to undo this.") return "Pozor! Tohle nepůjde vrátit zpátky.";
   if(s=="TITLE") return "NADPIS";
   if(s=="SUBDOMAINS") return "PODDOMÉNY";
   if(s=="abbreviation") return "zkratka";
@@ -278,7 +277,6 @@ function L(s, gloss){
   if(s=="FINISHED") return "KONEČNÁ VERZE";
   if(s=="any drafting status") return "jakýkoliv stav rozpracovanosti";
   if(s=="Prefabricated comments") return "Předpřipravené komentáře";
-
   if(s=="NOTES") return "POZNÁMKY";
   if(s=="note") return "poznámka";
   if(s=="NOT") return "POZN";
@@ -294,6 +292,13 @@ function L(s, gloss){
   if(s=="LEVEL") return "ÚROVEŇ";
   if(s=="with a comment") return "nemá komentář";
   if(s=="with a comment contaning...") return "má komentář obsahující...";
+
+  if(s=="TBX export") return "Export TBX";
+  if(s=="TBX import") return "Import TBX";
+  if(s=="Empty the termbase") return "Vyprázdnit databázi";
+  if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Pozor! Celá databáze se smaže a nepůjde to vrátit zpátky.";
+  if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Pozor! Smažou se všechna hesla i jejich historie a nepůjde to vrátit zpátky.";
+  if(s=="RELATED TERMS") return "PŘÍBUZNÁ HESLA";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

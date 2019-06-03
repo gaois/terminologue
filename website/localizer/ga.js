@@ -130,7 +130,6 @@ function L(s, gloss){
   if(s=="Publishing") return "Foilsiú";
   if(s=="Change the termbase's URL") return "Athraigh URL an chnuasaigh";
   if(s=="Delete the termbase") return "Scrios an cnuasach";
-  if(s=="Careful now! You will not be able to undo this.") return "Cúramach! Ní bheidh tú ábalta dul ar ais.";
   if(s=="TITLE") return "TEIDEAL";
   if(s=="SUBDOMAINS") return "FO-RÉIMSÍ";
   if(s=="abbreviation") return "giorrúchán";
@@ -280,7 +279,6 @@ function L(s, gloss){
   if(s=="FINISHED") return "CRÍOCHNAITHE";
   if(s=="any drafting status") return "stádas dréachtaithe ar bith";
   if(s=="Prefabricated comments") return "Nótaí tráchta réamhdhéanta";
-
   if(s=="NOTES") return "NÓTAÍ EOLAIS";
   if(s=="note") return "nóta eolais";
   if(s=="NOT") return "NÓT";
@@ -296,6 +294,13 @@ function L(s, gloss){
   if(s=="LEVEL") return "LEIBHÉAL";
   if(s=="with a comment") return "le nóta tráchta";
   if(s=="with a comment contaning...") return "le nóta tráchta ina bhfuil...";
+
+  if(s=="TBX export") return "Easpórtáil TBX";
+  if(s=="TBX import") return "Iompórtáil TBX";
+  if(s=="Empty the termbase") return "Folmhaigh an cnuasach";
+  if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Cúmarach! Tá tú ar tí an cnuasach a scrios. Ní bheidh tú ábalta dul ar ais.";
+  if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Cúramach! Tá tú ar tí gach iontráil a scrios, móide a gcuid staire. Ní bheidh tú ábalta dul ar ais.";
+  if(s=="RELATED TERMS") return "TÉARMAÍ GAOLMHARA";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
