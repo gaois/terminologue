@@ -87,9 +87,15 @@ Terminologue keeps a log of every change to every entry and it is possible to se
 
 ![The history of an entry is displayed in Terminologue as a timeline.](/docs/intro14.png)
 
-## Tags and notes
+## Notes and comments
 
-Entries in Terminologue can be annotated with arbitrary *tags* and *notes*. These are for internal purposes and will never be visible publicly. The difference between *tags* and *notes* is that there is a fixed list of *tags* which a user can choose from in a drop-down list (these can be configured in the termbase’s *Administration* section) while *notes* can be any text. *Notes* and *tags* can be paired, so the *tag* can give the *note* a type (saying what kind of note it is).
+Entries in Terminologue can contain *notes*. *Note types*, which can be configured in the termbase’s *Administration* section, can have one of three access levels:
+
+1. private note, not shown on extranets
+2. private note, shown on extranets
+3. public note
+
+Entries in Terminologue can also be annotated with arbitrary *prefabricated comments* and *comments*. These are for internal purposes and will never be visible publicly. The difference between *prefabricated comments* and *comments* is that there is a fixed list of *prefabricated comments* which a user can choose from in a drop-down list (these can be configured in the termbase’s *Administration* section) while *comments* can be any text. *Comments* and *prefabricated comments* can be paired, so the *prefabricated comments* can give the *comments* a type (saying what kind of comment it is).
 
 ![An entry with a few tags and notes.](/docs/intro11.png)
 
