@@ -1,4 +1,4 @@
-const today="2019-03-09T20:00:00";
+const today="2019-06-17T18:00:00";
 
 const fs=require("fs-extra");
 const sqlite3 = require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
@@ -8,7 +8,7 @@ const ops=require("./../ops");
 const xmldom=require("xmldom"); //https://www.npmjs.com/package/xmldom
 const domParser=new xmldom.DOMParser();
 
-const dbpath="/home/mbm/terminologue/data/termbases/bnt.sqlite";
+const dbpath="/home/mbm/terminologue/data/termbases/rialacha.sqlite";
 var db=new sqlite3.Database(dbpath, sqlite3.OPEN_READWRITE);
 db.run('PRAGMA journal_mode=WAL');
 db.run('PRAGMA foreign_keys=on');
@@ -16,58 +16,46 @@ db.run('PRAGMA foreign_keys=on');
 var lang_id2abbr={}; //eg. "432543" -> "ga"
 var subdomain2superdomain={}; //eg. "545473" --> "544354"
 var lowAcceptLabelIDs=[];
-var changeID=2000000;
+var changeID=0;
 var xrefs={}; //conceptID -> [conceptID]
 var todDates={}; //termID -> [date]
+var noteTypeIDs=["913502", "4141127", "913493", "913508", "5346857", "913504"];
 
 //deed(100);
-//deed(1000000);
+deed(1000000);
 //DoWords();
 //DoLemmatize();
 //DoSpelling();
 
 function deed(stop){
-  readTOD();
+  // readTOD();
   readXrefs();
   db.exec("delete from entries; delete from history; delete from metadata; delete from terms; delete from entry_term; delete from sqlite_sequence", function(err){
-    db.run("update configs set json=$json where id='ident'", {$json: JSON.stringify({
-      "title": {
-        "ga": "Bunachar Náisiúnta Téarmaíochta don Ghaeilge",
-        "en": "National Terminology Database for Irish",
-        "$": "Bunachar Náisiúnta Téarmaíochta don Ghaeilge"
-      },
-      "blurb": {
-        "ga": "Is é seo an Bunachar Náisiúnta Téarmaíochta don Ghaeilge, arna fhorbairt ag Fiontar & Scoil na Gaeilge, DCU i gcomhar leis an gCoiste Téarmaíochta, Foras na Gaeilge. Tá os cionn 373,000 téarma ar fáil sa bhunachar agus iad inchuardaithe faoi na leaganacha Gaeilge agus Béarla. Tá comhéadan poiblí den bhunachar ag [www.tearma.ie](http://www.tearma.ie/).",
-        "en": "This is the National Terminology Database for Irish, developed by Fiontar & Scoil na Gaeilge, DCU in collaboration with An Coiste Téarmaíochta, Foras na Gaeilge. The database contains over 373,000 terms, searchable under both Irish and English versions. The public interface is at [www.tearma.ie](http://www.tearma.ie/).",
-        "$": "Is é seo an Bunachar Náisiúnta Téarmaíochta don Ghaeilge, arna fhorbairt ag Fiontar & Scoil na Gaeilge, DCU i gcomhar leis an gCoiste Téarmaíochta, Foras na Gaeilge. Tá os cionn 373,000 téarma ar fáil sa bhunachar agus iad inchuardaithe faoi na leaganacha Gaeilge agus Béarla. Tá comhéadan poiblí den bhunachar ag [www.tearma.ie](http://www.tearma.ie/)."
-      }
-    })}, function(){
-      console.log(`database emptied`);
-      db.run("BEGIN TRANSACTION");
-      doLanguages(db, function(){
-        doAcceptLabels(db, function(){
-          doInflectLabels(db, function(){
-            doSources(db, function(){
-              doPosLabels(db, function(){
-                doDomains(db, function(){
-                  doCollections(db, function(){
-                    doNoteTypes(db, function(){
-                      doConcepts(db, 0, stop, function(){
-                        db.run("COMMIT");
-                        db.close();
-                        console.log(`finito`);
-                        // var obj={
-                        //   title: {ga: "Téarmaí ar gá féachaint orthu", en: "Terms that need to be looked at", $: "Téarmaí ar gá féachaint orthu"},
-                        //   live: "1",
-                        //   users: ["valselob@gmail.com"]
-                        // };
-                        // ops.metadataCreate(db, "bnt", "extranet", null, JSON.stringify(obj), function(){
-                        //   db.run("COMMIT");
-                        //   db.close();
-                        //   console.log(`finito`);
-                        // });
-                    });
-                    });
+    console.log(`database emptied`);
+    db.run("BEGIN TRANSACTION");
+    doLanguages(db, function(){
+      doAcceptLabels(db, function(){
+        doInflectLabels(db, function(){
+          doSources(db, function(){
+            doPosLabels(db, function(){
+              doDomains(db, function(){
+                doCollections(db, function(){
+                  doNoteTypes(db, function(){
+                    doConcepts(db, 0, stop, function(){
+                      db.run("COMMIT");
+                      db.close();
+                      console.log(`finito`);
+                      // var obj={
+                      //   title: {ga: "Téarmaí ar gá féachaint orthu", en: "Terms that need to be looked at", $: "Téarmaí ar gá féachaint orthu"},
+                      //   live: "1",
+                      //   users: ["valselob@gmail.com"]
+                      // };
+                      // ops.metadataCreate(db, "bnt", "extranet", null, JSON.stringify(obj), function(){
+                      //   db.run("COMMIT");
+                      //   db.close();
+                      //   console.log(`finito`);
+                      // });
+                  });
                   });
                 });
               });
@@ -94,7 +82,7 @@ function readTOD(){
 }
 
 function readXrefs(){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.xrefgroup/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.xrefgroup/";
   var filenames=fs.readdirSync(dir);
   filenames.map(filename => {
     if(filename.match(/\.xml$/)){
@@ -121,7 +109,7 @@ function readXrefs(){
 }
 
 function doLanguages(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.language/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.language/";
   var lingo={languages: [
     {abbr: "ga", role: "major", title: {ga: "Gaeilge", en: "Irish"}},
     {abbr: "en", role: "major", title: {ga: "Béarla", en: "English"}},
@@ -152,7 +140,7 @@ function doLanguages(db, callnext){
   });
 }
 function doAcceptLabels(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.acceptLabel/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.acceptLabel/";
   var filenames=fs.readdirSync(dir);
   doOne();
   function doOne(){
@@ -179,7 +167,7 @@ function doAcceptLabels(db, callnext){
   };
 }
 function doInflectLabels(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.inflectLabel/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.inflectLabel/";
   var filenames=fs.readdirSync(dir);
   doOne();
   function doOne(){
@@ -211,7 +199,7 @@ function doInflectLabels(db, callnext){
   };
 }
 function doSources(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.source/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.source/";
   var filenames=fs.readdirSync(dir);
   doOne();
   function doOne(){
@@ -236,7 +224,7 @@ function doSources(db, callnext){
   };
 }
 function doPosLabels(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.posLabel/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.posLabel/";
   var filenames=fs.readdirSync(dir);
   doOne();
   function doOne(){
@@ -268,7 +256,7 @@ function doPosLabels(db, callnext){
   };
 }
 function doDomains(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.domain/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.domain/";
   var filenames=fs.readdirSync(dir);
   var domains={}; //"3543543" -> {...}
   filenames.map(filename => {
@@ -320,7 +308,7 @@ function doDomains(db, callnext){
   }
 }
 function doCollections(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.collection/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.collection/";
   var filenames=fs.readdirSync(dir);
   doOne();
   function doOne(){
@@ -345,7 +333,7 @@ function doCollections(db, callnext){
   };
 }
 function doNoteTypes(db, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.noteType/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.noteType/";
   var filenames=fs.readdirSync(dir);
   doOne();
   function doOne(){
@@ -355,11 +343,19 @@ function doNoteTypes(db, callnext){
       var xml=fs.readFileSync(dir+filename, "utf8");
       var doc=domParser.parseFromString(xml, 'text/xml');
       var json={
-        title: doc.getElementsByTagName("name")[0].getAttribute("default"),
+        title: {
+          ga: doc.getElementsByTagName("name")[0].getAttribute("default"),
+          en: "",
+        },
+        level: "1",
       };
-      ops.metadataUpdate(db, "bnt", "tag", id, JSON.stringify(json), function(){
+      if(noteTypeIDs.indexOf(id)>-1){
+        ops.metadataUpdate(db, "bnt", "noteType", id, JSON.stringify(json), function(){
+          doOne();
+        })
+      } else {
         doOne();
-      })
+      }
     } else {
       console.log("note types done");
       callnext();
@@ -367,7 +363,7 @@ function doNoteTypes(db, callnext){
   };
 }
 function doConcepts(db, start, stop, callnext){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.concept/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.concept/";
   var filenames=fs.readdirSync(dir).slice(start, stop);
   var todo=0;
   var done=0;
@@ -379,6 +375,7 @@ function doConcepts(db, start, stop, callnext){
     var json={
       cStatus: (doc.documentElement.getAttribute("checked")=="0" ? "0" : "1"),
       pStatus: (doc.documentElement.getAttribute("hidden")=="1" ? "0" : "1"),
+      dStatus: "1",
       dateStamp: "",
       tod: "",
       domains: [],
@@ -389,6 +386,7 @@ function doConcepts(db, start, stop, callnext){
       collections: [],
       extranets: [],
       xrefs: [],
+      notes: [],
     };
     //xrefs:
     if(xrefs[id]) json.xrefs=xrefs[id];
@@ -491,102 +489,134 @@ function doConcepts(db, start, stop, callnext){
     for(var i=0; i<els.length; i++) { el=els[i];
       json.collections.push(el.getAttribute("default"));
     }
-    //save the entry:
-    todo++;
-    fs.appendFileSync("/home/mbm/terminologue/temp/entries.txt", line([
-      id.toString(),
-      JSON.stringify(json),
-      json.cStatus,
-      json.pStatus,
-      "",
-      json.tod
-    ]));
-    //save entry into history:
-    fs.appendFileSync("/home/mbm/terminologue/temp/history.txt", line([
-      (++changeID),
-      id.toString(),
-      "update",
-      today,
-      "",
-      JSON.stringify(json),
-      JSON.stringify({diff: [{desc: "iompórtáilte as Léacslann"}]})
-    ]));
-    //save entry sortings:
-    var sortkeys=[];
-    ["ga", "en"].map(lang => {
-      var str="";
-      json.desigs.map(desig => { if(desig.term.lang==lang) str+=desig.term.wording; });
-      var abc=defaultAbc[lang];
-      var sortkey=toSortkey(str, abc);
-      sortkeys.push({lang: lang.abbr, key: sortkey})
-      fs.appendFileSync("/home/mbm/terminologue/temp/entry_sortkey.txt", line([
-        id.toString(),
-        lang,
-        sortkey
-      ]));
-    });
-    //save connections:
-    json.desigs.map(desig => {
-      fs.appendFileSync("/home/mbm/terminologue/temp/entry_term.txt", line([
-        id.toString(),
-        desig.term.id,
-        desig.accept||"0",
-        desig.clarif||""
-      ]));
-    });
-    //save domains:
-    json.domains.map(obj => {
-      fs.appendFileSync("/home/mbm/terminologue/temp/entry_domain.txt", line([
-        id.toString(),
-        obj.superdomain,
-        obj.subdomain||"0"
-      ]));
-    });
-    //save collections:
-    json.collections.map(obj => {
-      fs.appendFileSync("/home/mbm/terminologue/temp/entry_collection.txt", line([
-        id.toString(),
-        obj
-      ]));
-    });
-    //save intros:
-    for(var key in json.intros){
-      fs.appendFileSync("/home/mbm/terminologue/temp/entry_intro.txt", line([
-        id.toString(),
-        json.intros[key]
-      ]));
-    }
-    //save definitions:
-    json.definitions.map(def => {
-      for(var key in def.texts){
-        if(def.texts[key]){
-          fs.appendFileSync("/home/mbm/terminologue/temp/entry_def.txt", line([
-            id.toString(),
-            def.texts[key]
-          ]));
-        }
-      }
-    });
-    //save examples:
-    json.examples.map(ex => {
-      for(var key in ex.texts){
-        ex.texts[key].map(text => {
-          if(text){
-            fs.appendFileSync("/home/mbm/terminologue/temp/entry_xmpl.txt", line([
-              id.toString(),
-              text
-            ]));
-          }
+    //notes:
+    var els=doc.getElementsByTagName("note");
+    for(var i=0; i<els.length; i++) { el=els[i];
+      if(noteTypeIDs.indexOf(el.getAttribute("type"))>-1){
+        json.notes.push({
+          type: el.getAttribute("type"),
+          texts: {
+            ga: el.getAttribute("default"),
+            en: "",
+          },
+          "sources": [],
+          "nonessential": "0",
         });
       }
-    });
-    //save xrefs:
-    json.xrefs.map(targetID => {
-      fs.appendFileSync("/home/mbm/terminologue/temp/entry_xref.txt", line([
+    }
+
+    if(json.collections.indexOf("5346855")>-1) { //"Rialacha na nUaschúirteanna 2019 inmheánach"
+      //save the entry:
+      todo++;
+      fs.appendFileSync("/home/mbm/terminologue/temp/entries.txt", line([
         id.toString(),
-        targetID
+        JSON.stringify(json),
+        json.cStatus,
+        json.pStatus,
+        "",
+        json.tod,
+        json.dStatus,
       ]));
-    });
+      //save entry into history:
+      fs.appendFileSync("/home/mbm/terminologue/temp/history.txt", line([
+        (++changeID),
+        id.toString(),
+        "update",
+        today,
+        "",
+        JSON.stringify(json),
+        JSON.stringify({diff: [{desc: "iompórtáilte as Léacslann"}]})
+      ]));
+      //save entry sortings:
+      var sortkeys=[];
+      ["ga", "en"].map(lang => {
+        var str="";
+        json.desigs.map(desig => { if(desig.term.lang==lang) str+=desig.term.wording; });
+        var abc=defaultAbc[lang];
+        var sortkey=toSortkey(str, abc);
+        sortkeys.push({lang: lang.abbr, key: sortkey})
+        fs.appendFileSync("/home/mbm/terminologue/temp/entry_sortkey.txt", line([
+          id.toString(),
+          lang,
+          sortkey
+        ]));
+      });
+      //save connections:
+      json.desigs.map(desig => {
+        fs.appendFileSync("/home/mbm/terminologue/temp/entry_term.txt", line([
+          id.toString(),
+          desig.term.id,
+          desig.accept||"0",
+          desig.clarif||""
+        ]));
+      });
+      //save domains:
+      json.domains.map(obj => {
+        fs.appendFileSync("/home/mbm/terminologue/temp/entry_domain.txt", line([
+          id.toString(),
+          obj.superdomain,
+          obj.subdomain||"0"
+        ]));
+      });
+      //save collections:
+      json.collections.map(obj => {
+        fs.appendFileSync("/home/mbm/terminologue/temp/entry_collection.txt", line([
+          id.toString(),
+          obj
+        ]));
+      });
+      //save intros:
+      for(var key in json.intros){
+        fs.appendFileSync("/home/mbm/terminologue/temp/entry_intro.txt", line([
+          id.toString(),
+          json.intros[key]
+        ]));
+      }
+      //save definitions:
+      json.definitions.map(def => {
+        for(var key in def.texts){
+          if(def.texts[key]){
+            fs.appendFileSync("/home/mbm/terminologue/temp/entry_def.txt", line([
+              id.toString(),
+              def.texts[key]
+            ]));
+          }
+        }
+      });
+      //save notes:
+      json.notes.map(note => {
+        for(var key in note.texts){
+          if(note.texts[key]){
+            fs.appendFileSync("/home/mbm/terminologue/temp/entry_note.txt", line([
+              id.toString(),
+              note.type,
+              key,
+              note.texts[key],
+            ]));
+          }
+        }
+      });
+      //save examples:
+      json.examples.map(ex => {
+        for(var key in ex.texts){
+          ex.texts[key].map(text => {
+            if(text){
+              fs.appendFileSync("/home/mbm/terminologue/temp/entry_xmpl.txt", line([
+                id.toString(),
+                text
+              ]));
+            }
+          });
+        }
+      });
+      //save xrefs:
+      json.xrefs.map(targetID => {
+        fs.appendFileSync("/home/mbm/terminologue/temp/entry_xref.txt", line([
+          id.toString(),
+          targetID
+        ]));
+      });
+    }
 
     //concept done:
     done++;
@@ -596,7 +626,7 @@ function doConcepts(db, start, stop, callnext){
 }
 var termsDone=[];
 function getTerm(termID){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.term/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.term/";
   if(!fs.existsSync(dir+termID+".xml")) return null;
   var xml=fs.readFileSync(dir+termID+".xml", "utf8");
   var doc=domParser.parseFromString(xml, 'text/xml');
@@ -677,7 +707,7 @@ function getTerm(termID){
   return json;
 }
 function getExample(exampleID){
-  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focal.example/";
+  var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/focdli.example/";
   if(!fs.existsSync(dir+exampleID+".xml")) return null;
   var xml=fs.readFileSync(dir+exampleID+".xml", "utf8");
   var doc=domParser.parseFromString(xml, 'text/xml');
