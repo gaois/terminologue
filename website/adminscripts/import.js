@@ -22,10 +22,11 @@ var todDates={}; //termID -> [date]
 var noteTypeIDs=["913502", "4141127", "913493", "913508", "5346857", "913504"];
 
 //deed(100);
-deed(1000000);
+//deed(1000000);
 //DoWords();
 //DoLemmatize();
 //DoSpelling();
+DoExtranet(db);
 
 function deed(stop){
   // readTOD();
@@ -1226,4 +1227,38 @@ function DoSpelling(){
       ]));
     }
   });
+}
+
+function DoExtranet(db){
+  var extranetID=1;
+  var extranet={
+    "title": {"$": "Eislíon a bhí ar Léacslann"},
+    "live": "0",
+    "users": [],
+  };
+  ops.metadataCreate(db, "bnt", "extranet", extranetID, JSON.stringify(extranet), function(){
+    var dir="/media/mbm/Windows/MBM/Fiontar/Export2Terminologue/data-out/extranet.comment/";
+    var filenames=fs.readdirSync(dir);
+    filenames.map((filename) => {
+      if(filename.match(/\.xml$/)){
+        var id=filename.replace(/\.xml$/, "");
+        var xml=fs.readFileSync(dir+filename, "utf8");
+        var doc=domParser.parseFromString(xml, 'text/xml');
+        var entryID=doc.documentElement.getAttribute("about");
+        var when=doc.documentElement.getAttribute("datetime");
+        var email="";
+        var body=doc.documentElement.getAttribute("body")+" — "+doc.documentElement.getAttribute("author");
+        console.log(id);
+        fs.appendFileSync("/home/mbm/terminologue/temp/comments.txt", line([
+          id,
+          entryID,
+          extranetID,
+          "",
+          when,
+          "",
+          body,
+        ]));
+      }
+    });
+  })
 }
