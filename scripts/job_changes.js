@@ -1,5 +1,5 @@
-var FROM="2019-03-01"; //on or after this date
-var TILL="2019-05-01"; //before this date
+var FROM="2019-05-01"; //on or after this date
+var TILL="2019-07-01"; //before this date
 const WRITE_TO="_entrylist.txt";
 
 //------
