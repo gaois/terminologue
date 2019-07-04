@@ -13,7 +13,7 @@
 #envelope.leftContainerExpanded > #leftcontainer > .closer:hover {background-color: #eeeeee;}
 #envelope.leftContainerExpanded > #leftcontainer > #leftbox {display: block;}
 
-#navbox { position: absolute; top: 0px; left: 0px; width: 30%; height: 100px; box-shadow: -2px 2px 2px #999999; z-index: 5;}
+#navbox { position: absolute; top: 0px; left: 0px; width: 30%; height: 100px; box-shadow: -2px 2px 2px #999999; x-z-index: 5;}
 #listbox { position: absolute; top: 100px; left: 0px; width: 30%; bottom: 0px; overflow-y: scroll; overflow-x: hidden; padding-top: 10px; }
 #starlist { position: absolute; top: 90px; left: 0px; width: 30%; bottom: 0px; overflow: hidden; z-index: 5; }
 #starlist > div.callout {height: 9px; position: absolute; top: 0px; left: 0px; right: 0px; background-image: url(callout.gif); background-repeat: no-repeat; background-position: center right 65px;}
@@ -200,3 +200,28 @@ div.resizer.active {background-color: #a9c8cb; }
 #editbox > div.resizer {top: 0px; bottom: 3px; left: 1px; }
 #midcontainer > div.resizer {top: 1px; bottom: 3px; left: 3px; display: none;}
 #envelope.leftContainerExpanded #midcontainer > div.resizer {display: block;}
+
+body.narrow {}
+body.narrow #navbox {width: 100%;}
+body.narrow #listbox {width: 100%;}
+body.narrow #editbox {display: none;}
+body.narrow #midcontainer {top: 30px;}
+body.narrow #leftcontainer {top: 30px;}
+
+body.narrow.editorShown {}
+body.narrow.editorShown #navbox {display: none !important;}
+body.narrow.editorShown #listbox {display: none !important;}
+body.narrow.editorShown #editbox {display: block; left: 0px;}
+body.narrow.editorShown #leftcontainer {display: none !important;}
+body.narrow.editorShown #midcontainer {left: 0 !important;}
+
+#envelope #narrowToolbar {display: none;}
+body.narrow #envelope #narrowToolbar {display: block; position: absolute; top: 0px; left: 0px; right: 0px; height: 29px; border-bottom: 1px solid var(--border); overflow: hidden;}
+#envelope #narrowToolbar span.tab {display: inline-block; background-color: #dddddd; padding: 5px 20px; box-sizing: border-box; height: 29px; font-size: 85%; margin-left: 10px; border-radius: 4px 4px 0px 0px; text-shadow: 1px 1px 0px #ffffff; color: #333333; cursor: pointer;}
+#envelope #narrowToolbar span.tab.current {background-color: var(--contrast); color: #ffffff; text-shadow: 0px 0px 0px transparent; font-weight: bold;}
+#envelope #narrowToolbar span.tab:hover {color: #666666; box-shadow: 0px 0px 2px #999999;}
+#envelope #narrowToolbar span.tab.current:hover {color: #eeeeee;}
+
+#statusbar label#chkNarrow {position: absolute; right: 10px; top: 0px; cursor: pointer;}
+#statusbar label#chkNarrow:hover {color: #333333;}
+#statusbar label#chkNarrow input {position: relative; top: 3px;}

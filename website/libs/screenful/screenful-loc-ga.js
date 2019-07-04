@@ -89,4 +89,7 @@ Screenful.Loc={
   printable: "Leagan oiriúnach le priontáil",
   printableOff: "Ar ais",
   batchConfirm: "Cúramach! Déanfar an t-athrú seo ar gach iontráil atá liostaithe anseo ($X san iomlán). An bhfuil tú cinnte?",
+  narrow: "Scáileán cúng",
+  narrowList: "LIOSTA",
+  narrowEditor: "AMHARC/EAGAR",
 };

@@ -89,4 +89,7 @@ Screenful.Loc={
   printable: "Printer-friendly version",
   printableOff: "Back",
   batchConfirm: "Careful now! This change will be made on all entries listed here ($X in total). Are you sure?",
+  narrow: "Narrow screen",
+  narrowList: "LIST",
+  narrowEditor: "VIEWER/EDITOR",
 };

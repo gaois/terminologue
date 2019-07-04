@@ -3,7 +3,27 @@ Screenful.Navigator={
   stepSize: 10,
   start: function(){
     Screenful.createEnvelope();
-    $("#envelope").html("<div id='printableToolbar'><button class='iconYes noborder' id='butPrintableOff'>"+Screenful.Loc.printableOff+"</button></div>");
+
+    if(Screenful.Navigator.allowNarrow){
+      $("#envelope").append("<div id='narrowToolbar'><span id='narrowTabList' class='tab current'>"+Screenful.Loc.narrowList+"</span><span id='narrowTabEditor' class='tab'>"+Screenful.Loc.narrowEditor+"</span></div>");
+      $("#narrowTabList").on("click", function(e){
+        $("#narrowTabList").addClass("current");
+        $("#narrowTabEditor").removeClass("current");
+        $("body").removeClass("editorShown");
+      });
+      $("#narrowTabEditor").on("click", function(e){
+        $("#narrowTabList").removeClass("current");
+        $("#narrowTabEditor").addClass("current");
+        $("body").addClass("editorShown");
+      });
+      $("#statusbar").append("<label id='chkNarrow'><input type='checkbox'/> "+Screenful.Loc.narrow+"</label>");
+      $("#statusbar label#chkNarrow input").on("change", function(e){
+        var checked=$("#statusbar label#chkNarrow input").prop("checked");
+        if(checked) $("body").addClass("narrow"); else $("body").removeClass("narrow");
+      });
+    }
+
+    $("#envelope").append("<div id='printableToolbar'><button class='iconYes noborder' id='butPrintableOff'>"+Screenful.Loc.printableOff+"</button></div>");
     $("#butPrintableOff").on("click", Screenful.Navigator.printableOff);
     $("#envelope").append("<div id='midcontainer'></div><div id='leftcontainer'><span class='closer'>×</span><div id='leftbox'></div></div>");
 
@@ -443,6 +463,9 @@ Screenful.Navigator={
     var entry=event.data;
     if(window.frames["editframe"].Screenful) {
       window.frames["editframe"].Screenful.Editor.open(null, entry.id);
+      $("#narrowTabList").removeClass("current");
+      $("#narrowTabEditor").addClass("current");
+      $("body").addClass("editorShown");
     }
   },
   setEntryAsCurrent: function(id){

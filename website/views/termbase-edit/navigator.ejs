@@ -59,6 +59,7 @@
 		});
 		Screenful.Navigator.entryDeleteUrl="./delete.json";
 		Screenful.Navigator.allowPrintable=true;
+		Screenful.Navigator.allowNarrow=true;
 		</script>
 
 		<link type="text/css" rel="stylesheet" href="../../widgets/pretty-small.css" />
@@ -158,7 +159,7 @@
 
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
 	</head>
-	<body>
+	<body class="x-narrow x-editorShown">
 		<%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "edit", rootPath: "../../", L: L})%>
 	</body>
 </html>

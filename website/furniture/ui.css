@@ -1,4 +1,5 @@
 #header {padding: 10px 10px; height: 38px; border-bottom: 1px solid var(--border); background-image: url(header-back.gif); background-position: right top; background-repeat: no-repeat;}
+body.narrow #header {border-bottom: 0px;}
 #header * {vertical-align: middle;}
 #header a {text-decoration: none;}
 #header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header.png);; margin-top: 5px;}

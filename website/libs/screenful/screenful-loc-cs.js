@@ -89,4 +89,7 @@ Screenful.Loc={
   printable: "Verze pro tisk",
   printableOff: "Zpátky",
   batchConfirm: "Pozor! Tato změna se provede na všech heslech, která jsou tu vypsána (celkem $X). Opravdu to chcete?",
+  narrow: "Úzká obrazovka",
+  narrowList: "SEZNAM",
+  narrowEditor: "DETAILY",
 };
