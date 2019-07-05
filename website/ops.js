@@ -419,12 +419,12 @@ module.exports={
   },
 
   entryListById: function(db, termbaseID, ids, callnext){
-    var sql=`select * from entries where id in(${ids})`;
+    var sql=`select *, (select count(*) from comments as c where c.entry_id=e.id) as commentCount from entries as e where e.id in(${ids})`;
     db.all(sql, {}, function(err, rows){
       if(err || !rows) rows=[];
       var entries=[];
       for(var i=0; i<rows.length; i++){
-        var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+        var item={id: rows[i].id, title: rows[i].id, json: rows[i].json, commentCount: rows[i].commentCount};
         entries.push(item);
       }
       callnext(entries);
@@ -436,6 +436,7 @@ module.exports={
     var startAt=(page-1)*100;
     module.exports.composeSqlQueries(facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
+        if(err) console.log(err);
         if(err || !rows) rows=[];
         var suggestions=null;
         var want=(searchtext!="" && modifier.split(" ")[1]=="smart");
@@ -446,7 +447,7 @@ module.exports={
           var entries=[];
           for(var i=0; i<rows.length; i++){
             if(i>=startAt){
-              var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+              var item={id: rows[i].id, title: rows[i].id, json: rows[i].json, commentCount: rows[i].commentCount};
               if(rows[i].match_quality>0) {
                 if(!primeEntries) primeEntries=[];
                 primeEntries.push(item);
@@ -455,9 +456,7 @@ module.exports={
               }
             }
           }
-          //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
           db.get(sql2, params2, function(err, row){
-            if(err) console.log(err);
             var total=(!err && row) ? row.total : 0;
             var pages=Math.floor(total/100); if(total%100 > 0) pages++;
             callnext(total, pages, page, primeEntries, entries, suggestions);
@@ -677,7 +676,7 @@ module.exports={
     }
 
     var params1={}; for(var key in params) params1[key]=params[key];
-    var sql1=`select e.id, e.json`;
+    var sql1=`select e.id, e.json, (select count(*) from comments as c where c.entry_id=e.id) as commentCount`;
     if(searchtext!=""){
       sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
       params1.$searchtext_matchquality=searchtext;

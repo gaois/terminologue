@@ -74,11 +74,13 @@
 		</style>
 		<script type="text/javascript">
 		Screenful.Navigator.renderer=function(div, entry, searchtext, modifier){
+			var json=JSON.parse(entry.json);
+			json.commentCount=entry.commentCount;
 			//$(div).html(entry.id);
 			//$(div).html( PrettySmall.entry(JSON.parse(entry.json)) );
 			$(div).html("");
-			$(div).append(PrettySmall.entry(JSON.parse(entry.json)));
-			$(div).append(PrettyLarge.entry(JSON.parse(entry.json)));
+			$(div).append(PrettySmall.entry(json));
+			$(div).append(PrettyLarge.entry(json));
 		};
 		</script>
 

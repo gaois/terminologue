@@ -29,6 +29,10 @@ PrettySmall.metadatum=function(metadatum, lingo){
 PrettySmall.entry=function(entry){
   var $ret=$("<div class='prettyEntry small'></div>");
 
+  if(entry.commentCount){
+    $ret.append("<span class='commentCount'><span class='num'>"+entry.commentCount+"</span></span>");
+  }
+
   entry.domains.map(obj => {
     $ret.append(PrettySmall.domain(obj));
   });

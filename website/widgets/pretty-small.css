@@ -3,6 +3,9 @@ span.prettyMetadatum span.abbr {font-weight: bold;}
 
 div.prettyEntry.small {font-size: 1em; padding-bottom: 10px; position: relative;}
 
+div.prettyEntry.small span.commentCount {float: right; display: block; box-sizing: border-box; background-image: url(../furniture/comment.png); background-position: center right+5px; background-repeat: no-repeat; border: 1px solid #dddddd; padding: 1px 25px 1px 5px; border-radius: 2px; position: relative; top: -2px; margin-right: 5px;}
+div.prettyEntry.small span.commentCount span.num {color: #dd0000; font-size: 75%;}
+
 div.prettyEntry.small div.prettyDomain {font-size: 0.8em; position: relative; background: linear-gradient(to right, #eeeeee 0%, transparent 50%); padding: 2px 5px; margin: 0px 0px 5px 0px; border-radius: 4px;}
 div.prettyEntry.small div.prettyDomain span.step > span:first-child {font-weight: bold;}
 
