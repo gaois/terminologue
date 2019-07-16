@@ -17,7 +17,7 @@ function L(s){
   if(s=="trigger_termWordingChange") return "term wording changed";
   if(s=="trigger_termInflectAdd") return "inlected form added";
   if(s=="trigger_termInflectRemove") return "inflected form removed";
-  if(s=="trigger_termInflectReorder") return "infected forms reordered";
+  if(s=="trigger_termInflectReorder") return "inflected forms reordered";
   if(s=="trigger_termInflectLabelChange") return "inflected form label changed";
   if(s=="trigger_termInflectTextChange") return "inflected form wording changed";
   if(s=="trigger_termAnnotAdd") return "term annotation added";
@@ -38,7 +38,7 @@ function L(s){
   if(s=="trigger_exampleTextReorder") return "example sentences reordered";
   if(s=="trigger_exampleTextChange") return "example sentence wording changed";
   if(s=="trigger_collectionAdd") return "collection added";
-  if(s=="trigger_collectionRemove") return "collecttion removed";
+  if(s=="trigger_collectionRemove") return "collection removed";
   if(s=="trigger_collectionReorder") return "collections reordered";
   if(s=="trigger_collectionChange") return "collection changed";
   if(s=="trigger_extranetAdd") return "extranet added";
