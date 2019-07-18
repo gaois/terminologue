@@ -5,7 +5,7 @@ var docSpec={
 	elements: {
 
 		"newUser": {
-			displayName: "en: newUser | ga: úsáideoirNua | cs: novýUživatel | sv: xx",
+			displayName: "en: newUser | ga: úsáideoirNua | cs: novýUživatel | sv: newUser",
 			collapsible: false,
 			attributes: {
 				"email": {
@@ -25,7 +25,7 @@ var docSpec={
 			collapsible: false,
 			attributes: {
 				"lastSeen": {
-					displayName: "en: lastSeen | ga: cuairtDheireanach | cs: naposledViděn | sv: xx",
+					displayName: "en: lastSeen | ga: cuairtDheireanach | cs: naposledViděn | sv: lastSeen",
 					isReadOnly: true,
 				},
 				"password": {
@@ -33,7 +33,7 @@ var docSpec={
 					asker: Xonomy.askString,
 					askerParameter: {},
 					menu: [{
-						caption: "en: Remove | ga: Bain | cs: Odstranit | sv: xx",
+						caption: "en: Remove | ga: Bain | cs: Odstranit | sv: Remove",
 						action: Xonomy.deleteAttribute,
 					}],
 				},
@@ -66,11 +66,11 @@ var docSpec={
 		oneliner: true,
 		hasText: false,
 		collapsible: false,
-		menu: [{caption: "en: Remove | ga: Bain | cs: Odstranit | sv: xx", action: Xonomy.deleteElement}],
+		menu: [{caption: "en: Remove | ga: Bain | cs: Odstranit | sv: Remove", action: Xonomy.deleteElement}],
 	},
 	unknownAttribute: {
 		isReadOnly: true,
-		menu: [{caption: "en: Remove | ga: Bain | cs: Odstranit | sv: xx", action: Xonomy.deleteAttribute}],
+		menu: [{caption: "en: Remove | ga: Bain | cs: Odstranit | sv: Remove", action: Xonomy.deleteAttribute}],
 	},
 
 };
