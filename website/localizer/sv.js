@@ -166,19 +166,19 @@
   if(s=="any clarification or no clarification") return "vilket förtydligande som helst eller inget förtydligande";
   if(s=="any clarification") return "vilket förtydligande som helst";
   if(s=="no clarification") return "inget förtydligande";
-  if(s=="clarification containing...") return "förtydligande som innehåller ...";
+  if(s=="clarification containing...") return "förtydligande som innehåller...";
   if(s=="any intro or no intro") return "vilken disambiguerare som helst eller ingen disambiguerare";
   if(s=="any intro") return "vilken disambiguerare som helst";
   if(s=="no intro") return "ingen disambiguerare";
-  if(s=="intro containing...") return "disambiguerare som innehåller ...";
+  if(s=="intro containing...") return "disambiguerare som innehåller...";
   if(s=="any definition or no definition") return "vilken definition som helst eller ingen definition";
   if(s=="any definition") return "vilken definition som helst";
   if(s=="no definition") return "ingen definition";
-  if(s=="definition containing...") return "definition som innehåller ...";
+  if(s=="definition containing...") return "definition som innehåller...";
   if(s=="any example or no example") return "vilket exempel som helst eller inget exempel";
   if(s=="any example") return "vilket exempel som helst";
   if(s=="no example") return "inget exempel";
-  if(s=="example containing...") return "exempel som innehåller ...";
+  if(s=="example containing...") return "exempel som innehåller...";
   if(s=="Automatic changes") return "Automatiska ändringar";
   if(s=="NAME") return "NAMN";
   if(s=="BLURB") return "FÖRLAGSTEXT";
@@ -284,7 +284,7 @@
   if(s=="NOT") return "ANM";
   if(s=="with or without notes") return "med eller utan anmärkningar";
   if(s=="with a note") return "med en anmärkning";
-  if(s=="with a note containing...") return "men en anmärkning som innehåller ...";
+  if(s=="with a note containing...") return "men en anmärkning som innehåller...";
   if(s=="without notes") return "utan anmärkningar";
   if(s=="any type") return "vilken typ som helst";
   if(s=="private note, not shown on extranets") return "internanmärkning som inte visas i extranät";
@@ -293,7 +293,7 @@
   if(s=="Note types") return "Anmärkningstyper";
   if(s=="LEVEL") return "NIVÅ";
   if(s=="with a comment") return "med en kommentar";
-  if(s=="with a comment containing...") return "med en kommentar som innehåller ...";
+  if(s=="with a comment containing...") return "med en kommentar som innehåller...";
 
   if(s=="TBX export") return "TBX-export";
   if(s=="TBX import") return "TBX-import";
