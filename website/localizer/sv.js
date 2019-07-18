@@ -12,7 +12,7 @@
   if(s=="Forgot your password?") return "Glömt ditt lösenord?";
   if(s=="E-mail address") return "E-postadress";
   if(s=="Password") return "Lösenord";
-  if(s=="Log in") return Logga in";
+  if(s=="Log in") return "Logga in";
   if(s=="Your termbases") return "Dina termbanker";
   if(s=="You have no termbases yet.") return "Du har inga termbanker än.";
   if(s=="Create a termbase") return "Skapa en termbank";
