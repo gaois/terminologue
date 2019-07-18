@@ -8,13 +8,13 @@ Du kan skapa så många termbanker du vill – du kan alltid radera dem senare. 
 
 ![Att skapa en ny termbank i Terminologue.](/docs/intro02.png)
 
-If you are new to Terminologue, it is recommended that you select a template in the drop-down list, for example *Simple Bilingual Termbase*. Your termbase will come preconfigured with certain settings (which you can change any time later) as well as a few sample entries (which you can delete).
+Om du är ny användare av Terminologue är det att rekommendera att du väljer en färdig mall från rullgardinslistan, t.ex. *Enkel tvåspråkig termbank*. Din termbank får då vissa förutbestämda inställningar (som du sedan kan ändra när du vill) och några få exempelbegreppsposter (som du kan radera).
 
 När du skapat din termbank kan du gå till dess förstasida och därifrån nå redigeringsgränssnittet. Där skapar och reviderar du terminologiska begreppsposter. Till vänster finns en lista med de existerande begreppsposterna. Du kan radera exempelposterna om du vill och du kan skapa så många nya begreppsposter du vill. Det finns ingen övre gräns för hur många begreppsposter din termbank kan innehålla. När du vill öppna en begreppspost klickar du på den i listan. Den öppnas då i rutan till höger på skärmen.
 
 ![Terminologues redigeringsgränssnitt som visar listan över begreppsposter till vänster och en öppnad begreppspost till höger.](/docs/intro03.png)
 
-Vad du ser här är en formaterad rendering av begreppsposten. Så kommer begreppsposten att se ut om och när du publicerar din termbank. Klicka på *Redigera*-knappen i överkanten för att redigera begreppsposten – då öppnas begreppsposten för redigering.
+Vad du ser här är en formaterad avbildning av begreppsposten. Så kommer begreppsposten att se ut om och när du publicerar din termbank. Klicka på *Redigera*-knappen i överkanten för att redigera begreppsposten – då öppnas begreppsposten för redigering.
 
 ![En öppen begreppspost som kan redigeras.](/docs/intro04.png)
 
@@ -99,8 +99,6 @@ Begreppsposter i Terminologue kan också annoteras med slumpmässiga *färdigfö
 ![En begreppspost med några kommentarer och anmärkningar.](/docs/intro11.png)
 
 ## Extranät
-
-An extranet is a special section on the Terminologue website where a subset of a termbase has been made available for commenting to a closed group of external users. Users of a termbase with Administrator privileges can create new extranets, decide which entries go on which extranet, and decide which users have access to which extranet. Extranet users are completely separate from other users of the termbase: they must have an account in Terminologue but, apart from that, they do not (need to) have access to the termbase itself. Comments left by extranet users are visible in the editing interface (as *notes*) and their purpose is to inform the termbase editor’s decisions.
 
 Ett extranät är en speciell avdelning av Terminologues webbplats där en delmängd av en termbank har gjorts tillgänglig för kommentarer av en avgränsad grupp externa användare. Användare av termbanker som har administratörsrättigheter kan skapa nya extranät, bestämma vilka begreppsposter som ska ingå i detta extranät och besluta vilka användare som ska ha tillgång till vilket extranät. Extranätanvändare är helt separerade från andra termbanksanvändare: de måste ha ett Terminologue-konto men förutom det har de inte (nödvändigtvis), tillgång till själva termbanken. Kommentarer som lämnas av extranätanvändare syns i redigeringsgränssnittet (som *kommentarer*) och deras syfte är att utgöra underlag för termbanksredaktörens beslut.
 

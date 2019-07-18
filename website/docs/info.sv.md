@@ -6,15 +6,15 @@
 
 ## Terminologue.org
 
-*[Terminologue.org](https://www.terminologue.org/)* är en molnbaserad instans av programvaran *Terminologue*. Denna instans hosted av [forskningsgruppen Gaois](https://www.gaois.ie/en/) (Dublin City University). Om du inte vill installera din egen instans av programvaran kan du börja fylla och publicera termbanker genom att [skaffa ett konto](/signup/) på *Terminologue.org*. Även om vi vidtar alla åtgärder för att skydda dina termbanker kan vi inte garantera det. Vi ber dig därför att istället ofta själv exportera och göra säkerhetskopior av dina termbanker.
+*[Terminologue.org](https://www.terminologue.org/)* är en molnbaserad instans av programvaran *Terminologue*. Denna instans förvaltas av [forskningsgruppen Gaois](https://www.gaois.ie/en/) (Dublin City University). Om du inte vill installera din egen instans av programvaran kan du börja fylla och publicera termbanker genom att [skaffa ett konto](/signup/) på *Terminologue.org*. Även om vi vidtar alla åtgärder för att skydda dina termbanker kan vi inte garantera det. Vi ber dig därför att istället ofta själv exportera och göra säkerhetskopior av dina termbanker.
 
 ## Téarma
 
-Programvaran *Terminologue* utvecklades ursprungligen av Fiontar & Scoil na Gaeilge för [Foras na Gaeilge](https://www.forasnagaeilge.ie/) för hanteringen av *Téarma*, den nationella iriska termbanken ([téarma.ie](https://www.tearma.ie/)). *Téarma*-termbanken innehåller ca 186 000 begreppsposter som lagras i en dedicated i en privat instans av *Terminologue*.
+Programvaran *Terminologue* utvecklades ursprungligen av Fiontar & Scoil na Gaeilge för [Foras na Gaeilge](https://www.forasnagaeilge.ie/) för hanteringen av *Téarma*, den nationella iriska termbanken ([téarma.ie](https://www.tearma.ie/)). *Téarma*-termbanken innehåller ca 186 000 begreppsposter som lagras i en särskild privat instans av *Terminologue*.
 
 ## Dataskyddsinformation
 
-Vi samlar inte in några data om användning. När du skaffar ett konto på *Terminologue.org* ger du oss en e-postadress och ett lösenord. Vi kommer inte att dela din e-postadress med någon, men vi förbehåller oss rätten att undantagsvis kontakta dig rörande *Terminologue.org*-tjänsten. Ditt lösenord skickas över en säker uppkoppling och hashed innan det sparas i databasen. Detta innebär att ingen har tillgång till ditt lösenord, inte ens vi. Du kan själv konfigurera dina termbanker så att de är offentliga eller privata.
+Vi samlar inte in några data om användning. När du skaffar ett konto på *Terminologue.org* ger du oss en e-postadress och ett lösenord. Vi kommer inte att dela din e-postadress med någon, men vi förbehåller oss rätten att undantagsvis kontakta dig rörande *Terminologue.org*-tjänsten. Ditt lösenord skickas över en säker uppkoppling och krypteras via en hashfunktion innan det sparas i databasen. Detta innebär att ingen har tillgång till ditt lösenord, inte ens vi. Du kan själv konfigurera dina termbanker så att de är offentliga eller privata.
 
 ## Kontakt
 
