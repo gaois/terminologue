@@ -16,6 +16,7 @@ const localizer={
   en: require("./localizer/en.js"),
   ga: require("./localizer/ga.js"),
   cs: require("./localizer/cs.js"),
+  sv: require("./localizer/sv.js"),
 };
 
 //ops module:
