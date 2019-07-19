@@ -72,10 +72,9 @@ Users with administrator privileges can use Terminologue’s faceted search feat
 
 ## User privileges
 
-Every user in every termbase is assigned one of five access levels which determine what actions the user is or is not allowed to do in the termbase.
-Levels can be assigned to user under *Configuration → Users*. The levels are:
+Every user in every termbase is assigned one of five access levels which determine what actions the user is or is not allowed to do in the termbase. Levels can be assigned to user under *Configuration → Users*. The levels are:
 
-1. ‘Reader’:  the user has read-only access,  can look at entries but cannot make any edits.
+1. ‘Reader’: the user has read-only access, can look at entries but cannot make any edits.
 2. ‘Editor’: the user can change existing entries, but cannot create or delete entries.
 3. ‘Creator’: same as Editor, but can create and delete entries.
 4. ‘Administrator’: same as Creator, and can edit metadata (domain lists etc.), can change the status of entries, and can create extranets (see below).

@@ -19,3 +19,12 @@ We do not collect any usage data. When you sign up for an account on *Terminolog
 ## Contact
 
 You can create an account [here](/signup/). If you have forgotten your password go [here](/forgotpwd/). For a gentle introduction to Terminologue, go [here](/docs/intro/). If you have any other queries or feedback, you can email us at <gaois@dcu.ie>.
+
+## Terminologue localisation
+
+If you wish to localise the *Terminologue* user interface and documentation into your language, please contact us at <gaois@dcu.ie>. *Terminologue* is currently available in the following languages:
+
+- English: Michal Boleslav Měchura.
+- Gaeilge: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
+- česky: Michal Boleslav Měchura.
+- svenska: Henrik Nilsson.
