@@ -189,13 +189,21 @@ app.post(siteconfig.rootPath+"recoverpwd.json", function(req, res){
 });
 
 //Docs:
-app.get(siteconfig.rootPath+"docs/:docID/", function(req, res){
+app.get(siteconfig.rootPath+"docs/:docID.:uilang/", function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
-    var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-    ops.getDoc(req.params.docID, function(doc){
+    var uilang=req.params.uilang;
+
+    const oneday=86400000; //86,400,000 miliseconds = 24 hours
+    res.cookie("uilang", uilang, {expires: new Date(Date.now() + oneday)});
+    if(user.loggedin) ops.saveUilang(req.cookies.email, uilang, function(){});
+
+    ops.getDoc(req.params.docID, uilang, function(doc){
       res.render("sitewide/doc.ejs", {doc: doc, siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
     });
   });
+});
+app.get(siteconfig.rootPath+"docs/:docID/", function(req, res){
+  res.redirect(siteconfig.rootPath+`docs/${req.params.docID}.en/`);
 });
 
 //Users:

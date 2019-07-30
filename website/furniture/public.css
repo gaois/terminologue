@@ -112,6 +112,7 @@ div.welcome > div.point { margin: 20px 0px;}
 div.welcome > div.point > div.title {}
 div.welcome > div.point > div.title > a {font-weight: bold; background-image: url(signpost.png); background-position: 5px 0px; background-repeat: no-repeat; padding-left: 50px; display: block; min-height: 30px;}
 div.welcome > div.point > div.title > a:hover {background-image: url(signpost-on.png);}
+div.welcome > div.point.noblurb > div.title > a {padding-top: 3px;}
 div.welcome a {text-decoration: none; color: #047063;}
 div.welcome a:hover {color: #059080; }
 div.welcome > div.point > div.title > a > span.pdf {background-color: #bd6c73; color: #ffffff; padding: 2px 5px; font-size: 0.8rem; border-radius: 2px; position: relative; top: -2px;}

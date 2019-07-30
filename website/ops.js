@@ -1787,16 +1787,28 @@ module.exports={
     });
   },
 
-  getDoc: function(docID, callnext){
-    var doc={id: docID, title: "", html: ""};
-    fs.readFile("docs/"+docID+".md", "utf8", function(err, content){
-      if(!err) {
+  getDoc: function(docID, uilang, callnext){
+    var doc={id: docID, title: "", html: "", englishOnly: false};
+    if(fs.existsSync("docs/"+docID+"."+uilang+".md")){
+      fs.readFile("docs/"+docID+"."+uilang+".md", "utf8", function(err, content){
         var tree=markdown.parse(content);
         doc.title=tree[1][2];
         doc.html=markdown.renderJsonML(markdown.toHTMLTree(tree));
-      }
+        callnext(doc);
+      });
+    }
+    else if(fs.existsSync("docs/"+docID+".en.md")){
+      fs.readFile("docs/"+docID+".en.md", "utf8", function(err, content){
+        var tree=markdown.parse(content);
+        doc.title=tree[1][2];
+        doc.html=markdown.renderJsonML(markdown.toHTMLTree(tree));
+        doc.englishOnly=true;
+        callnext(doc);
+      });
+    }
+    else {
       callnext(doc);
-    });
+    }
   },
   markdown: function(str){
     var tree=markdown.parse(str);

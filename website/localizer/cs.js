@@ -269,7 +269,7 @@ function L(s, gloss){
   if(s=="Please follow the link below to create your Terminologue account:") return "Chcete-li su vytvořit účet v systému Terminologue, klikněte laskavě na tento odkaz:";
   if(s=="Terminologue password reset") return "Zapomenuté heslo pro Terminologue";
   if(s=="Please follow the link below to reset your Terminologue password:") return "Chcete-li si vytvořit nové heslo v systému Terminologue, klikněte laskavě na tento odkaz:";
-  if(s=="This page is only available in English.") return "Tato stránka je k dostání jen v angličtině. Sorry jako.";
+  if(s=="This page is only available in English.") return "Tato stránka je k dostání jen v angličtině.";
   if(s=="DRAFTING STATUS") return "STAV ROZPRACOVANOSTI";
   if(s=="draft entry") return "pracovní verze";
   if(s=="finished entry") return "konečná verze";
