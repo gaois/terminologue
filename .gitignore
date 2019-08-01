@@ -64,5 +64,7 @@ typings/
 *.sqlite-wal
 temp/*
 data/lang/*
+data/termbases/*
 scripts/_entrylist.txt
 scripts/fiat.txt
+siteconfig.json

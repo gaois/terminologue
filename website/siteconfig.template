@@ -4,7 +4,7 @@
   "rootPath": "/",
   "port": 80,
   "dataDir": "../data/",
-  "admins": ["valselob@gmail.com"],
+  "admins": ["root@localhost"],
   "trackingCode": "",
   "uilangs": [
     {"abbr": "en", "caption": "English"},
@@ -18,8 +18,8 @@
     "cs": "<div class='intro'>Vítá vás <strong>Terminologue</strong>, otevřený systém pro práci s terminologickými databázemi.</div><div class='point'><div class='title'><a href='docs/intro.cs/'>Začínáme s Terminologuem</a></div><div class='blurb'>Krátký a snadný úvod to systému Terminologue pro začátečníky.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.cs/'>Co je Terminologue</a></div></div>",
 	  "sv": "<div class='intro'>Välkommen till <strong>Terminologue</strong>, ett molnbaserat terminologihanteringssystem baserat på öppen källkod.</div><div class='point'><div class='title'><a href='docs/intro.sv/'>Kort introduktion till Terminologue</a></div><div class='blurb'>En kortkort guidning av Terminologue för nybörjare.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.sv/'>Om Terminologue</a></div></div>"
   },
-  "uilangDefault": "ga",
-  "mailconfig": {"host": "localhost", "port": 465,"secure": false, "from": "noreply@terminologue.org"},
+  "uilangDefault": "en",
+  "mailconfig": {"host": "localhost", "port": 465,"secure": false, "from": "noreply@localhost"},
   "licences": {
     "cc-by-4.0": {
       "title": "Creative Commons Attribution 4.0 International",
@@ -68,7 +68,5 @@
     ["y", "ý", "ỳ", "ŷ", "ÿ"],
     ["z", "ź", "ż", "ž"]
   ],
-  "propagatorMsSqlConnectionStrings": {
-    "x-bnt": "Server=localhost\\SQLEXPRESS;Database=tearma;User Id=sa;Password=triPEStri"
-  }
+  "propagatorMsSqlConnectionStrings": {}
 }
