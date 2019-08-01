@@ -18,7 +18,7 @@ For storing data on the server, including all the termbases, data about users an
 
 3. Using the terminal (if you're on GNU/Linux) or the command prompt (if you're on Microsoft Windows), go to the `website` directory and run `npm install`. This will launch the Node.js Package Manager (NPM) which will download and install (into the `website/node_modules` directory) all dependencies needed by Terminologue. This may take a few minutes.
 
-4. In the `website` directory, rename the file `siteconfig.template` to `siteconfig.json`.
+4. In the `website` directory, rename the file `siteconfig.template.json` to `siteconfig.json`.
 
 5. Still in the `website` directory, run `node init.js`. This is a script which will create an account for you in your local installation of Terminologue. The script will tell you what your user name and password is. Remember this information or write it down.
 

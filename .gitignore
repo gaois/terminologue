@@ -63,6 +63,7 @@ typings/
 *.sqlite-shm
 *.sqlite-wal
 temp/*
+data/terminologue.sqlite
 data/lang/*
 data/termbases/*
 scripts/_entrylist.txt

@@ -17,12 +17,13 @@ var db=new sqlite3.Database(dbFile, function(err){
 });
 
 var insertUser=function(db, email, password, passwordHash){
-  db.run("insert into users(email, passwordHash, uilang) values($email, $passwordHash. 'en')", {
+  db.run("insert into users(email, passwordHash, uilang) values($email, $passwordHash, 'en')", {
     $email: email,
     $passwordHash: passwordHash,
   }, function(err){
     if(err) {
-      console.log("Creating a user account for "+email+" has failed. This could be because the account already exists.");
+      console.log("Creating a user account for "+email+" has failed.");
+      console.log(err);
     } else {
       console.log("I have created a user account for "+email+". The password is: "+password);
     }
