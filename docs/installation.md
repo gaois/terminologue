@@ -16,15 +16,17 @@ For storing data on the server, including all the termbases, data about users an
 
 2. Download everything from the repository into a directory on your computer. You will notice that the stuff you have downloaded comes in several sub-directories, of which the most important are `data` (where Terminologue keeps its databases) and `website` (where the actual Terminologue website lives).
 
-3. Using the terminal (if you're on GNU/Linux) or the command prompt (if you're on Microsoft Windows), go to the `website` directory and run `npm install`. This will launch the Node.js Package Manager (NPM) which will download and install (into the `website/node_modules` directory) all dependencies needed by Terminologue. This may take a few minutes.
+3. Using the terminal (if you're on GNU/Linux) or the command prompt (if you're on Microsoft Windows), go to the `website` sub-directory and run `npm install`. This will launch the Node.js Package Manager (NPM) which will download and install (into the `website/node_modules` directory) all dependencies needed by Terminologue. This may take a few minutes.
 
-4. In the `website` directory, rename the file `siteconfig.template.json` to `siteconfig.json`.
+4. In the `website` sub-directory, rename the file `siteconfig.template.json` to `siteconfig.json`.
 
-5. Still in the `website` directory, run `node init.js`. This is a script which will create an account for you in your local installation of Terminologue. The script will tell you what your user name and password is. Remember this information or write it down.
+5. In the `data` sub-directory, rename the file `terminologue.template.sqlite` to `terminologue.sqlite`.
 
-6. Still in the `website` directory, run `node terminologue.js`. This will start Terminologue's backend as a server on your computer. *Note: Terminologue is configured to run on port 80 by default. Some GNU/Linux installations consider this dangerous and will not allow it, unless you run Terminologue with elevated privileges. To run Terminologue with elevated privileges, run it as `sudo node terminologue.js` instead.*
+6. Back in the `website` sub-directory, run `node init.js`. This is a script which will create an account for you in your local installation of Terminologue. The script will tell you what your user name and password is. Remember this information or write it down.
 
-7. Open your web browser and go to `http://localhost/`. You should see Terminologue's home page now and you should be able to log in using the user name and password from step 5.
+7. Still in the `website` sub-directory, run `node terminologue.js`. This will start Terminologue's backend as a server on your computer. *Note: Terminologue is configured to run on port 80 by default. Some GNU/Linux installations consider this dangerous and will not allow it, unless you run Terminologue with elevated privileges. To run Terminologue with elevated privileges, run it as `sudo node terminologue.js` instead.*
+
+8. Open your web browser and go to `http://localhost/`. You should see Terminologue's home page now and you should be able to log in using the user name and password from step 6.
 
 Congratulations, you have a local installation of Terminologue running on your computer now. To end it at any time, press `Ctrl + C` in the terminal or command prompt.
 
