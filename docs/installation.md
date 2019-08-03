@@ -29,13 +29,3 @@ For storing data on the server, including all the termbases, data about users an
 8. Open your web browser and go to `http://localhost/`. You should see Terminologue's home page now and you should be able to log in using the user name and password from step 6.
 
 Congratulations, you have a local installation of Terminologue running on your computer now. To end it at any time, press `Ctrl + C` in the terminal or command prompt.
-
-## What to read next
-
-- [Configuring Terminologue](configuring.md): understand how to configure your installation through the `siteconfig.json` file.
-
-- [Running Terminologue in production](production.md): some tips and tricks for running Terminologue on a real, public-facing server.
-
-- [Understanding Terminologue's source code](sourcecode.md): have a look under the skin.
-
-- [Understanding Terminologue's databases](databases.md): where and how Terminologue stores its data.
