@@ -1,6 +1,6 @@
 # Setting up a local installation
 
-This document **(1)** explains what you must do to start a local installation of Terminologue on your own computer for development or testing, and **(2)** guides you to more reading material if you want to understand how Terminologue works inside and/or how to set it up on a production server.
+This document explains what you must do to start a local installation of Terminologue on your own computer for development or testing.
 
 ## A few things to understand first
 
