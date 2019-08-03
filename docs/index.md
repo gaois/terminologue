@@ -4,11 +4,11 @@ This website is where you will find technical documentation on the [Terminologue
 
 ## Table of contents
 
-- [Creating a local installation »](installation.md)  
-  Start here to understand how install Terminologue on our own computer.
-
-- [Configuring Terminologue »](configuring.md)  
-  Understand how to configure your installation through the `siteconfig.json` file.
+- [Setting up a local installation »](installation.md)  
+  Start here and learn how to install Terminologue on our own computer.
 
 - [Understanding the source code »](sourcecode.md)  
   Have a look under the skin.
+
+- [Configuring Terminologue »](configuring.md)  
+  Understand how to configure your installation through the `siteconfig.json` file.

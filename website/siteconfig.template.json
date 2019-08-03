@@ -19,25 +19,22 @@
 	  "sv": "<div class='intro'>Välkommen till <strong>Terminologue</strong>, ett molnbaserat terminologihanteringssystem baserat på öppen källkod.</div><div class='point'><div class='title'><a href='docs/intro.sv/'>Kort introduktion till Terminologue</a></div><div class='blurb'>En kortkort guidning av Terminologue för nybörjare.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.sv/'>Om Terminologue</a></div></div>"
   },
   "uilangDefault": "en",
-  "mailconfig": {"host": "localhost", "port": 465,"secure": false, "from": "noreply@localhost"},
+  "mailconfig": {"host": "localhost", "port": 465, "secure": false, "from": "noreply@localhost"},
   "licences": {
     "cc-by-4.0": {
       "title": "Creative Commons Attribution 4.0 International",
       "url": "https://creativecommons.org/licenses/by/4.0/",
-      "icon": "furniture/lic-cc-by.png",
-      "canDownloadXml": true
+      "icon": "furniture/lic-cc-by.png"
     },
     "cc-by-sa-4.0": {
       "title": "Creative Commons Attribution Share-Alike 4.0 International",
       "url": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "icon": "furniture/lic-cc-by-sa.png",
-      "canDownloadXml": true
+      "icon": "furniture/lic-cc-by-sa.png"
     },
     "odbl-1.0": {
       "title": "Open Database Licence 1.0",
       "url": "https://opendatacommons.org/licenses/odbl/summary/",
-      "icon": "furniture/lic-opendata.png",
-      "canDownloadXml": true
+      "icon": "furniture/lic-opendata.png"
     }
   },
   "defaultAbc": [
