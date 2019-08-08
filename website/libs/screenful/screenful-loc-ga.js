@@ -72,8 +72,8 @@ Screenful.Loc={
   setPwdMsg: "Cruthaigh pasfhocal duit féin anois, le do thoil.",
   accountCreated: "Tá do chuntas cruthaithe. Is féidir leat logáil isteach anois.",
   autosave: "Sábháil uathoibríoch",
-  flagging: "Flagging...",
-  flaggingFailed: "Failed to flag the entry.",
+  flagging: "Ag dathú...",
+  flaggingFailed: "Theip ar an iarrracht an iontráil a dhathú.",
   exactMatches: "Torthaí beachta",
   partialMatches: "Torthaí gaolmhara",
   comments: "Nótaí tráchta",
@@ -92,4 +92,5 @@ Screenful.Loc={
   narrow: "Scáileán cúng",
   narrowList: "LIOSTA",
   narrowEditor: "AMHARC/EAGAR",
+  emailInUseError: "Tá an seoladh ríomhphoist seo in úsáid cheana.",
 };

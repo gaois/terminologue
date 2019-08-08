@@ -1,3 +1,4 @@
+//Swedish translation by Henrik Nilsson https://www.researchgate.net/profile/Henrik_Nilsson
 Screenful.Loc={
   ready: "Klar.",
   find: "Sök",
@@ -66,7 +67,7 @@ Screenful.Loc={
   changePwdMsg: "Här kan du ändra ditt lösenord.",
   invalidToken: "Denna lösenordslänk gäller inte längre. Den kan ha gått ut eller ha använts tidigare.",
   signupInfoEmail: "Skriv in din e-postadress så skickar vi instruktioner för hur du kan skaffa ett nytt konto.",
-  signupButton: "Skapa nytt konto.",
+  signupButton: "Skapa nytt konto",
   signupTokenSent: "Vi har skickat ett e-brev med instruktioner om hur du kan skapa ett nytt konto.",
   invalidSignupToken: "Denna inloggningslänk är ogiltig. Den kan ha gått ut eller ha använts tidigare.",
   setPwdMsg: "Ange ditt lösenord nu.",
@@ -92,4 +93,7 @@ Screenful.Loc={
   narrow: "Smal skärm",
   narrowList: "LISTVY",
   narrowEditor: "LÄSVY/REDIGERINGSVY",
+
+  //new, needs translation:
+  emailInUseError: "This e-mail address is already in use.",
 };

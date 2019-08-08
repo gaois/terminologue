@@ -7,7 +7,7 @@ Screenful.Signup={
     $("#middlebox .one").append("<div class='field submit'><input class='button' type='submit' value='"+Screenful.Loc.signupButton+"'/></div>");
     $("#middlebox .two").append("<div class='message'>"+Screenful.Loc.signupTokenSent+"</div>");
     $("#middlebox .two").append("<div class='field submit'><button class='return'>"+Screenful.Loc.ok+"</button></div>");
-    $("#middlebox").append("<div class='error' style='display: none'>"+Screenful.Loc.badEmailError+"</div>");
+    $("#middlebox").append("<div class='error' style='display: none'>"+Screenful.Loc.emailInUseError+"</div>");
 
     $("#middlebox div.field.email input").focus();
     $("#middlebox").on("submit", function(e){
@@ -17,7 +17,7 @@ Screenful.Signup={
     });
 
     $("#middlebox button.return").on("click", function(e){
-      window.location=Screenful.Signup.returnUrl; 
+      window.location=Screenful.Signup.returnUrl;
       return false;
     });
   },

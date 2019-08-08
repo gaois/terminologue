@@ -92,4 +92,5 @@ Screenful.Loc={
   narrow: "Narrow screen",
   narrowList: "LIST",
   narrowEditor: "VIEWER/EDITOR",
+  emailInUseError: "This e-mail address is already in use.",
 };

@@ -38,6 +38,19 @@ app.use(siteconfig.rootPath+"localizer", express.static(path.join(__dirname, "lo
 //Path to our views:
 app.set('views', path.join(__dirname, "views")); app.set('view engine', 'ejs') //http://ejs.co/
 
+//Make sure all non-file GET requests have slahes at the end:
+app.get(/^\/.*$/, function(req, res, next) {
+  if(!req.path.endsWith("/") && req.path.indexOf(".")==-1){
+    var url=req.path+"/";
+    var qs=querystring.stringify(req.query);
+    if(qs!="") url+="?"+qs;
+    res.redirect(301, url);
+  }
+  else {
+    next();
+  }
+});
+
 //Sitewide:
 app.get(siteconfig.rootPath, function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
