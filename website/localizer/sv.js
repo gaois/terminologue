@@ -20,13 +20,11 @@
   if(s=="Users") return "Användare";
   if(s=="Termbases") return "Termbanker";
   if(s=="smart search") return "smart sökning";
-
   if(s=="complete term") return "hela termen";
   if(s=="start of term") return "början av termen";
   if(s=="end of term") return "slutet av termen";
   if(s=="any part of term") return "vilken del av termen som helst";
   if(s=="any part except start or end") return "vilken del av termen som helst utom början eller slut";
-
   if(s=="search in all languages") return "sök på alla språk";
   if(s=="Configuration") return "Konfiguration";
   if(s=="ADMIN") return "ADMIN";
@@ -205,7 +203,7 @@
   if(s=="private") return "privat";
   if(s=="public") return "offentlig";
   if(s=="trigger_dateStampChange") return "datum ändrat";
-  if(s=="trigger_domainAdd") return "domän tillagd"; 
+  if(s=="trigger_domainAdd") return "domän tillagd";
   if(s=="trigger_domainRemove") return "domän borttagen";
   if(s=="trigger_domainReorder") return "domäner omsorterade";
   if(s=="trigger_domainChange") return "domän ändrad";
@@ -220,7 +218,7 @@
   if(s=="trigger_termInflectAdd") return "böjningsform tillagd";
   if(s=="trigger_termInflectRemove") return "böjningsform borttagen";
   if(s=="trigger_termInflectReorder") return "böjningsformer omsorterade";
-  if(s=="trigger_termInflectLabelChange") return "angivelse av böjningsform ändrad"; 
+  if(s=="trigger_termInflectLabelChange") return "angivelse av böjningsform ändrad";
   if(s=="trigger_termInflectTextChange") return "formulering av böjningsform ändrad";
   if(s=="trigger_termAnnotAdd") return "termannotering tillagd";
   if(s=="trigger_termAnnotRemove") return "termannotering borttagen";
@@ -294,13 +292,23 @@
   if(s=="LEVEL") return "NIVÅ";
   if(s=="with a comment") return "med en kommentar";
   if(s=="with a comment containing...") return "med en kommentar som innehåller...";
-
   if(s=="TBX export") return "TBX-export";
   if(s=="TBX import") return "TBX-import";
   if(s=="Empty the termbase") return "Töm termbanken";
   if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Obs! Du håller på att radera denna termbank. Du kan inte ångra detta.";
   if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Obs! Du håller på att radera alla begreppsposter med tillhörande historik. Du kan inte ångra detta.";
   if(s=="RELATED TERMS") return "RELATERADE TERMER";
+
+  // New strings, need translation:
+
+  // if(s=="Your termbase at a glance") return "";
+  // if(s=="Number of entries") return "";
+  // if(s=="Number of items in history log") return "";
+  // if(s=="Your termbase is stored in the file %F") return "";
+  // if(s=="File size") return "";
+  // if(s=="Download %F") return "";
+  // if(s=="Upload %F") return "";
+  // if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

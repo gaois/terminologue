@@ -23,6 +23,11 @@
 #middlebox div.field.submit {margin-top: 30px;}
 #middlebox div.field.submit input.button {font-weight: bold;}
 
+#middlebox div.instructions {margin: 20px 0px 40px 0px; color: #666666;}
+
 #middlebox div.error {background-color: #ffcdcc; color: #99004d; font-weight: bold; text-align: center; padding: 40px; margin: 30px -30px -40px -100px; text-shadow: 1px 1px 0px #eeeeee;}
 
 #middlebox div.two div.message {text-align: center; margin: 40px 0px 0px 0px;}
+
+#middlebox div.field.ok {margin-top: 30px; text-align: center;}
+#middlebox div.field.ok button {font-weight: bold;}

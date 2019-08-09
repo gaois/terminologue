@@ -49,7 +49,7 @@ div.notification a:hover {color: #006ed7;}
 
 #pagebody div.field {max-width: 1200px; margin: 150px auto 50px auto; font-size: 1rem; }
 @media(max-width: 1300px) {#pagebody div.field {margin: 30px 20px 50px 20px;}}
-div.signposts {float: left; margin-right: 70px; margin-bottom: 40px; min-width: 250px;}
+div.signposts {float: left; margin-right: 70px; margin-bottom: 40px; min-width: 250px; max-width: 375px;}
 @media(max-width: 1300px) {div.signposts {margin-bottom: 20px; margin-right: 20px;}}
 div.signposts div.title {border-bottom: 1px dotted #cccccc; padding: 0px 0px 15px 0px; margin: 60px 0px 20px 0px; font-size: 1.25rem; color: #666666;}
 div.signposts div.title:first-child {margin-top: 0px;}
@@ -61,6 +61,20 @@ div.signposts div.signpost a:hover {color: var(--link-hover);}
 div.signposts div.signpost.disabled a {color: #999999; cursor: not-allowed;}
 div.signposts div.signpost.disabled:hover {background-image: url(signpost.png);}
 div.field > div.clear {clear: left;}
+
+div.glance {background-color: #eeeeee; border-radius: 20px; padding: 20px; margin-top: -15px; text-shadow: 1px 1px 0px #ffffff; font-size: 0.95em;}
+div.glance > div.overtitle {color: #666666; font-size: 1.25em; border-bottom: 2px solid #ffffff; padding-bottom: 20px; font-weight: bold; margin-top: 10px;}
+div.glance > div.undertitle {color: #333333; border-bottom: 2px solid #ffffff; padding-bottom: 15px; margin-top: 30px;}
+div.glance span.filename {font-weight: bold;}
+div.glance > table {width: 100%; margin: 0px 0px 15px 0px;}
+div.glance > table tr.stat {}
+div.glance > table tr.stat > td {border-bottom: 2px solid #ffffff; padding: 15px 0px;}
+div.glance > table tr.stat > td.caption {color: #333333; padding-right: 20px;}
+div.glance > table tr.stat > td.value {text-align: right; color: var(--link); font-size: 1.5em;}
+div.glance div.minisignpost {background-image: url(signpost.png); background-position: 0px 5px; background-repeat: no-repeat; background-size: 20px 20px; min-height: 25px; margin: 0px 30px 0px 0px;  }
+div.glance div.minisignpost:hover {background-image: url(signpost-on.png);}
+div.glance div.minisignpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: var(--link)}
+div.glance div.minisignpost a:hover {color: var(--link-hover);}
 
 div.dangerzone {position: absolute; bottom: 40px; left: 0px; right: 0px; color: #999999;}
 div.dangerzone > div.inside {max-width: 1200px; margin: 0px auto 0px auto; }

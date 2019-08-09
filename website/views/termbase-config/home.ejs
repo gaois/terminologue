@@ -29,23 +29,57 @@
 		<script type="text/javascript" src="../../furniture/screenful-user-config.js"></script>
 
 		<link type="text/css" rel="stylesheet" href="../../furniture/ui.css" />
+
+		<script type="text/javascript">
+			$(window).ready(function(){
+				$(".localizeme.number").each(function(){
+					var $this=$(this);
+					var num=new Number($this.html());
+					var str=num.toLocaleString("<%=uilang%>", {maximumFractionDigits: 2});
+					$this.html(str);
+				});
+			});
+		</script>
+
 	</head>
 	<body>
     <%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "config", subsectionID: null, subsectionTitle: null, rootPath: "../../"})%>
 		<div id="pagebody">
 			<div class="field">
 				<div class="signposts">
+					<div class="glance">
+						<div class="overtitle"><%=L("Your termbase at a glance")%></div>
+						<table>
+							<tr class="stat">
+								<td class="caption"><%=L("Number of entries")%></td>
+								<td class="value"><span class="localizeme number"><%=stats.entryCount%></span></td>
+							</tr>
+							<tr class="stat">
+								<td class="caption"><%=L("Number of items in history log")%></td>
+								<td class="value"><span class="localizeme number"><%=stats.historyCount%></span></td>
+							</tr>
+						</table>
+						<div class="undertitle"><%-L("Your termbase is stored in the file %F").replace("%F", '<span class="filename">'+termbaseID+'.sqlite</span>')%></div>
+						<table>
+							<tr class="stat">
+								<td class="caption"><%=L("File size")%></td>
+								<td class="value"><span class="localizeme number"><%=stats.fileSize.value%></span>&nbsp;<%=stats.fileSize.unit%></td>
+							</tr>
+						</table>
+						<div class="minisignpost"><a href="../../data/termbases/<%-termbaseID%>.sqlite"><%-L('Download %F').replace("%F", '<span class="filename">'+termbaseID+'.sqlite</span>')%>%></a></div>
+						<%if(!locked){%><div class="minisignpost"><a href="./upload/"><%-L('Upload %F').replace("%F", '<span class="filename">'+termbaseID+'.sqlite</span>')%>%></a></div><%}%>
+					</div>
+				</div>
+				<div class="signposts">
+					<div class="signpost"><a href="./users/"><%=L('Users')%></a></div>
 					<div class="signpost"><a href="./ident/"><%=L('Name and blurb')%></a></div>
 					<div class="signpost"><a href="./lingo/"><%=L('Languages')%></a></div>
 					<div class="signpost"><a href="./abc/"><%=L('Alphabetical order')%></a></div>
 					<div class="signpost"><a href="./triggers/"><%=L('Automatic changes')%></a></div>
-        </div>
-        <div class="signposts">
-					<div class="signpost"><a href="./users/"><%=L('Users')%></a></div>
-					<%if(!locked){%><div class="signpost"><a href="./publico/"><%=L('Publishing')%></a></div><%}%>
-					<div class="signpost"><a href="./news/"><%=L('News and announcements')%></a></div>
 				</div>
 				<div class="signposts">
+					<%if(!locked){%><div class="signpost"><a href="./publico/"><%=L('Publishing')%></a></div><%}%>
+					<div class="signpost"><a href="./news/"><%=L('News and announcements')%></a></div>
 					<div class="signpost disabled"><a href="javascript:void(null)" xhref="./tbxout/"><%=L('TBX export')%></a></div>
 					<div class="signpost disabled"><a href="javascript:void(null)" xhref="./tbxin/"><%=L('TBX import')%></a></div>
         </div>

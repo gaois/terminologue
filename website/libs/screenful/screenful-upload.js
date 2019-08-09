@@ -1,15 +1,18 @@
 Screenful.Upload={
+  allowPurging: true,
   start: function(){
     Screenful.createEnvelope(true);
     $("#envelope").html("<form id='middlebox'><div class='one'></div><div class='two' style='display: none'></div></form>");
     var form="<form action='"+Screenful.Upload.url+"' method='post' enctype='multipart/form-data' target='frmUploadTarget'>";
     form+="<div class='field'><input class='filebox' type='file' name='myfile'/></div>";
-    form+="<div class='field'><label><input type='checkbox' name='purge'/> "+Screenful.Loc.uploadPurge+"</label></div>";
+    if(Screenful.Upload.allowPurging) form+="<div class='field'><label><input type='checkbox' name='purge'/> "+Screenful.Loc.uploadPurge+"</label></div>";
+    if(Screenful.Upload.instructions) form+="<div class='instructions'>"+Screenful.Upload.instructions+"</div>";
     form+="<div class='field submit'><input class='button' type='submit' value='"+Screenful.Loc.upload+"'/>";
     form+="<div class='error' style='display: none'>"+Screenful.Loc.uploadFail+"</div>";
     form+="</form>";
     $("#middlebox .one").append(form);
     $("#middlebox .two").append("<div class='message'>"+Screenful.Loc.uploadSuccess+"</div>");
+    $("#middlebox .two").append("<div class='field ok'><button>"+Screenful.Loc.ok+"</button></div>");
 
     $("#envelope").append("<iframe id='frmUploadTarget' name='frmUploadTarget' src='about:blank' style='width:0;height:0;border:0px solid #fff;'></iframe>");
 
@@ -19,7 +22,10 @@ Screenful.Upload={
         if(redirectUrl){
           $("#middlebox .one").hide();
           $("#middlebox .two").show();
-          window.location=redirectUrl;
+          $("#middlebox .two button").on("click", function(){
+            window.location=redirectUrl;
+            return false;
+          });
         } else {
           $("#middlebox .two").hide();
           $("#middlebox .one").show();

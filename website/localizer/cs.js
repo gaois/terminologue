@@ -292,13 +292,21 @@ function L(s, gloss){
   if(s=="LEVEL") return "ÚROVEŇ";
   if(s=="with a comment") return "nemá komentář";
   if(s=="with a comment contaning...") return "má komentář obsahující...";
-
   if(s=="TBX export") return "Export TBX";
   if(s=="TBX import") return "Import TBX";
   if(s=="Empty the termbase") return "Vyprázdnit databázi";
   if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Pozor! Celá databáze se smaže a nepůjde to vrátit zpátky.";
   if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Pozor! Smažou se všechna hesla i jejich historie a nepůjde to vrátit zpátky.";
   if(s=="RELATED TERMS") return "PŘÍBUZNÁ HESLA";
+
+  if(s=="Your termbase at a glance") return "Vaše terminologická databáze v číslech";
+  if(s=="Number of entries") return "Počet hesel";
+  if(s=="Number of items in history log") return "Počet záznamů v historii";
+  if(s=="Your termbase is stored in the file %F") return "Vaše databáze je uložena v souboru %F";
+  if(s=="File size") return "Velikost soubou";
+  if(s=="Download %F") return "Stáhnout %F";
+  if(s=="Upload %F") return "Nahrát %F";
+  if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Soubor, který nahráváte, musí být platná terminologická databáze pro Terminologue. Nahrajete-li něco jiného, nenávratně si svou databázi rozbijete.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

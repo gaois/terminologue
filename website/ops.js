@@ -367,6 +367,21 @@ module.exports={
       });
     }
   },
+  readTermbaseStats: function(db, termbaseID, callnext){
+    var stats={};
+    db.get("select count(*) as [count] from entries", {}, function(err, row){
+      if(!err) stats.entryCount=row.count;
+      db.get("select count(*) as [count] from history", {}, function(err, row){
+        if(!err) stats.historyCount=row.count;
+        var size=fs.statSync(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite")).size;
+        stats.fileSize={value: size, unit: "B"};
+        if(stats.fileSize.value>1000) stats.fileSize={value: stats.fileSize.value/1000, unit: "kB"};
+        if(stats.fileSize.value>1000) stats.fileSize={value: stats.fileSize.value/1000, unit: "MB"};
+        if(stats.fileSize.value>1000) stats.fileSize={value: stats.fileSize.value/1000, unit: "GB"};
+        callnext(stats);
+      });
+    });
+  },
   readTermbaseMetadata: function(db, termbaseID, callnext){
     var metadata={
       domain: [],
