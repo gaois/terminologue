@@ -298,17 +298,14 @@
   if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Obs! Du håller på att radera denna termbank. Du kan inte ångra detta.";
   if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Obs! Du håller på att radera alla begreppsposter med tillhörande historik. Du kan inte ångra detta.";
   if(s=="RELATED TERMS") return "RELATERADE TERMER";
-
-  // New strings, need translation:
-
-  // if(s=="Your termbase at a glance") return "";
-  // if(s=="Number of entries") return "";
-  // if(s=="Number of items in history log") return "";
-  // if(s=="Your termbase is stored in the file %F") return "";
-  // if(s=="File size") return "";
-  // if(s=="Download %F") return "";
-  // if(s=="Upload %F") return "";
-  // if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "";
+  if(s=="Your termbase at a glance") return "Kort om din termbank";
+  if(s=="Number of entries") return "Antal begreppsposter";
+  if(s=="Number of items in history log") return "Antal ändringar i historikloggen";
+  if(s=="Your termbase is stored in the file %F") return "Din termbank lagras i filen %F";
+  if(s=="File size") return "Filstorlek";
+  if(s=="Download %F") return "Ladda ned %F";
+  if(s=="Upload %F") return "Ladda upp %F";
+  if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Kontrollera att filen du laddar upp är en giltig Terminologue-termbank. Om du laddar upp något annat kommer du att skada termbanken på ett oåterkalleligt sätt.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
