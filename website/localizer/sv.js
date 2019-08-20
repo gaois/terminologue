@@ -1,6 +1,6 @@
 ﻿function L(s, gloss){
   if(s=="only") return function(s){
-    return s+" amháin";
+    return s+" endast";
   };
   if(s=="READ-ONLY") return "READ-ONLY";
   if(s=="Editing") return "Redigering";
@@ -298,6 +298,7 @@
   if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Obs! Du håller på att radera denna termbank. Du kan inte ångra detta.";
   if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Obs! Du håller på att radera alla begreppsposter med tillhörande historik. Du kan inte ångra detta.";
   if(s=="RELATED TERMS") return "RELATERADE TERMER";
+
   if(s=="Your termbase at a glance") return "Kort om din termbank";
   if(s=="Number of entries") return "Antal begreppsposter";
   if(s=="Number of items in history log") return "Antal ändringar i historikloggen";
