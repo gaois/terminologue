@@ -2,7 +2,7 @@ const fs=require("fs");
 const xmlformatter=require("xml-formatter");
 var entryCount=0;
 
-var tbx=fs.readFileSync("/home/mbm/deleteme/terminologue-import-sources/microsoft/microsoft-ga.tbx", "utf8");
+var tbx=fs.readFileSync("/home/mbm/datasources/terminologue-import-sources/microsoft/microsoft-ga.tbx", "utf8");
 // var tbx=fs.readFileSync("/home/mbm/deleteme/terminologue-import-sources/microsoft/microsoft-cs.tbx", "utf8");
 // var tbx=fs.readFileSync("/home/mbm/deleteme/terminologue-import-sources/microsoft/microsoft-de.tbx", "utf8");
 const START="<termEntry";

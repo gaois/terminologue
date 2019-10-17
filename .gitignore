@@ -73,3 +73,5 @@ data/uploads/*
 scripts/_entrylist.txt
 scripts/fiat.txt
 siteconfig.json
+scripts/_entries.tbx.xml
+scripts/_entries.xcs.xml
