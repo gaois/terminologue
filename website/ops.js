@@ -1568,7 +1568,7 @@ module.exports={
         if(!entry1[key]){
           entry1[key]=entry2[key]
         } else {
-          if(key=="cStatus" || key=="pStatus"){
+          if(key=="cStatus" || key=="pStatus" || key=="dStatus"){
             entry1[key]=Math.max(entry1[key], entry2[key]).toString();
           } else if(key=="dateStamp"){
             entry1[key]=(entry1[key]>entry2[key] ? entry1[key] : entry2[key]);
