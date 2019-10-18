@@ -227,12 +227,14 @@ function Domain(obj, lang, md){
     ret+=`<span class='step'>${TitleInLang(domain.title, lang)}</span>`;
     if(obj.subdomain){
       var subdomain=FindSubdomain(domain, obj.subdomain, lang);
-      subdomain._parents.map(d => {
+      if(subdomain){
+        subdomain._parents.map(d => {
+          ret+=`&nbsp; »&nbsp; `;
+          ret+=`<span class='step'>${TitleInLang(d.title, lang)}</span>`;
+        });
         ret+=`&nbsp; »&nbsp; `;
-        ret+=`<span class='step'>${TitleInLang(d.title, lang)}</span>`;
-      });
-      ret+=`&nbsp; »&nbsp; `;
-      ret+=`<span class='step'>${TitleInLang(subdomain.title, lang)}</span>`;
+        ret+=`<span class='step'>${TitleInLang(subdomain.title, lang)}</span>`;
+      }
     }
   }
   ret+=`</span>`;

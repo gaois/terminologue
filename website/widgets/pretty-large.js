@@ -409,12 +409,14 @@ PrettyLarge.domain=function(obj, lang){
     $ret.append("<span class='step'>"+PrettyLarge.titleInLang(domain.title, lang)+"</span>");
     if(obj.subdomain){
       var subdomain=PrettyLarge.findSubdomain(domain, obj.subdomain, lang);
-      subdomain._parents.map(d => {
+      if(subdomain){
+        subdomain._parents.map(d => {
+          $ret.append("&nbsp; »&nbsp; ");
+          $ret.append("<span class='step'>"+PrettyLarge.titleInLang(d.title, lang)+"</span>");
+        });
         $ret.append("&nbsp; »&nbsp; ");
-        $ret.append("<span class='step'>"+PrettyLarge.titleInLang(d.title, lang)+"</span>");
-      });
-      $ret.append("&nbsp; »&nbsp; ");
-      $ret.append("<span class='step'>"+PrettyLarge.titleInLang(subdomain.title, lang)+"</span>");
+        $ret.append("<span class='step'>"+PrettyLarge.titleInLang(subdomain.title, lang)+"</span>");
+      }
     }
   }
   return $ret;

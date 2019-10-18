@@ -180,12 +180,14 @@ PrettySmall.domain=function(obj){
     $ret.append("<span class='step'>"+PrettySmall.title(domain.title)+"</span>");
     if(obj.subdomain){
       var subdomain=PrettySmall.findSubdomain(domain, obj.subdomain);
-      subdomain._parents.map(d => {
+      if(subdomain){
+        subdomain._parents.map(d => {
+          $ret.append("&nbsp; »&nbsp; ");
+          $ret.append("<span class='step'>"+PrettySmall.title(d.title)+"</span>");
+        });
         $ret.append("&nbsp; »&nbsp; ");
-        $ret.append("<span class='step'>"+PrettySmall.title(d.title)+"</span>");
-      });
-      $ret.append("&nbsp; »&nbsp; ");
-      $ret.append("<span class='step'>"+PrettySmall.title(subdomain.title)+"</span>");
+        $ret.append("<span class='step'>"+PrettySmall.title(subdomain.title)+"</span>");
+      }
     }
   }
   return $ret;
