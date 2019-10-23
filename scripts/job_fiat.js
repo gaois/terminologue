@@ -10,13 +10,13 @@
   where con.CategoryNickname='fiatga.concept'
   and (usr.ID is not null or com.ID is null)
   and exists (select * from tblIndex as i where i.EntryID=con.ID and i.Path='concept/note' and i.Attribute='type' and i.ValueNumber in (4156812, 4156811))
-  and con.XmlContent.exist('/concept/note[(@type="4156812" or @type="4156811") and @dateTime>"2018-11-01" and @dateTime<"2019-01-01"]')=1
+  and con.XmlContent.exist('/concept/note[(@type="4156812" or @type="4156811") and @dateTime>="2018-11-01" and @dateTime<"2019-01-01"]')=1
   order by con.ID desc, com.ID desc, usr.ID desc
 
 2. Cópeáil agus greamaigh an t-inneachar go comhad fiat.txt san fhilleán seo (= an fillteán céanna ina bhfuil an comhad seo, job_fiat.js)
    ar fhreastalaí gréasáin Téarma.
 
-3. Ar fhreastalaí gréasáin Téarma, ascail command prompt, téigh go dtí an fillteán seo agus righ an script seo:
+3. Ar fhreastalaí gréasáin Téarma, oscail command prompt, téigh go dtí an fillteán seo agus righ an script seo:
    node job_fiat.js
 */
 
