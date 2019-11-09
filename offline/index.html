@@ -7,13 +7,13 @@
   </head>
   <body>
     <div id="leftmenu">
-      <div id="home"></div>
+      <div id="home" tabindex="0"></div>
       <div class="menuheading">EXPORT</div>
-      <div class="menuitem current">Export into TBX</div>
-      <div class="menuitem">Export into plaintext</div>
+      <div class="menuitem current" tabindex="0">Export into TBX</div>
+      <div class="menuitem" tabindex="0">Export into plaintext</div>
       <div class="menuheading">IMPORT</div>
-      <div class="menuitem">Import from TBX</div>
-      <div class="menuitem">Import from plaintext</div>
+      <div class="menuitem" tabindex="0">Import from TBX</div>
+      <div class="menuitem" tabindex="0">Import from plaintext</div>
     </div>
     <div id="space">
 
@@ -48,11 +48,12 @@
           <div class="disabler"></div>
         </div>
 
-        <div class="goline">
+        <div class="goline state-initial x-state-ongoing x-state-finished">
           <button class="start">Start</button>
           <button class="abort">Abort</button>
-          <div class="thermometer"><div class="done" style="width: 32%"></div></div>
+          <div class="thermometer"><div class="done" style="width: 27%"></div></div>
           <div class="legend">332 of 1,201</div>
+          <div class="finished">Finished</div>
         </div>
 
       </div>

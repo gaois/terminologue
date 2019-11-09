@@ -13,6 +13,12 @@ body {
   user-select: none;
   overflow: hidden;
 }
+*:focus {
+  outline-offset: 5px;
+  outline-color: #6699cc;
+  outline-style: dotted;
+  outline-width: 1px;
+}
 button {
   font: inherit;
   cursor: pointer;
@@ -21,6 +27,9 @@ button {
   background-color: #eeeeee;
   padding: 2px 10px;
   box-shadow: 1px 1px 0px #999999;
+}
+button:active {
+  box-shadow: -1px -1px 0px #999999;
 }
 label {
   cursor: pointer;
@@ -39,6 +48,7 @@ div#home {
   background-image: url(img/terminologue-header.png); background-position: center; background-repeat: no-repeat;
   width: 160px; height: 30px;
   margin: 25px 0px 30px 20px;
+  cursor: pointer;
 }
 div#leftmenu div.menuheading {
   margin: 20px 0px 0px 0px;
@@ -102,16 +112,12 @@ div.box.disabled > div.title {
   color: #999999 !important;
 }
 
-
-
 div.box div.path {
   position: relative;
 }
 div.box div.path > input {
   font-family: monospace; font-size: 1.5em;
   width: 100%;  border: 0px;
-  outline: none;
-
 }
 div.box div.path > button {
   position: absolute; top: 0px; right: 0px;
@@ -126,20 +132,24 @@ div.goline {
   margin: 30px 0px 20px 0px;
   position: relative;
 }
+div.goline > * {
+  display: none;
+}
 div.goline button {
   padding: 10px 0px; width: 100px;
   text-align: center;
-  position: absolute; top: 0px;
+  position: absolute; top: 0px; left: 0px;
 }
 div.goline button.start {
   font-weight: bold; color: #047063;
-  left: 0px;
 }
-div.goline button.abort {
-  right: 0px;
+div.goline button.abort {}
+div.goline div.finished {
+    font-weight: bold; color: #047063;
+    text-align: center;
 }
 div.goline div.thermometer {
-  margin: 0px 110px;
+  margin: 0px 0px 0px 110px;
   padding: 7px 0px;
   background-color: #e9e9e9;
   border-radius: 2px;
@@ -153,3 +163,15 @@ div.goline div.legend {
   text-align: center;
   margin: 10px 0px 0px 0px;
 }
+
+div.goline.state-initial button.start {display: inline;}
+
+div.goline.state-ongoing button.start {display: inline;}
+div.goline.state-ongoing button.abort {display: inline;}
+div.goline.state-ongoing div.thermometer {display: block;}
+div.goline.state-ongoing div.legend {display: block;}
+
+div.goline.state-finished button.start {display: inline;}
+div.goline.state-finished div.finished {display: block;}
+div.goline.state-finished div.thermometer {display: block;}
+div.goline.state-finished div.legend {display: block;}
