@@ -1,0 +1,15 @@
+{
+  "name": "terminologue-offline-processor",
+  "productName": "Terminologue Offline Processor",
+  "version": "1.0.0",
+  "description": "A tool for maintaining, exporting and importing Terminologue termbases.",
+  "author": "Dublin City University",
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^5.0.4"
+  }
+}

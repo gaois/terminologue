@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="index.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <div id="leftmenu">
+      <div id="home"></div>
+      <div class="menuheading">EXPORT</div>
+      <div class="menuitem current">Export into TBX</div>
+      <div class="menuitem">Export into plaintext</div>
+      <div class="menuheading">IMPORT</div>
+      <div class="menuitem">Import from TBX</div>
+      <div class="menuitem">Import from plaintext</div>
+    </div>
+    <div id="space">
+
+      <!--block for TBX export-->
+      <div class="block">
+        <div class="title">Export into TBX</div>
+
+        <div class="box x-disabled">
+          <div class="title"><b>THE INPUT</b> — YOUR TERMINOLOGUE TERMBASE</div>
+          <div class="path">
+            <input value="/home/mbm/mytermbase.sqlite" spellcheck="false"/>
+            <button>&middot;&middot;&middot;</button>
+          </div>
+          <div class="disabler"></div>
+        </div>
+
+        <div class="box x-disabled">
+          <div class="title">MAPPING</div>
+          <div class="radios">
+            <label><input type="radio" name="mapping" checked/> Use default settings</label>
+            <label><input type="radio" name="mapping"/> Use your own mapping file</label>
+          </div>
+          <div class="disabler"></div>
+        </div>
+
+        <div class="box x-disabled">
+          <div class="title"><b>THE OUTPUT</b> — YOUR TBX FILE</div>
+          <div class="path">
+            <input value="/home/mbm/mytermbase.tbx" spellcheck="false"/>
+            <button>&middot;&middot;&middot;</button>
+          </div>
+          <div class="disabler"></div>
+        </div>
+
+        <div class="goline">
+          <button class="start">Start</button>
+          <button class="abort">Abort</button>
+          <div class="thermometer"><div class="done" style="width: 32%"></div></div>
+          <div class="legend">332 of 1,201</div>
+        </div>
+
+      </div>
+      <!--end of block for TBX export-->
+
+    </div>
+  </body>
+</html>
