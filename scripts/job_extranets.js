@@ -20,17 +20,19 @@ function onebyone(){
   const db = new Database('../data/termbases/bnt.sqlite', { fileMustExist: true });
   const selEntry = db.prepare('select * from entries where id=?');
   const updEntry = db.prepare('update entries set json=? where id=?');
-  const idxExtranet = db.prepare('insert into entry_extranet values (?, 4626859)');
+  const idxExtranet = db.prepare('insert into entry_extranet values (?, ?)');
   entryIDs.map(entryID => {
     var rowEntry=selEntry.get(entryID);
     if(!rowEntry){
       console.log(`${entryID}: no need to do`);
     } else {
       var entry=JSON.parse(rowEntry.json);
-      entry.extranets=[BNT_EXTRANET_ID];
+      //entry.extranets=[BNT_EXTRANET_ID];
+      if(!entry.extranets) entry.extranets=[];
+      entry.extranets.push(BNT_EXTRANET_ID);
       var json=JSON.stringify(entry);
       var info=updEntry.run(json, entryID);
-      var out=idxExtranet.run(entryID);
+      var out=idxExtranet.run(entryID, BNT_EXTRANET_ID);
       console.log(`${entryID}: done, rows changed: ${info.changes}`);
     }
   });
