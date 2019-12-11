@@ -20,7 +20,7 @@ function onebyone(){
   const db = new Database('../data/termbases/bnt.sqlite', { fileMustExist: true });
   const selEntry = db.prepare('select * from entries where id=?');
   const updEntry = db.prepare('update entries set json=? where id=?');
-  const idxExtranet = db.prepare('insert into entry_extranet values (?, ?)');
+  const idxExtranet = db.prepare('insert into entry_extranet(entry_id, extranet) values (?, ?)');
   entryIDs.map(entryID => {
     var rowEntry=selEntry.get(entryID);
     if(!rowEntry){
