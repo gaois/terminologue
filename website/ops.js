@@ -1589,15 +1589,15 @@ module.exports={
   },
 
   metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
-    var sql1=`select * from metadata where type=$type order by sortkey limit $howmany`;
+    var sql1=`select *, 1 as hasChildren from metadata where type=$type and parent_id is null order by sortkey limit $howmany`;
     var params1={$howmany: howmany, $type: type};
-    var sql2=`select count(*) as total from metadata where type=$type`;
+    var sql2=`select count(*) as total from metadata where type=$type and parent_id is null`;
     var params2={$type: type};
     db.all(sql1, params1, function(err, rows){
       if(err || !rows) rows=[];
       var entries=[];
       for(var i=0; i<rows.length; i++){
-        var item={id: rows[i].id, title: rows[i].id, json: rows[i].json};
+        var item={id: rows[i].id, title: rows[i].id, json: rows[i].json, hasChildren: (rows[i].hasChildren>0)};
         entries.push(item);
       }
       db.get(sql2, params2, function(err, row){
@@ -1630,11 +1630,12 @@ module.exports={
     });
   },
   metadataCreate: function(db, termbaseID, type, entryID, json, callnext){
-    if(type=="domain") json=module.exports.subdomainIDs(json);
-    module.exports.getMetadataSortkey(db, termbaseID, json, function(sortkey){
-      var sql="insert into metadata(type, json, sortkey) values($type, $json, $sortkey)";
-      var params={$json: json, $type: type, $sortkey: sortkey};
-      if(entryID) { sql="insert into metadata(id, type, json, sortkey) values($id, $type, $json, $sortkey)"; params.$id=entryID; }
+    //if(type=="domain") json=module.exports.subdomainIDs(json);
+    var metadatum=JSON.parse(json);
+    module.exports.getMetadataSortkey(db, termbaseID, metadatum, function(sortkey){
+      var sql="insert into metadata(type, json, sortkey, parent_id) values($type, $json, $sortkey, $parentID)";
+      var params={$json: json, $type: type, $sortkey: sortkey, $parentID: metadatum.parentID || null};
+      if(entryID) { sql="insert into metadata(id, type, json, sortkey, parent_id) values($id, $type, $json, $sortkey, $parentID)"; params.$id=entryID; }
       db.run(sql, params, function(err){
         if(!entryID) entryID=this.lastID;
         module.exports.propagator.saveMetadatum(termbaseID, entryID, type, json);
@@ -1643,7 +1644,7 @@ module.exports={
     });
   },
   metadataUpdate: function(db, termbaseID, type, entryID, json, callnext){
-    if(type=="domain") json=module.exports.subdomainIDs(json);
+    //if(type=="domain") json=module.exports.subdomainIDs(json);
     db.get("select id, json from metadata where id=$id and type=$type", {$id: entryID, $type: type}, function(err, row){
       var newJson=json;
       var oldJson=(row?row.json:"");
@@ -1653,9 +1654,10 @@ module.exports={
         callnext(entryID, json, false);
       } else {
         //update me:
-        module.exports.getMetadataSortkey(db, termbaseID, json, function(sortkey){
-          db.run("update metadata set json=$json, sortkey=$sortkey where id=$id and type=$type", {
-            $id: entryID, $json: json, $type: type, $sortkey: sortkey
+        var metadatum=JSON.parse(json);
+        module.exports.getMetadataSortkey(db, termbaseID, metadatum, function(sortkey){
+          db.run("update metadata set json=$json, sortkey=$sortkey, parent_id=$parentID where id=$id and type=$type", {
+            $id: entryID, $json: json, $type: type, $sortkey: sortkey, $parentID: metadatum.parentID || null
           }, function(err){
             module.exports.propagator.saveMetadatum(termbaseID, entryID, type, json);
             callnext(entryID, json, true);
@@ -1680,8 +1682,8 @@ module.exports={
     });
     return JSON.stringify(domain);
   },
-  getMetadataSortkey: function(db, termbaseID, json, callnext){
-    var metadatum=JSON.parse(json);
+  getMetadataSortkey: function(db, termbaseID, metadatum, callnext){
+    if(typeof(metadatum)=="string") metadatum=JSON.parse(metadatum);
     module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
       var str="";
       if(metadatum.abbr) str+=metadatum.abbr;

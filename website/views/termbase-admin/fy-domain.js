@@ -24,6 +24,8 @@ Spec.blank={
 Spec.templates[":top"]={
   type: "object",
   html: `<div class="fy_onlybody">
+    <div class="title">${L("PARENT")}</div>
+    <div class="fy_replace" templateName="parentID" jsonName="parentID"></div>
     <div class="title">${L("TITLE")}</div>
     <div class="fy_replace" templateName="title" jsonName="title"></div>
     <div class="goodtitle">${L("SUBDOMAINS")}</div>
@@ -38,6 +40,26 @@ Spec.templates["hiddenID"]={
   },
   get: function($me){
     return $me.val();
+  },
+};
+
+Spec.templates["parentID"]={
+  type: "string",
+  html: function(){
+    var html=`<div class="fy_container">
+      <div class="fy_box">`;
+      html+=`<div class="fy_horizon">
+          <span class="fy_textbox" style="position: absolute; left: 5px; right: 0px;"><input onchange="Fy.changed()"/></span>
+        </div>`;
+      html+=`</div>
+    </div>`;
+    return html;
+  },
+  set: function($me, data){
+    $me.find("input").val(data);
+  },
+  get: function($me){
+    return $me.find("input").val();
   },
 };
 

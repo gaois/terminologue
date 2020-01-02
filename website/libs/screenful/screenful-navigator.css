@@ -81,7 +81,7 @@ button.iconOnly#butSearch {background-image: url(magnifier.png);}
 #navbox #countContainer.clickable:hover span.arrow {color: #09587e;}
 
 #navbox .line2 .menuContainer {}
-#navbox .line2 .menuContainer div.menu {font-size: 0.9em; border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; position: absolute; margin-top: 5px; z-index: 1; white-space: nowrap;}
+#navbox .line2 .menuContainer div.menu {font-size: 0.9em; border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; position: absolute; margin-top: 5px; z-index: 2; white-space: nowrap;}
 #navbox .line2 .menuContainer div.menu a {display: block; padding: 10px 20px; text-decoration: none; color: #333333; border-top: 1px solid #dddddd;}
 #navbox .line2 .menuContainer div.menu a span.abbr {display: inline-block; width: 3em; overflow: hidden; text-align: center; box-sizing: border-box; padding: 4px 4px; margin: 0px 10px -10px -10px; position: relative; top: -3px; line-height: 1em; background-color: #cccccc; border-radius: 2px; text-shadow: 1px 1px 0px #ffffff;}
 #navbox .line2 .menuContainer div.menu a:first-child {border-top-left-radius: 4px; border-top-right-radius: 4px; border-top: 0px;}
@@ -135,6 +135,16 @@ span#suggs span.sugg:hover {color: var(--link-hover);}
 .listbox .entry.current {background-color: var(--highlight, #eeeeee); text-shadow: 1px 1px 0px #dddddd;}
 .listbox .entry span.searchtext { background-color: #ffecb3; text-shadow: 0px 0px 0px transparent; border: 1px solid #ffffff; margin: 0px -1px; }
 .listbox .entry > div.clear {clear: both;}
+
+.listbox .entry a.entryDriller {float: left; border-radius: 2px; box-sizing: border-box; position: relative; top: 2px; z-index: 1; width: 18px; height: 18px; display: block; background-position: center; background-repeat: no-repeat; color: #999999; text-align: center;}
+.listbox .entry a.entryDriller:hover {color: #666666;}
+.listbox .entry a.entryDriller span {display: none;}
+.listbox .entry a.entryDriller.collapsed span.collapsed {display: inline;}
+.listbox .entry a.entryDriller.expanded span.expanded {display: inline;}
+.listbox .entry a.entryDriller.none {}
+#starlist .entry a.entryDriller {display: none;}
+.listbox .entry.hasDriller .inside {margin-left: 25px;}
+#starlist .entry.hasDriller .inside {margin-left: 0px;}
 
 .listbox .entry a.entryFlagLink {float: left; background-color: #ffffff; border: 1px solid #999999; border-radius: 20px; box-sizing: border-box; width: 1em; height: 1em; margin-right: 0.5em; position: relative; top: 2px; z-index: 1;}
 .listbox .entry a.entryFlagLink.undecided {border-color: transparent; background-image: url(loader-round-tiny.gif); background-position: center center; background-repeat: no-repeat;}

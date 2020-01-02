@@ -298,7 +298,9 @@ Screenful.Navigator={
     ret.modifier=""; modifiers.map(s => {if(s){ if(ret.modifier!="") ret.modifier+=" "; ret.modifier+=s; }});
     return ret;
   },
+  lastListFuncName: "list", //list | listHierarchy
   list: function(event, howmanyOrPage, noSFX){
+    Screenful.Navigator.lastListFuncName="list";
     var howmany=howmanyOrPage || Screenful.Navigator.lastStepSize || Screenful.Navigator.stepSize;
     var page=howmanyOrPage || 1;
     Screenful.Navigator.lastStepSize=howmany;
@@ -373,50 +375,83 @@ Screenful.Navigator={
         if(Screenful.Navigator.regime=="paged") $("#listbox").scrollTop(0);
 
         //keyboard nav:
-        $("#listbox .entry").on("keydown", function(e){
-          if(e.which==40){ //arrow down key
-            e.preventDefault();
-            if(e.ctrlKey||e.metaKey) $("#listbox").scrollTop($("#listbox").scrollTop()+60);
-            else {
-              $(e.delegateTarget).nextAll(".entry").first().focus();
-              Screenful.Navigator.lastFocusedEntryID=$("#listbox .entry:focus").attr("data-id");
-            }
-          }
-          if(e.which==38){ //arrow up key
-            e.preventDefault();
-            if(e.ctrlKey||e.metaKey) $("#listbox").scrollTop($("#listbox").scrollTop()-60);
-            else {
-              $(e.delegateTarget).prevAll(".entry").first().focus();
-              Screenful.Navigator.lastFocusedEntryID=$("#listbox .entry:focus").attr("data-id");
-            }
-          }
-          if(e.which==13){ //Enter key
-            e.preventDefault(); $(e.delegateTarget).click();
-          }
-          if(e.which==46){ //Delete key
-            e.preventDefault();
-            Screenful.Navigator.entryDelete(e);
-          }
-          if(e.which==76 && (e.ctrlKey||e.metaKey) && e.shiftKey){ //L key
-            e.preventDefault();
-            Screenful.Navigator.entryStar(e);
-          }
-          if(Screenful.Navigator.flags && Screenful.Navigator.flags.length>0 && Screenful.Navigator.entryFlagUrl){
-            for(var i=0; i<Screenful.Navigator.flags.length; i++) {
-              if(e.key==Screenful.Navigator.flags[i].key){
-                e.preventDefault();
-                Screenful.Navigator.entryFlag(e, Screenful.Navigator.flags[i].name)
-              }
-            }
-          }
-        });
-        $("#listbox .entry").on("click", function(e){
-          Screenful.Navigator.lastFocusedEntryID=$(e.delegateTarget).attr("data-id");
-        });
+        Screenful.Navigator.makeListKeyboardable();
       }
     });
   },
-  printEntry: function(entry, $listbox, searchtext, modifier){
+  listHierarchy: function(parentID){
+    Screenful.Navigator.lastListFuncName="listHierarchy";
+    Screenful.status(Screenful.Loc.listing, "wait"); //"getting list of entries"
+    var url=Screenful.Navigator.hierarchyUrl;
+    var data={parentID: parentID};
+    $.ajax({url: url, dataType: "json", method: "POST", data: data}).done(function(data){
+      if(!data.success) {
+        Screenful.status(Screenful.Loc.listingFailed, "warn"); //"failed to get list of entries"
+      } else {
+        $("#countcaption").html(data.total);
+        var $listbox=$("#listbox").hide().html("");
+
+        if(data.parentEntries) data.parentEntries.forEach(function(entry){ Screenful.Navigator.printEntry(entry, $listbox, "", "", true); });
+        if(data.entries) data.entries.forEach(function(entry){ Screenful.Navigator.printEntry(entry, $listbox, "", "", false); });
+        //if(!noSFX) $listbox.fadeIn(); else $listbox.show();
+        $listbox.show();
+
+        if(window.frames["editframe"] && window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
+          var currentEntryID=window.frames["editframe"].Screenful.Editor.entryID;
+          Screenful.Navigator.setEntryAsCurrent(currentEntryID);
+        }
+        Screenful.status(Screenful.Loc.ready);
+        Screenful.Navigator.focusEntryList();
+        $("#listbox").scrollTop(0);
+
+        //keyboard nav:
+        Screenful.Navigator.makeListKeyboardable();
+      }
+    });
+  },
+  makeListKeyboardable: function(){
+    $("#listbox .entry").on("keydown", function(e){
+      if(e.which==40){ //arrow down key
+        e.preventDefault();
+        if(e.ctrlKey||e.metaKey) $("#listbox").scrollTop($("#listbox").scrollTop()+60);
+        else {
+          $(e.delegateTarget).nextAll(".entry").first().focus();
+          Screenful.Navigator.lastFocusedEntryID=$("#listbox .entry:focus").attr("data-id");
+        }
+      }
+      if(e.which==38){ //arrow up key
+        e.preventDefault();
+        if(e.ctrlKey||e.metaKey) $("#listbox").scrollTop($("#listbox").scrollTop()-60);
+        else {
+          $(e.delegateTarget).prevAll(".entry").first().focus();
+          Screenful.Navigator.lastFocusedEntryID=$("#listbox .entry:focus").attr("data-id");
+        }
+      }
+      if(e.which==13){ //Enter key
+        e.preventDefault(); $(e.delegateTarget).click();
+      }
+      if(e.which==46){ //Delete key
+        e.preventDefault();
+        Screenful.Navigator.entryDelete(e);
+      }
+      if(e.which==76 && (e.ctrlKey||e.metaKey) && e.shiftKey){ //L key
+        e.preventDefault();
+        Screenful.Navigator.entryStar(e);
+      }
+      if(Screenful.Navigator.flags && Screenful.Navigator.flags.length>0 && Screenful.Navigator.entryFlagUrl){
+        for(var i=0; i<Screenful.Navigator.flags.length; i++) {
+          if(e.key==Screenful.Navigator.flags[i].key){
+            e.preventDefault();
+            Screenful.Navigator.entryFlag(e, Screenful.Navigator.flags[i].name)
+          }
+        }
+      }
+    });
+    $("#listbox .entry").on("click", function(e){
+      Screenful.Navigator.lastFocusedEntryID=$(e.delegateTarget).attr("data-id");
+    });
+  },
+  printEntry: function(entry, $listbox, searchtext, modifier, drillerExpanded){
     var $item=$("<div class='entry' tabindex='0' data-id='"+entry.id+"'><div class='inside'>"+entry.id+"</div><div class='clear'></div></div>").appendTo($listbox);
     $item.on("click", entry, Screenful.Navigator.openEntry);
 
@@ -438,6 +473,26 @@ Screenful.Navigator={
           $menuItem.data("flag", flag);
         });
       }, 10);
+    }
+
+    //entry indent level:
+    if(Screenful.Navigator.hierarchyUrl){
+      var level=entry.level || 0;
+      $item.css("margin-left", ((level*30)+10)+"px");
+    }
+
+    //entry driller:
+    if(Screenful.Navigator.hierarchyUrl){
+      $item.addClass("hasDriller");
+      if(entry.hasChildren){
+        //this entry does have children, can be drilled down into:
+        var $driller=$("<a class='entryDriller collapsed'><span class='collapsed'>►</span><span class='expanded'>▼</span></a>");
+        if(drillerExpanded) $driller.removeClass("collapsed").addClass("expanded");
+        $driller.prependTo($item).on("click", Screenful.Navigator.entryDrillerClick);
+      } else {
+        //this entry is childless, cannot be drilled down into:
+        var $driller=$("<a class='entryDriller none'></a>").prependTo($item);
+      }
     }
 
     //star icon:
@@ -545,7 +600,8 @@ Screenful.Navigator={
   },
   reload: function(event){
     $("#listbox").scrollTop(0);
-    Screenful.Navigator.list();
+    if(Screenful.Navigator.lastListFuncName=="list") Screenful.Navigator.list();
+    else if(Screenful.Navigator.lastListFuncName=="listHierarchy") Screenful.Navigator.listHierarchy();
   },
 
   refresh: function(entryID, action){
@@ -569,7 +625,8 @@ Screenful.Navigator={
         }
       });
     } else {
-      Screenful.Navigator.list(null, null, true);
+      if(Screenful.Navigator.lastListFuncName=="list") Screenful.Navigator.list(null, null, true);
+      else if(Screenful.Navigator.lastListFuncName=="listHierarchy") Screenful.Navigator.listHierarchy();
     }
   },
 
@@ -608,6 +665,27 @@ Screenful.Navigator={
             }
           }
       	});
+      }
+    }
+  },
+
+  entryDrillerClick: function(e){
+    e.stopPropagation();
+    var $driller=$(e.delegateTarget);
+    var $entry=$driller.closest(".entry");
+
+    if($driller.hasClass("collapsed")){
+      //drill down into this entry
+      var entryID=$entry.attr("data-id");
+      Screenful.Navigator.listHierarchy(entryID);
+    }
+    else if($driller.hasClass("expanded")){
+      $entry=$entry.prev(".entry").first();
+      if($entry.length>0){
+        var entryID=$entry.attr("data-id");
+        Screenful.Navigator.listHierarchy(entryID);
+      } else {
+        Screenful.Navigator.list();
       }
     }
   },
