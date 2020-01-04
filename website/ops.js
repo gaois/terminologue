@@ -1589,7 +1589,13 @@ module.exports={
   },
 
   metadataList: function(db, termbaseID, type, facets, searchtext, modifier, howmany, callnext){
-    var sql1=`select *, 1 as hasChildren from metadata where type=$type and parent_id is null order by sortkey limit $howmany`;
+    var sql1=`select
+      m.*,
+      (select count(*) from metadata as chld where chld.type=$type and chld.parent_id=m.id) as hasChildren
+      from metadata as m
+      where m.type=$type and m.parent_id is null
+      order by m.sortkey
+      limit $howmany`;
     var params1={$howmany: howmany, $type: type};
     var sql2=`select count(*) as total from metadata where type=$type and parent_id is null`;
     var params2={$type: type};
@@ -1604,6 +1610,51 @@ module.exports={
         var total=(!err && row) ? row.total : 0;
         callnext(total, entries);
       });
+    });
+  },
+  metadataListHierarchy: function(db, termbaseID, type, parentID, callnext){
+    module.exports.metadataParentsAndSelf(db, type, parentID, 0, [], function(parentEntries){
+      var level=0;
+      if(parentEntries.length>0){
+        var levelOffset=parentEntries[0].level;
+        parentEntries.map(entry => {
+          entry.hasChildren=true;
+          entry.level=entry.level-levelOffset;
+        });
+        level=parentEntries[parentEntries.length-1].level+1;
+      }
+      var sql1=`select
+        m.*,
+        (select count(*) from metadata as chld where chld.type=$type and chld.parent_id=m.id) as hasChildren
+        from metadata as m
+        where m.type=$type and m.parent_id=$parentID
+        order by m.sortkey
+        limit $howmany`;
+      var params1={$howmany: 10000, $type: type, $parentID: parentID};
+      db.all(sql1, params1, function(err, rows){
+        if(err || !rows) rows=[];
+        var entries=[];
+        for(var i=0; i<rows.length; i++){
+          var item={id: rows[i].id, title: rows[i].id, json: rows[i].json, hasChildren: (rows[i].hasChildren>0), level: level};
+          entries.push(item);
+        }
+        callnext((parentEntries.length+entries.length), parentEntries, entries);
+      });
+    });
+  },
+  metadataParentsAndSelf: function(db, type, entryID, level, acc, callnext){
+    var sql=`select * from metadata where type=$type and id=$entryID`;
+    var params={$type: type, $entryID: entryID};
+    db.get(sql, params, function(err, row){
+      if(err || !row) console.log(err);
+      var item={id: row.id, title: row.id, json: row.json, level: (level-1)};
+      acc.unshift(item);
+      var parentID=row.parent_id;
+      if(parentID){
+        module.exports.metadataParentsAndSelf(db, type, parentID, level-1, acc, callnext);
+      } else {
+        callnext(acc);
+      }
     });
   },
   metadataRead: function(db, termbaseID, type, entryID, callnext){
@@ -1630,7 +1681,6 @@ module.exports={
     });
   },
   metadataCreate: function(db, termbaseID, type, entryID, json, callnext){
-    //if(type=="domain") json=module.exports.subdomainIDs(json);
     var metadatum=JSON.parse(json);
     module.exports.getMetadataSortkey(db, termbaseID, metadatum, function(sortkey){
       var sql="insert into metadata(type, json, sortkey, parent_id) values($type, $json, $sortkey, $parentID)";
@@ -1644,7 +1694,6 @@ module.exports={
     });
   },
   metadataUpdate: function(db, termbaseID, type, entryID, json, callnext){
-    //if(type=="domain") json=module.exports.subdomainIDs(json);
     db.get("select id, json from metadata where id=$id and type=$type", {$id: entryID, $type: type}, function(err, row){
       var newJson=json;
       var oldJson=(row?row.json:"");
@@ -1665,22 +1714,6 @@ module.exports={
         });
       }
     });
-  },
-  subdomainIDs: function(json){
-    var domain=JSON.parse(json);
-    var maxID=0;
-    var lidless=[];
-    if(domain.subdomains) walk(domain.subdomains);
-    function walk(subdomains){
-      subdomains.map(subdomain => {
-        if(!subdomain.lid) lidless.push(subdomain); else maxID=Math.max(maxID, parseInt(subdomain.lid));
-        if(subdomain.subdomains) walk(subdomain.subdomains);
-      });
-    }
-    lidless.map(subdomain => {
-      subdomain.lid=(++maxID).toString();
-    });
-    return JSON.stringify(domain);
   },
   getMetadataSortkey: function(db, termbaseID, metadatum, callnext){
     if(typeof(metadatum)=="string") metadatum=JSON.parse(metadatum);

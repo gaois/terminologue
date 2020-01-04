@@ -379,8 +379,11 @@ Screenful.Navigator={
       }
     });
   },
+  lastListParentID: null,
   listHierarchy: function(parentID){
     Screenful.Navigator.lastListFuncName="listHierarchy";
+    parentID=parentID || Screenful.Navigator.lastListParentID;
+    Screenful.Navigator.lastListParentID=parentID;
     Screenful.status(Screenful.Loc.listing, "wait"); //"getting list of entries"
     var url=Screenful.Navigator.hierarchyUrl;
     var data={parentID: parentID};
