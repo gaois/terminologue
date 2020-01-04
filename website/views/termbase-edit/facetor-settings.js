@@ -1,3 +1,99 @@
+Screenful.Facetor.title=function(title, lang){
+  if(title[lang]) return title[lang];
+  if(title.$) return title.$;
+  var ret="";
+  var done=[];
+  termbaseConfigs.lingo.languages.map(lang => {
+    if(lang.role=="major" && title[lang.abbr] && done.indexOf(title[lang.abbr])==-1) {
+      if(ret+="") ret+="/";
+      ret+=title[lang.abbr];
+      done.push(title[lang.abbr]);
+    }
+  });
+  if(!ret) ret="???";
+  return ret;
+};
+Screenful.Facetor.getDomain=function(id){
+  var ret=null;
+  termbaseMetadata.domain=(termbaseMetadata.domain || []);
+  termbaseMetadata.domain.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
+Screenful.Facetor.longTitle=function(domain){
+  var ret=Screenful.Facetor.title(domain.title);
+  var dom=domain; while(dom.parentID){
+    var dom=Screenful.Facetor.getDomain(dom.parentID);
+    if(dom) ret=Screenful.Facetor.title(dom.title)+" » "+ret;
+  }
+  return ret;
+};
+Screenful.Facetor.domainHasChildren=function(domain){
+  var ret=false;
+  termbaseMetadata.domain.map(datum => {  if(datum.parentID==domain.id) ret=true; });
+  return ret;
+};
+Screenful.Facetor.changeSelectTitles=function(select){
+  var $select=$(select);
+  if($select.attr("size")=="1"){
+    $select.find("option").each(function(){
+      var $option=$(this);
+      if($option.data("longTitle")) $option.html($option.data("longTitle"));
+    });
+  } else {
+    $select.find("option").each(function(){
+      var $option=$(this);
+      if($option.data("shortTitle")) $option.html($option.data("shortTitle"));
+    });
+  }
+};
+Screenful.Facetor.refillDomains=function(selectedDomainID){
+  domains=[];
+  var selectedDomain=Screenful.Facetor.getDomain(selectedDomainID);
+  if(!selectedDomain){ //if no domain is selected:
+    termbaseMetadata.domain.map(domain => { if(!domain.parentID){ domains.push(domain); }});
+  } else {
+    domains.push(selectedDomain);
+    termbaseMetadata.domain.map(domain => { if(domain.parentID==selectedDomainID){ domains.push(domain); }});
+    //add all parents to the front of the list:
+    var parentID=selectedDomain.parentID;
+    while(parentID){
+      var domain=Screenful.Facetor.getDomain(parentID);
+      parentID=null;
+      if(domain){
+        domains.unshift(domain);
+        parentID=domain.parentID;
+      }
+    }
+  }
+  var $select=$("select#facDomain").html("");
+  var level=0;
+  $select.append(`<option style="padding: 4px 2px" value="">(${L("any domain or no domain")})</option>`);
+  $select.append(`<option style="padding: 4px 2px" value="*">(${L("any domain")})</option>`);
+  $select.append(`<option style="padding: 4px 2px" value="-1">(${L("no domain")})</option>`);
+  if(selectedDomain){
+    var level=1;
+  }
+  var prevDomainID=0;
+  domains.map(domain => {
+    if(domain.parentID==prevDomainID) level++;
+    var padding=""; for(var i=0; i<level; i++) padding+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    var driller="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; if(Screenful.Facetor.domainHasChildren(domain)) driller="►&nbsp;";
+    var shortTitle=`${padding}${driller}${Spec.title(domain.title)}`;
+    var longTitle=Spec.longTitle(domain);
+    var $option=$(`<option style="padding: 4px 2px" value="${domain.id}">${longTitle}</option>`);
+    $option.data("shortTitle", shortTitle);
+    $option.data("longTitle", longTitle);
+    $select.append($option);
+    prevDomainID=domain.id;
+  });
+  $select.find("option").on("click", function(e){
+    Screenful.Facetor.refillDomains($(e.delegateTarget).attr("value"));
+  });
+  Screenful.Facetor.changeSelectTitles($select);
+  if(typeof(selectedDomainID)=="string") $select.val(selectedDomainID);
+  else $select.val("");
+};
+
 Screenful.Facetor.panes=[{
   render: function(div){
     var $inme=$(div);
@@ -31,47 +127,14 @@ Screenful.Facetor.panes=[{
 
     if(termbaseMetadata.domain.length>0){
       $inme.append(`<div class="title"><span class="tab">${L("DOM")}</span></div>`);
-
-      //domain:
-      var $select=$(`<select class="fullwidth" id="facSuperdomain"></select>`).appendTo($inme);
+      //var $input=$(`<input class="fullwidth" id="facDomain"/>`).appendTo($inme);
+      //$input.on("change", Screenful.Facetor.change);
+      var $select=$(`<select class="fullwidth" id="facDomain" size="1" onfocus="this.size='10'; Screenful.Facetor.changeSelectTitles(this)" onblur="this.size='1'; Screenful.Facetor.changeSelectTitles(this)"></select>`).appendTo($inme);
       $select.append(`<option value="">(${L("any domain or no domain")})</option>`);
       $select.append(`<option value="*">(${L("any domain")})</option>`);
       $select.append(`<option value="-1">(${L("no domain")})</option>`);
-      termbaseMetadata.domain=(termbaseMetadata.domain || []);
-      termbaseMetadata.domain.map(datum => {
-        var $option=$(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`);
-        $option.data("datum", datum);
-        $option.appendTo($select);
-      });
       $select.on("change", Screenful.Facetor.change);
-      $select.on("change", function(){
-          var superdomain=$("#facSuperdomain option:selected").data("datum");
-          var $subselect=$("#facSubdomain").html("");
-          if(!superdomain || superdomain.subdomains.length==0){
-            $subselect.hide();
-            $subselect.append(`<option value="">(${L("any subdomain or no subdomain")})</option>`);
-          } else {
-            $subselect.show();
-            $subselect.append(`<option value="">(${L("any subdomain or no subdomain")})</option>`);
-            $subselect.append(`<option value="*">(${L("any subdomain")})</option>`);
-            $subselect.append(`<option value="-1">(${L("no subdomain")})</option>`);
-            superdomain.subdomains.map(subdomain => {
-              go(subdomain, "");
-            });
-            function go(datum, prefix){
-              var title=prefix;
-              if(title!="") title+=" &nbsp;»&nbsp; ";
-              title+=Spec.title(datum.title);
-              $subselect.append(`<option value="${datum.lid}">»&nbsp; ${title}</option>`);
-              if(datum.subdomains) datum.subdomains.map(subdomain => {
-                go(subdomain, title);
-              });
-            }
-          }
-      });
-      var $select=$(`<select class="fullwidth sub" id="facSubdomain" style="display: none"></select>`).appendTo($inme);
-      $select.append(`<option value="">(${L("any subdomain or no subdomain")})</option>`);
-      $select.on("change", Screenful.Facetor.change);
+      Screenful.Facetor.refillDomains();
     }
 
     //------
@@ -281,8 +344,7 @@ Screenful.Facetor.panes=[{
     ret.pStatus=$("#facPStatus").val();
     ret.dStatus=$("#facDStatus").val();
 
-    ret.superdomain=$("#facSuperdomain").val();
-    ret.subdomain=$("#facSubdomain").val();
+    ret.domain=$("#facDomain").val();
 
     ret.termLang=$("#facTermLang").val();
     ret.accept=$("#facAccept").val();

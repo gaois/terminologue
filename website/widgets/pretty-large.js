@@ -402,20 +402,21 @@ PrettyLarge.accept=function(str){
   return $ret;
 }
 
-PrettyLarge.domain=function(obj, lang){
+PrettyLarge.domain=function(domainID, lang){
   var $ret=$("<span></span>");
-  var domain=Spec.getDomain(obj.superdomain);
+  var domain=Spec.getDomain(domainID);
   if(domain){
     $ret.append("<span class='step'>"+PrettyLarge.titleInLang(domain.title, lang)+"</span>");
-    if(obj.subdomain){
-      var subdomain=PrettyLarge.findSubdomain(domain, obj.subdomain, lang);
-      if(subdomain){
-        subdomain._parents.map(d => {
-          $ret.append("&nbsp; »&nbsp; ");
-          $ret.append("<span class='step'>"+PrettyLarge.titleInLang(d.title, lang)+"</span>");
-        });
-        $ret.append("&nbsp; »&nbsp; ");
-        $ret.append("<span class='step'>"+PrettyLarge.titleInLang(subdomain.title, lang)+"</span>");
+    var parentID=domain.parentID;
+    var depth=0;
+    while(parentID && depth<10){
+      var domain=Spec.getDomain(parentID);
+      parentID=null;
+      depth++;
+      if(domain){
+        $ret.prepend("&nbsp; »&nbsp; ");
+        $ret.prepend("<span class='step'>"+PrettyLarge.title(domain.title, lang)+"</span>");
+        parentID=domain.parentID;
       }
     }
   }

@@ -7,7 +7,6 @@ function L(s){
   if(s=="trigger_domainRemove") return "domain removed";
   if(s=="trigger_domainReorder") return "domains reordered";
   if(s=="trigger_domainChange") return "domain changed";
-  if(s=="trigger_subdomainChange") return "subdomain changed";
   if(s=="trigger_desigAdd") return "term added";
   if(s=="trigger_desigRemove") return "term removed";
   if(s=="trigger_desigReorder") return "terms reordered";

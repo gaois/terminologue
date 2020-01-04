@@ -173,20 +173,21 @@ PrettySmall.accept=function(str){
   return $ret;
 }
 
-PrettySmall.domain=function(obj){
+PrettySmall.domain=function(domainID){
   var $ret=$("<div class='prettyDomain'></div>");
-  var domain=Spec.getDomain(obj.superdomain);
+  var domain=Spec.getDomain(domainID);
   if(domain){
     $ret.append("<span class='step'>"+PrettySmall.title(domain.title)+"</span>");
-    if(obj.subdomain){
-      var subdomain=PrettySmall.findSubdomain(domain, obj.subdomain);
-      if(subdomain){
-        subdomain._parents.map(d => {
-          $ret.append("&nbsp; »&nbsp; ");
-          $ret.append("<span class='step'>"+PrettySmall.title(d.title)+"</span>");
-        });
-        $ret.append("&nbsp; »&nbsp; ");
-        $ret.append("<span class='step'>"+PrettySmall.title(subdomain.title)+"</span>");
+    var parentID=domain.parentID;
+    var depth=0;
+    while(parentID && depth<10){
+      var domain=Spec.getDomain(parentID);
+      parentID=null;
+      depth++;
+      if(domain){
+        $ret.prepend("&nbsp; »&nbsp; ");
+        $ret.prepend("<span class='step'>"+PrettySmall.title(domain.title)+"</span>");
+        parentID=domain.parentID;
       }
     }
   }

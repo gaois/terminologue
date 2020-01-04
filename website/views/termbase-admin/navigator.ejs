@@ -23,6 +23,10 @@
 		<script type="text/javascript" src="../../../libs/screenful/screenful-user.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-user.css" />
 		<script type="text/javascript">
+		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
+		var termbaseMetadata=<%-JSON.stringify(termbaseMetadata)%>;
+		</script>
+		<script type="text/javascript">
 		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
 		Screenful.User.username="<%=user.email%>";
 		</script>

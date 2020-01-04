@@ -20,13 +20,11 @@ function L(s, gloss){
   if(s=="Users") return "Úsáideoirí";
   if(s=="Termbases") return "Cnuasaigh";
   if(s=="smart search") return "cuardach cliste";
-
   if(s=="complete term") return "téarma iomlán";
   if(s=="start of term") return "tús téarma";
   if(s=="end of term") return "deireadh téarma";
   if(s=="any part of term") return "cuid ar bith de théarma";
   if(s=="any part except start or end") return "cuid ar bith seachas tús nó deireadh";
-
   if(s=="search in all languages") return "cuardaigh i ngach teanga";
   if(s=="Configuration") return "Cumrú";
   if(s=="ADMIN") return "RIAR";
@@ -45,7 +43,6 @@ function L(s, gloss){
   if(s=="inflected form") return "foirm infhillte";
   if(s=="annotation") return "nod";
   if(s=="domain") return "réimse";
-  if(s=="subdomain") return "foréimse";
   if(s=="part of speech") return "roinn chainte";
   if(s=="inflection") return "infhilleadh";
   if(s=="language of origin") return "teanga dhúchais";
@@ -55,7 +52,6 @@ function L(s, gloss){
   if(s=="proper noun") return "ainm dílis";
   if(s=="formatting") return "formáidiú";
   if(s=="italic") return "cló iodálach";
-  if(s=="none" && gloss=="no subdomain") return "gan foréimse";
   if(s=="Created") return "Cruthaithe";
   if(s=="Changed") return "Athraithe";
   if(s=="Deleted") return "Scriosta";
@@ -72,9 +68,6 @@ function L(s, gloss){
   if(s=="any domain or no domain") return "réimse ar bith nó gan réimse";
   if(s=="any domain") return "réimse ar bith";
   if(s=="no domain") return "gan réimse";
-  if(s=="any subdomain or no subdomain") return "foréimse ar bith nó gan foréimse";
-  if(s=="any subdomain") return "foréimse ar bith";
-  if(s=="no subdomain") return "gan foréimse";
   if(s=="LAST MAJOR UPDATE") return "MÓR-ATHRÚ DEIREANACH";
   if(s=="set to today") return "athraigh go inniu";
   if(s=="Invalid e-mail address or password.") return "Seoladh ríomhphoist mícheart nó pasfhocal mícheart.";
@@ -131,7 +124,6 @@ function L(s, gloss){
   if(s=="Change the termbase's URL") return "Athraigh URL an chnuasaigh";
   if(s=="Delete the termbase") return "Scrios an cnuasach";
   if(s=="TITLE") return "TEIDEAL";
-  if(s=="SUBDOMAINS") return "FO-RÉIMSÍ";
   if(s=="abbreviation") return "giorrúchán";
   if(s=="LANGUAGES") return "TEANGACHA";
   if(s=="select all") return "roghnaigh cách";
@@ -209,7 +201,6 @@ function L(s, gloss){
   if(s=="trigger_domainRemove") return "dícheanglaíodh réimse den iontráil";
   if(s=="trigger_domainReorder") return "athraíodh ord na réimsí san iontráil";
   if(s=="trigger_domainChange") return "athraíodh cén réimse atá ceangailte leis an iontráil";
-  if(s=="trigger_subdomainChange") return "athraíodh cén foréimse atá ceangailte leis an iontráil";
   if(s=="trigger_desigAdd") return "cuireadh téarma leis an iontráil";
   if(s=="trigger_desigRemove") return "baineadh téarma den iontráil";
   if(s=="trigger_desigReorder") return "athraíodh ord na dtéarmaí";
@@ -300,7 +291,6 @@ function L(s, gloss){
   if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Cúmarach! Tá tú ar tí an cnuasach a scrios. Ní bheidh tú ábalta dul ar ais.";
   if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Cúramach! Tá tú ar tí gach iontráil a scrios, móide a gcuid staire. Ní bheidh tú ábalta dul ar ais.";
   if(s=="RELATED TERMS") return "TÉARMAÍ GAOLMHARA";
-
   if(s=="Your termbase at a glance") return "Sracfhéachaint ar do chnuasach";
   if(s=="Number of entries") return "Líon iontrálacha";
   if(s=="Number of items in history log") return "Líon míreanna sa taifead staire";
@@ -309,6 +299,8 @@ function L(s, gloss){
   if(s=="Download %F") return "Íoslódáil %F";
   if(s=="Upload %F") return "Uaslódáil %F";
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Déan cinnte gur cnuasach bailí de chuid Terminologue atá sa chomhad atá á uaslódáil agat. Murab ea, déanfaidh tú damáiste do do chunasach agus ní bheidh tú ábalta dul ar ais.";
+  if(s=="PARENT") return "TUISMITHEOIR";
+  if(s=="no parent") return "gan tuismitheoir";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

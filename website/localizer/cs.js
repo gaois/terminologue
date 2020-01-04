@@ -43,7 +43,6 @@ function L(s, gloss){
   if(s=="inflected form") return "vyskloňovaná forma";
   if(s=="annotation") return "anotace";
   if(s=="domain") return "doména";
-  if(s=="subdomain") return "poddoména";
   if(s=="part of speech") return "slovní druh";
   if(s=="inflection") return "sklonění";
   if(s=="language of origin") return "jazyk původu";
@@ -53,7 +52,6 @@ function L(s, gloss){
   if(s=="proper noun") return "vlastní jméno";
   if(s=="formatting") return "formátování";
   if(s=="italic") return "kurzívou";
-  if(s=="none" && gloss=="no subdomain") return "žádná";
   if(s=="Created") return "Vytvořeno";
   if(s=="Changed") return "Změněno";
   if(s=="Deleted") return "Smazáno";
@@ -70,9 +68,6 @@ function L(s, gloss){
   if(s=="any domain or no domain") return "jakákoliv doména nebo žádná";
   if(s=="any domain") return "jakákoliv doména";
   if(s=="no domain") return "žádná doména";
-  if(s=="any subdomain or no subdomain") return "jakákoliv poddoména nebo žádná";
-  if(s=="any subdomain") return "jakákoliv poddoména";
-  if(s=="no subdomain") return "žádná poddoména";
   if(s=="LAST MAJOR UPDATE") return "POSLEDNÍ VELKÁ ZMÉNA";
   if(s=="set to today") return "změnit na dnešek";
   if(s=="Invalid e-mail address or password.") return "Neplatná e-mailová adresa nebo neplatné heslo.";
@@ -129,7 +124,6 @@ function L(s, gloss){
   if(s=="Change the termbase's URL") return "Změnit URL databáze";
   if(s=="Delete the termbase") return "Smazat databázi";
   if(s=="TITLE") return "NADPIS";
-  if(s=="SUBDOMAINS") return "PODDOMÉNY";
   if(s=="abbreviation") return "zkratka";
   if(s=="LANGUAGES") return "JAZYKY";
   if(s=="select all") return "vybrat všechny";
@@ -207,7 +201,6 @@ function L(s, gloss){
   if(s=="trigger_domainRemove") return "odpojena doména od hesla";
   if(s=="trigger_domainReorder") return "změněno pořadí domén v heslu";
   if(s=="trigger_domainChange") return "změněna doména hesla";
-  if(s=="trigger_subdomainChange") return "změněna poddoména hesla";
   if(s=="trigger_desigAdd") return "přidán termín do hesla";
   if(s=="trigger_desigRemove") return "odebrán termín z hesla";
   if(s=="trigger_desigReorder") return "změněno pořadí termínů v hesle";
@@ -298,7 +291,6 @@ function L(s, gloss){
   if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Pozor! Celá databáze se smaže a nepůjde to vrátit zpátky.";
   if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Pozor! Smažou se všechna hesla i jejich historie a nepůjde to vrátit zpátky.";
   if(s=="RELATED TERMS") return "PŘÍBUZNÁ HESLA";
-
   if(s=="Your termbase at a glance") return "Vaše terminologická databáze v číslech";
   if(s=="Number of entries") return "Počet hesel";
   if(s=="Number of items in history log") return "Počet záznamů v historii";
@@ -307,6 +299,8 @@ function L(s, gloss){
   if(s=="Download %F") return "Stáhnout %F";
   if(s=="Upload %F") return "Nahrát %F";
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Soubor, který nahráváte, musí být platná terminologická databáze pro Terminologue. Nahrajete-li něco jiného, nenávratně si svou databázi rozbijete.";
+  if(s=="PARENT") return "RODIČ";
+  if(s=="no parent") return "bez rodiče";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

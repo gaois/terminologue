@@ -580,9 +580,11 @@ app.get(siteconfig.rootPath+":termbaseID/admin/:metadataType/", function(req, re
       res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
-        db.close();
-        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-        res.render("termbase-admin/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, metadataType: req.params.metadataType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+        ops.readTermbaseMetadata(db, req.params.termbaseID, function(metadata){
+          db.close();
+          var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+          res.render("termbase-admin/navigator.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, termbaseMetadata: metadata, metadataType: req.params.metadataType, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+        });
       });
     }
   });

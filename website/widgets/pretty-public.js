@@ -220,20 +220,21 @@ function Entry(entryID, json, md, cg){
   return ret;
 }
 
-function Domain(obj, lang, md){
+function Domain(domainID, lang, md){
   var ret=`<span>`;
-  var domain=GetMetadatum(md, "domain", obj.superdomain);
+  var domain=GetMetadatum(md, "domain", domainID);
   if(domain){
     ret+=`<span class='step'>${TitleInLang(domain.title, lang)}</span>`;
-    if(obj.subdomain){
-      var subdomain=FindSubdomain(domain, obj.subdomain, lang);
-      if(subdomain){
-        subdomain._parents.map(d => {
-          ret+=`&nbsp; »&nbsp; `;
-          ret+=`<span class='step'>${TitleInLang(d.title, lang)}</span>`;
-        });
-        ret+=`&nbsp; »&nbsp; `;
-        ret+=`<span class='step'>${TitleInLang(subdomain.title, lang)}</span>`;
+    var parentID=domain.parentID;
+    var depth=0;
+    while(parentID && depth<10){
+      var domain=GetMetadatum(md, "domain", parentID);
+      parentID=null;
+      depth++;
+      if(domain){
+        ret="&nbsp; »&nbsp; "+ret;
+        ret=`<span class='step'>${TitleInLang(domain.title, lang)}</span>`+ret;
+        parentID=domain.parentID;
       }
     }
   }

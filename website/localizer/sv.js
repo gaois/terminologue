@@ -43,7 +43,6 @@
   if(s=="inflected form") return "böjningsform";
   if(s=="annotation") return "annotering";
   if(s=="domain") return "domän";
-  if(s=="subdomain") return "underdomän";
   if(s=="part of speech") return "ordklass";
   if(s=="inflection") return "böjning";
   if(s=="language of origin") return "originalspråk";
@@ -53,7 +52,6 @@
   if(s=="proper noun") return "egennamn";
   if(s=="formatting") return "formatering";
   if(s=="italic") return "kursiv";
-  if(s=="none" && gloss=="no subdomain") return "ingen subdomän";
   if(s=="Created") return "Skapad";
   if(s=="Changed") return "Ändrad";
   if(s=="Deleted") return "Borttagen";
@@ -70,9 +68,6 @@
   if(s=="any domain or no domain") return "vilken domän som helst eller ingen domän";
   if(s=="any domain") return "vilken domän som helst";
   if(s=="no domain") return "ingen domän";
-  if(s=="any subdomain or no subdomain") return "vilken domän som helst eller ingen subdomän";
-  if(s=="any subdomain") return "vilken subdomän som helst";
-  if(s=="no subdomain") return "ingen subdomän";
   if(s=="LAST MAJOR UPDATE") return "SENASTE STÖRRE UPPDATERING";
   if(s=="set to today") return "använd dagens datum";
   if(s=="Invalid e-mail address or password.") return "Ogiltig e-postadress eller ogiltigt lösenord.";
@@ -129,7 +124,6 @@
   if(s=="Change the termbase's URL") return "Ändra termbankens URL";
   if(s=="Delete the termbase") return "Radera termbanken";
   if(s=="TITLE") return "TITEL";
-  if(s=="SUBDOMAINS") return "UNDERDOMÄNER";
   if(s=="abbreviation") return "förkortning";
   if(s=="LANGUAGES") return "SPRÅK";
   if(s=="select all") return "välj alla";
@@ -207,7 +201,6 @@
   if(s=="trigger_domainRemove") return "domän borttagen";
   if(s=="trigger_domainReorder") return "domäner omsorterade";
   if(s=="trigger_domainChange") return "domän ändrad";
-  if(s=="trigger_subdomainChange") return "underdomän ändrad";
   if(s=="trigger_desigAdd") return "term tillagd";
   if(s=="trigger_desigRemove") return "term borttagen";
   if(s=="trigger_desigReorder") return "termer omsorterade";
@@ -298,7 +291,6 @@
   if(s=="Careful now! You are about to delete this termbase. You will not be able to undo this.") return "Obs! Du håller på att radera denna termbank. Du kan inte ångra detta.";
   if(s=="Careful now! You are about to delete all entries and their history. You will not be able to undo this.") return "Obs! Du håller på att radera alla begreppsposter med tillhörande historik. Du kan inte ångra detta.";
   if(s=="RELATED TERMS") return "RELATERADE TERMER";
-
   if(s=="Your termbase at a glance") return "Kort om din termbank";
   if(s=="Number of entries") return "Antal begreppsposter";
   if(s=="Number of items in history log") return "Antal ändringar i historikloggen";
@@ -307,6 +299,10 @@
   if(s=="Download %F") return "Ladda ned %F";
   if(s=="Upload %F") return "Ladda upp %F";
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Kontrollera att filen du laddar upp är en giltig Terminologue-termbank. Om du laddar upp något annat kommer du att skada termbanken på ett oåterkalleligt sätt.";
+
+  //new strings, machine-tanslated, in need of proofreading:
+  if(s=="PARENT") return "FÖRÄLDER";
+  if(s=="no parent") return "ingen förälder";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

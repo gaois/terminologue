@@ -393,7 +393,7 @@ module.exports={
       tag: [],
       extranet: [],
     };
-    db.all("select * from metadata order by sortkey", {}, function(err, rows){
+    db.all("select m.* from metadata as m order by m.sortkey", {}, function(err, rows){
       if(!err) for(var i=0; i<rows.length; i++) {
         var type=rows[i].type;
         if(!metadata[type]) metadata[type]=[];
@@ -539,20 +539,14 @@ module.exports={
       params[`$fDStatus`]=parseInt(facets.dStatus);
     }
 
-    if(facets.superdomain && facets.superdomain=="-1"){
+    if(facets.domain && facets.domain=="-1"){
       joins.push(`left outer join entry_domain as fDomain on fDomain.entry_id=e.id`);
-      where.push(`fDomain.superdomain is null`);
+      where.push(`fDomain.domain is null`);
     }
-    else if(facets.superdomain){
+    else if(facets.domain){
       joins.push(`inner join entry_domain as fDomain on fDomain.entry_id=e.id`);
-      if(facets.superdomain=="*") where.push(`fDomain.superdomain>0`);
-      else { where.push(`fDomain.superdomain=$fSuperdomain`); params[`$fSuperdomain`]=parseInt(facets.superdomain); }
-
-      if(facets.subdomain){
-        if(facets.subdomain=="*") where.push(`fDomain.subdomain>0`);
-        else if(facets.subdomain=="-1") where.push(`fDomain.subdomain=0`);
-        else { where.push(`fDomain.subdomain=$fSubdomain`); params[`$fSubdomain`]=parseInt(facets.subdomain); }
-      }
+      if(facets.domain=="*") where.push(`fDomain.domain>0`);
+      else { where.push(`fDomain.domain=$fDomain`); params[`$fDomain`]=parseInt(facets.domain); }
     }
 
     if(facets.termLang || facets.accept || facets.clarif){
@@ -1133,11 +1127,8 @@ module.exports={
     }
   },
   saveDomains: function(db, termbaseID, entryID, entry, callnext){
-    var assigs=[]; entry.domains.map(obj => {
-      if(obj.superdomain) assigs.push({
-        superdomain: parseInt(obj.superdomain),
-        subdomain: parseInt(obj.subdomain) || 0,
-      });
+    var assigs=[]; entry.domains.map(domainID => {
+      if(domainID) assigs.push(domainID);
     });
     db.run("delete from entry_domain where entry_id=$entryID", {$entryID: entryID}, function(err){
       go();
@@ -1145,7 +1136,7 @@ module.exports={
     function go(){
       var assig=assigs.pop();
       if(assig){
-        db.run("insert into entry_domain(entry_id, superdomain, subdomain) values($entryID, $superdomain, $subdomain)", {$entryID: entryID, $superdomain: assig.superdomain, $subdomain: assig.subdomain}, function(err){
+        db.run("insert into entry_domain(entry_id, domain) values($entryID, $domain)", {$entryID: entryID, $domain: assig}, function(err){
           go();
         });
       } else {

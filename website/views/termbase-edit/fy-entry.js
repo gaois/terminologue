@@ -13,12 +13,26 @@ Spec.title=function(title, lang){
       done.push(title[lang.abbr]);
     }
   });
+  if(!ret) ret="???";
   return ret;
 };
 Spec.getDomain=function(id){
   var ret=null;
   termbaseMetadata.domain=(termbaseMetadata.domain || []);
   termbaseMetadata.domain.map(datum => {  if(!ret && datum.id==id) ret=datum; });
+  return ret;
+};
+Spec.longTitle=function(domain){
+  var ret=Spec.title(domain.title);
+  var dom=domain; while(dom.parentID){
+    var dom=Spec.getDomain(dom.parentID);
+    if(dom) ret=Spec.title(dom.title)+" » "+ret;
+  }
+  return ret;
+};
+Spec.domainHasChildren=function(domain){
+  var ret=false;
+  termbaseMetadata.domain.map(datum => {  if(datum.parentID==domain.id) ret=true; });
   return ret;
 };
 Spec.getAcceptLabel=function(id){
@@ -279,89 +293,86 @@ Spec.templates["domains"]={
   </div>`,
 };
 Spec.templates["domain"]={
-  type: "object",
-  blank: {superdomain: null, subdomain: null},
+  type: "string",
   html: `<div class="fy_container">
     <div class="fy_box">
-      <div class="fy_replace" templateName="superdomain" jsonName="superdomain"></div>
-      <div class="fy_replace" templateName="subdomain" jsonName="subdomain"></div>
+      <div class="fy_horizon">
+        <span class="fy_remover" changeName="domainRemove"></span>
+        <span class="fy_downer" changeName="domainReorder"></span>
+        <span class="fy_upper" changeName="domainReorder"></span>
+        <span class="fy_textbox" style="display: block; margin-left: 5px; margin-right: 125px;">
+          <select onchange="Fy.changed('domainChange');" size="1" style="width: 100%" onfocus="this.size='10'; Spec.changeSelectTitles(this)" onblur="this.size='1'; Spec.changeSelectTitles(this)"></select>
+        </span>
+      </div>
     </div>
   </div>`,
-  refresh: function($me){
-    $me.find(".jsonName_subdomain").hide().find("select").html("");
-    var superdomainID=$me.find(".jsonName_superdomain select").val();
-    if(superdomainID) {
-      $me.find(".jsonName_subdomain").show();
-      Spec.templates.subdomain.refresh($me.find(".jsonName_subdomain"));
-    }
-  },
-};
-Spec.templates["superdomain"]={
-  type: "string",
-  blank: "",
-  html: `<div class="fy_horizon">
-    <span class="fy_remover" changeName='domainRemove'></span>
-    <span class="fy_downer"  changeName='domainReorder'></span>
-    <span class="fy_upper"   changeName='domainReorder'></span>
-    <span class="fy_label" style="width: 245px;">${L("domain")}</span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
-      <select style="font-weight: bold;" onchange="Fy.changed('domainChange'); $(this).closest('.jsonName_item').data('template').refresh( $(this).closest('.jsonName_item') )"></select>
-    </span>
-  </div>`,
-  set: function($me, data){
-    if(data.toString()) $me.find("select").val(data);
-  },
-  get: function($me){
-    return $me.find("select").val();
-  },
   populate: function($me){
-    var $select=$me.find("select");
-    termbaseMetadata.domain.map(datum => {
-      $select.append(`<option value="${datum.id}">${Spec.title(datum.title)}</option>`)
-    });
+    Spec.templates["domain"].refillOptions($me, 0);
   },
-};
-Spec.templates["subdomain"]={
-  type: "string",
-  blank: "",
-  html: `<div class="fy_horizon">
-    <span class="fy_label" style="width: 245px;">${L("subdomain")}</span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
-      <select onchange="Fy.changed('subdomainChange')"></select>
-    </span>
-  </div>`,
   set: function($me, data){
-    if(data.toString()) $me.data("val", data);
+    Spec.templates["domain"].refillOptions($me, data);
   },
   get: function($me){
     return $me.find("select").val();
   },
-  refresh: function($me){
-    var $select=$me.find("select");
-    var superdomainID=$me.closest(".jsonName_item").find(".jsonName_superdomain select").val();
-    var superdomain=Spec.getDomain(superdomainID);
-    if(superdomain && superdomain.subdomains && superdomain.subdomains.length>0){
-      $me.show();
-      $select.html(`<option value="">(${L("none", "no subdomain")})</option>`);
-      superdomain.subdomains.map(subdomain => {
-        go(subdomain, "");
-      });
+  refillOptions: function($me, selectedDomainID){
+    domains=[];
+    var selectedDomain=Spec.getDomain(selectedDomainID);
+    if(!selectedDomain){ //if no domain is selected:
+      termbaseMetadata.domain.map(domain => { if(!domain.parentID){ domains.push(domain); }});
     } else {
-      $me.hide();
-      $select.html("");
+      domains.push(selectedDomain);
+      termbaseMetadata.domain.map(domain => { if(domain.parentID==selectedDomainID){ domains.push(domain); }});
+      //add all parents to the front of the list:
+      var parentID=selectedDomain.parentID;
+      while(parentID){
+        var domain=Spec.getDomain(parentID);
+        parentID=null;
+        if(domain){
+          domains.unshift(domain);
+          parentID=domain.parentID;
+        }
+      }
     }
-    function go(datum, prefix){
-      var title=prefix;
-      if(title!="") title+=" » ";
-      title+=Spec.title(datum.title);
-      $select.append(`<option value="${datum.lid}">${title}</option>`);
-      if(datum.lid==$me.data("val")) $select.val(datum.lid);
-      if(datum.subdomains) datum.subdomains.map(subdomain => {
-        go(subdomain, title);
-      });
+    var $select=$me.find("select").html("");
+    var level=0;
+    if(selectedDomain){
+      $select.append(`<option class="oneofmany" value="0">(...)</option>`);
+      var level=1;
     }
+    var prevDomainID=0;
+    domains.map(domain => {
+      if(domain.parentID==prevDomainID) level++;
+      var padding=""; for(var i=0; i<level; i++) padding+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      var driller="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; if(Spec.domainHasChildren(domain)) driller="►&nbsp;";
+      var shortTitle=`${padding}${driller}${Spec.title(domain.title)}`;
+      var longTitle=Spec.longTitle(domain);
+      var $option=$(`<option class="oneofmany" value="${domain.id}">${longTitle}</option>`);
+      $option.data("shortTitle", shortTitle);
+      $option.data("longTitle", longTitle);
+      $select.append($option);
+      prevDomainID=domain.id;
+    });
+    $select.find("option").on("click", function(e){
+      Spec.templates["domain"].refillOptions($me, $(e.delegateTarget).attr("value"));
+    });
+    Spec.changeSelectTitles($select);
+    $select.val(selectedDomainID);
   },
-
+};
+Spec.changeSelectTitles=function(select){
+  var $select=$(select);
+  if($select.attr("size")=="1"){
+    $select.find("option").each(function(){
+      var $option=$(this);
+      if($option.data("longTitle")) $option.html($option.data("longTitle"));
+    });
+  } else {
+    $select.find("option").each(function(){
+      var $option=$(this);
+      if($option.data("shortTitle")) $option.html($option.data("shortTitle"));
+    });
+  }
 };
 
 Spec.templates["desigs"]={

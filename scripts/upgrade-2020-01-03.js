@@ -33,6 +33,8 @@ function migrateDBs(dirPath){
       });
 
       //for each entry, change its old super + sub ID assignment to new domain ID assignment:
+      db.prepare(`DROP TABLE entry_domain`).run();
+      db.prepare(`CREATE TABLE entry_domain ("entry_id" INTEGER REFERENCES entries (id) ON DELETE CASCADE, "domain" INTEGER)`).run();
       db.prepare(`select * from entries`).all().map(row => {
         var entry=JSON.parse(row.json);
         if(entry.domains){
@@ -41,26 +43,18 @@ function migrateDBs(dirPath){
             var newID=oldie.superdomain;
             if(idMap[newID] && idMap[newID][oldie.subdomain]) newID=idMap[newID][oldie.subdomain].toString();
             newie.push(newID);
+            db.prepare(`insert into entry_domain(entry_id, domain) values(?, ?)`).run(row.id, newID);
           });
           entry.domains=newie;
           db.prepare(`update entries set json=? where id=?`).run(JSON.stringify(entry), row.id);
         }
       });
 
-      //for each line in the entry_domain table, change the old super + sub ID assignment to new domain ID assignment:
-      db.prepare(`alter table entry_domain rename column "superdomain" to "domain"`).run();
-      db.prepare(`select * from entry_domain where subdomain<>0`).all().map(row => {
-        if(row.domain){
-          if(idMap[row.domain] && idMap[row.domain][row.subdomain]){
-            newID=idMap[row.domain][row.subdomain];
-            db.prepare(`update entry_domain set domain=? where entry_id=? and domain=? and subdomain=0`).run(newID, row.entry_id, row.domain);
-          }
-        }
-      });
-      db.prepare(`CREATE TABLE temp_entry_domain ("entry_id" INTEGER REFERENCES entries (id) ON DELETE CASCADE, "domain" INTEGER)`).run();
-      db.prepare(`insert into temp_entry_domain(entry_id, domain) select entry_id, domain from entry_domain`).run();
-      db.prepare(`DROP TABLE entry_domain`).run();
-      db.prepare(`ALTER TABLE temp_entry_domain rename to entry_domain`).run();
+      //remove the `subdomainChange` trigger:
+      var row=db.prepare(`select * from configs where id='triggers'`).get();
+      var triggers=JSON.parse(row.json);
+      delete triggers.subdomainChange;
+      var row=db.prepare(`update configs set json=? where id='triggers'`).run(JSON.stringify(triggers));
 
     })();
     db.close();
