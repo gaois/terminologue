@@ -93,7 +93,5 @@ Screenful.Loc={
   narrow: "Smal skärm",
   narrowList: "LISTVY",
   narrowEditor: "LÄSVY/REDIGERINGSVY",
-
-  //new, needs translation:
-  emailInUseError: "This e-mail address is already in use.",
+  emailInUseError: "Denna e-postadress används redan.",
 };
