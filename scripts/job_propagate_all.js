@@ -1,8 +1,8 @@
 const SqliteDatabase=require('better-sqlite3');
-const sqliteDB=new SqliteDatabase('../data/termbases/rialacha.sqlite', { fileMustExist: true });
+const sqliteDB=new SqliteDatabase('../data/termbases/bnt.sqlite', { fileMustExist: true });
 
 const sql=require("mssql");
-const sqlConnectionString="Server=10.10.1.4\\;Database=fion_gaois_terms;Uid=fiontechsql;Pwd=wdpNOfwe2341NOFIE$weq;";
+const sqlConnectionString="Server=(local);Database=tearma;User Id=sa;Password=triPES345;";
 var pool=new sql.ConnectionPool(sqlConnectionString);
 console.log(`connecting to SQL Server...`);
 pool.connect(function(err){
@@ -22,13 +22,13 @@ function doEntries(){
 			var request=new sql.Request(pool);
 			request.input("entryID", sql.Int, entry.id);
 			request.input("json", sql.NVarChar, entry.json);
-			request.input("skipSpellingIndexing", sql.Bit, 1);
+			//request.input("skipSpellingIndexing", sql.Bit, 1);
 			request.execute("propag_saveEntry", function(err){
 				if(err) console.log(err);
 				console.log(`   done`);
 				go();
 			});
-			
+
 		} else {
 			console.log(`all entries propagated`);
 			doMetadata();
@@ -58,6 +58,3 @@ function doMetadata(){
 		}
 	}
 }
-
-
-
