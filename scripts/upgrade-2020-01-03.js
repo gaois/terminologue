@@ -46,8 +46,19 @@ function migrateDBs(dirPath){
             db.prepare(`insert into entry_domain(entry_id, domain) values(?, ?)`).run(row.id, newID);
           });
           entry.domains=newie;
-          db.prepare(`update entries set json=? where id=?`).run(JSON.stringify(entry), row.id);
         }
+        if(entry.definitions) entry.definitions.map(def => {
+          if(def.domains){
+            var newie=[];
+            def.domains.map(oldie => {
+              var newID=oldie.superdomain;
+              if(idMap[newID] && idMap[newID][oldie.subdomain]) newID=idMap[newID][oldie.subdomain].toString();
+              newie.push(newID);
+            });
+            def.domains=newie;
+          }
+        });
+        db.prepare(`update entries set json=? where id=?`).run(JSON.stringify(entry), row.id);
       });
 
       //remove the `subdomainChange` trigger:
