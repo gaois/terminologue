@@ -300,9 +300,14 @@
   if(s=="Upload %F") return "Ladda upp %F";
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Kontrollera att filen du laddar upp är en giltig Terminologue-termbank. Om du laddar upp något annat kommer du att skada termbanken på ett oåterkalleligt sätt.";
 
-  //new strings, machine-tanslated, in need of proofreading:
+  //new strings, machine-translated, in need of proofreading:
   if(s=="PARENT") return "FÖRÄLDER";
   if(s=="no parent") return "ingen förälder";
+  if(s=="excluding subdomains") return "utan underdomäner";
+  if(s=="including subdomains") return "underdomäner ingår";
+  if(s=="the entry has this domain") return "begreppsposten har den här domänen";
+  if(s=="the entry has only this domain") return "begreppsposten har bara den här domänen";
+  if(s=="the entry has not only this domain") return "begreppsposten har inte bara den här domänen";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

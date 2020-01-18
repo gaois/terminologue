@@ -301,6 +301,11 @@ function L(s, gloss){
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Déan cinnte gur cnuasach bailí de chuid Terminologue atá sa chomhad atá á uaslódáil agat. Murab ea, déanfaidh tú damáiste do do chunasach agus ní bheidh tú ábalta dul ar ais.";
   if(s=="PARENT") return "TUISMITHEOIR";
   if(s=="no parent") return "gan tuismitheoir";
+  if(s=="excluding subdomains") return "foréimsí as áireamh";
+  if(s=="including subdomains") return "foréimsí san áireamh";
+  if(s=="the entry has this domain") return "tá an réimse seo san iontráil";
+  if(s=="the entry has only this domain") return "níl ach an réimse seo san iontráil";
+  if(s=="the entry has not only this domain") return "níl an réimse seo san iontráil léi féin";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

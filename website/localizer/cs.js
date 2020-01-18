@@ -301,6 +301,11 @@ function L(s, gloss){
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Soubor, který nahráváte, musí být platná terminologická databáze pro Terminologue. Nahrajete-li něco jiného, nenávratně si svou databázi rozbijete.";
   if(s=="PARENT") return "RODIČ";
   if(s=="no parent") return "bez rodiče";
+  if(s=="excluding subdomains") return "bez poddomén";
+  if(s=="including subdomains") return "včetně poddomén";
+  if(s=="the entry has this domain") return "heslo má tuto doménu";
+  if(s=="the entry has only this domain") return "heslo má jen tuto doménu";
+  if(s=="the entry has not only this domain") return "heslo má nejen tuto doménu";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

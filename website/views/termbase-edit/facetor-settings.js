@@ -127,14 +127,35 @@ Screenful.Facetor.panes=[{
 
     if(termbaseMetadata.domain.length>0){
       $inme.append(`<div class="title"><span class="tab">${L("DOM")}</span></div>`);
-      //var $input=$(`<input class="fullwidth" id="facDomain"/>`).appendTo($inme);
-      //$input.on("change", Screenful.Facetor.change);
+
       var $select=$(`<select class="fullwidth" id="facDomain" size="1" onfocus="this.size='10'; Screenful.Facetor.changeSelectTitles(this)" onblur="this.size='1'; Screenful.Facetor.changeSelectTitles(this)"></select>`).appendTo($inme);
       $select.append(`<option value="">(${L("any domain or no domain")})</option>`);
       $select.append(`<option value="*">(${L("any domain")})</option>`);
       $select.append(`<option value="-1">(${L("no domain")})</option>`);
       $select.on("change", Screenful.Facetor.change);
       Screenful.Facetor.refillDomains();
+      $select.on("change", function(){
+        $("#facDomainDrilldown").hide();
+        var val=$("#facDomain").val();
+        var domain=Screenful.Facetor.getDomain(val);
+        if(domain){
+          if(Screenful.Facetor.domainHasChildren(domain)){
+            $("#facDomainDrilldown").show();
+          }
+          $("#facDomainScope").show();
+        }
+      });
+
+      var $select=$(`<select class="fullwidth" id="facDomainDrilldown"></select>`).hide().appendTo($inme);
+      $select.append(`<option value="excl">${L("excluding subdomains")}</option>`);
+      $select.append(`<option value="incl">${L("including subdomains")}</option>`);
+      $select.on("change", Screenful.Facetor.change);
+
+      var $select=$(`<select class="fullwidth" id="facDomainScope"></select>`).hide().appendTo($inme);
+      $select.append(`<option value="any">${L("the entry has this domain")}</option>`);
+      $select.append(`<option value="unique">${L("the entry has only this domain")}</option>`);
+      $select.append(`<option value="notunique">${L("the entry has not only this domain")}</option>`);
+      $select.on("change", Screenful.Facetor.change);
     }
 
     //------
@@ -345,6 +366,8 @@ Screenful.Facetor.panes=[{
     ret.dStatus=$("#facDStatus").val();
 
     ret.domain=$("#facDomain").val();
+    ret.domainDrilldown=$("#facDomainDrilldown").val();
+    ret.domainScope=$("#facDomainScope").val();
 
     ret.termLang=$("#facTermLang").val();
     ret.accept=$("#facAccept").val();

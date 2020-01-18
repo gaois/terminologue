@@ -449,7 +449,7 @@ module.exports={
     page=parseInt(page);
     var howmany=page*100;
     var startAt=(page-1)*100;
-    module.exports.composeSqlQueries(facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err) console.log(err);
         if(err || !rows) rows=[];
@@ -480,257 +480,300 @@ module.exports={
       });
     });
   },
-  composeSqlQueries: function(facets, searchtext, modifier, howmany, callnext){
-    var modifiers=modifier.split(" ");
-    var joins=[], where=[]; params={};
-    if(searchtext!="") {
-      joins.push(`inner join entry_term as et on et.entry_id=e.id`);
-      joins.push(`inner join terms as t on t.id=et.term_id`);
-      if(searchtext!="" && modifiers[1]=="complete"){
-        where.push(`t.wording like $searchtext`);
-        params.$searchtext=searchtext;
-      }
-      else if(searchtext!="" && modifiers[1]=="start"){
-        where.push(`t.wording like $searchtext`);
-        params.$searchtext=searchtext+"%";
-      }
-      else if(searchtext!="" && modifiers[1]=="end"){
-        where.push(`t.wording like $searchtext`);
-        params.$searchtext="%"+searchtext;
-      }
-      else if(searchtext!="" && modifiers[1]=="part"){
-        where.push(`t.wording like $searchtext`);
-        params.$searchtext="%"+searchtext+"%";
-      }
-      else if(searchtext!="" && modifiers[1]=="midpart"){
-        where.push(`t.wording like $searchtext`);
-        params.$searchtext="_%"+searchtext+"%_";
-      }
-      // else if(searchtext!="" && modifiers[1]=="wordstart"){
-      //   joins.push(`inner join words as w on w.term_id=t.id`);
-      //   where.push(`(w.word like $searchtext and w.implicit=0)`);
-      //   params.$searchtext=searchtext+"%";
-      // }
-      else if(searchtext!="" && modifiers[1]=="smart"){
-        var words=module.exports.wordSplit(searchtext);
-        words.map((word, index) => {
-          joins.push(`inner join words as w${index} on w${index}.term_id=t.id`);
-          where.push(`w${index}.word=$word${index}`);
-          params[`$word${index}`]=word;
+  getSubdomainIDs: function(db, domainID, callnext){
+    var ret=[];
+    var subdomainIDs=[];
+    db.all("select * from metadata where type='domain' and parent_id=$parentID", {$parentID: domainID}, function(err, rows){
+      if(err) console.log(err);
+      rows.map(row => subdomainIDs.push(row.id));
+      go();
+    });
+    function go(){
+      var subdomainID=subdomainIDs.pop();
+      if(subdomainID){
+        ret.push(subdomainID);
+        module.exports.getSubdomainIDs(db, subdomainID, function(subsubdomainIDs){
+          ret=ret.concat(subsubdomainIDs);
+          go();
         });
-      }
-
-      if(searchtext!="" && modifiers[0]!="*"){
-        where.push(`t.lang=$searchlang`);
-        params.$searchlang=modifiers[0];
+      } else {
+        callnext(ret);
       }
     }
+  },
+  composeSqlQueries: function(db, facets, searchtext, modifier, howmany, callnext){
+    var domainIDs=[facets.domain];
+    if(facets.domain && facets.domain!="*" && facets.domain!="-1" && facets.domainDrilldown && facets.domainDrilldown=="incl"){
+      module.exports.getSubdomainIDs(db, facets.domain, function(subdomainIDs){
+        subdomainIDs.unshift(facets.domain);
+        domainIDs=subdomainIDs;
+        go();
+      });
+    } else {
+      go();
+    }
+    function go(){
+      var modifiers=modifier.split(" ");
+      var joins=[], where=[]; params={};
+      if(searchtext!="") {
+        joins.push(`inner join entry_term as et on et.entry_id=e.id`);
+        joins.push(`inner join terms as t on t.id=et.term_id`);
+        if(searchtext!="" && modifiers[1]=="complete"){
+          where.push(`t.wording like $searchtext`);
+          params.$searchtext=searchtext;
+        }
+        else if(searchtext!="" && modifiers[1]=="start"){
+          where.push(`t.wording like $searchtext`);
+          params.$searchtext=searchtext+"%";
+        }
+        else if(searchtext!="" && modifiers[1]=="end"){
+          where.push(`t.wording like $searchtext`);
+          params.$searchtext="%"+searchtext;
+        }
+        else if(searchtext!="" && modifiers[1]=="part"){
+          where.push(`t.wording like $searchtext`);
+          params.$searchtext="%"+searchtext+"%";
+        }
+        else if(searchtext!="" && modifiers[1]=="midpart"){
+          where.push(`t.wording like $searchtext`);
+          params.$searchtext="_%"+searchtext+"%_";
+        }
+        // else if(searchtext!="" && modifiers[1]=="wordstart"){
+        //   joins.push(`inner join words as w on w.term_id=t.id`);
+        //   where.push(`(w.word like $searchtext and w.implicit=0)`);
+        //   params.$searchtext=searchtext+"%";
+        // }
+        else if(searchtext!="" && modifiers[1]=="smart"){
+          var words=module.exports.wordSplit(searchtext);
+          words.map((word, index) => {
+            joins.push(`inner join words as w${index} on w${index}.term_id=t.id`);
+            where.push(`w${index}.word=$word${index}`);
+            params[`$word${index}`]=word;
+          });
+        }
 
-    if(facets.cStatus){
-      where.push(`e.cStatus=$fCStatus`);
-      params[`$fCStatus`]=parseInt(facets.cStatus);
-    }
-    if(facets.pStatus){
-      where.push(`e.pStatus=$fPStatus`);
-      params[`$fPStatus`]=parseInt(facets.pStatus);
-    }
-    if(facets.dStatus){
-      where.push(`e.dStatus=$fDStatus`);
-      params[`$fDStatus`]=parseInt(facets.dStatus);
-    }
-
-    if(facets.domain && facets.domain=="-1"){
-      joins.push(`left outer join entry_domain as fDomain on fDomain.entry_id=e.id`);
-      where.push(`fDomain.domain is null`);
-    }
-    else if(facets.domain){
-      joins.push(`inner join entry_domain as fDomain on fDomain.entry_id=e.id`);
-      if(facets.domain=="*") where.push(`fDomain.domain>0`);
-      else { where.push(`fDomain.domain=$fDomain`); params[`$fDomain`]=parseInt(facets.domain); }
-    }
-
-    if(facets.termLang || facets.accept || facets.clarif){
-      joins.push(`inner join entry_term as f_et on f_et.entry_id=e.id`);
-      if(facets.termLang) {
-        joins.push(`inner join terms as f_t on f_t.id=f_et.term_id`);
-        where.push(`f_t.lang=$fTermLang`);
-        params[`$fTermLang`]=facets.termLang;
-      }
-      if(facets.accept){
-        if(facets.accept=="*") where.push(`f_et.accept>0`)
-        else if(facets.accept=="-1") where.push(`f_et.accept=0`)
-        else {where.push(`f_et.accept=$fAccept`); params[`$fAccept`]=parseInt(facets.accept);}
-      }
-      if(facets.clarif){
-        if(facets.clarif=="*") where.push(`f_et.clarif<>''`)
-        else if(facets.clarif=="-1") where.push(`(f_et.clarif='' or f_et.clarif is null)`)
-        else if(facets.clarif=="txt") {
-          where.push(`(f_et.clarif<>'' and f_et.clarif like $fClarif)`);
-          params[`$fClarif`]="%"+facets.clarifValue+"%";
+        if(searchtext!="" && modifiers[0]!="*"){
+          where.push(`t.lang=$searchlang`);
+          params.$searchlang=modifiers[0];
         }
       }
-    }
 
-    if(facets.intro){
-      joins.push(`inner join entry_intro as f_ei on f_ei.entry_id=e.id`);
-      if(facets.intro=="*") where.push(`f_ei.text<>''`)
-      else if(facets.intro=="-1") where.push(`(f_ei.text='' or f_ei.text is null)`)
-      else if(facets.intro=="txt") {
-        where.push(`(f_ei.text<>'' and f_ei.text like $fIntro)`);
-        params[`$fIntro`]="%"+facets.introValue+"%";
+      if(facets.cStatus){
+        where.push(`e.cStatus=$fCStatus`);
+        params[`$fCStatus`]=parseInt(facets.cStatus);
       }
-    }
-
-    if(facets.def && facets.def=="-1"){
-      joins.push(`left outer join entry_def as fDef on fDef.entry_id=e.id`);
-      where.push(`fDef.text is null`);
-    }
-    else if(facets.def){
-      joins.push(`inner join entry_def as fDef on fDef.entry_id=e.id`);
-      if(facets.def=="*") where.push(`fDef.text<>''`);
-      else { where.push(`fDef.text like $fDef`); params[`$fDef`]="%"+facets.defValue+"%"; }
-    }
-
-    if(facets.xmpl && facets.xmpl=="-1"){
-      joins.push(`left outer join entry_xmpl as fXmpl on fXmpl.entry_id=e.id`);
-      where.push(`fXmpl.text is null`);
-    }
-    else if(facets.xmpl){
-      joins.push(`inner join entry_xmpl as fXmpl on fXmpl.entry_id=e.id`);
-      if(facets.xmpl=="*") where.push(`fXmpl.text<>''`);
-      else { where.push(`fXmpl.text like $fXmpl`); params[`$fXmpl`]="%"+facets.xmplValue+"%"; }
-    }
-
-    if(facets.collection && facets.collection=="-1"){
-      joins.push(`left outer join entry_collection as fCollection on fCollection.entry_id=e.id`);
-      where.push(`fCollection.collection is null`);
-    }
-    else if(facets.collection){
-      joins.push(`inner join entry_collection as fCollection on fCollection.entry_id=e.id`);
-      if(facets.collection=="*") where.push(`fCollection.collection>0`);
-      else { where.push(`fCollection.collection=$fCollection`); params[`$fCollection`]=parseInt(facets.collection); }
-    }
-
-    if(facets.extranet && facets.extranet=="-1"){
-      joins.push(`left outer join entry_extranet as fExtranet on fExtranet.entry_id=e.id`);
-      where.push(`fExtranet.extranet is null`);
-    }
-    else if(facets.extranet){
-      joins.push(`inner join entry_extranet as fExtranet on fExtranet.entry_id=e.id`);
-      if(facets.extranet=="*") where.push(`fExtranet.extranet>0`);
-      else { where.push(`fExtranet.extranet=$fExtranet`); params[`$fExtranet`]=parseInt(facets.extranet); }
-    }
-
-    if(facets.extranet){
-      if(facets.hasComments=="1"){
-        joins.push(`inner join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
-        params[`$fExtranet`]=parseInt(facets.extranet);
+      if(facets.pStatus){
+        where.push(`e.pStatus=$fPStatus`);
+        params[`$fPStatus`]=parseInt(facets.pStatus);
       }
-      if(facets.hasComments=="0"){
-        joins.push(`left outer join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
-        params[`$fExtranet`]=parseInt(facets.extranet);
-        where.push(`fComments.id is null`);
+      if(facets.dStatus){
+        where.push(`e.dStatus=$fDStatus`);
+        params[`$fDStatus`]=parseInt(facets.dStatus);
       }
-    } else {
-      if(facets.hasComments=="1" || facets.hasComments=="txt"){
-        joins.push(`inner join comments as fComments on fComments.entry_id=e.id`);
-        if(facets.hasComments=="txt"){
-          where.push(`(fComments.body<>'' and fComments.body like $fCommentText)`);
-          params[`$fCommentText`]="%"+facets.commentText+"%";
+
+      if(facets.domain && facets.domain=="-1"){
+        joins.push(`left outer join entry_domain as fDomain on fDomain.entry_id=e.id`);
+        where.push(`fDomain.domain is null`);
+      }
+      else if(facets.domain){
+        joins.push(`inner join entry_domain as fDomain on fDomain.entry_id=e.id`);
+        if(facets.domain=="*"){
+          where.push(`fDomain.domain>0`);
+        }
+        else {
+          where.push(`fDomain.domain in (${domainIDs.join(",")})`);
+          if(facets.domainScope && facets.domainScope=="unique"){
+            joins.push(`left outer join entry_domain as fOtherDomain on fOtherDomain.entry_id=e.id and fOtherDomain.domain not in (${domainIDs.join(",")})`);
+            where.push(`fOtherDomain.domain is null`);
+          } else if(facets.domainScope && facets.domainScope=="notunique"){
+            joins.push(`inner join entry_domain as fOtherDomain on fOtherDomain.entry_id=e.id and fOtherDomain.domain not in (${domainIDs.join(",")})`);
+          }
         }
       }
-      if(facets.hasComments=="0"){
-        joins.push(`left outer join comments as fComments on fComments.entry_id=e.id`);
-        where.push(`fComments.id is null`);
+
+      if(facets.termLang || facets.accept || facets.clarif){
+        joins.push(`inner join entry_term as f_et on f_et.entry_id=e.id`);
+        if(facets.termLang) {
+          joins.push(`inner join terms as f_t on f_t.id=f_et.term_id`);
+          where.push(`f_t.lang=$fTermLang`);
+          params[`$fTermLang`]=facets.termLang;
+        }
+        if(facets.accept){
+          if(facets.accept=="*") where.push(`f_et.accept>0`)
+          else if(facets.accept=="-1") where.push(`f_et.accept=0`)
+          else {where.push(`f_et.accept=$fAccept`); params[`$fAccept`]=parseInt(facets.accept);}
+        }
+        if(facets.clarif){
+          if(facets.clarif=="*") where.push(`f_et.clarif<>''`)
+          else if(facets.clarif=="-1") where.push(`(f_et.clarif='' or f_et.clarif is null)`)
+          else if(facets.clarif=="txt") {
+            where.push(`(f_et.clarif<>'' and f_et.clarif like $fClarif)`);
+            params[`$fClarif`]="%"+facets.clarifValue+"%";
+          }
+        }
       }
-    }
 
-    if(facets.me=="1" && facets.extranet && facets.email){
-      joins.push(`inner join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email=$fEmail and fCommentsMe.extranet_id=$fExtranet`);
-      params[`$fEmail`]=facets.email;
-      params[`$fExtranet`]=parseInt(facets.extranet);
-    }
-    if(facets.me=="0" && facets.extranet && facets.email){
-      joins.push(`left outer join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email=$fEmail and fCommentsMe.extranet_id=$fExtranet`);
-      params[`$fEmail`]=facets.email;
-      params[`$fExtranet`]=parseInt(facets.extranet);
-      where.push(`fCommentsMe.id is null`);
-    }
-
-    if(facets.oth=="1" && facets.extranet && facets.email){
-      joins.push(`inner join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email<>$fEmail and fCommentsMe.extranet_id=$fExtranet`);
-      params[`$fEmail`]=facets.email;
-      params[`$fExtranet`]=parseInt(facets.extranet);
-    }
-    if(facets.oth=="0" && facets.extranet && facets.email){
-      joins.push(`left outer join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email<>$fEmail and fCommentsMe.extranet_id=$fExtranet`);
-      params[`$fEmail`]=facets.email;
-      params[`$fExtranet`]=parseInt(facets.extranet);
-      where.push(`fCommentsMe.id is null`);
-    }
-
-    if(facets.note=="0"){
-      joins.push(`left outer join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
-      where.push(`fEntryNote.text is null`);
-    } else if(facets.note=="1" || facets.note=="txt"){
-      joins.push(`inner join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
-      if(facets.noteType){
-        where.push(`fEntryNote.type=$fNoteType`);
-        params[`$fNoteType`]=parseInt(facets.noteType);
+      if(facets.intro){
+        joins.push(`inner join entry_intro as f_ei on f_ei.entry_id=e.id`);
+        if(facets.intro=="*") where.push(`f_ei.text<>''`)
+        else if(facets.intro=="-1") where.push(`(f_ei.text='' or f_ei.text is null)`)
+        else if(facets.intro=="txt") {
+          where.push(`(f_ei.text<>'' and f_ei.text like $fIntro)`);
+          params[`$fIntro`]="%"+facets.introValue+"%";
+        }
       }
-      if(facets.note=="txt"){
-        where.push(`(fEntryNote.text<>'' and fEntryNote.text like $fNoteText)`);
-        params[`$fNoteText`]="%"+facets.noteText+"%";
+
+      if(facets.def && facets.def=="-1"){
+        joins.push(`left outer join entry_def as fDef on fDef.entry_id=e.id`);
+        where.push(`fDef.text is null`);
       }
-    }
+      else if(facets.def){
+        joins.push(`inner join entry_def as fDef on fDef.entry_id=e.id`);
+        if(facets.def=="*") where.push(`fDef.text<>''`);
+        else { where.push(`fDef.text like $fDef`); params[`$fDef`]="%"+facets.defValue+"%"; }
+      }
 
-    var params1={}; for(var key in params) params1[key]=params[key];
-    var sql1=`select e.id, e.json, (select count(*) from comments as c where c.entry_id=e.id) as commentCount`;
-    if(searchtext!=""){
-      sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
-      params1.$searchtext_matchquality=searchtext;
-    } else {
-      sql1+=", 0";
-    }
-    sql1+=` as match_quality\n`;
-    sql1+=` from entries as e\n`;
-    joins.map(s => {sql1+=" "+s+"\n"});
-    if(modifiers[2]){
-      sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
-      params1.$sortlang=modifiers[2];
-    } else {
-      sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
-    }
-    if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
-    sql1+=` group by e.id\n`;
-    sql1+=` order by match_quality desc, sk.key\n`;
-    if(howmany){
-      sql1+=` limit $howmany`;
-      params1.$howmany=parseInt(howmany);
-    }
-    //sql1=`select * from entries order by id limit $howmany`;
-    //var params1={$howmany: howmany};
+      if(facets.xmpl && facets.xmpl=="-1"){
+        joins.push(`left outer join entry_xmpl as fXmpl on fXmpl.entry_id=e.id`);
+        where.push(`fXmpl.text is null`);
+      }
+      else if(facets.xmpl){
+        joins.push(`inner join entry_xmpl as fXmpl on fXmpl.entry_id=e.id`);
+        if(facets.xmpl=="*") where.push(`fXmpl.text<>''`);
+        else { where.push(`fXmpl.text like $fXmpl`); params[`$fXmpl`]="%"+facets.xmplValue+"%"; }
+      }
 
-    var params2=params;
-    var sql2=`select count(distinct e.id) as total from entries as e\n`;
-    joins.map(s => {sql2+=" "+s+"\n"});
-    if(where.length>0){ sql2+=" where "; where.map((s, i) => {if(i>0) sql2+=" and "; sql2+=s+"\n";}); }
-    sql2=sql2.trim();
-    //var sql2=`select count(*) as total from entries`;
-    //var params2={};
+      if(facets.collection && facets.collection=="-1"){
+        joins.push(`left outer join entry_collection as fCollection on fCollection.entry_id=e.id`);
+        where.push(`fCollection.collection is null`);
+      }
+      else if(facets.collection){
+        joins.push(`inner join entry_collection as fCollection on fCollection.entry_id=e.id`);
+        if(facets.collection=="*") where.push(`fCollection.collection>0`);
+        else { where.push(`fCollection.collection=$fCollection`); params[`$fCollection`]=parseInt(facets.collection); }
+      }
 
-    // console.log("---");
-    // console.log(params1);
-    // console.log(sql1);
-    // console.log("---");
-    // console.log(params2);
-    // console.log(sql2);
+      if(facets.extranet && facets.extranet=="-1"){
+        joins.push(`left outer join entry_extranet as fExtranet on fExtranet.entry_id=e.id`);
+        where.push(`fExtranet.extranet is null`);
+      }
+      else if(facets.extranet){
+        joins.push(`inner join entry_extranet as fExtranet on fExtranet.entry_id=e.id`);
+        if(facets.extranet=="*") where.push(`fExtranet.extranet>0`);
+        else { where.push(`fExtranet.extranet=$fExtranet`); params[`$fExtranet`]=parseInt(facets.extranet); }
+      }
 
-    callnext(sql1, params1, sql2, params2);
+      if(facets.extranet){
+        if(facets.hasComments=="1"){
+          joins.push(`inner join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
+          params[`$fExtranet`]=parseInt(facets.extranet);
+        }
+        if(facets.hasComments=="0"){
+          joins.push(`left outer join comments as fComments on fComments.entry_id=e.id and fComments.extranet_id=$fExtranet`);
+          params[`$fExtranet`]=parseInt(facets.extranet);
+          where.push(`fComments.id is null`);
+        }
+      } else {
+        if(facets.hasComments=="1" || facets.hasComments=="txt"){
+          joins.push(`inner join comments as fComments on fComments.entry_id=e.id`);
+          if(facets.hasComments=="txt"){
+            where.push(`(fComments.body<>'' and fComments.body like $fCommentText)`);
+            params[`$fCommentText`]="%"+facets.commentText+"%";
+          }
+        }
+        if(facets.hasComments=="0"){
+          joins.push(`left outer join comments as fComments on fComments.entry_id=e.id`);
+          where.push(`fComments.id is null`);
+        }
+      }
+
+      if(facets.me=="1" && facets.extranet && facets.email){
+        joins.push(`inner join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email=$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+        params[`$fEmail`]=facets.email;
+        params[`$fExtranet`]=parseInt(facets.extranet);
+      }
+      if(facets.me=="0" && facets.extranet && facets.email){
+        joins.push(`left outer join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email=$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+        params[`$fEmail`]=facets.email;
+        params[`$fExtranet`]=parseInt(facets.extranet);
+        where.push(`fCommentsMe.id is null`);
+      }
+
+      if(facets.oth=="1" && facets.extranet && facets.email){
+        joins.push(`inner join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email<>$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+        params[`$fEmail`]=facets.email;
+        params[`$fExtranet`]=parseInt(facets.extranet);
+      }
+      if(facets.oth=="0" && facets.extranet && facets.email){
+        joins.push(`left outer join comments as fCommentsMe on fCommentsMe.entry_id=e.id and fCommentsMe.email<>$fEmail and fCommentsMe.extranet_id=$fExtranet`);
+        params[`$fEmail`]=facets.email;
+        params[`$fExtranet`]=parseInt(facets.extranet);
+        where.push(`fCommentsMe.id is null`);
+      }
+
+      if(facets.note=="0"){
+        joins.push(`left outer join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
+        where.push(`fEntryNote.text is null`);
+      } else if(facets.note=="1" || facets.note=="txt"){
+        joins.push(`inner join entry_note as fEntryNote on fEntryNote.entry_id=e.id`);
+        if(facets.noteType){
+          where.push(`fEntryNote.type=$fNoteType`);
+          params[`$fNoteType`]=parseInt(facets.noteType);
+        }
+        if(facets.note=="txt"){
+          where.push(`(fEntryNote.text<>'' and fEntryNote.text like $fNoteText)`);
+          params[`$fNoteText`]="%"+facets.noteText+"%";
+        }
+      }
+
+      var params1={}; for(var key in params) params1[key]=params[key];
+      var sql1=`select e.id, e.json, (select count(*) from comments as c where c.entry_id=e.id) as commentCount`;
+      if(searchtext!=""){
+        sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
+        params1.$searchtext_matchquality=searchtext;
+      } else {
+        sql1+=", 0";
+      }
+      sql1+=` as match_quality\n`;
+      sql1+=` from entries as e\n`;
+      joins.map(s => {sql1+=" "+s+"\n"});
+      if(modifiers[2]){
+        sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
+        params1.$sortlang=modifiers[2];
+      } else {
+        sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
+      }
+      if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
+      sql1+=` group by e.id\n`;
+      sql1+=` order by match_quality desc, sk.key\n`;
+      if(howmany){
+        sql1+=` limit $howmany`;
+        params1.$howmany=parseInt(howmany);
+      }
+      //sql1=`select * from entries order by id limit $howmany`;
+      //var params1={$howmany: howmany};
+
+      var params2=params;
+      var sql2=`select count(distinct e.id) as total from entries as e\n`;
+      joins.map(s => {sql2+=" "+s+"\n"});
+      if(where.length>0){ sql2+=" where "; where.map((s, i) => {if(i>0) sql2+=" and "; sql2+=s+"\n";}); }
+      sql2=sql2.trim();
+      //var sql2=`select count(*) as total from entries`;
+      //var params2={};
+
+      // console.log("---");
+      // console.log(params1);
+      // console.log(sql1);
+      // console.log("---");
+      // console.log(params2);
+      // console.log(sql2);
+
+      callnext(sql1, params1, sql2, params2);
+    }
   },
   cStatus: function(db, termbaseID, facets, searchtext, modifier, val, callnext){
     var items=[];
-    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -762,7 +805,7 @@ module.exports={
   },
   pStatus: function(db, termbaseID, facets, searchtext, modifier, val, callnext){
     var items=[];
-    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -794,7 +837,7 @@ module.exports={
   },
   extranetAdd: function(db, termbaseID, facets, searchtext, modifier, extranetID, callnext){
     var items=[];
-    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -827,7 +870,7 @@ module.exports={
   },
   extranetRemove: function(db, termbaseID, facets, searchtext, modifier, extranetID, callnext){
     var items=[];
-    module.exports.composeSqlQueries(facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -1958,7 +2001,7 @@ module.exports={
     var howmany=page*100;
     var startAt=(page-1)*100;
     var sortlang=db.termbaseConfigs.lingo.languages[0].abbr;
-    module.exports.composeSqlQueries({pStatus: "1"}, searchtext, "* smart "+sortlang, howmany, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, {pStatus: "1"}, searchtext, "* smart "+sortlang, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         var suggestions=null;
