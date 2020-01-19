@@ -305,7 +305,7 @@ function L(s, gloss){
   if(s=="including subdomains") return "foréimsí san áireamh";
   if(s=="the entry has this domain") return "tá an réimse seo san iontráil";
   if(s=="the entry has only this domain") return "níl ach an réimse seo san iontráil";
-  if(s=="the entry has not only this domain") return "níl an réimse seo san iontráil léi féin";
+  if(s=="the entry has not only this domain") return "níl an réimse seo san iontráil leis féin";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
