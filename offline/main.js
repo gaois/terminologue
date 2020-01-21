@@ -1,24 +1,37 @@
-const {app, dialog, BrowserWindow, Menu, MenuItem}=require("electron");
-var win=null;
+const {app, dialog, BrowserWindow, Menu, MenuItem, ipcMain}=require("electron");
+var uiWindow=null;
+var workerWindow=null;
 
-function createWindow(){
-  win=new BrowserWindow({
+function createWindows(){
+  //create the visible UI window:
+  uiWindow=new BrowserWindow({
     title: app.getName(),
     icon: __dirname+"/appicon/appicon.png",
     backgroundColor: "#dee7e6",
     show: false,
     width: 1400,
-    height: 800,
+    height: 600,
     center: true,
     webPreferences: {
       nodeIntegration: true
     },
   });
   Menu.setApplicationMenu(buildMenu());
-  win.loadFile(__dirname+"/index.html");
-  win.once("ready-to-show", () => {
-    win.show();
+  uiWindow.on("closed", function(){
+    app.quit();
   });
+  uiWindow.loadFile(__dirname+"/ui.html");
+  uiWindow.once("ready-to-show", () => {
+    uiWindow.show();
+  });
+  //create the hidden worker window:
+  workerWindow=new BrowserWindow({
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    },
+  });
+  workerWindow.loadFile(__dirname+"/worker.html");
 }
 
 //buils and returns the applications menu:
@@ -59,4 +72,17 @@ function openFile(){
   });
 }
 
-app.on("ready", createWindow);
+app.on("ready", function(){
+  //create windows (visible UI and invisible worker):
+  createWindows();
+
+  //relay messages from UI to worker, from worker to UI:
+  ipcMain.on("message-to-worker", (event, arg) => {
+    console.log("message-to-worker", arg);
+    workerWindow.webContents.send("message-to-worker", arg);
+  });
+  ipcMain.on("message-to-ui", (event, arg) => {
+    //console.log("message-to-ui", arg);
+    uiWindow.webContents.send("message-to-ui", arg);
+  });
+});

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="ui.css">
+  </head>
+  <body>
+    <div id="leftmenu" class="x-disabled">
+      <div id="home"></div>
+      <!-- <div class="menuheading">TBX</div> -->
+      <div class="menuitem" tabindex="0" data-task="tbx-import">Import from TBX</div>
+      <div class="menuitem" tabindex="0" data-task="tbx-export">Export into TBX</div>
+      <div class="disabler"></div>
+    </div>
+    <div id="space">
+
+      <div class="block" data-task="tbx-import">
+        <div class="title">Import from TBX</div>
+        <div class="box x-disabled">
+          <div class="title"><b>INPUT</b> — YOUR TBX FILE</div>
+          <div class="path input" data-mustexist="true">
+            <input value="" spellcheck="false"/>
+            <button>&middot;&middot;&middot;</button>
+          </div>
+          <div class="disabler"></div>
+        </div>
+        <div class="box x-disabled">
+          <div class="title"><b>OUTPUT</b> — YOUR TERMINOLOGUE TERMBASE</div>
+          <div class="path output" data-mustexist="true">
+            <input value="" spellcheck="false"/>
+            <button>&middot;&middot;&middot;</button>
+          </div>
+          <div class="disabler"></div>
+        </div>
+        <div class="goline state-initial x-state-ongoing x-state-finished x-state-error">
+          <button class="start">Start</button>
+          <button class="abort">Abort</button>
+          <span class="spinner"></span>
+          <span class="done">0</span>
+          <span class="finished">finished</span>
+          <span class="error"></span>
+        </div>
+      </div>
+      <div class="block" data-task="tbx-export">
+        <div class="title">Export into TBX</div>
+        <div class="box x-disabled">
+          <div class="title"><b>INPUT</b> — YOUR TERMINOLOGUE TERMBASE</div>
+          <div class="path input" data-mustexist="true">
+            <input value="" spellcheck="false"/>
+            <button>&middot;&middot;&middot;</button>
+          </div>
+          <div class="disabler"></div>
+        </div>
+        <div class="box x-disabled">
+          <div class="title"><b>OUTPUT</b> — YOUR TBX FILE</div>
+          <div class="path output" data-mustexist="false">
+            <input value="" spellcheck="false"/>
+            <button>&middot;&middot;&middot;</button>
+          </div>
+          <div class="disabler"></div>
+        </div>
+        <div class="goline state-initial x-state-ongoing x-state-finished x-state-error">
+          <button class="start">Start</button>
+          <button class="abort">Abort</button>
+          <span class="spinner"></span>
+          <span class="done">0</span>
+          <span class="finished">finished</span>
+          <span class="error"></span>
+        </div>
+      </div>
+
+    </div>
+    <script src="ui.js" charset="utf-8"></script>
+  </body>
+</html>
