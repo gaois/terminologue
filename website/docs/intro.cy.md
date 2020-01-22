@@ -1,4 +1,4 @@
-﻿# Cyflwyniad cryno i Terminologue
+# Cyflwyniad cryno i Terminologue
 
 Mae'r dudalen hon yn eich tywys ar daith fer drwy nodweddion pwysicaf Terminologue. I ddechrau defnyddio Terminologue, ewch i'r [dudalen hafan](/) a chreu cyfrif. Wedi cael cyfrif gallwch fewngofnodi gan ddefnyddio'ch cyfeiriad e-bost a'ch cyfrinair. Pan fyddwch wedi mewngofnodi, mae gan y dudalen hafan adran o'r enw *Eich cronfeydd termau*. Mae'r adran hon yn wag ar y dechrau ond mae yno ddolen i greu cronfa dermau newydd.
 

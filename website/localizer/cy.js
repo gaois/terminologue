@@ -1,4 +1,4 @@
-﻿function L(s){
+function L(s){
   if(s=="only") return function (s) {
     return s + " yn unig";
   };

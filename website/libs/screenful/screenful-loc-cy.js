@@ -1,4 +1,4 @@
-﻿Screenful.Loc={
+Screenful.Loc={
   ready: "Yn barod.",
   find: "Chwilio",
   reload: "Ail-lwytho",

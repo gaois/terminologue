@@ -1,4 +1,4 @@
-﻿# Ynghylch *Terminologue*
+# Ynghylch *Terminologue*
 
 ## Terminologue
 
@@ -6,7 +6,7 @@ Teclyn cod agored ar gyfer rheoli terminoleg yw *Terminologue*. Datblygir a chyn
 
 ## Terminologue.org
 
-Mae *[Terminologue.org](https://www.terminologue.org/)* yn gopi o feddalwedd *Terminologue* sydd yn y cwmwl. Mae'r copi hwn yn cael ei gynnal gan [grŵp ymchwil Gaois](https://www.gaois.ie/cy/) (Prifysgol Dinas Dulyn). Os nad ydych am osod eich copi eich hun o'r feddalwedd, gallwch ddechrau ysgrifennu a chyhoeddi cronfeydd termau drwy [greu cyfrif](/signup/) ar *Terminologue.org*. Er y byddwn yn gwneud pob ymdrech i gadw'ch cronfeydd termau yn ddiogel, ni allwn warantu hyn. Yn lle hynny, gofynnwn ichi allforio a gwneud copi wrth gefn o'ch cronfeydd eich hun o bryd i'w gilydd.
+Mae *[Terminologue.org](https://www.terminologue.org/)* yn gopi o feddalwedd *Terminologue* sydd yn y cwmwl. Mae'r copi hwn yn cael ei gynnal gan [grŵp ymchwil Gaois](https://www.gaois.ie/ga/) (Prifysgol Dinas Dulyn). Os nad ydych am osod eich copi eich hun o'r feddalwedd, gallwch ddechrau ysgrifennu a chyhoeddi cronfeydd termau drwy [greu cyfrif](/signup/) ar *Terminologue.org*. Er y byddwn yn gwneud pob ymdrech i gadw'ch cronfeydd termau yn ddiogel, ni allwn warantu hyn. Yn lle hynny, gofynnwn ichi allforio a gwneud copi wrth gefn o'ch cronfeydd eich hun o bryd i'w gilydd.
 
 ## Téarma
 
@@ -18,7 +18,7 @@ Nid ydym yn casglu unrhyw ddata defnydd. Pan fyddwch chi'n cofrestru am gyfrif a
 
 ## Cyswllt
 
-Gallwch greu cyfrif [yma](/signup/). Os ydych wedi anghofio'ch cyfrinair ewch [yma](/forgetpwd/). I gael cyflwyniad cryno i Terminologue, ewch [yma](/docs/intro/). Os oes gennych unrhyw ymholiadau neu adborth arall, gallwch anfon e-bost atom yn <gaois@dcu.ie>.
+Gallwch greu cyfrif [yma](/signup/). Os ydych wedi anghofio'ch cyfrinair ewch [yma](/forgetpwd/). I gael cyflwyniad cryno i Terminologue, ewch [yma](/docs/intro.cy/). Os oes gennych unrhyw ymholiadau neu adborth arall, gallwch anfon e-bost atom yn <gaois@dcu.ie>.
 
 ## Lleoleiddio Terminologue
 
