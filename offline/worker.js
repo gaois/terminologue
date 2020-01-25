@@ -1,13 +1,19 @@
 const fs=require("fs");
 const {ipcRenderer}=require("electron");
 
+const TBXExport=require("./tbx-export.js");
+
 function messageToUI(obj){
   ipcRenderer.send("message-to-ui", obj);
 }
 ipcRenderer.on("message-to-worker", (event, obj) => {
-  if(obj.message=="want-start") start();
-  if(obj.message=="want-abort") abort();
+  if(obj.task=="tbx-export"){
+    if(obj.message=="want-start") TBXExport.start(obj.input, obj.output, messageToUI);
+    if(obj.message=="want-abort") TBXExport.abort();
+  }
 });
+
+//-------------------
 
 var total=null, done=null, aborted=null;
 function start(){

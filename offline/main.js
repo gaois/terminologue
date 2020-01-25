@@ -82,7 +82,7 @@ app.on("ready", function(){
     workerWindow.webContents.send("message-to-worker", arg);
   });
   ipcMain.on("message-to-ui", (event, arg) => {
-    //console.log("message-to-ui", arg);
+    console.log("message-to-ui", arg);
     uiWindow.webContents.send("message-to-ui", arg);
   });
 });

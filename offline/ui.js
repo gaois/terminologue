@@ -4,17 +4,6 @@ const {dialog}=require("electron").remote;
 window.$=window.jQuery=require("jquery");
 init();
 
-// function hello(){
-//   var message=fs.readFileSync(__dirname+"/hello.txt", "utf8");
-//   document.getElementById("hello").innerHTML=message;
-// }
-// window.addEventListener("load", hello);
-//
-//called from the main process when the user wants to open a file:
-// ipcRenderer.on('openFile', function(event, message){
-//   document.getElementById("hello").innerHTML=message.filePaths.join();
-// });
-
 function init(){
   //initiate the left menu:
   $("#leftmenu div.menuitem").first().addClass("current");
@@ -43,7 +32,7 @@ function changeTask(){
 function locateFile($pathDiv){
   var properties=["openFile", "createDirectory"];
   if($pathDiv.attr("data-mustexist")=="false") properties.push("promptToCreate");
-  var ret=dialog.showOpenDialog(remote.getCurrentWindow(), {properties: properties});
+  var ret=dialog.showOpenDialogSync(remote.getCurrentWindow(), {properties: properties});
   if(ret && ret.length && ret.length>0){
     var path=ret[0];
     $pathDiv.find("input").val(path);
@@ -80,7 +69,7 @@ function started(obj){
   updateThermometer(obj.done);
 }
 function wantAbort(){
-  messageToWorker({message: "want-abort"});
+  messageToWorker({message: "want-abort", task: $("div.block:visible").attr("data-task")});
 }
 function progressing(obj){
   updateThermometer(obj.done);
