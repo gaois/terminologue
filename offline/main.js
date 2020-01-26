@@ -58,7 +58,7 @@ function buildMenu(){
       submenu: [
         {
           label: 'About',
-          click () { require('electron').shell.openExternalSync('https://www.terminologue.org/') }
+          click () { require('electron').shell.openExternal('https://www.terminologue.org/') }
         }
       ]
     },
