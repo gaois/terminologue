@@ -16,6 +16,7 @@
   "dependencies": {
     "better-sqlite3": "^5.4.3",
     "jquery": "^3.4.1",
-    "xml-formatter": "^1.2.0"
+    "xml-formatter": "^1.2.0",
+    "xmldom": "^0.2.1"
   }
 }
