@@ -2,13 +2,13 @@
 
 ![Screenshot](/docs/top.png)
 
-*Terminologue Offline Processor* is a desktop application for exporting and importing data from and into a Terminologue termbase. *Terminologue Offline Processor* lets you convert terminological data between Terminologue's internal data format and eternal formats such as [TBX (TermBase Exchange)](https://en.wikipedia.org/wiki/TermBase_eXchange). See below for instructions in how to use *Terminologue Offline Processor*.
+*Terminologue Offline Processor* is a desktop application for exporting and importing data from and into a Terminologue termbase. *Terminologue Offline Processor* lets you convert terminological data between Terminologue's internal data format and external formats such as [TBX (TermBase Exchange)](https://en.wikipedia.org/wiki/TermBase_eXchange). See below for instructions on how to use *Terminologue Offline Processor*.
 
 ## Why is it a desktop application?
 
 Unlike Terminologue itself, which is an online application you access through your web browser without having to install anything, *Terminologue Offline Processor* is a desktop application which you need to download and install on your own computer.
 
-Why? This is becauuse import and export are "heavy" operations: if your termbase is very large, moving all of its contents around can take a lot of time to run and use up a lot of the computer's memory and processor time. Because of that, import and export are not suitable to run on a web server. For this reason, we have packaged the import and export features into a separate desktop application: *Terminologue Offline Processor*.
+Why? This is because import and export are "heavy" operations: if your termbase is very large, moving all of its contents around can take a lot of time to run and use up a lot of the computer's memory and processor time. Because of that, import and export are not suitable to run on a web server. For this reason, we have packaged the import and export features into a separate desktop application: *Terminologue Offline Processor*.
 
 ## Download and installation
 
@@ -42,7 +42,7 @@ When you are **importing** data from another format (such as TBX) into a termbas
 
 In each case, *Terminologue Offline Processor* always exports and imports **all** available entries.
 
-If you are **re-importing** entries into the same termbase from which have exported them, then again, the entries are **added** to those already there, meaning that you will end up with duplicate entries in your termbase. *Terminologue Offline Processor* makes no effort to detect or resolve duplicates during import.
+If you are **re-importing** entries into the same termbase from which you have exported them, then again, the entries are **added** to those already there, meaning that you will end up with duplicate entries in your termbase. *Terminologue Offline Processor* makes no effort to detect or resolve duplicates during import.
 
 ## Release notes
 
