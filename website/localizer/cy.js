@@ -1,6 +1,6 @@
-function L(s){
-  if(s=="only") return function (s) {
-    return s + " yn unig";
+function L(s, gloss){
+  if(s=="only") return function(s){
+    return s+" yn unig";
   };
   if(s=="READ-ONLY") return "DARLLEN YN UNIG";
   if(s=="Editing") return "Golygu";
