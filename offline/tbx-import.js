@@ -48,6 +48,7 @@ function openTBX(input){
       doLine(line);
     });
     lineReader.on("close", function(line){
+      db.close();
       if(!aborted) messageToUI({message: "finished", done: done});
     });
   }
@@ -71,6 +72,7 @@ var abortDone=false;
 function doLine(line){
   if(aborted){
     if(!abortDone) messageToUI({message: "aborted", done: done});
+    db.close();
     lineReader.close();
     abortDone=true;
   } else {

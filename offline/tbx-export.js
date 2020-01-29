@@ -44,7 +44,8 @@ function begin(input, output){
   this.output=output;
   messageToUI({message: "started", done: done});
   var db=openDB(input);
-  if(db){
+  if(!output) messageToUI({message: "error", done: done, error: "No TBX file given."});
+  if(db && output){
     //Read the termbase configs:
     var sqlSelectConfigs=db.prepare("select * from configs where id in ('lingo', 'ident')");
     sqlSelectConfigs.all().map(row => {
@@ -78,6 +79,7 @@ function begin(input, output){
 
 function next(){
   if(aborted){
+    db.close();
     messageToUI({message: "aborted", done: done});
   } else {
     var entryID=entryIDs.pop();
@@ -106,6 +108,7 @@ function finish(){
   </text>
 </martif>
   `, "utf8");
+  db.close();
   messageToUI({message: "finished", done: done});
 }
 
