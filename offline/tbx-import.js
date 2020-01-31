@@ -21,7 +21,9 @@ var configs={};
 function openDB(input){
   db=null;
   if(!input){
-    messageToUI({message: "error", done: done, error: "Could not open the termbase."});
+    messageToUI({message: "error", done: done, error: "No output file given."});
+  } else if(!fs.existsSync(input)){
+    messageToUI({message: "error", done: done, error: "The output file does not exist."});
   } else {
     try{
       if(input) {
@@ -33,15 +35,18 @@ function openDB(input){
         });
       }
     } catch(err){
-      messageToUI({message: "error", done: done, error: "Could not open the termbase."});
+      messageToUI({message: "error", done: done, error: "Could not open the output file."});
+      db=null;
     }
   }
   return db;
 }
 function openTBX(input){
   var lineReader=null;
-  if(!input || !fs.existsSync(input)){
-    messageToUI({message: "error", done: done, error: "Could not open the TBX file."});
+  if(!input){
+    messageToUI({message: "error", done: done, error: "No input file given."});
+  } else if(!fs.existsSync(input)){
+    messageToUI({message: "error", done: done, error: "The input file does not exist."});
   } else {
     lineReader=readline.createInterface({input: fs.createReadStream(input)});
     lineReader.on("line", function(line){
@@ -59,9 +64,9 @@ var lineReader=null;
 function begin(input, output){
   this.output=output;
   messageToUI({message: "started", done: done});
-  var db=openDB(output);
-  if(db){
-    lineReader=openTBX(input);
+  lineReader=openTBX(input);
+  if(lineReader){
+    var db=openDB(output);
   }
 }
 
