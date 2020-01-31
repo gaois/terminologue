@@ -8,7 +8,7 @@
 
 Unlike Terminologue itself, which is an online application you access through your web browser without having to install anything, *Terminologue Offline Processor* is a desktop application which you need to download and install on your own computer.
 
-Why? This is because import and export are "heavy" operations: if your termbase is very large, moving all of its contents around can take a lot of time to run and use up a lot of the computer's memory and processor time. Because of that, import and export are not suitable to run on a web server. For this reason, we have packaged the import and export features into a separate desktop application: *Terminologue Offline Processor*.
+Why? Because import and export are "heavy" operations: if your termbase is very large, moving all of its contents around can take a lot of time and can take up a lot of the computer's memory and processor time. Because of that, import and export are not suitable to run on a web server. Instead, we have packaged the import and export features into a separate desktop application: *Terminologue Offline Processor*.
 
 ## Download and installation
 
