@@ -35,8 +35,9 @@ function openDB(input){
   } else {
     try{
       db=new sqlite(input, {fileMustExist: true});
-      db.prepare("select * from configs limit 1").run();
+      db.prepare("select * from configs limit 1").get();
     } catch(err){
+      console.log(err);
       messageToUI({message: "error", done: done, error: "Could not open the input file."});
       db=null;
     }
