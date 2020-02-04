@@ -18,10 +18,13 @@
 		<script type="text/javascript" src="../../../libs/screenful/screenful-editor.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-editor.css" />
 		<script type="text/javascript">
-		Screenful.Editor.createUrl="./create.json";
 		Screenful.Editor.readUrl="./read.json";
+		Screenful.Editor.createUrl="./create.json";
 		Screenful.Editor.updateUrl="./update.json";
 		Screenful.Editor.deleteUrl="./delete.json";
+		Screenful.Editor.createFunc=function(data){ termbaseMetadata[metadataType]=data.metadata[metadataType]; };
+		Screenful.Editor.updateFunc=function(data){ termbaseMetadata[metadataType]=data.metadata[metadataType]; };
+		Screenful.Editor.deleteFunc=function(data){ termbaseMetadata[metadataType]=data.metadata[metadataType]; };
 		</script>
 
 		<script type="text/javascript">

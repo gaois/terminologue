@@ -323,6 +323,7 @@ Screenful.Editor={
         if(!data.success) {
           Screenful.status(Screenful.Loc.savingFailed, "warn"); //"failed to save entry"
         } else {
+          if(Screenful.Editor.createFunc) Screenful.Editor.createFunc(data);
           Screenful.Editor.entryID=data.id;
           $("#idbox").val(data.id);
           if(Screenful.Editor.allowCommenting) Screenful.Commenting.peek();
@@ -359,6 +360,7 @@ Screenful.Editor={
         if(!data.success) {
           Screenful.status(Screenful.Loc.savingFailed, "warn"); //"failed to save entry"
         } else {
+          if(Screenful.Editor.updateFunc) Screenful.Editor.updateFunc(data);
           Screenful.Editor.entryID=data.id;
           $("#idbox").val(data.id);
           if(Screenful.Editor.viewer && !$("#chkAutosave").prop("checked")) {
@@ -393,6 +395,7 @@ Screenful.Editor={
         if(!data.success) {
           Screenful.status(Screenful.Loc.deletingFailed, "warn"); //"failed to delete entry"
         } else {
+          if(Screenful.Editor.deleteFunc) Screenful.Editor.deleteFunc(data);
           if(!Screenful.Editor.historyUrl) {
             Screenful.Editor.entryID=null;
             $("#idbox").val("");

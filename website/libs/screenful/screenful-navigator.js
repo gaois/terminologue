@@ -659,6 +659,7 @@ Screenful.Navigator={
           if(!data.success) {
             Screenful.status(Screenful.Loc.deletingFailed, "warn"); //"failed to delete entry"
           } else {
+            if(Screenful.Navigator.deleteFunc) Screenful.Navigator.deleteFunc(data);
             Screenful.status(Screenful.Loc.ready);
             var $entry=$("div.entry[data-id=\""+entryID+"\"]");
             if($entry.length>0){

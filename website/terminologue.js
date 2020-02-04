@@ -644,8 +644,10 @@ app.post(siteconfig.rootPath+":termbaseID/admin/:metadataType/create.json", func
       res.json({success: false});
     } else {
       ops.metadataCreate(db, req.params.termbaseID, req.params.metadataType, null, req.body.content, function(entryID, adjustedJson){
-        db.close();
-        res.json({success: true, id: entryID, content: adjustedJson});
+        ops.readTermbaseMetadata(db, req.params.termbaseID, function(metadata){
+          db.close();
+          res.json({success: true, id: entryID, content: adjustedJson, metadata: metadata});
+        });
       });
     }
   });
@@ -674,8 +676,10 @@ app.post(siteconfig.rootPath+":termbaseID/admin/:metadataType/update.json", func
       res.json({success: false});
     } else {
       ops.metadataUpdate(db, req.params.termbaseID, req.params.metadataType, req.body.id, req.body.content, function(adjustedEntryID, adjustedJson, changed){
-        db.close();
-        res.json({success: true, id: adjustedEntryID, content: adjustedJson});
+        ops.readTermbaseMetadata(db, req.params.termbaseID, function(metadata){
+          db.close();
+          res.json({success: true, id: adjustedEntryID, content: adjustedJson, metadata: metadata});
+        });
       });
     }
   });
@@ -689,8 +693,10 @@ app.post(siteconfig.rootPath+":termbaseID/admin/:metadataType/delete.json", func
       res.json({success: false});
     } else {
       ops.metadataDelete(db, req.params.termbaseID, req.params.metadataType, req.body.id, function(){
-        db.close();
-        res.json({success: true, id: req.body.id});
+        ops.readTermbaseMetadata(db, req.params.termbaseID, function(metadata){
+          db.close();
+          res.json({success: true, id: req.body.id, metadata: metadata});
+        });
       });
     }
   });
