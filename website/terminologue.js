@@ -17,6 +17,7 @@ const localizer={
   ga: require("./localizer/ga.js"),
   cs: require("./localizer/cs.js"),
   sv: require("./localizer/sv.js"),
+  cy: require("./localizer/cy.js"),
 };
 
 //our uploader:
