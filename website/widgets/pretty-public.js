@@ -309,22 +309,28 @@ function Wording(str, annots, md, cg){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var label=GetMetadatum(md, "posLabel", annot.label.value);
-        var symbol=(label ? label.abbr : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Clean4Html(Title(label.title, cg))+"' onmouseover='PrettyLarge.hon(this, "+index+")' onmouseout='PrettyLarge.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(label){
+          var symbol=label.abbr;
+          if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Clean4Html(Title(label.title, cg))+"' onmouseover='PrettyLarge.hon(this, "+index+")' onmouseout='PrettyLarge.hoff(this, "+index+")'>"+symbol+"</span>"
+        }
       }
       else if(annot.label.type=="inflectLabel"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var label=GetMetadatum(md, "inflectLabel", annot.label.value);
-        var symbol=(label ? label.abbr : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Clean4Html(Title(label.title, cg))+"' onmouseover='PrettyLarge.hon(this, "+index+")' onmouseout='PrettyLarge.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(label){
+          var symbol=label.abbr;
+          if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Clean4Html(Title(label.title, cg))+"' onmouseover='PrettyLarge.hon(this, "+index+")' onmouseout='PrettyLarge.hoff(this, "+index+")'>"+symbol+"</span>"
+        }
       }
       else if(annot.label.type=="langLabel"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
         chars[i].markupAfter=chars[i].markupAfter+"</span>";
         var label=GetLang(cg, annot.label.value);
-        var symbol=(annot.label.value ? annot.label.value.toUpperCase() : "???");
-        if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Clean4Html(Title(label.title, cg))+"' onmouseover='PrettyLarge.hon(this, "+index+")' onmouseout='PrettyLarge.hoff(this, "+index+")'>"+symbol+"</span>"
+        if(label){
+          var symbol=annot.label.value.toUpperCase();
+          if(i==stop-1) chars[i].labelsAfter=chars[i].labelsAfter+"<span class='label hintable "+annot.label.type+"' title='"+Clean4Html(Title(label.title, cg))+"' onmouseover='PrettyLarge.hon(this, "+index+")' onmouseout='PrettyLarge.hoff(this, "+index+")'>"+symbol+"</span>"
+        }
       }
       else if(annot.label.type=="symbol"){
         chars[i].markupBefore="<span class='char h"+index+"'>"+chars[i].markupBefore;
