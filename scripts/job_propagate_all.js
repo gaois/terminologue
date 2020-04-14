@@ -1,3 +1,8 @@
+/*
+	When done, run this SQL script on the SQL Server:
+	\gaois\Tearma\Database\indexall.sql
+*/
+
 const SqliteDatabase=require('better-sqlite3');
 const sqliteDB=new SqliteDatabase('../data/termbases/bnt.sqlite', { fileMustExist: true });
 
@@ -14,6 +19,7 @@ pool.connect(function(err){
 function doEntries(){
 	var entries=[];
 	sqliteDB.prepare(`select * from entries`).all().map(row => { entries.push({id: row.id, json: row.json}); });
+	const transaction = new sql.Transaction(/* [pool] */);
 	go();
 	function go(){
 		var entry=entries.pop();
@@ -22,10 +28,11 @@ function doEntries(){
 			var request=new sql.Request(pool);
 			request.input("entryID", sql.Int, entry.id);
 			request.input("json", sql.NVarChar, entry.json);
-			//request.input("skipSpellingIndexing", sql.Bit, 1);
+			request.input("skipIndexing", sql.Bit, 1);
 			request.execute("propag_saveEntry", function(err){
 				if(err) console.log(err);
 				console.log(`   done`);
+				console.log(`   ${entries.length} entries left to go`);
 				go();
 			});
 
