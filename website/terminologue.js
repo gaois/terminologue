@@ -578,7 +578,7 @@ app.get(siteconfig.rootPath+":termbaseID/admin/:metadataType/", function(req, re
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
     if(!user.termbaseAccess || (user.level<4 && !user.isAdmin)) {
       db.close();
-      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
+      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
         ops.readTermbaseMetadata(db, req.params.termbaseID, function(metadata){
@@ -994,7 +994,7 @@ app.get(siteconfig.rootPath+":termbaseID/config/", function(req, res){
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
     if(!user.termbaseAccess || (user.level<5 && !user.isAdmin)) {
       db.close();
-      res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
+      res.redirect(siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
       ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
         ops.readTermbaseStats(db, req.params.termbaseID, function(stats){
