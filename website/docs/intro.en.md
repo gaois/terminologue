@@ -32,7 +32,7 @@ Terminologue is not just a tool for editing termbases, it is a tool for making t
 
 ![Making a termbase publicly viewable.](/docs/intro07.png)
 
-From the moment you make your termbase public, its homepage (for example `www.terminologue.org/mytermbase`) will display a textbox where people can search your termbase, as well other features for browsing the termbase alphabetically or by domain. The public presentation of your termbase is optimized to be easily discoverable by search engines such as Google and Bing. All publicly viewable pages have responsive design and render well on screens of all sizes, from large desktop computers to small mobile devices.
+From the moment you make your termbase public, its homepage (for example `www.terminologue.org/mytermbase`) will display a textbox where people can search your termbase. The public presentation of your termbase is optimized to be easily discoverable by search engines such as Google and Bing. All publicly viewable pages have responsive design and render well on screens of all sizes, from large desktop computers to small mobile devices.
 
 ![The homepage of a publicly viewable termbase.](/docs/intro08.png)
 

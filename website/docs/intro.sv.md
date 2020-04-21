@@ -32,7 +32,7 @@ Terminologue är inte bara ett verktyg för att hantera termbanker utan också f
 
 ![Att göra termbanker publika.](/docs/intro07.png)
 
-Så snart du gjort din termbank offentlig kommer dess förstasida (t.ex. `www.terminologue.org/mytermbase`) att innehålla ett textfält där användare kan söka i din termbank eller använda andra funktioner för att leta i termbanken alfabetiskt eller enligt domän. Den offentliga termbaken är optimerad så att den enkelt hittas av sökmotorer som Google och Bing. Alla offentliga sidor har följsam webbdesign och återges bra på skärmar av olika storlek, allt från stora fasta skärmar till skärmar på små mobila enheter.
+Så snart du gjort din termbank offentlig kommer dess förstasida (t.ex. `www.terminologue.org/mytermbase`) att innehålla ett textfält där användare kan söka i din termbank. Den offentliga termbaken är optimerad så att den enkelt hittas av sökmotorer som Google och Bing. Alla offentliga sidor har följsam webbdesign och återges bra på skärmar av olika storlek, allt från stora fasta skärmar till skärmar på små mobila enheter.
 
 ![Förstasidan för en offentlig termbank.](/docs/intro08.png)
 

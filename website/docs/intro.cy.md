@@ -32,7 +32,7 @@ Nid teclyn ar gyfer golygu cronfeydd termau yn unig yw Terminologue, mae hefyd y
 
 ![Gwneud cronfa dermau yn weladwy i'r cyhoedd.](/docs/intro07.png)
 
-Pan fyddwch yn cyhoeddi eich cronfa dermau, bydd ei hafan (er enghraifft `www.terminologue.org/fynhermaui`) yn arddangos blwch testun lle gall pobl chwilio'ch cronfa dermau, ynghyd â nodweddion eraill ar gyfer pori'r termbase yn nhrefn yr wyddor neu yn ôl parth. Bydd eich cronfa gyhoeddus wedi'i hoptimeiddio i fod yn hawdd i'w darganfod gan beiriannau chwilio fel Google a Bing. Mae gan bob tudalen y gellir ei gweld yn gyhoeddus ddyluniad ymatebol ac maent yn gweddu â sgriniau o bob maint, o gyfrifiaduron pen desg mawr i ddyfeisiau symudol bach.
+Pan fyddwch yn cyhoeddi eich cronfa dermau, bydd ei hafan (er enghraifft `www.terminologue.org/fynhermaui`) yn arddangos blwch testun lle gall pobl chwilio'ch cronfa dermau. Bydd eich cronfa gyhoeddus wedi'i hoptimeiddio i fod yn hawdd i'w darganfod gan beiriannau chwilio fel Google a Bing. Mae gan bob tudalen y gellir ei gweld yn gyhoeddus ddyluniad ymatebol ac maent yn gweddu â sgriniau o bob maint, o gyfrifiaduron pen desg mawr i ddyfeisiau symudol bach.
 
 ![Hafan cronfa dermau gyhoeddus.](/docs/intro08.png)
 

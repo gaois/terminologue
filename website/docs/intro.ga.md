@@ -32,7 +32,7 @@ Ní hamháin gur uirlis í Terminologue chun eagarthóireacht a dhéanamh ar bhu
 
 ![Making a termbase publicly viewable.](/docs/intro07.png)
 
-A luaithe agus atá do bhunachar téarmaíochta curtha ar fáil go poiblí agat, léireoidh an leathanach baile (e.g. `www.terminologue.org/mytermbase`) bosca téacs a ligeann do dhaoine cuardach a dhéanamh i do bhunachar téarmaíochta chomh maith le gnéithe eile a ligeann dóibh brabhsáil tríd an mbunachar in ord aibítre nó de réir réimse. Tá léiriú poiblí an bhunachair optamaithe le bheith inaimsithe d’innill chuardaigh mhóra cosúil le Google agus Bing. Tá na leathanaigh ghréasáin atá le feiceáil go poiblí oiriúnach do scáileáin de gach cineál toise, idir ríomhairí deisce móra agus ghléasanna móibíleacha beaga.
+A luaithe agus atá do bhunachar téarmaíochta curtha ar fáil go poiblí agat, léireoidh an leathanach baile (e.g. `www.terminologue.org/mytermbase`) bosca téacs a ligeann do dhaoine cuardach a dhéanamh i do bhunachar téarmaíochta. Tá léiriú poiblí an bhunachair optamaithe le bheith inaimsithe d’innill chuardaigh mhóra cosúil le Google agus Bing. Tá na leathanaigh ghréasáin atá le feiceáil go poiblí oiriúnach do scáileáin de gach cineál toise, idir ríomhairí deisce móra agus ghléasanna móibíleacha beaga.
 
 ![The homepage of a publicly viewable termbase.](/docs/intro08.png)
 
