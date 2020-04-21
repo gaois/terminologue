@@ -338,18 +338,11 @@ module.exports={
         var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
         var now=(new Date()).toISOString();
         db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
-          module.exports.readTermbaseConfigs(termbaseDB, termbaseID, function(configs){
-            if(!configs.users[email] && module.exports.siteconfig.admins.indexOf(email)==-1){
-              db.close();
-              callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: false, xnetAccess: false, isAdmin: false});
-            } else {
-              var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
-              module.exports.readExtranet(termbaseDB, termbaseID, xnetID, function(xnet){
-                db.close();
-                var xnetAccess=(xnet.users.indexOf(email)>-1);
-                callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, xnetAccess: xnetAccess, isAdmin: isAdmin}, xnet);
-              });
-            }
+          var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
+          module.exports.readExtranet(termbaseDB, termbaseID, xnetID, function(xnet){
+            db.close();
+            var xnetAccess=(xnet.users.indexOf(email)>-1);
+            callnext({loggedin: true, email: email, uilang: uilang, termbaseAccess: true, xnetAccess: xnetAccess, isAdmin: isAdmin}, xnet);
           });
         });
       }
