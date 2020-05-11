@@ -45,15 +45,17 @@ Fy.renderNode=function(data, template, spec, uneditable){
   $html.find(".fy_remover").html("×");
   if(!uneditable) $html.find(".fy_remover").on("click", function(e){
     var $adder=$(e.delegateTarget);
-    var jsonName=$adder.attr("jsonName");
-    var found=false;
-    $adder.parents(".fy_node").each(function(){
-      var $node=$(this);
-      if(!found && $node.data("jsonName")==":item") {
-        $node.fadeOut(function(){ $(this).remove(); Fy.changed($adder.attr("changeName")); })
-        found=true;
-      }
-    });
+    if(!$adder.attr("confirm") || window.confirm($adder.attr("confirm"))){
+      var jsonName=$adder.attr("jsonName");
+      var found=false;
+      $adder.parents(".fy_node").each(function(){
+        var $node=$(this);
+        if(!found && $node.data("jsonName")==":item") {
+          $node.fadeOut(function(){ $(this).remove(); Fy.changed($adder.attr("changeName")); })
+          found=true;
+        }
+      });
+    }
   });
   $html.find(".fy_downer").html("▾")
   if(!uneditable) $html.find(".fy_downer").on("click", function(e){

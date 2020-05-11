@@ -306,6 +306,7 @@ function L(s, gloss){
   if(s=="the entry has this domain") return "tá an réimse seo san iontráil";
   if(s=="the entry has only this domain") return "níl ach an réimse seo san iontráil";
   if(s=="the entry has not only this domain") return "níl an réimse seo san iontráil leis féin";
+  if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Cúramach! Má bhaineann tú tú féin den chnuasach, ni bheidh rochtain agat air feasta.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

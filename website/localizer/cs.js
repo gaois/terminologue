@@ -306,6 +306,7 @@ function L(s, gloss){
   if(s=="the entry has this domain") return "heslo má tuto doménu";
   if(s=="the entry has only this domain") return "heslo má jen tuto doménu";
   if(s=="the entry has not only this domain") return "heslo má nejen tuto doménu";
+  if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Pozor! Odstraňujete sami sebe a přijedete tím o přístup do této databáze.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

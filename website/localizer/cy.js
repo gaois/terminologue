@@ -307,6 +307,9 @@ function L(s, gloss){
   if(s=="the entry has only this domain") return "dim ond y maes hwn sydd gan y cofnod";
   if(s=="the entry has not only this domain") return "nid dim ond y maes hwn sydd gan y cofnod";
 
+  //New strings, need translation:
+  if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Careful! If you remove yourself from this termbase you will lose access to it.";
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

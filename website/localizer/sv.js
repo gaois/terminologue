@@ -308,6 +308,7 @@
   if(s=="the entry has this domain") return "begreppsposten har den här domänen";
   if(s=="the entry has only this domain") return "begreppsposten har bara den här domänen";
   if(s=="the entry has not only this domain") return "begreppsposten har inte bara den här domänen";
+  if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Försiktig! Om du tar bort dig själv från den här termbasen förlorar du åtkomsten till den.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

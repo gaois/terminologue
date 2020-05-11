@@ -59,7 +59,7 @@ Spec.templates["user"]={
 Spec.templates["email"]={
   type: "string",
   html: `<div class="fy_horizon">
-    <span class="fy_remover"></span>
+    <span class="fy_remover" xconfirm="Sure?"></span>
     <span class="fy_downer"></span>
     <span class="fy_upper"></span>
     <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px; font-weight: bold;"><input onchange="Fy.changed()"/></span>
@@ -67,6 +67,7 @@ Spec.templates["email"]={
   </div>`,
   set: function($me, data){
     $me.find("input").val(data);
+    if(data==Screenful.User.username) $me.find(".fy_remover").attr("confirm", L("Careful! If you remove yourself from this termbase you will lose access to it."));
   },
   get: function($me){
     return $me.find("input").val();
