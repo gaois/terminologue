@@ -18,7 +18,7 @@ module.exports={
     } else {
       var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
       var hash=sha1(password);
-      db.get("select email from users where email=$email and passwordHash=$hash", {$email: email, $hash: hash}, function(err, row){
+      db.get("select email from users where lower(email)=lower($email) and passwordHash=$hash", {$email: email, $hash: hash}, function(err, row){
         if(!row){
           db.close();
           callnext(false, "", "");
