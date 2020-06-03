@@ -438,10 +438,10 @@ module.exports={
       callnext(entries);
     });
   },
-  entryList: function(db, termbaseID, facets, searchtext, modifier, page, callnext){
+  entryList: function(db, termbaseID, facets, searchtext, modifier, page, pageSize, callnext){
     page=parseInt(page);
-    var howmany=page*100;
-    var startAt=(page-1)*100;
+    var howmany=page*pageSize;
+    var startAt=(page-1)*pageSize;
     module.exports.composeSqlQueries(db, facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err) console.log(err);
@@ -466,8 +466,8 @@ module.exports={
           }
           db.get(sql2, params2, function(err, row){
             var total=(!err && row) ? row.total : 0;
-            var pages=Math.floor(total/100); if(total%100 > 0) pages++;
-            callnext(total, pages, page, primeEntries, entries, suggestions);
+            var pages=Math.floor(total/pageSize); if(total%pageSize > 0) pages++;
+            callnext(total, pages, page, pageSize, primeEntries, entries, suggestions);
           });
         });
       });

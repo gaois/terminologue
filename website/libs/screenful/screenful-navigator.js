@@ -322,11 +322,15 @@ Screenful.Navigator={
     if(searchtext=="") $("#suggs").html("");
     var data={facets: facets, criteria: criteria, searchtext: searchtext, modifier: modifier};
     if(Screenful.Navigator.regime=="stepped") data.howmany=howmany;
-    else if(Screenful.Navigator.regime=="paged") data.page=page;
+    else if(Screenful.Navigator.regime=="paged") {
+      data.page=page;
+      data.pageSize=Screenful.Navigator.pageSize;
+    }
     $.ajax({url: url, dataType: "json", method: "POST", data: data}).done(function(data){
       if(!data.success) {
         Screenful.status(Screenful.Loc.listingFailed, "warn"); //"failed to get list of entries"
       } else {
+        Screenful.Navigator.pageSize=data.pageSize;
         $("#countcaption").html(data.total);
         var $listbox=$("#listbox").hide().html("");
 
@@ -364,6 +368,7 @@ Screenful.Navigator={
           }
         } else if(Screenful.Navigator.regime=="paged"){
           Screenful.Navigator.printPager($listbox, data.page, data.pages);
+          Screenful.Navigator.printPagerSizer($listbox, data.pageSize);
         }
 
         if(window.frames["editframe"] && window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
@@ -575,6 +580,32 @@ Screenful.Navigator={
       $pager.find(".pages").html(pages);
       $listbox.append($pager);
     }
+  },
+  printPagerSizer: function($listbox, pageSize){
+    pageSize=pageSize||0;
+    var $sizer=$(`<div class="pagerSizer">
+      <input/>
+      <span>${Screenful.Loc.perPage}</span>
+    </div>`);
+    $sizer.find("input").val(pageSize).data("origVal", pageSize).on("blur", function(e){
+      var $input=$(e.delegateTarget);
+      $input.val($input.data("origVal"));
+    }).on("keypress", function(e){
+      if(e.key=="Enter"){
+        var $input=$(e.delegateTarget);
+        var newVal=$input.val();
+        if(isNaN(newVal)){
+          $input.val($input.data("origVal"));
+        } else {
+          newVal=Math.floor(newVal);
+          if(newVal<1) newVal=1;
+          $input.val(newVal);
+          Screenful.Navigator.pageSize=newVal;
+          Screenful.Navigator.list(e, null, false);
+        }
+      }
+    });
+    $listbox.append($sizer);
   },
 
   previousCrit: null,

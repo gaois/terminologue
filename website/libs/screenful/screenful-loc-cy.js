@@ -93,4 +93,7 @@ Screenful.Loc={
   narrowList: "RHESTR",
   narrowEditor: "SYLLWR/GOLYGYDD",
   emailInUseError: "Mae'r cyfeiriad e-bost hwn eisoes yn cael ei ddefnyddio.",
+
+  //machine-translated, needs proof-reading:
+  perPage: "cofnodion ar bob tudalen", // (number of) entries per page
 };

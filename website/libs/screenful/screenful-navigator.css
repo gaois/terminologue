@@ -180,6 +180,10 @@ span#suggs span.sugg:hover {color: var(--link-hover);}
 .listbox .pager span.pages {margin-left: 0.25em;}
 .listbox .pager span.clear {clear: both;}
 
+.listbox .pagerSizer {margin: 20px 10px 30px 10px; font-size: 0.9em; color: #999999; text-align: center;}
+.listbox .pagerSizer input {font: inherit; font-size: .95em; border: 0; border-bottom: 1px solid #cccccc; margin: 0; padding: 2px 6px; width: 6em; text-align: center; color: #666666; }
+.listbox .pagerSizer span {display: block;}
+
 body.printable {overflow: auto;}
 body.printable #header {display: none;}
 body.printable #footer {display: none;}

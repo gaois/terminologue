@@ -93,4 +93,5 @@ Screenful.Loc={
   narrowList: "LIOSTA",
   narrowEditor: "AMHARC/EAGAR",
   emailInUseError: "Tá an seoladh ríomhphoist seo in úsáid cheana.",
+  perPage: "líon iontrálacha in aghaidh an leathanaigh",
 };

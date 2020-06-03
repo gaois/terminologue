@@ -93,4 +93,5 @@ Screenful.Loc={
   narrowList: "SEZNAM",
   narrowEditor: "DETAILY",
   emailInUseError: "Pro tuhle e-mailovou adresu už účet existuje.",
+  perPage: "počet hesel na stránku",  
 };

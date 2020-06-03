@@ -94,4 +94,7 @@ Screenful.Loc={
   narrowList: "LISTVY",
   narrowEditor: "LÄSVY/REDIGERINGSVY",
   emailInUseError: "Denna e-postadress används redan.",
+
+  //machine-translated, needs proof-reading:
+  perPage: "poster per sida", // (number of) entries per page
 };

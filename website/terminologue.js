@@ -334,9 +334,9 @@ app.post(siteconfig.rootPath+":termbaseID/edit/list.json", function(req, res){
       db.close();
       res.json({success: false});
     } else {
-      ops.entryList(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.body.page, function(total, pages, page, primeEntries, entries, suggestions){
+      ops.entryList(db, req.params.termbaseID, req.body.facets, req.body.searchtext, req.body.modifier, req.body.page, req.body.pageSize, function(total, pages, page, pageSize, primeEntries, entries, suggestions){
         db.close();
-        res.json({success: true, total: total, pages: pages, page: page, primeEntries: primeEntries, entries: entries, suggestions: suggestions});
+        res.json({success: true, total: total, pages: pages, page: page, pageSize: pageSize, primeEntries: primeEntries, entries: entries, suggestions: suggestions});
       });
     }
   });
@@ -748,9 +748,9 @@ app.post(siteconfig.rootPath+":termbaseID/x:xnetID/list.json", function(req, res
       var facets=req.body.facets || {};
       facets.extranet=req.params.xnetID;
       facets.email=user.email;
-      ops.entryList(db, req.params.termbaseID, facets, req.body.searchtext, req.body.modifier, req.body.page, function(total, pages, page, primeEntries, entries, suggestions){
+      ops.entryList(db, req.params.termbaseID, facets, req.body.searchtext, req.body.modifier, req.body.page, req.body.pageSize, function(total, pages, page, pageSize, primeEntries, entries, suggestions){
         db.close();
-        res.json({success: true, total: total, pages: pages, page: page, primeEntries: primeEntries, entries: entries, suggestions: suggestions});
+        res.json({success: true, total: total, pages: pages, page: page, pageSize: pageSize, primeEntries: primeEntries, entries: entries, suggestions: suggestions});
       });
     }
   });
