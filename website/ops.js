@@ -953,46 +953,47 @@ module.exports={
       var entry=JSON.parse(json);
       module.exports.cleanUpXrefs(db, termbaseID, entryID, entry, function(entry){
         module.exports.saveTerms(db, termbaseID, entry, function(changedTerms){
-        var sql=""; var params={};
-        if(dowhat=="create"){
-          sql="insert into entries(json, cStatus, pStatus, dStatus, dateStamp, tod) values($json, $cStatus, $pStatus, $dStatus, $dateStamp, $tod)";
-          params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
-        }
-        if(dowhat=="recreate"){
-          sql="insert into entries(id, json, cStatus, pStatus, dStatus, dateStamp, tod) values($id, $json, $cStatus, $pStatus, $dStatus, $dateStamp, $tod)";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
-        }
-        if(dowhat=="change"){
-          sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus, dStatus=$dStatus, dateStamp=$dateStamp, tod=$tod where id=$id";
-          params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
-        }
-        //create or change me:
-        db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;
-          module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
-          module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
-            //save connections between me and my terms, delete any terms orphaned by this:
-            module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
-              //tell history that I have been created or changed:
-              module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change"?"update":"create"), email, JSON.stringify(entry), historiography, function(){
-                //propagate changes in my terms to other entries that share the terms:
-                module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
-                  //index my domains:
-                  module.exports.saveDomains(db, termbaseID, entryID, entry, function(){
-                    //index my collections:
-                    module.exports.saveCollections(db, termbaseID, entryID, entry, function(){
-                      //index my extranets:
-                      module.exports.saveExtranets(db, termbaseID, entryID, entry, function(){
-                        //index my intros:
-                        module.exports.saveIntros(db, termbaseID, entryID, entry, function(){
-                          //index my definitions:
-                          module.exports.saveDefinitions(db, termbaseID, entryID, entry, function(){
-                            //index my examples:
-                            module.exports.saveExamples(db, termbaseID, entryID, entry, function(){
-                              //index my xrefs:
-                              module.exports.saveXrefs(db, termbaseID, entryID, entry, function(){
-                                //index my notes:
-                                module.exports.saveNotes(db, termbaseID, entryID, entry, function(){
-                                  callnext(entryID);
+          var sql=""; var params={};
+          if(dowhat=="create"){
+            sql="insert into entries(json, cStatus, pStatus, dStatus, dateStamp, tod) values($json, $cStatus, $pStatus, $dStatus, $dateStamp, $tod)";
+            params={$json: JSON.stringify(entry), $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
+          }
+          if(dowhat=="recreate"){
+            sql="insert into entries(id, json, cStatus, pStatus, dStatus, dateStamp, tod) values($id, $json, $cStatus, $pStatus, $dStatus, $dateStamp, $tod)";
+            params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
+          }
+          if(dowhat=="change"){
+            sql="update entries set json=$json, cStatus=$cStatus, pStatus=$pStatus, dStatus=$dStatus, dateStamp=$dateStamp, tod=$tod where id=$id";
+            params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
+          }
+          //create or change me:
+          db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;
+            module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
+            module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
+              //save connections between me and my terms, delete any terms orphaned by this:
+              module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
+                //tell history that I have been created or changed:
+                module.exports.saveHistory(db, termbaseID, entryID, (dowhat=="change"?"update":"create"), email, JSON.stringify(entry), historiography, function(){
+                  //propagate changes in my terms to other entries that share the terms:
+                  module.exports.propagateTerms(db, termbaseID, entryID, changedTerms, email, historiography, function(){
+                    //index my domains:
+                    module.exports.saveDomains(db, termbaseID, entryID, entry, function(){
+                      //index my collections:
+                      module.exports.saveCollections(db, termbaseID, entryID, entry, function(){
+                        //index my extranets:
+                        module.exports.saveExtranets(db, termbaseID, entryID, entry, function(){
+                          //index my intros:
+                          module.exports.saveIntros(db, termbaseID, entryID, entry, function(){
+                            //index my definitions:
+                            module.exports.saveDefinitions(db, termbaseID, entryID, entry, function(){
+                              //index my examples:
+                              module.exports.saveExamples(db, termbaseID, entryID, entry, function(){
+                                //index my xrefs:
+                                module.exports.saveXrefs(db, termbaseID, entryID, entry, function(){
+                                  //index my notes:
+                                  module.exports.saveNotes(db, termbaseID, entryID, entry, function(){
+                                    callnext(entryID);
+                                  });
                                 });
                               });
                             });
@@ -1006,7 +1007,6 @@ module.exports={
             });
           });
         });
-      });
       });
     }
   },
