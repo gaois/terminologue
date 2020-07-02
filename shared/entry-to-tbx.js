@@ -44,6 +44,36 @@ function doDesig(desig){
   var ret=`<ntig>`;
     ret+=`<termGrp>`;
       ret+=`<term id="tid-${desig.term.id}">${clean4xml(desig.term.wording)}</term>`;
+      //the desig's term's annotations:
+      desig.term.annots.map(annot => {
+        var type="";
+        var value="";
+        if(annot.label.type=="posLabel" || annot.label.type=="inflectLabel"){
+          type="partOfSpeech";
+          value="$["+annot.label.value+"]";
+        }
+        if(annot.label.type=="langLabel"){
+          type="etymology";
+          value="$["+annot.label.value+"]";
+        }
+        if(annot.label.type=="symbol" && (annot.label.value=="tm" || annot.label.value=="regtm")){
+          type="proprietaryRestriction";
+          value="trademark";
+        };
+        if(annot.label.type=="symbol" && annot.label.value=="proper"){
+          type="partOfSpeech";
+          value="proper noun";
+        };
+        ret+=`<termNote type="${type}">${clean4xml(value)}</termNote>`;
+      });
+      //the desig's clarification:
+      if(desig.clarif){
+        ret+=`<termNote type="transferComment">${clean4xml(desig.clarif)}</termNote>`;
+      }
+      //the desig's acceptability:
+      if(desig.accept){
+        ret+=`<termNote type="normativeAuthorization">$[${desig.accept}]</termNote>`;
+      }
     ret+=`</termGrp>`;
   ret+=`</ntig>`;
   return ret;
