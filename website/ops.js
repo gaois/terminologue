@@ -440,9 +440,9 @@ module.exports={
   },
   entryList: function(db, termbaseID, facets, searchtext, modifier, page, pageSize, callnext){
     page=parseInt(page);
-    var howmany=page*pageSize;
-    var startAt=(page-1)*pageSize;
-    module.exports.composeSqlQueries(db, facets, searchtext, modifier, howmany, function(sql1, params1, sql2, params2){
+    var howmany=pageSize;
+    var startat=(page-1)*pageSize;
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, howmany, startat, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err) console.log(err);
         if(err || !rows) rows=[];
@@ -454,14 +454,12 @@ module.exports={
           var primeEntries=null;
           var entries=[];
           for(var i=0; i<rows.length; i++){
-            if(i>=startAt){
-              var item={id: rows[i].id, title: rows[i].id, json: rows[i].json, commentCount: rows[i].commentCount};
-              if(rows[i].match_quality>0) {
-                if(!primeEntries) primeEntries=[];
-                primeEntries.push(item);
-              } else{
-                entries.push(item);
-              }
+            var item={id: rows[i].id, title: rows[i].id, json: rows[i].json, commentCount: rows[i].commentCount};
+            if(rows[i].match_quality>0) {
+              if(!primeEntries) primeEntries=[];
+              primeEntries.push(item);
+            } else{
+              entries.push(item);
             }
           }
           db.get(sql2, params2, function(err, row){
@@ -494,7 +492,7 @@ module.exports={
       }
     }
   },
-  composeSqlQueries: function(db, facets, searchtext, modifier, howmany, callnext){
+  composeSqlQueries: function(db, facets, searchtext, modifier, howmany, startat, callnext){
     var domainIDs=[facets.domain];
     if(facets.domain && facets.domain!="*" && facets.domain!="-1" && facets.domainDrilldown && facets.domainDrilldown=="incl"){
       module.exports.getSubdomainIDs(db, facets.domain, function(subdomainIDs){
@@ -739,7 +737,11 @@ module.exports={
       if(where.length>0){ sql1+=" where "; where.map((s, i) => {if(i>0) sql1+=" and "; sql1+=s+"\n";}); }
       sql1+=` group by e.id\n`;
       sql1+=` order by match_quality desc, sk.key\n`;
-      if(howmany){
+      if(howmany && startat) {
+        sql1+=` limit $howmany offset $startat`;
+        params1.$howmany=parseInt(howmany);
+        params1.$startat=parseInt(startat);
+      } else if(howmany){
         sql1+=` limit $howmany`;
         params1.$howmany=parseInt(howmany);
       }
@@ -766,7 +768,7 @@ module.exports={
   },
   cStatus: function(db, termbaseID, facets, searchtext, modifier, val, callnext){
     var items=[];
-    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -798,7 +800,7 @@ module.exports={
   },
   pStatus: function(db, termbaseID, facets, searchtext, modifier, val, callnext){
     var items=[];
-    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -830,7 +832,7 @@ module.exports={
   },
   extranetAdd: function(db, termbaseID, facets, searchtext, modifier, extranetID, callnext){
     var items=[];
-    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -863,7 +865,7 @@ module.exports={
   },
   extranetRemove: function(db, termbaseID, facets, searchtext, modifier, extranetID, callnext){
     var items=[];
-    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
@@ -1994,7 +1996,7 @@ module.exports={
     var howmany=page*100;
     var startAt=(page-1)*100;
     var sortlang=db.termbaseConfigs.lingo.languages[0].abbr;
-    module.exports.composeSqlQueries(db, {pStatus: "1"}, searchtext, "* smart "+sortlang, howmany, function(sql1, params1, sql2, params2){
+    module.exports.composeSqlQueries(db, {pStatus: "1"}, searchtext, "* smart "+sortlang, howmany, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
         if(err || !rows) rows=[];
         var suggestions=null;
