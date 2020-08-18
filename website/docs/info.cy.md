@@ -28,4 +28,7 @@ Os ydych am leoleiddio rhyngwyneb defnyddiwr a dogfennaeth *Terminologue* ar gyf
 - Gaeilge: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
 - česky: Michal Boleslav Měchura.
 - svenska: Henrik Nilsson
-- Cymraeg: xxx.
+- Cymraeg: n/a
+- suomi: Heini Nurminen.
+- Nederlands: Jeremy Sneyers.
+- русский: Arina Klimina.

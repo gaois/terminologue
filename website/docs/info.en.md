@@ -28,3 +28,7 @@ If you wish to localise the *Terminologue* user interface and documentation into
 - Gaeilge: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
 - česky: Michal Boleslav Měchura.
 - svenska: Henrik Nilsson.
+- Cymraeg: n/a
+- suomi: Heini Nurminen.
+- Nederlands: Jeremy Sneyers.
+- русский: Arina Klimina.

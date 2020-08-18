@@ -28,3 +28,7 @@ Als u de gebruikersinterface en de documentatie van de *Terminologue *in uw taal
 - Iers: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
 - Tsjechisch: Michal Boleslav Měchura.
 - Zweeds: Henrik Nilsson.
+- Cymraeg: n/a
+- suomi: Heini Nurminen.
+- Nederlands: Jeremy Sneyers.
+- русский: Arina Klimina.

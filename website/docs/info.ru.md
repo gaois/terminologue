@@ -28,3 +28,7 @@ Terminologue.org - это облачный сервис программного
 - Ирландский: Михал Болеслав Мехура; Fiontar & Scoil na Gaeilge.
 - Чешский: Михал Болеслав Мехура.
 - Шведский: Хенрик Нильссон.
+- Cymraeg: n/a
+- suomi: Heini Nurminen.
+- Nederlands: Jeremy Sneyers.
+- русский: Arina Klimina.
