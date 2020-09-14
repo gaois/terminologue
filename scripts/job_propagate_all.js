@@ -4,10 +4,11 @@
 */
 
 const SqliteDatabase=require('better-sqlite3');
-const sqliteDB=new SqliteDatabase('../data/termbases/bnt.sqlite', { fileMustExist: true });
+const termbaseID="covid-19";
+const sqliteDB=new SqliteDatabase('../data/termbases/'+termbaseID+'.sqlite', { fileMustExist: true });
 
 const sql=require("mssql");
-const sqlConnectionString="Server=(local);Database=tearma;User Id=sa;Password=triPES345;";
+const sqlConnectionString="Server=vm-fion-db-l01\\;Database=fion_gaois_terms;Uid=fiontechsql;Pwd=wdpNOfwe2341NOFIE$weq;";
 var pool=new sql.ConnectionPool(sqlConnectionString);
 console.log(`connecting to SQL Server...`);
 pool.connect(function(err){
@@ -28,7 +29,8 @@ function doEntries(){
 			var request=new sql.Request(pool);
 			request.input("entryID", sql.Int, entry.id);
 			request.input("json", sql.NVarChar, entry.json);
-			request.input("skipIndexing", sql.Bit, 1);
+			//request.input("skipIndexing", sql.Bit, 1);
+			request.input("collection", sql.NVarChar, termbaseID);
 			request.execute("propag_saveEntry", function(err){
 				if(err) console.log(err);
 				console.log(`   done`);
@@ -55,6 +57,7 @@ function doMetadata(){
 			request.input("id", sql.Int, metadatum.id);
 			request.input("type", sql.VarChar, metadatum.type);
 			request.input("json", sql.NVarChar, metadatum.json);
+			request.input("collection", sql.NVarChar, termbaseID);
 			request.execute("propag_saveMetadatum", function(err){
 				if(err) console.log(err);
 				console.log(`   done`);
