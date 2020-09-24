@@ -386,12 +386,15 @@ module.exports={
       tag: [],
       extranet: [],
     };
-    db.all("select m.* from metadata as m order by m.sortkey", {}, function(err, rows){
+    db.all(`select m.id, m.type, m.json, m.sortkey,
+    (case when exists(select * from metadata as x where x.id=m.parent_id) then m.parent_id else null end) as parent_id
+    from metadata as m order by m.sortkey`, {}, function(err, rows){
       if(!err) for(var i=0; i<rows.length; i++) {
         var type=rows[i].type;
         if(!metadata[type]) metadata[type]=[];
         var json=JSON.parse(rows[i].json);
         json.id=rows[i].id;
+        json.parentID=rows[i].parent_id;
         metadata[type].push(json);
       }
       callnext(metadata);
@@ -1620,11 +1623,11 @@ module.exports={
       m.*,
       (select count(*) from metadata as chld where chld.type=$type and chld.parent_id=m.id) as hasChildren
       from metadata as m
-      where m.type=$type and m.parent_id is null
+      where m.type=$type and (m.parent_id is null or not exists(select * from metadata as x where x.id=m.parent_id))
       order by m.sortkey
       limit $howmany`;
     var params1={$howmany: howmany, $type: type};
-    var sql2=`select count(*) as total from metadata where type=$type and parent_id is null`;
+    var sql2=`select count(*) as total from metadata as m where m.type=$type and (m.parent_id is null or not exists(select * from metadata as x where x.id=m.parent_id))`;
     var params2={$type: type};
     db.all(sql1, params1, function(err, rows){
       if(err || !rows) rows=[];
@@ -1674,9 +1677,12 @@ module.exports={
     var params={$type: type, $entryID: entryID};
     db.get(sql, params, function(err, row){
       if(err || !row) console.log(err);
-      var item={id: row.id, title: row.id, json: row.json, level: (level-1)};
-      acc.unshift(item);
-      var parentID=row.parent_id;
+      var parentID=null;
+      if(row){
+        var item={id: row.id, title: row.id, json: row.json, level: (level-1)};
+        acc.unshift(item);
+        parentID=row.parent_id;
+      }
       if(parentID){
         module.exports.metadataParentsAndSelf(db, type, parentID, level-1, acc, callnext);
       } else {

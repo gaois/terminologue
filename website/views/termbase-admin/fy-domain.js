@@ -24,7 +24,7 @@ Spec.getDomain=function(id){
 };
 Spec.longTitle=function(domain){
   var ret=Spec.title(domain.title);
-  var dom=domain; while(dom.parentID){
+  var dom=domain; while(dom && dom.parentID){
     var dom=Spec.getDomain(dom.parentID);
     if(dom) ret=Spec.title(dom.title)+" » "+ret;
   }
