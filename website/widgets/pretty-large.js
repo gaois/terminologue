@@ -112,14 +112,21 @@ PrettyLarge.entry=function(entry){
       var _cellWidth=cellWidth;
         var langCount=0; majorlangs.map(lang => { if(obj.texts[lang]) langCount++ });
         if(langCount<2) _cellWidth=100;
+      var hasNoText=true;
       majorlangs.map(lang => {
         var $cell=$("<div class='prettyCell' style='width: "+_cellWidth+"%'></div>");
         if(obj.texts[lang]) {
+          hasNoText=false;
           $cell.append(PrettyLarge.note(obj, lang));
           $cell.append(PrettyLarge.lingySources(obj.sources, lang));
         }
         if(obj.texts[lang] || langCount>1) $cell.appendTo($row);
       });
+      if(hasNoText){
+        var $cell=$("<div class='prettyCell' style='width: "+_cellWidth+"%'></div>");
+        $cell.append(PrettyLarge.note(obj, majorlangs[0]));
+        $cell.appendTo($row);
+      }
       $("<div class='clear'></div>").appendTo($row);
     });
   }
