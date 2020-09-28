@@ -18,6 +18,9 @@ const localizer={
   cs: require("./localizer/cs.js"),
   sv: require("./localizer/sv.js"),
   cy: require("./localizer/cy.js"),
+  fi: require("./localizer/fi.js"),
+  nl: require("./localizer/nl.js"),
+  ru: require("./localizer/ru.js"),
 };
 
 //our uploader:
