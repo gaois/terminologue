@@ -253,8 +253,10 @@ PrettyLarge.sources=function(sources){
   var $group=$("<div class='prettySources'></div>");
   sources.map(obj => {
     obj=Spec.getSource(obj);
-    var $item=$("<div class='source'></div>").appendTo($group);
-    $item.append("— "+PrettyLarge.title(obj.title));
+    if(obj){
+      var $item=$("<div class='source'></div>").appendTo($group);
+      $item.append("— "+PrettyLarge.title(obj.title));
+    }
   });
   if($group.text()!="") return $group;
   return "";
