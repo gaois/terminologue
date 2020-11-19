@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "better-sqlite3": "^6.0.1",
+    "n-readlines": "^1.0.1",
+    "xml-formatter": "^1.2.1",
+  }

@@ -1,5 +1,15 @@
 const sqlite=require("better-sqlite3");
 
+function openDB(input, configs){
+  var db=new sqlite(input, {fileMustExist: true});
+  //Read the termbase configs:
+  var sqlSelectConfigs=db.prepare("select * from configs");
+  sqlSelectConfigs.all().map(row => {
+    configs[row.id]=JSON.parse(row.json);
+  });
+  return db;
+}
+
 function saveEntry(db, configs, entry){
   //insert the entry:
   var insEntry=db.prepare("insert into entries(json, cStatus, pStatus, dStatus, dateStamp, tod) values(?, ?, ?, ?, ?, ?)");
@@ -37,7 +47,7 @@ function addLanguage(db, configs, langCode){
     configs.lingo.languages.push({
       "role": "major",
       "abbr": langCode,
-      "title": {}
+      "title": {$: langCode}
     });
     var updLingo=db.prepare("update configs set json=? where id=?");
     updLingo.run(JSON.stringify(configs.lingo), "lingo");
@@ -162,7 +172,5 @@ const defaultAbc=[
   ["z", "ź", "ż", "ž"]
 ];
 
-
-
-
+module.exports.openDB=openDB;
 module.exports.saveEntry=saveEntry;

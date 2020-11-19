@@ -1,7 +1,8 @@
 const DOMParser=require("xmldom").DOMParser;
+const domParser=new DOMParser();
 
 module.exports=function(tbx){
-  var doc=new DOMParser().parseFromString(tbx, "text/xml");
+  var doc=domParser.parseFromString(tbx, "text/xml");
   return doEntry(doc);
 }
 
@@ -62,7 +63,7 @@ function doTerms(elTerms){
         desig.clarif=tbxValue;
       }
       else if(tbxType=="normativeAuthorization" || tbxType=="administrativeStatus" || tbxType=="language-planningQualifier" || tbxType=="register" || tbxType=="temporalQualifier"){
-        desig.accept="%ACCEPTLABEL["+tbxValue+"]";
+        desig.accept="$ACCEPTLABEL["+tbxValue+"]";
       }
       else if(tbxType=="proprietaryRestriction"){
         desig.term.annots.push({start: 1, stop: desig.term.wording.length, label: {type: "symbol", value: "tm"}});
@@ -71,7 +72,7 @@ function doTerms(elTerms){
         desig.term.annots.push({start: 1, stop: desig.term.wording.length, label: {type: "symbol", value: "proper"}});
       }
       else if(tbxType=="partOfSpeech" || tbxType=="animacy" || tbxType=="grammaticalGender" || tbxType=="grammaticalNumber" || tbxType=="termType"){
-        desig.term.annots.push({start: 1, stop: desig.term.wording.length, label: {type: "posLabel", value: "%POSLABEL["+tbxValue+"]"}});
+        desig.term.annots.push({start: 1, stop: desig.term.wording.length, label: {type: "posLabel", value: "$POSLABEL["+tbxValue+"]"}});
       }
     }
   }

@@ -23,7 +23,11 @@ function doEntry(entry){
 }
 
 function discoverLangs(entry){
-  return ["ga", "en"];
+  var ret=[];
+  entry.desigs.map(desig => {
+    if(ret.indexOf(desig.term.lang)==-1) ret.push(desig.term.lang);
+  });
+  return ret;
 }
 
 function doLangset(entry, langCode){

@@ -1,13 +1,17 @@
+const SQLITEFILE="../data/termbases/bnt.sqlite";
+const XCSFILE="_entries.xcs.xml";
+const TBXFILE="_entries.tbx.xml";
+const LIMIT=100;
+
 //TBX extensible constraint specification (XCS)
 //picklist values: ISO 12620
 
 const sqlite=require('better-sqlite3');
-const db=new sqlite('../data/termbases/bnt.sqlite', {fileMustExist: true});
+const db=new sqlite(SQLITEFILE, {fileMustExist: true});
 
 const fs=require("fs");
 const xmlformatter=require("xml-formatter");
-const XCSFILE="_entries.xcs.xml";
-const TBXFILE="_entries.tbx.xml";
+const entry2tbx=require("../shared/entry-to-tbx");
 
 //Read the termbase configs:
 var lingo=null;
@@ -30,6 +34,7 @@ fs.writeFileSync(XCSFILE, `<?xml version="1.0" encoding="UTF-8"?>
   </header>
   <languages>
 `, "utf8");
+console.log("exporting list of languages...");
 lingo.languages.map(lang => {
   fs.appendFileSync(XCSFILE, "    "+doLang(lang)+"\n", "utf8");
 });
@@ -65,11 +70,13 @@ fs.writeFileSync(TBXFILE, `<?xml version="1.0" encoding="UTF-8"?>
   <text>
     <body>
 `, "utf8");
-var sqlSelectEntries=db.prepare("select * from entries limit 100");
-sqlSelectEntries.all().map(row => {
+var sqlSelectEntries=db.prepare(`select * from entries limit ${LIMIT}`);
+console.log("getting list of entries...");
+sqlSelectEntries.all().map((row, iRow) => {
+  console.log(`exporting entry number ${iRow}, ID ${row.id}...`);
   var entry=JSON.parse(row.json);
   entry.id=row.id;
-  var xml=doEntry(entry);
+  var xml=entry2tbx(entry);
   xml=xmlformatter(xml, {collapseContent: true});
   fs.appendFileSync(TBXFILE, "\n"+xml+"\n", "utf8");
 });
@@ -78,38 +85,7 @@ fs.appendFileSync(TBXFILE, `
   </text>
 </martif>
 `, "utf8");
-
-function doEntry(entry){
-  var ret=`<termEntry id="eid-${entry.id}">`;
-  lingo.languages.map(lang => {
-    ret+=doLangset(entry, lang.abbr);
-  });
-  ret+=`</termEntry>`;
-  return ret;
-}
-
-function doLangset(entry, langCode){
-  var empty=true;
-  var ret=`<langSet xml:lang="${langCode}">`;
-  entry.desigs.map(desig => {
-    if(desig.term.lang==langCode){
-      ret+=doDesig(desig);
-      empty=false;
-    }
-  });
-  ret+=`</langSet>`;
-  if(!empty) return ret;
-  return "";
-}
-
-function doDesig(desig){
-  var ret=`<ntig>`;
-    ret+=`<termGrp>`;
-      ret+=`<term id="tid-${desig.term.id}">${clean4xml(desig.term.wording)}</term>`;
-    ret+=`</termGrp>`;
-  ret+=`</ntig>`;
-  return ret;
-}
+console.log("finished");
 
 //Utilities:
 function clean4xml(s){
