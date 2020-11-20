@@ -31,7 +31,7 @@ while(textchunk=liner.next()) {
         if(entryCount<=LIMIT){
           console.log(`importing entry number ${entryCount}...`);
           var entry=tbx2entry(buffer);
-          console.log(JSON.stringify(entry, null, "  "));
+          // console.log(JSON.stringify(entry, null, "  "));
           saver.saveEntry(db, configs, entry);
           buffer="";
         }

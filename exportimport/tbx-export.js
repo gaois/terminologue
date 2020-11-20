@@ -1,7 +1,7 @@
-const SQLITEFILE="../data/termbases/bnt.sqlite";
+const SQLITEFILE="../data/termbases/rialacha.sqlite";
 const XCSFILE="_entries.xcs.xml";
 const TBXFILE="_entries.tbx.xml";
-const LIMIT=100;
+const LIMIT=10000;
 
 //TBX extensible constraint specification (XCS)
 //picklist values: ISO 12620
@@ -11,7 +11,7 @@ const db=new sqlite(SQLITEFILE, {fileMustExist: true});
 
 const fs=require("fs");
 const xmlformatter=require("xml-formatter");
-const entry2tbx=require("../shared/entry-to-tbx");
+const entry2tbx=require("../shared/entry-to-tbx.js");
 
 //Read the termbase configs:
 var lingo=null;
@@ -30,7 +30,7 @@ var termbaseLang=""; lingo.languages.map(l => {if(!termbaseLang) termbaseLang=l.
 fs.writeFileSync(XCSFILE, `<?xml version="1.0" encoding="UTF-8"?>
 <TBXXCS name="master" version="0.4" lang="${termbaseLang}">
   <header>
-    <title>${clean4xml(ident.title[termbaseLang])}</title>
+    <title>${clean4xml(ident.title[termbaseLang] || ident.title.$)}</title>
   </header>
   <languages>
 `, "utf8");
@@ -60,10 +60,10 @@ fs.writeFileSync(TBXFILE, `<?xml version="1.0" encoding="UTF-8"?>
   <martifHeader>
     <fileDesc>
       <titleStmt>
-        <title>${clean4xml(ident.title[termbaseLang])}</title>
+        <title>${clean4xml(ident.title[termbaseLang] || ident.title.$)}</title>
       </titleStmt>
       <sourceDesc>
-        <p>${clean4xml(ident.blurb[termbaseLang])}</p>
+        <p>${clean4xml(ident.blurb[termbaseLang] || ident.blurb.$)}</p>
       </sourceDesc>
     </fileDesc>
   </martifHeader>
