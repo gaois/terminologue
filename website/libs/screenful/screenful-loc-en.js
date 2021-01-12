@@ -25,7 +25,7 @@ Screenful.Loc={
   anonymous: "anonymous user",
   home: "Home",
   title: "Title",
-  titleEmpty: "The title should not be be empty.",
+  titleEmpty: "The title should not be empty.",
   url: "URL",
   urlEmpty: "The URL should not be be empty.",
   urlShort: "The URL should be at least three characters long.",
