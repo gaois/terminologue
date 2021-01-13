@@ -10,13 +10,23 @@
     {"abbr": "en", "caption": "English"},
     {"abbr": "ga", "caption": "Gaeilge"},
     {"abbr": "cs", "caption": "česky"},
-	  {"abbr": "sv", "caption": "svenska"}
-  ],
+    {"abbr": "sv", "caption": "svenska"},
+    {"abbr": "cy", "caption": "Cymraeg"},
+    {"abbr": "fi", "caption": "suomi"},
+    {"abbr": "nl", "caption": "Nederlands"},
+    {"abbr": "ru", "caption": "русский"},
+    {"abbr": "es", "caption": "español"}
+ ],
   "welcome": {
     "en": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.en/'>Gentle introduction to Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.en/'>About Terminologue</a></div></div>",
     "ga": "<div class='intro'>Fáilte go <strong>Terminologue</strong>, córas bainistithe téarmaíochta atá oscailte agus saor in aisce.</div><div class='point'><div class='title'><a href='docs/intro.ga/'>Cuir aithne ar Terminologue</a></div><div class='blurb'>Turas treoraithe gairid agus éasca trí Terminologue do thosaitheorí.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.ga/'>Eolas faoi Terminologue</a></div></div>",
     "cs": "<div class='intro'>Vítá vás <strong>Terminologue</strong>, otevřený systém pro práci s terminologickými databázemi.</div><div class='point'><div class='title'><a href='docs/intro.cs/'>Začínáme s Terminologuem</a></div><div class='blurb'>Krátký a snadný úvod to systému Terminologue pro začátečníky.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.cs/'>Co je Terminologue</a></div></div>",
-	  "sv": "<div class='intro'>Välkommen till <strong>Terminologue</strong>, ett molnbaserat terminologihanteringssystem baserat på öppen källkod.</div><div class='point'><div class='title'><a href='docs/intro.sv/'>Kort introduktion till Terminologue</a></div><div class='blurb'>En kortkort guidning av Terminologue för nybörjare.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.sv/'>Om Terminologue</a></div></div>"
+    "sv": "<div class='intro'>Välkommen till <strong>Terminologue</strong>, ett molnbaserat terminologihanteringssystem baserat på öppen källkod.</div><div class='point'><div class='title'><a href='docs/intro.sv/'>Kort introduktion till Terminologue</a></div><div class='blurb'>En kortkort guidning av Terminologue för nybörjare.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.sv/'>Om Terminologue</a></div></div>",
+    "cy": "<div class='intro'>Croeso i <strong>Terminologue</strong>, offeryn cod agored yn y cwmwl ar gyfer rheoli terminoleg.</div><div class='point'><div class='title'><a href='docs/intro.cy/'>Cyflwyniad cryno i Terminologue</a></div><div class='blurb'>Taith fer o amgylch prif nodweddion Terminologue ar gyfer dechreuwyr.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.cy/'>Ynghylch Terminologue</a></div></div>",
+    "fi": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.fi/'>Terminologuen lyhyt esittely</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.fi/'>Tietoa Terminologuesta</a></div></div>",
+    "nl": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.nl/'>Korte inleiding tot Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.nl/'>Over Terminologue</a></div></div>",
+    "ru": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.ru/'>Знакомство с Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.ru/'>О Terminologue</a></div></div>",
+    "es": "<div class='intro'>Bienvenido/a a <strong>Terminologue</strong>, una herramienta de gestión terminológica de código abierto..</div><div class='point'><div class='title'><a href='docs/intro.es/'>Sencilla iniciación a Terminologue</a></div><div class='blurb'>Una breve y agradable visita guiada por Terminologue para principiantes.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.es/'>Acerca de Terminologue</a></div></div>"
   },
   "uilangDefault": "en",
   "mailconfig": {"host": "localhost", "port": 465, "secure": false, "from": "noreply@localhost"},
