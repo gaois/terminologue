@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@sendgrid/mail": "^7.1.0",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
