@@ -61,7 +61,7 @@ module.exports={
   },
   getTermbasesByUser: function(email, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
-    var sql="select tb.id, tb.title from termbases as tb inner join user_termbase as utb on utb.termbase_id=tb.id where utb.user_email=$email order by tb.title"
+    var sql="select tb.id, tb.title from termbases as tb inner join user_termbase as utb on utb.termbase_id=tb.id where trim(utb.user_email)=$email order by tb.title"
     var termbases=[];
     db.all(sql, {$email: email}, function(err, rows){
       if(rows) for(var i=0; i<rows.length; i++) termbases.push({id: rows[i].id, title: rows[i].title});
@@ -354,8 +354,19 @@ module.exports={
       configs.siteconfig=module.exports.siteconfig;
       db.all("select * from configs", {}, function(err, rows){
         if(!err) for(var i=0; i<rows.length; i++) configs[rows[i].id]=JSON.parse(rows[i].json);
+        if(configs.users) for(var key in configs.users){
+          if(key!=key.trim()){
+            configs.users[key.trim()]=configs.users[key];
+            delete configs.users[key];
+          }
+        }
+        if(configs.xnet && configs.xnet.users) for(var key in configs.xnet.users){
+          if(key!=key.trim()){
+            configs.xnet.users[key.trim()]=configs.xnet.users[key];
+            delete configs.xnet.users[key];
+          }
+        }
         db.termbaseConfigs=configs;
-
         callnext(configs);
       });
     }
