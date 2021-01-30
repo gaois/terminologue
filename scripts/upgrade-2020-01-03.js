@@ -68,7 +68,9 @@ function migrateDBs(dirPath){
         delete triggers.subdomainChange;
         var row=db.prepare(`update configs set json=? where id='triggers'`).run(JSON.stringify(triggers));
 
-      }catch(e){}
+      }catch(e){
+        console.log(e);
+      }
     })();
     db.close();
     console.log(` - done ${filename}, ${--count} databases remaining`);
