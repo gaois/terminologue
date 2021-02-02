@@ -32,4 +32,4 @@ Om du vill lokalisera *Terminologue* användargränssnitt och dokumentation till
 - suomi: Heini Nurminen.
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
-
+- Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)

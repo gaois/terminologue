@@ -32,3 +32,4 @@ Jos haluat lokalisoida *Terminologuen* käyttäjäsivuston ja asiakirjat omalle 
 - suomi: Heini Nurminen.
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
+- Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)

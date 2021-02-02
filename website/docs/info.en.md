@@ -32,3 +32,4 @@ If you wish to localise the *Terminologue* user interface and documentation into
 - suomi: Heini Nurminen.
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
+- Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)

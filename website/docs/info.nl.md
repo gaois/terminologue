@@ -32,3 +32,4 @@ Als u de gebruikersinterface en de documentatie van de *Terminologue *in uw taal
 - suomi: Heini Nurminen.
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
+- Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
