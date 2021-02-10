@@ -76,7 +76,7 @@ There is a `langSet` element for each language that the entry has terms for. The
 
 Inside each `langSet` element you will always find one or more terms, encoded as `ntig` elements. Note that the TBX standard allows terms to be encoded either as (simple) `tig` or as (complex) `ntig`. In the TBX exported from Terminologue, terms are always encoded as `ntig` and the actual wording of the term is always found in `ntig/termGrp/term`.
 
-In Terminologue it is possible for a term to be shared by more than one entry. There is no equivalent for term sharing in TBX. So, when a tern is shared by two, three or more entries in Terminologue, it will be exported into TBX two, three or more times, inside each of its entries.
+In Terminologue it is possible for a term to be shared by more than one entry. There is no equivalent for term sharing in TBX. So, when a term is shared by two, three or more entries in Terminologue, it will be exported into TBX two, three or more times, inside each of its entries.
 
 All other data, such as domain labels, definitions, example sentences and grammatical annotations, are exported into TBX as `descrip` elements or `termNode` elements, and appear in the TBX entry either at the entry level (as children of `termEntry`), at the language level (as children of `langSet`) or at term level (as children of `termGrp`).
 
