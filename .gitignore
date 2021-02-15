@@ -67,9 +67,11 @@ data/terminologue.sqlite
 data/lang/*
 data/termbases/*
 data/uploads/*
+data/downloads/*
 !data/lang/README.md
 !data/termbases/README.md
 !data/uploads/README.md
+!data/downloads/README.md
 scripts/_entrylist.txt
 scripts/fiat.txt
 siteconfig.json
