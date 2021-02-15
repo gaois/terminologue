@@ -2063,6 +2063,60 @@ module.exports={
       }
     });
   },
+
+  toTBX: function(db, termbaseID, offset, limit, callnext){
+    var stamp=(new Date()).toISOString().replace(/[^0-9]/g, "-");
+    var filename=stamp+termbaseID+".tbx";
+    var path=module.exports.siteconfig.dataDir+"downloads/"+filename;
+    var lingo=null;
+    var ident=null;
+    module.exports.readTermbaseConfigs(db, termbaseID, function(configs){
+      var lingo=configs.lingo;
+      var ident=configs.ident;
+      var termbaseLang=""; lingo.languages.map(l => {if(!termbaseLang) termbaseLang=l.abbr});
+      module.exports.readTermbaseMetadata(db, termbaseID, function(obj){
+        var metadata={};
+        for(var type in obj){
+          obj[type].map(datum => {
+            metadata[datum.id]={type: type, obj: datum};
+          });
+        }
+        var entry2tbx=require(module.exports.siteconfig.sharedDir+"/entry-to-tbx.js");
+        entry2tbx.setTermbaseLang(termbaseLang);
+        entry2tbx.setMetadata(metadata);
+
+        fs.writeFileSync(path, `<?xml version="1.0" encoding="UTF-8"?>
+<martif type="TBX" xml:lang="${termbaseLang}">
+  <martifHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>${clean4xml(ident.title[termbaseLang] || ident.title.$)}</title>
+      </titleStmt>
+      <sourceDesc>
+        <p>${clean4xml(ident.blurb[termbaseLang] || ident.blurb.$)}</p>
+      </sourceDesc>
+    </fileDesc>
+  </martifHeader>
+  <text>
+    <body>
+        `, "utf8");
+        db.all(`select id, json from entries order by id limit ${limit} offset ${offset}`, {}, function(err, rows){
+          rows.map(row => {
+            var entry=JSON.parse(row.json);
+            entry.id=row.id;
+            var xml=entry2tbx.doEntry(entry);
+            fs.appendFileSync(path, "\n      "+xml+"\n", "utf8");
+          });
+          fs.appendFileSync(path, `
+    </body>
+  </text>
+</martif>
+          `, "utf8");
+          callnext(filename);
+        });
+      });
+    });
+  },
 }
 
 function generateKey(){

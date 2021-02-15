@@ -1052,10 +1052,16 @@ app.get(siteconfig.rootPath+":termbaseID/config/tbxout/", function(req, res){
       db.close();
       res.redirect(req.headers.referer || siteconfig.baseUrl+req.params.termbaseID+"/");
     } else {
-      ops.readTermbaseConfigs(db, req.params.dictID, function(configs){
-        db.close();
-        var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-        res.render("termbase-config/tbxout.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: "tbxout", uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+      ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
+        ops.readTermbaseStats(db, req.params.termbaseID, function(stats){
+          db.close();
+          var offsets=[];
+          for(var i=0; i<stats.entryCount; i=i+1000){
+            offsets.push(i);
+          }
+          var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+          res.render("termbase-config/tbxout.ejs", {offsets: offsets, stats: stats, user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, configType: "tbxout", uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+        });
       });
     }
   });
@@ -1172,6 +1178,26 @@ app.post(siteconfig.rootPath+":termbaseID/config/purge.json", function(req, res)
   });
 });
 
+app.get(siteconfig.rootPath+":termbaseID/config/tbxout/:termbaseID-:min-:max.tbx", function(req, res, next){
+  var termbaseID=req.params.termbaseID;
+  var min=req.params.min;
+  var max=req.params.max;
+  var offset=Number(min)-1;
+  var limit=1000;
+  if(!ops.termbaseExists(termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, termbaseID, function(user){
+    if(!user.termbaseAccess || user.level<5) {
+      res.status(404).render("404.ejs", {siteconfig: siteconfig});
+      db.close();
+    } else {
+      ops.toTBX(db, termbaseID, offset, limit, function(filename){
+        db.close();
+        res.download(siteconfig.dataDir+"downloads/"+filename, `${termbaseID}-${min}-${max}.tbx`);
+      });
+    }
+  });
+});
 
 app.use(function(req, res){ res.status(404).render("404.ejs", {siteconfig: siteconfig}); });
 app.listen(PORT);

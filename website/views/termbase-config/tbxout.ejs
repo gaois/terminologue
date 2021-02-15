@@ -32,7 +32,10 @@
 		<script type="text/javascript" src="../../../libs/screenful/screenful-download.js"></script>
 		<script type="text/javascript">
 		Screenful.Download.items=[
-			{url: "entries.tbx", title: "entries.tbx", blurb: "<%=L('This downloads the entire termbase as a single TBX file.')%>"},
+      <%for(var i=0; i<offsets.length-1; i++){%>
+      {url: "<%-termbaseID%>-<%=((i*1000)+1)%>-<%=((i+1)*1000)%>.tbx", title: "<%-termbaseID%>-<%=((i*1000)+1)%>-<%=((i+1)*1000)%>.tbx", blurb: ""},
+      <%}%>
+      {url: "<%-termbaseID%>-<%=((i*1000)+1)%>-<%=stats.entryCount%>.tbx", title: "<%-termbaseID%>-<%=((i*1000)+1)%>-<%=stats.entryCount%>.tbx", blurb: ""},
 		];
 		</script>
 

@@ -4,6 +4,7 @@
   "rootPath": "/",
   "port": 80,
   "dataDir": "../data/",
+  "sharedDir": "../shared/",
   "admins": ["root@localhost"],
   "trackingCode": "",
   "uilangs": [
