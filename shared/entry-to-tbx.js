@@ -70,6 +70,23 @@ function discoverLangs(entry){
   entry.desigs.map(desig => {
     if(ret.indexOf(desig.term.lang)==-1) ret.push(desig.term.lang);
   });
+  for(var lang in entry.intros){
+    if(entry.intros[lang]) if(ret.indexOf(lang)==-1) ret.push(lang);
+  }
+  entry.definitions.map(def => {
+    for(var lang in def.texts){
+      if(def.texts[lang]) if(ret.indexOf(lang)==-1) ret.push(lang);
+    }
+  });
+  entry.examples.map(ex => {
+    if(ex.texts[lang]){
+      for(var lang in ex.texts){
+        ex.texts[lang].map(txt => {
+          if(txt) if(ret.indexOf(lang)==-1) ret.push(lang);
+        });
+      }
+    }
+  });
   return ret;
 }
 
