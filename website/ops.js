@@ -6,6 +6,7 @@ const sha1=require('sha1'); //https://www.npmjs.com/package/sha1
 const markdown=require("markdown").markdown; //https://www.npmjs.com/package/markdown
 const levenshtein=require('js-levenshtein');
 const pp=require('./widgets/pretty-public.js');
+const xmlformatter=require("xml-formatter");
 
 module.exports={
   siteconfig: {}, //populated by terminologue.js on startup
@@ -2105,7 +2106,8 @@ module.exports={
             var entry=JSON.parse(row.json);
             entry.id=row.id;
             var xml=entry2tbx.doEntry(entry);
-            fs.appendFileSync(path, "\n      "+xml+"\n", "utf8");
+            xml=xmlformatter(xml, {collapseContent: true}).replace(/(^|\n)/g, function($1){ return $1+"      " });
+            fs.appendFileSync(path, "\n"+xml+"\n", "utf8");
           });
           fs.appendFileSync(path, `
     </body>
