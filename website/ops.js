@@ -20,6 +20,7 @@ module.exports={
       var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
       var hash=sha1(password);
       db.get("select email from users where lower(email)=lower($email) and passwordHash=$hash", {$email: email, $hash: hash}, function(err, row){
+        if(err) console.error(err);
         if(!row){
           db.close();
           callnext(false, "", "");
@@ -28,6 +29,7 @@ module.exports={
           var key=generateKey();
           var now=(new Date()).toISOString();
           db.run("update users set sessionKey=$key, sessionLast=$now, uilang=$uilang where email=$email", {$key: key, $now: now, $uilang: uilang, $email: email}, function(err, row){
+            if(err) console.error(err);
             db.close();
             callnext(true, email, key);
           });
@@ -38,6 +40,7 @@ module.exports={
   logout: function(email, sessionkey, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.run("update users set sessionKey=null where email=$email and sessionKey=$key", {$email: email, $key: sessionkey}, function(err, row){
+      if(err) console.error(err);
       db.close();
       callnext();
     });
@@ -46,6 +49,7 @@ module.exports={
     var yesterday=(new Date()); yesterday.setHours(yesterday.getHours()-24); yesterday=yesterday.toISOString();
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select email, uilang from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
+      if(err) console.error(err);
       if(!row || module.exports.siteconfig.readonly){
         db.close();
         callnext({loggedin: false, email: null});
@@ -54,6 +58,7 @@ module.exports={
         var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
         var now=(new Date()).toISOString();
         db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
+          if(err) console.error(err);
           db.close();
           callnext({loggedin: true, email: email, uilang: uilang, isAdmin: (module.exports.siteconfig.admins.indexOf(email)>-1)});
         });
@@ -65,6 +70,7 @@ module.exports={
     var sql="select tb.id, tb.title from termbases as tb inner join user_termbase as utb on utb.termbase_id=tb.id where trim(utb.user_email)=$email order by tb.title"
     var termbases=[];
     db.all(sql, {$email: email}, function(err, rows){
+      if(err) console.error(err);
       if(rows) for(var i=0; i<rows.length; i++) termbases.push({id: rows[i].id, title: rows[i].title});
       db.close();
       callnext(termbases);
@@ -73,6 +79,7 @@ module.exports={
   saveUilang: function(email, lang, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.run("update users set uilang=$lang where email=$email", {$lang: lang, $email: email}, function(err){
+      if(err) console.error(err);
       db.close();
       callnext();
     });
@@ -94,7 +101,8 @@ module.exports={
   sendSignupToken: function(email, remoteip, mailSubject, mailText, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select email from users where email=$email", {$email: email}, function(err, row){
-      if (row==undefined) {
+      if(err) console.error(err);
+      if(row==undefined) {
         var expireDate = (new Date()); expireDate.setHours(expireDate.getHours()+48);
         expireDate = expireDate.toISOString();
         var token = sha1(sha1(Math.random()));
@@ -103,7 +111,9 @@ module.exports={
         // var mailText=`Please follow the link below to create your Terminologue account:`
         mailText+=`\n\n${tokenurl}\n\n`;
         db.run("insert into register_tokens (email, requestAddress, token, expiration) values ($email, $remoteip, $token, $expire)", {$email: email, $expire: expireDate, $remoteip: remoteip, $token: token}, function(err, row){
-          module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {});
+          module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {
+            if(err) console.error(err);
+          });
           db.close();
           callnext(true);
         });
@@ -116,7 +126,8 @@ module.exports={
   sendToken: function(email, remoteip, mailSubject, mailText, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select email from users where email=$email", {$email: email}, function(err, row){
-      if (row) {
+      if(err) console.error(err);
+      if(row) {
         var expireDate = (new Date()); expireDate.setHours(expireDate.getHours()+48);
         expireDate = expireDate.toISOString();
         var token = sha1(sha1(Math.random()));
@@ -125,7 +136,10 @@ module.exports={
         // var mailText=`Please click the link below to reset your Terminologue password:\n\n`
         mailText+=`\n\n${tokenurl}\n\n`;
         db.run("insert into recovery_tokens (email, requestAddress, token, expiration) values ($email, $remoteip, $token, $expire)", {$email: email, $expire: expireDate, $remoteip: remoteip, $token: token}, function(err, row){
-          module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {});
+          if(err) console.error(err);
+          module.exports.mailtransporter.sendMail({from: module.exports.siteconfig.mailconfig.from, to: email, subject: mailSubject, text: mailText}, (err, info) => {
+            if(err) console.error(err);
+          });
           db.close();
           callnext(true);
         });
@@ -139,6 +153,7 @@ module.exports={
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     var hash=sha1(password);
     db.run("update users set passwordHash=$hash where email=$email", {$hash: hash, $email: email}, function(err, row){
+      if(err) console.error(err);
       db.close();
       callnext(true);
     });
@@ -146,6 +161,7 @@ module.exports={
   verifyToken: function(token, type, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select * from "+type+"_tokens where token=$token and expiration>=datetime('now') and usedDate is null", {$token: token}, function(err, row){
+      if(err) console.error(err);
       db.close();
       if(!row) callnext(false); else callnext(true);
     });
@@ -153,13 +169,17 @@ module.exports={
   createAccount: function(token, password, remoteip, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select * from register_tokens where token=$token and expiration>=datetime('now') and usedDate is null", {$token: token}, function(err, row){
-      if (row) {
+      if(err) console.error(err);
+      if(row) {
         var email = row.email;
         db.get("select * from users where email=$email", {$email: email}, function(err, row){
+          if(err) console.error(err);
           if (row==undefined) {
             var hash = sha1(password);
             db.run("insert into users (email,passwordHash) values ($email,$hash)", {$hash: hash, $email: email}, function(err, row){
+              if(err) console.error(err);
               db.run("update register_tokens set usedDate=datetime('now'), usedAddress=$remoteip where token=$token", {$remoteip: remoteip, $token: token}, function(err, row){
+                if(err) console.error(err);
                 db.close();
                 callnext(true);
               });
@@ -174,11 +194,14 @@ module.exports={
   resetPwd: function(token, password, remoteip, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select * from recovery_tokens where token=$token and expiration>=datetime('now') and usedDate is null", {$token: token}, function(err, row){
-      if (row) {
+      if(err) console.error(err);
+      if(row) {
         var email = row.email;
         var hash = sha1(password);
         db.run("update users set passwordHash=$hash where email=$email", {$hash: hash, $email: email}, function(err, row){
+          if(err) console.error(err);
           db.run("update recovery_tokens set usedDate=datetime('now'), usedAddress=$remoteip where token=$token", {$remoteip: remoteip, $token: token}, function(err, row){
+            if(err) console.error(err);
             db.close();
             callnext(true);
           });
@@ -199,11 +222,14 @@ module.exports={
       callnext(false);
     } else {
       fs.copy("termbaseTemplates/"+template+".sqlite", path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"), function(err){
+        if(err) console.error(err);
         var db=module.exports.getDB(termbaseID);
         var users={}; users[email]={level: "5"};
         db.run("update configs set json=$json where id='users'", {$json: JSON.stringify(users, null, "\t")}, function(err){
+          if(err) console.error(err);
           var ident={title: {$: title}, blurb: {$: blurb}};
           db.run("update configs set json=$json where id='ident'", {$json: JSON.stringify(ident, null, "\t")}, function(err){
+            if(err) console.error(err);
             module.exports.escalateConfigIdent(termbaseID, ident, function(){
               module.exports.escalateConfigUsers(termbaseID, users, function(){
                 db.close();
@@ -218,7 +244,9 @@ module.exports={
   escalateConfigIdent: function(termbaseID, ident, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
     db.run("delete from termbases where id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+      if(err) console.error(err);
       db.run("insert into termbases(id, title) values ($termbaseID, $title)", {$termbaseID: termbaseID, $title: JSON.stringify(ident.title)}, function(err){
+        if(err) console.error(err);
         db.close();
         callnext();
       });
@@ -227,8 +255,11 @@ module.exports={
   escalateConfigUsers: function(termbaseID, users, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
     db.run("delete from user_termbase where termbase_id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+      if(err) console.error(err);
       for(var email in users){
-        db.run("insert into user_termbase(termbase_id, user_email) values ($termbaseID, $email)", {$termbaseID: termbaseID, $email: email}, function(err){});
+        db.run("insert into user_termbase(termbase_id, user_email) values ($termbaseID, $email)", {$termbaseID: termbaseID, $email: email}, function(err){
+          if(err) console.error(err);
+        });
       }
       db.close();
       callnext();
@@ -237,7 +268,9 @@ module.exports={
   destroyTermbase: function(termbaseID, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
     db.run("delete from termbases where id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+      if(err) console.error(err);
       db.run("delete from user_termbase where termbase_id=$termbaseID", {$termbaseID: termbaseID}, function(err){
+        if(err) console.error(err);
         db.close(function(){
           fs.remove(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"), function(){
             callnext();
@@ -253,6 +286,7 @@ module.exports={
       fs.move(path.join(module.exports.siteconfig.dataDir, "termbases/"+oldTermbaseID+".sqlite"), path.join(module.exports.siteconfig.dataDir, "termbases/"+newTermbaseID+".sqlite"), function(err){
         var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE, function(){db.run('PRAGMA foreign_keys=on')});
         db.run("delete from termbases where id=$termbaseID", {$termbaseID: oldTermbaseID}, function(err){
+          if(err) console.error(err);
           db.close();
           var termbaseDB=module.exports.getDB(newTermbaseID);
           module.exports.readTermbaseConfigs(termbaseDB, newTermbaseID, function(configs){
@@ -296,7 +330,9 @@ module.exports={
   },
   getDB: function(termbaseID, readonly){
     var mode=(readonly ? sqlite3.OPEN_READONLY : sqlite3.OPEN_READWRITE);
-    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"), mode, function(err){});
+    var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite"), mode, function(err){
+      if(err) console.error(err);
+    });
     if(!readonly) db.run('PRAGMA journal_mode=WAL');
     db.run('PRAGMA foreign_keys=on');
     return db;
@@ -305,6 +341,7 @@ module.exports={
     var yesterday=(new Date()); yesterday.setHours(yesterday.getHours()-24); yesterday=yesterday.toISOString();
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select email, uilang from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
+      if(err) console.error(err);
       if(!row || module.exports.siteconfig.readonly){
         db.close();
         callnext({loggedin: false, email: null});
@@ -313,6 +350,7 @@ module.exports={
         var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
         var now=(new Date()).toISOString();
         db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
+          if(err) console.error(err);
           db.close();
           module.exports.readTermbaseConfigs(termbaseDB, termbaseID, function(configs){
             if(!configs.users[email] && module.exports.siteconfig.admins.indexOf(email)==-1){
@@ -331,6 +369,7 @@ module.exports={
     var yesterday=(new Date()); yesterday.setHours(yesterday.getHours()-24); yesterday=yesterday.toISOString();
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READWRITE);
     db.get("select email, uilang from users where email=$email and sessionKey=$key and sessionLast>=$yesterday", {$email: email, $key: sessionkey, $yesterday: yesterday}, function(err, row){
+      if(err) console.error(err);
       if(!row || module.exports.siteconfig.readonly){
         db.close();
         callnext({loggedin: false, email: null});
@@ -339,6 +378,7 @@ module.exports={
         var uilang=row.uilang || module.exports.siteconfig.uilangDefault;
         var now=(new Date()).toISOString();
         db.run("update users set sessionLast=$now where email=$email", {$now: now, $email: email}, function(err, row){
+          if(err) console.error(err);
           var isAdmin=(module.exports.siteconfig.admins.indexOf(email)>-1);
           module.exports.readExtranet(termbaseDB, termbaseID, xnetID, function(xnet){
             db.close();
@@ -354,6 +394,7 @@ module.exports={
       var configs={};
       configs.siteconfig=module.exports.siteconfig;
       db.all("select * from configs", {}, function(err, rows){
+        if(err) console.error(err);
         if(!err) for(var i=0; i<rows.length; i++) configs[rows[i].id]=JSON.parse(rows[i].json);
         if(configs.users) for(var key in configs.users){
           if(key!=key.trim()){
@@ -375,8 +416,10 @@ module.exports={
   readTermbaseStats: function(db, termbaseID, callnext){
     var stats={};
     db.get("select count(*) as [count] from entries", {}, function(err, row){
+      if(err) console.error(err);
       if(!err) stats.entryCount=row.count;
       db.get("select count(*) as [count] from history", {}, function(err, row){
+        if(err) console.error(err);
         if(!err) stats.historyCount=row.count;
         var size=fs.statSync(path.join(module.exports.siteconfig.dataDir, "termbases/"+termbaseID+".sqlite")).size;
         stats.fileSize={value: size, unit: "B"};
@@ -401,6 +444,7 @@ module.exports={
     db.all(`select m.id, m.type, m.json, m.sortkey,
     (case when exists(select * from metadata as x where x.id=m.parent_id) then m.parent_id else null end) as parent_id
     from metadata as m order by m.sortkey`, {}, function(err, rows){
+      if(err) console.error(err);
       if(!err) for(var i=0; i<rows.length; i++) {
         var type=rows[i].type;
         if(!metadata[type]) metadata[type]=[];
@@ -414,6 +458,7 @@ module.exports={
   },
   readExtranetsByUser: function(db, termbaseID, email, callnext){
     db.all("select * from metadata where type='extranet'", {}, function(err, rows){
+      if(err) console.error(err);
       var ret=[];
       if(!err) for(var i=0; i<rows.length; i++) {
         var json=JSON.parse(rows[i].json);
@@ -427,6 +472,7 @@ module.exports={
   },
   readExtranet: function(db, termbaseID, extranetID, callnext){
     db.get("select * from metadata where type='extranet' and id=$id", {$id: extranetID}, function(err, row){
+      if(err) console.error(err);
       var json=null;
       if(row) {
         json=JSON.parse(row.json);
@@ -444,6 +490,7 @@ module.exports={
   entryListById: function(db, termbaseID, ids, callnext){
     var sql=`select *, (select count(*) from comments as c where c.entry_id=e.id) as commentCount from entries as e where e.id in(${ids})`;
     db.all(sql, {}, function(err, rows){
+      if(err) console.error(err);
       if(err || !rows) rows=[];
       var entries=[];
       for(var i=0; i<rows.length; i++){
@@ -480,6 +527,7 @@ module.exports={
             }
           }
           db.get(sql2, params2, function(err, row){
+            if(err) console.error(err);
             var total=(!err && row) ? row.total : 0;
             var pages=Math.floor(total/pageSize); if(total%pageSize > 0) pages++;
             callnext(total, pages, page, pageSize, primeEntries, entries, suggestions);
@@ -783,6 +831,7 @@ module.exports={
     var items=[];
     module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
+        if(err) console.error(err);
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
           var item={id: rows[i].id, json: rows[i].json};
@@ -801,7 +850,9 @@ module.exports={
         } else {
           entry.cStatus=val;
           db.run("update entries set cStatus=$val, json=$json where id=$id", {$val: val, $json: JSON.stringify(entry), $id: item.id}, function(err){
-            module.exports.propagator.saveEntry(termbaseID, item.id, entry, function(err){});
+            module.exports.propagator.saveEntry(termbaseID, item.id, entry, function(err){
+              if(err) console.error(err);
+            });
             go();
           });
         }
@@ -815,6 +866,7 @@ module.exports={
     var items=[];
     module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
+        if(err) console.error(err);
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
           var item={id: rows[i].id, json: rows[i].json};
@@ -833,7 +885,9 @@ module.exports={
         } else {
           entry.pStatus=val;
           db.run("update entries set pStatus=$val, json=$json where id=$id", {$val: val, $json: JSON.stringify(entry), $id: item.id}, function(err){
-            module.exports.propagator.saveEntry(termbaseID, item.id, entry, function(err){});
+            module.exports.propagator.saveEntry(termbaseID, item.id, entry, function(err){
+              if(err) console.error(err);
+            });
             go();
           });
         }
@@ -847,6 +901,7 @@ module.exports={
     var items=[];
     module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
+        if(err) console.error(err);
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
           var item={id: rows[i].id, json: rows[i].json};
@@ -865,7 +920,9 @@ module.exports={
         } else {
           entry.extranets.push(extranetID);
           db.run("update entries set json=$json where id=$id", {$json: JSON.stringify(entry), $id: item.id}, function(err){
+            if(err) console.error(err);
             db.run("insert into entry_extranet(entry_id, extranet) values($entry_id, $extranet)", {$entry_id: item.id, $extranet: extranetID}, function(err){
+              if(err) console.error(err);
               go();
             });
           });
@@ -880,6 +937,7 @@ module.exports={
     var items=[];
     module.exports.composeSqlQueries(db, facets, searchtext, modifier, null, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
+        if(err) console.error(err);
         if(err || !rows) rows=[];
         for(var i=0; i<rows.length; i++){
           var item={id: rows[i].id, json: rows[i].json};
@@ -898,7 +956,9 @@ module.exports={
         } else {
           entry.extranets.splice(entry.extranets.indexOf(extranetID), 1);
           db.run("update entries set json=$json where id=$id", {$json: JSON.stringify(entry), $id: item.id}, function(err){
+            if(err) console.error(err);
             db.run("delete from entry_extranet where entry_id=$entry_id and extranet=$extranet", {$entry_id: item.id, $extranet: extranetID}, function(err){
+              if(err) console.error(err);
               go();
             });
           });
@@ -912,7 +972,10 @@ module.exports={
 
   entryDelete: function(db, termbaseID, entryID, email, historiography, callnext){
     db.run("delete from entries where id=$id", {$id: entryID}, function(err){
-      module.exports.propagator.deleteEntry(termbaseID, entryID, function(err){});
+      if(err) console.error(err);
+      module.exports.propagator.deleteEntry(termbaseID, entryID, function(err){
+        if(err) console.error(err);
+      });
       //delete connections from this entry to any terms, and delete any thereby orphaned terms:
       module.exports.saveConnections(db, termbaseID, entryID, null, function(){
         //tell history that have been deleted:
@@ -924,6 +987,7 @@ module.exports={
   },
   entryHistory: function(db, termbaseID, entryID, callnext){
     db.all("select * from history where entry_id=$entryID order by [when] desc", {$entryID: entryID}, function(err, rows){
+      if(err) console.error(err);
       var history=[];
       for(var i=0; i<rows.length; i++) {
         var row=rows[i];
@@ -942,6 +1006,7 @@ module.exports={
   },
   entryRead: function(db, termbaseID, entryID, callnext){
     db.get("select * from entries where id=$id", {$id: entryID}, function(err, row){
+      if(err) console.error(err);
       if(!row) {
         var entryID=0;
         var json="";
@@ -960,6 +1025,7 @@ module.exports={
     //first of all, find out what we're supposed to do:
     if(!entryID) go("create"); //this is a new entry
     else db.get("select id, json from entries where id=$id", {$id: entryID}, function(err, row){
+      if(err) console.error(err);
       if(!row) go("recreate"); //an entry with that ID does not exist: recreate it with that ID
       else go("change") //the entry has changed: update it
     });
@@ -982,8 +1048,12 @@ module.exports={
             params={$json: JSON.stringify(entry), $id: entryID, $cStatus: parseInt(entry.cStatus), $pStatus: parseInt(entry.pStatus), $dStatus: parseInt(entry.dStatus), $dateStamp: entry.dateStamp, $tod: entry.tod};
           }
           //create or change me:
-          db.run(sql, params, function(err){ if(!entryID) entryID=this.lastID;
-            module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
+          db.run(sql, params, function(err){
+            if(err) console.error(err);
+            if(!entryID) entryID=this.lastID;
+            module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){
+              if(err) console.error(err);
+            });
             module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
               //save connections between me and my terms, delete any terms orphaned by this:
               module.exports.saveConnections(db, termbaseID, entryID, entry, function(){
@@ -1034,6 +1104,7 @@ module.exports={
       if(term){
         var termID=parseInt(term.id) || 0; var json=JSON.stringify(term);
         db.get("select * from terms where id=$id", {$id: termID}, function(err, row){
+          if(err) console.error(err);
           var sql=""; var params={};
           if(termID==0){
             sql="insert into terms(json, lang, wording) values($json, $lang, $wording)";
@@ -1051,6 +1122,7 @@ module.exports={
           } else {
             delete term.id;
             db.run(sql, params, function(err){
+              if(err) console.error(err);
               term.id=(termID || this.lastID).toString();
               module.exports.saveWords(db, termbaseID, term, function(){
                 module.exports.saveSpelling(db, termbaseID, term, function(){
@@ -1068,12 +1140,14 @@ module.exports={
   saveWords: function(db, termbaseID, term, callnext){
     var words=module.exports.wordSplit(term.wording, term.lang);
     db.run("delete from words where term_id=$termID", {$termID: parseInt(term.id)}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var word=words.pop();
       if(word){
         db.run("insert into words(term_id, word, implicit) values($termID, $word, 0)", {$termID: parseInt(term.id), $word: word}, function(err){
+          if(err) console.error(err);
           module.exports.saveLemmas(db, termbaseID, parseInt(term.id), term.lang, word, function(){
             go();
           });
@@ -1096,8 +1170,10 @@ module.exports={
     //delete all pre-existing connections between this entry and any term:
     var previousTermIDs=[];
     db.all("select term_id from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, rows){
+      if(err) console.error(err);
       if(rows) rows.map(row => {previousTermIDs.push(row["term_id"])});
       db.run("delete from entry_term where entry_id=$entry_id", {$entry_id: entryID}, function(err, row){
+        if(err) console.error(err);
         go();
       });
     });
@@ -1105,12 +1181,14 @@ module.exports={
       var termAssig=termAssigs.pop();
       if(termAssig) {
         db.run("insert into entry_term(entry_id, term_id, accept, clarif) values($entryID, $termID, $accept, $clarif)", {$entryID: entryID, $termID: termAssig.termID, $accept: termAssig.accept, $clarif: termAssig.clarif}, function(err, row){
+          if(err) console.error(err);
           go();
         });
       } else {
         //delete orphaned terms:
         var ids=""; previousTermIDs.map(id => {if(ids!="") ids+=","; ids+=id;});
         db.run("delete from terms where id in ("+ids+") and id in (select t.id from terms as t left outer join entry_term as et on et.term_id=t.id where et.entry_id is null)", {}, function(err, row){
+          if(err) console.error(err);
           callnext();
         });
       }
@@ -1122,6 +1200,7 @@ module.exports={
       var changedTerm=changedTerms.pop();
       if(changedTerm){
         db.all("select e.* from entries as e inner join entry_term as et on et.entry_id=e.id where et.term_id=$changedTermID and e.id<>$originatorEntryID", {$changedTermID: changedTerm.id, $originatorEntryID: originatorEntryID}, function(err, rows){
+          if(err) console.error(err);
           goEntry();
           function goEntry(){
             var row=rows.pop();
@@ -1134,7 +1213,10 @@ module.exports={
                 goEntry();
               } else {
                 db.run("update entries set json=$json where id=$id", {$id: entryID, $json: json}, function(err){
-                  module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){});
+                  if(err) console.error(err);
+                  module.exports.propagator.saveEntry(termbaseID, entryID, entry, function(err){
+                    if(err) console.error(err);
+                  });
                   module.exports.saveEntrySortings(db, termbaseID, entryID, entry, function(){
                     module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
                       goEntry();
@@ -1163,6 +1245,7 @@ module.exports={
         sortkeys.push({lang: lang.abbr, key: sortkey})
       }});
       db.run("delete from entry_sortkey where entry_id=$entry_id", {$entry_id: entryID}, function(err){
+        if(err) console.error(err);
         save();
       })
     });
@@ -1170,6 +1253,7 @@ module.exports={
       var obj=sortkeys.pop();
       if(obj) {
         db.run("insert into entry_sortkey(entry_id, lang, key) values($entry_id, $lang, $key)", {$entry_id: entryID, $lang: obj.lang, $key: obj.key}, function(err){
+          if(err) console.error(err);
           save();
         });
       } else {
@@ -1182,12 +1266,14 @@ module.exports={
       if(domainID) assigs.push(domainID);
     });
     db.run("delete from entry_domain where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_domain(entry_id, domain) values($entryID, $domain)", {$entryID: entryID, $domain: assig}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1200,12 +1286,14 @@ module.exports={
       assigs.push(parseInt(obj));
     });
     db.run("delete from entry_collection where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_collection(entry_id, collection) values($entryID, $collection)", {$entryID: entryID, $collection: assig}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1218,12 +1306,14 @@ module.exports={
       assigs.push(parseInt(obj));
     });
     db.run("delete from entry_extranet where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_extranet(entry_id, extranet) values($entryID, $extranet)", {$entryID: entryID, $extranet: assig}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1234,12 +1324,14 @@ module.exports={
   saveIntros: function(db, termbaseID, entryID, entry, callnext){
     var assigs=[]; for(var key in entry.intros) assigs.push(entry.intros[key]);
     db.run("delete from entry_intro where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var assig=assigs.pop();
       if(assig || assig===""){
         db.run("insert into entry_intro(entry_id, text) values($entryID, $text)", {$entryID: entryID, $text: assig}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1254,12 +1346,14 @@ module.exports={
       }
     });
     db.run("delete from entry_def where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_def(entry_id, text) values($entryID, $text)", {$entryID: entryID, $text: assig}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1276,12 +1370,14 @@ module.exports={
       }
     });
     db.run("delete from entry_xmpl where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_xmpl(entry_id, text) values($entryID, $text)", {$entryID: entryID, $text: assig}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1294,12 +1390,14 @@ module.exports={
       assigs.push(targetID);
     });
     db.run("delete from entry_xref where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
       var assig=assigs.pop();
       if(assig){
         db.run("insert into entry_xref(entry_id, target_entry_id) values($entryID, $targetID)", {$entryID: entryID, $targetID: assig}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1314,6 +1412,7 @@ module.exports={
       }
     });
     db.run("delete from entry_note where entry_id=$entryID", {$entryID: entryID}, function(err){
+      if(err) console.error(err);
       go();
     });
     function go(){
@@ -1331,6 +1430,7 @@ module.exports={
 
   todNextAvailableDate: function(db, termbaseID, callnext){
     db.get("select max(tod) as maxDate from entries", {}, function(err, row){
+      if(err) console.error(err);
       var date=new Date();
       if(row && /^[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]/.test(row["maxDate"])){
         date=new Date(row["maxDate"]);
@@ -1347,7 +1447,9 @@ module.exports={
     } else {
       var db=null;
       if(fs.existsSync(path.join(module.exports.siteconfig.dataDir, "lang/"+lang+".sqlite"))){
-        db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "lang/"+lang+".sqlite"), sqlite3.OPEN_READONLY, function(err){});
+        db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "lang/"+lang+".sqlite"), sqlite3.OPEN_READONLY, function(err){
+          if(err) console.error(err);
+        });
         module.exports.langDBs[lang]=db;
       }
       return db;
@@ -1372,6 +1474,7 @@ module.exports={
         str+="'"+word.replace(/'/g, "''")+"'";
       });
       langDB.all("select lemma from lemmatization where token in ("+str+")", {}, function(err, rows){
+        if(err) console.error(err);
         var lemmas=[];
         for(var i=0; i<rows.length; i++) if(lemmas.indexOf(rows[i]["lemma"])==-1) lemmas.push(rows[i]["lemma"]);
         callnext(lemmas);
@@ -1388,6 +1491,7 @@ module.exports={
       var lemma=lemmas.pop();
       if(lemma){
         db.run("insert into words(term_id, word, implicit) values($termID, $word, 1)", {$termID: termID, $word: lemma}, function(err){
+          if(err) console.error(err);
           go();
         });
       } else {
@@ -1398,10 +1502,12 @@ module.exports={
 
   saveSpelling: function(db, termbaseID, term, callnext){
     db.run("delete from spelling where term_id=$termID", {$termID: parseInt(term.id)}, function(err){
+      if(err) console.error(err);
       var params={$termID: parseInt(term.id), $wording: term.wording, $length: term.wording.length};
       var spellindex=module.exports.getSpellindex(term.wording);
       for(var key in spellindex) params["$"+key]=spellindex[key];
       db.run("insert into spelling(term_id, wording, length, a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z) values($termID, $wording, $length, $a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z)", params, function(err){
+        if(err) console.error(err);
         callnext();
       });
     });
@@ -1458,6 +1564,7 @@ module.exports={
       sql+=" order by "+orderby+" asc limit 10";
       //console.log(sql);
       db.all(sql, {}, function(err, rows){
+        if(err) console.error(err);
         var suggs=[];
         rows.map(row => {
           if(row["wording"]!=searchtext) suggs.push({text: row["wording"], lev: levenshtein(searchtext, row["wording"])})
@@ -1481,6 +1588,7 @@ module.exports={
       $json: json,
       $historiography: JSON.stringify(historiography),
     }, function(err){
+      if(err) console.error(err);
       callnext();
     });
   },
@@ -1489,6 +1597,7 @@ module.exports={
     var data={sharedBy: [], similarTo: []};
     //find out which entries share this term:
     db.all("select e.id, e.json from entries as e inner join entry_term as et on e.id=et.entry_id where et.term_id=$termID", {$termID: termID}, function(err, rows){
+      if(err) console.error(err);
       rows.map(row => { data.sharedBy.push({entryID: row.id, json: row.json}) });
 
       //find out which terms are similar to this term:
@@ -1503,6 +1612,7 @@ module.exports={
         params.$termID=termID;
       }
       db.all(sql, params, function(err, rows){
+        if(err) console.error(err);
         rows.map(row => { data.similarTo.push({termID: row.id, json: row.json}) });
         callnext(data);
       });
@@ -1511,7 +1621,9 @@ module.exports={
   xrefsMake: function(db, termbaseID, ids, email, historiography, callnext){
     var sql=`select * from entries where id in(${ids})`;
     ids=[]; var entries={};
-    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+    db.all(sql, {}, function(err, rows){
+      if(err) console.error(err);
+      if(err || !rows) rows=[];
       for(var i=0; i<rows.length; i++){ entries[rows[i].id.toString()]=JSON.parse(rows[i].json); ids.push(rows[i].id.toString()); }
       ids.map(id1 => { ids.map(id2 => { if(id1!=id2){
         var entry1=entries[id1]; var entry2=entries[id2];
@@ -1525,7 +1637,10 @@ module.exports={
         var entryID=ids.pop();
         var json=JSON.stringify(entries[entryID]);
         db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
-          module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){});
+          if(err) console.error(err);
+          module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){
+            if(err) console.error(err);
+          });
           module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
             module.exports.saveXrefs(db, termbaseID, entryID, entries[entryID], function(){
               save();
@@ -1540,7 +1655,9 @@ module.exports={
   xrefsBreak: function(db, termbaseID, ids, email, historiography, callnext){
     var sql=`select * from entries where id in(${ids})`;
     ids=[]; var entries={};
-    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+    db.all(sql, {}, function(err, rows){
+      if(err) console.error(err);
+      if(err || !rows) rows=[];
       for(var i=0; i<rows.length; i++){ entries[rows[i].id.toString()]=JSON.parse(rows[i].json); ids.push(rows[i].id.toString()); }
       ids.map(id1 => { ids.map(id2 => { if(id1!=id2){
         var entry1=entries[id1]; var entry2=entries[id2];
@@ -1554,7 +1671,10 @@ module.exports={
         var entryID=ids.pop();
         var json=JSON.stringify(entries[entryID]);
         db.run("update entries set json=$json where id=$id", {$json: json, $id: entryID}, function(err){
-          module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){});
+          if(err) console.error(err);
+          module.exports.propagator.saveEntry(termbaseID, entryID, entries[entryID], function(err){
+            if(err) console.error(err);
+          });
           module.exports.saveHistory(db, termbaseID, entryID, "update", email, json, historiography, function(){
             module.exports.saveXrefs(db, termbaseID, entryID, entries[entryID], function(){
               save();
@@ -1570,7 +1690,9 @@ module.exports={
     //remove xrefs that go to entries that don't exist
     var ids=[]; if(entry.xrefs) entry.xrefs.map(id => { ids.push(id); });
     var sql=`select id from entries where id in(${ids})`;
-    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+    db.all(sql, {}, function(err, rows){
+      if(err) console.error(err);
+      if(err || !rows) rows=[];
       var existIDs=[]; for(var i=0; i<rows.length; i++){ existIDs.push(rows[i].id.toString()); }
       if(entry.xrefs){
         ids.map(id => {
@@ -1584,7 +1706,9 @@ module.exports={
     var sql=`select * from entries where id in(${ids})`;
     ids=[]; var entries={};
     var motherID=0; var motherEntry=null;
-    db.all(sql, {}, function(err, rows){ if(err || !rows) rows=[];
+    db.all(sql, {}, function(err, rows){
+      if(err) console.error(err);
+      if(err || !rows) rows=[];
       for(var i=0; i<rows.length; i++){ entries[rows[i].id.toString()]=JSON.parse(rows[i].json); ids.push(rows[i].id.toString()); }
       motherID=ids[0]; ids.splice(0, 1); motherEntry=entries[motherID];
       ids.map(id => {
@@ -1642,6 +1766,7 @@ module.exports={
     var sql2=`select count(*) as total from metadata as m where m.type=$type and (m.parent_id is null or not exists(select * from metadata as x where x.id=m.parent_id))`;
     var params2={$type: type};
     db.all(sql1, params1, function(err, rows){
+      if(err) console.error(err);
       if(err || !rows) rows=[];
       var entries=[];
       for(var i=0; i<rows.length; i++){
@@ -1649,6 +1774,7 @@ module.exports={
         entries.push(item);
       }
       db.get(sql2, params2, function(err, row){
+        if(err) console.error(err);
         var total=(!err && row) ? row.total : 0;
         callnext(total, entries);
       });
@@ -1674,6 +1800,7 @@ module.exports={
         limit $howmany`;
       var params1={$howmany: 10000, $type: type, $parentID: parentID};
       db.all(sql1, params1, function(err, rows){
+        if(err) console.error(err);
         if(err || !rows) rows=[];
         var entries=[];
         for(var i=0; i<rows.length; i++){
@@ -1688,6 +1815,7 @@ module.exports={
     var sql=`select * from metadata where type=$type and id=$entryID`;
     var params={$type: type, $entryID: entryID};
     db.get(sql, params, function(err, row){
+      if(err) console.error(err);
       if(err || !row) console.log(err);
       var parentID=null;
       if(row){
@@ -1704,6 +1832,7 @@ module.exports={
   },
   metadataRead: function(db, termbaseID, type, entryID, callnext){
     db.get("select * from metadata where id=$id and type=$type", {$id: entryID, $type: type}, function(err, row){
+      if(err) console.error(err);
       if(!row) {
         var entryID=0;
         var json="";
@@ -1721,6 +1850,7 @@ module.exports={
     db.run("delete from metadata where id=$id and type=$type", {
       $id: entryID, $type: type
     }, function(err){
+      if(err) console.error(err);
       module.exports.propagator.deleteMetadatum(termbaseID, entryID);
       callnext();
     });
@@ -1732,6 +1862,7 @@ module.exports={
       var params={$json: json, $type: type, $sortkey: sortkey, $parentID: metadatum.parentID || null};
       if(entryID) { sql="insert into metadata(id, type, json, sortkey, parent_id) values($id, $type, $json, $sortkey, $parentID)"; params.$id=entryID; }
       db.run(sql, params, function(err){
+        if(err) console.error(err);
         if(!entryID) entryID=this.lastID;
         module.exports.propagator.saveMetadatum(termbaseID, entryID, type, json);
         callnext(entryID, json);
@@ -1740,6 +1871,7 @@ module.exports={
   },
   metadataUpdate: function(db, termbaseID, type, entryID, json, callnext){
     db.get("select id, json from metadata where id=$id and type=$type", {$id: entryID, $type: type}, function(err, row){
+      if(err) console.error(err);
       var newJson=json;
       var oldJson=(row?row.json:"");
       if(!row) { //an entry with that ID does not exist: recreate it with that ID:
@@ -1753,6 +1885,7 @@ module.exports={
           db.run("update metadata set json=$json, sortkey=$sortkey, parent_id=$parentID where id=$id and type=$type", {
             $id: entryID, $json: json, $type: type, $sortkey: sortkey, $parentID: metadatum.parentID || null
           }, function(err){
+            if(err) console.error(err);
             module.exports.propagator.saveMetadatum(termbaseID, entryID, type, json);
             callnext(entryID, json, true);
           });
@@ -1779,6 +1912,7 @@ module.exports={
 
   configRead: function(db, termbaseID, configID, callnext){
     db.get("select * from configs where id=$id", {$id: configID}, function(err, row){
+      if(err) console.error(err);
       config=(row ? row.json : "{}");
       callnext(config);
     });
@@ -1786,6 +1920,7 @@ module.exports={
   configUpdate: function(db, termbaseID, configID, json, callnext){
     //db.run("update configs set json=$json where id=$id", {$id: configID, $json: json}, function(err){
     db.run("insert or replace into configs(id, json) values($id, $json)", {$id: configID, $json: json}, function(err){
+      if(err) console.error(err);
       module.exports.propagator.saveConfig(termbaseID, configID, json);
       afterwards();
     });
@@ -1809,6 +1944,7 @@ module.exports={
     //first of all, find out what we're supposed to do:
     if(!commentID) go("create"); //this is a new comment
     else db.get("select id from comments where id=$id", {$id: commentID}, function(err, row){
+      if(err) console.error(err);
       if(!row) go("recreate"); //a comment with that ID does not exist: recreate it with that ID
       else go("change") //the comment has changed: update it
     });
@@ -1829,8 +1965,10 @@ module.exports={
       }
       //create or change me:
       db.run(sql, params, function(err){
+        if(err) console.error(err);
         if(!commentID) commentID=this.lastID;
         db.get("select * from comments where id=$id", {$id: commentID}, function(err, row){
+          if(err) console.error(err);
           callnext(commentID, row.when, row.body, module.exports.markdown(row.body), row.extranet_id, row.tag_id);
         });
       });
@@ -1848,6 +1986,7 @@ module.exports={
       var params={$entry_id: entryID};
     }
     db.all(sql, params, function(err, rows){
+      if(err) console.error(err);
       if(err || !rows) rows=[];
       var comments=[];
       for(var i=0; i<rows.length; i++){
@@ -1866,6 +2005,7 @@ module.exports={
       var params={$entry_id: entryID};
     }
     db.get(sql, params, function(err, row){
+      if(err) console.error(err);
       if(row) callnext(row.commentCount); else callnext(0);
     });
   },
@@ -1878,6 +2018,7 @@ module.exports={
       var params={$id: commentID};
     }
     db.run(sql, params, function(err){
+      if(err) console.error(err);
       callnext();
     });
   },
@@ -1886,6 +2027,7 @@ module.exports={
     var doc={id: docID, title: "", html: "", englishOnly: false};
     if(fs.existsSync("docs/"+docID+"."+uilang+".md")){
       fs.readFile("docs/"+docID+"."+uilang+".md", "utf8", function(err, content){
+        if(err) console.error(err);
         var tree=markdown.parse(content);
         doc.title=tree[1][2];
         doc.html=markdown.renderJsonML(markdown.toHTMLTree(tree));
@@ -1894,6 +2036,7 @@ module.exports={
     }
     else if(fs.existsSync("docs/"+docID+".en.md")){
       fs.readFile("docs/"+docID+".en.md", "utf8", function(err, content){
+        if(err) console.error(err);
         var tree=markdown.parse(content);
         doc.title=tree[1][2];
         doc.html=markdown.renderJsonML(markdown.toHTMLTree(tree));
@@ -1919,10 +2062,12 @@ module.exports={
     var randoms=[];
     var more=false;
     db.all(sql_randoms, {$limit: limit}, function(err, rows){
+      if(err) console.error(err);
       for(var i=0; i<rows.length; i++){
         randoms.push(rows[i].wording);
       }
       db.get(sql_total, {}, function(err, row){
+        if(err) console.error(err);
         if(row.total>limit) more=true;
         callnext(more, randoms);
       });
@@ -1935,12 +2080,14 @@ module.exports={
     var like="%"+searchtext+"%";
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READONLY);
     db.all(sql1, {$howmany: howmany, $like: like}, function(err, rows){
+      if(err) console.error(err);
       var entries=[];
       for(var i=0; i<rows.length; i++){
         var item={id: rows[i].email, title: rows[i].email};
         entries.push(item);
       }
       db.get(sql2, {$like: like}, function(err, row){
+        if(err) console.error(err);
         var total=row.total;
         db.close();
         callnext(total, entries);
@@ -1950,10 +2097,12 @@ module.exports={
   readUser: function(email, callnext){
     var db=new sqlite3.Database(path.join(module.exports.siteconfig.dataDir, "terminologue.sqlite"), sqlite3.OPEN_READONLY);
     db.get("select * from users where email=$email", {$email: email}, function(err, row){
+      if(err) console.error(err);
       if(!row) callnext("", ""); else {
         email=row.email;
         var lastSeen=""; if(row.sessionLast) lastSeen=row.sessionLast;
         db.all("select d.id, d.title from user_termbase as ud inner join termbases as d on d.id=ud.termbase_id  where ud.user_email=$email order by d.title", {$email: email}, function(err, rows){
+          if(err) console.error(err);
           xml="<user"; if(lastSeen) xml+=" lastSeen='"+lastSeen+"'"; xml+=">";
           for(var i=0; i<rows.length; i++){
             var title=JSON.parse(rows[i].title).$;
@@ -1971,6 +2120,7 @@ module.exports={
     db.run("delete from users where email=$email", {
       $email: email,
     }, function(err){
+      if(err) console.error(err);
       db.close();
       callnext();
     });
@@ -1984,6 +2134,7 @@ module.exports={
       $email: email,
       $passwordHash: passwordHash,
     }, function(err){
+      if(err) console.error(err);
       db.close();
       module.exports.readUser(email, function(email, xml){ callnext(email, xml); });
     });
@@ -1999,6 +2150,7 @@ module.exports={
         $email: email,
         $passwordHash: passwordHash,
       }, function(err){
+        if(err) console.error(err);
         db.close();
         module.exports.readUser(email, function(email, xml){
           callnext(email, xml);
@@ -2014,6 +2166,7 @@ module.exports={
     var sortlang=db.termbaseConfigs.lingo.languages[0].abbr;
     module.exports.composeSqlQueries(db, {pStatus: "1"}, searchtext, "* smart "+sortlang, howmany, function(sql1, params1, sql2, params2){
       db.all(sql1, params1, function(err, rows){
+        if(err) console.error(err);
         if(err || !rows) rows=[];
         var suggestions=null;
         var want=true;
@@ -2035,6 +2188,7 @@ module.exports={
             }
             //if(modifier.indexOf(" smart ")>-1 && searchtext!="") suggestions=["jabbewocky", "dord", "gibberish", "coherence", "nonce word", "cypher", "the randomist"];;
             db.get(sql2, params2, function(err, row){
+              if(err) console.error(err);
               if(err) console.log(err);
               var total=(!err && row) ? row.total : 0;
               var pages=Math.floor(total/100); if(total%100 > 0) pages++;
@@ -2055,6 +2209,7 @@ module.exports={
   },
   pubEntry: function(db, termbaseID, entryID, callnext){
     db.get("select * from entries where id=$id and pStatus=1", {$id: entryID}, function(err, row){
+      if(err) console.error(err);
       if(!row) {
         callnext({id: 0, json: "", html: ""});
       } else {
@@ -2102,6 +2257,7 @@ module.exports={
     <body>
         `, "utf8");
         db.all(`select id, json from entries order by id limit ${limit} offset ${offset}`, {}, function(err, rows){
+          if(err) console.error(err);
           rows.map(row => {
             var entry=JSON.parse(row.json);
             entry.id=row.id;
