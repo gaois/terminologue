@@ -2275,6 +2275,169 @@ module.exports={
       });
     });
   },
+  toTBXByIDs: function(db, termbaseID, ids, callnext){
+    var stamp=(new Date()).toISOString().replace(/[^0-9]/g, "-");
+    var filename=stamp+termbaseID+".tbx";
+    var path=module.exports.siteconfig.dataDir+"downloads/"+filename;
+    var lingo=null;
+    var ident=null;
+    module.exports.readTermbaseConfigs(db, termbaseID, function(configs){
+      var lingo=configs.lingo;
+      var ident=configs.ident;
+      var termbaseLang=""; lingo.languages.map(l => {if(!termbaseLang) termbaseLang=l.abbr});
+      module.exports.readTermbaseMetadata(db, termbaseID, function(obj){
+        var metadata={};
+        for(var type in obj){
+          obj[type].map(datum => {
+            metadata[datum.id]={type: type, obj: datum};
+          });
+        }
+        var entry2tbx=require(module.exports.siteconfig.sharedDir+"/entry-to-tbx.js");
+        entry2tbx.setTermbaseLang(termbaseLang);
+        entry2tbx.setMetadata(metadata);
+
+        fs.writeFileSync(path, `<?xml version="1.0" encoding="UTF-8"?>
+<martif type="TBX" xml:lang="${termbaseLang}">
+  <martifHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>${clean4xml(ident.title[termbaseLang] || ident.title.$)}</title>
+      </titleStmt>
+      <sourceDesc>
+        <p>${clean4xml(ident.blurb[termbaseLang] || ident.blurb.$)}</p>
+      </sourceDesc>
+    </fileDesc>
+  </martifHeader>
+  <text>
+    <body>
+        `, "utf8");
+        db.all(`select id, json from entries where id in (${ids})`, {$ids: ids}, function(err, rows){
+          if(err) console.error(err);
+          rows.map(row => {
+            var entry=JSON.parse(row.json);
+            entry.id=row.id;
+            var xml=entry2tbx.doEntry(entry);
+            xml=xmlformatter(xml, {collapseContent: true}).replace(/(^|\n)/g, function($1){ return $1+"      " });
+            fs.appendFileSync(path, "\n"+xml+"\n", "utf8");
+          });
+          fs.appendFileSync(path, `
+    </body>
+  </text>
+</martif>
+          `, "utf8");
+          callnext(filename);
+        });
+      });
+    });
+  },
+  toTXTByIDs: function(db, termbaseID, ids, callnext){
+    var stamp=(new Date()).toISOString().replace(/[^0-9]/g, "-");
+    var filename=stamp+termbaseID+".txt";
+    var path=module.exports.siteconfig.dataDir+"downloads/"+filename;
+    var lingo=null;
+    var ident=null;
+    module.exports.readTermbaseConfigs(db, termbaseID, function(configs){
+      var lingo=configs.lingo;
+      var ident=configs.ident;
+      var termbaseLang=""; lingo.languages.map(l => {if(!termbaseLang) termbaseLang=l.abbr});
+      module.exports.readTermbaseMetadata(db, termbaseID, function(obj){
+        var metadata={};
+        for(var type in obj){
+          obj[type].map(datum => {
+            metadata[datum.id]={type: type, obj: datum};
+          });
+        }
+        var entry2txt=require(module.exports.siteconfig.sharedDir+"/entry-to-txt.js");
+        entry2txt.setTermbaseLang(termbaseLang);
+        entry2txt.setMetadata(metadata);
+        var spec={
+          separator: "\t", separatorEscape: "[TAB]",
+          joiner: " | ", joinerEscape: " [LINE] ",
+          linebreakEscape: "[LINEBREAK]",
+          openBracketEscape: "[OPENBRACKET]",
+          closeBracketEscape: "[CLOSEBRACKET]",
+          commaEscape: "[COMMA]",
+          columns: [
+            {
+              title: "ID",
+              what: "id",
+            },
+            {
+              title: "Réimse",
+              what: "domains",
+              lang: "en",
+            },
+            {
+              title: "Téarma Béarla",
+              what: "terms",
+              lang: "en",
+              includeAnnotations: true,
+              includeInflectedForms: true,
+              includeAcceptability: true,
+              includeClarification: true,
+            },
+            {
+              title: "Intreoir Béarla",
+              what: "intro",
+              lang: "en",
+            },
+            {
+              title: "Téarma Gaeilge",
+              what: "terms",
+              lang: "ga",
+              includeAnnotations: true,
+              includeInflectedForms: true,
+              includeAcceptability: true,
+              includeClarification: true,
+            },
+            {
+              title: "Sainmhíniú Béarla",
+              what: "definitions",
+              lang: "en",
+            },
+            {
+              title: "Sainmhíniú Gaeilge",
+              what: "definitions",
+              lang: "ga",
+            },
+            {
+              title: "Sampla Béarla",
+              what: "examples",
+              lang: "en",
+            },
+            {
+              title: "Sampla Gaeilge",
+              what: "examples",
+              lang: "ga",
+            },
+            // {
+            //   title: "Nóta Gaeilge de chineál 913502",
+            //   what: "notes",
+            //   type: "913502",
+            //   lang: "ga",
+            // },
+          ],
+        };
+        entry2txt.setSpec(spec);
+        fs.writeFileSync(path, ``, "utf8");
+        spec.columns.map((col, i) => {
+          if(i>0) fs.appendFileSync(path, "\t", "utf8");
+          fs.appendFileSync(path, col.title, "utf8");
+        });
+        fs.appendFileSync(path, `\n`, "utf8");
+        db.all(`select id, json from entries where id in (${ids})`, {$ids: ids}, function(err, rows){
+          if(err) console.error(err);
+          rows.map(row => {
+            var entry=JSON.parse(row.json);
+            entry.id=row.id;
+            var txt=entry2txt.doEntry(entry);
+            fs.appendFileSync(path, txt+"\n", "utf8");
+          });
+          callnext(filename);
+        });
+      });
+    });
+  },
 }
 
 function generateKey(){

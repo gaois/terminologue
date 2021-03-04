@@ -27,7 +27,7 @@ Screenful.Loc={
   title: "Title",
   titleEmpty: "The title should not be empty.",
   url: "URL",
-  urlEmpty: "The URL should not be be empty.",
+  urlEmpty: "The URL should not be empty.",
   urlShort: "The URL should be at least three characters long.",
   urlInvalid: "The URL should not contain characters other than a-z, A-Z, 0-9 and hyphens.",
   urlTaken: "This URL is already taken.",

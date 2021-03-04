@@ -371,6 +371,10 @@ Screenful.Navigator={
           Screenful.Navigator.printPagerSizer($listbox, data.pageSize);
         }
 
+        if(Screenful.Navigator.exporters && Screenful.Navigator.exporters.length>0){
+          Screenful.Navigator.printExporters($listbox, Screenful.Navigator.exporters);
+        }
+
         if(window.frames["editframe"] && window.frames["editframe"].Screenful && window.frames["editframe"].Screenful.Editor) {
           var currentEntryID=window.frames["editframe"].Screenful.Editor.entryID;
           Screenful.Navigator.setEntryAsCurrent(currentEntryID);
@@ -606,6 +610,28 @@ Screenful.Navigator={
       }
     });
     $listbox.append($sizer);
+  },
+
+  printExporters: function($listbox, exporters){
+    var $exporters=$(`<div class="exporters"></div>`);
+    exporters.map(exporter => {
+      var $exporter=$(`<form method="POST" action="${exporter.url}"><button>${exporter.label}</button><input type="hidden" name="ids" value=""/></form>`);
+      $exporter.on("submit", Screenful.Navigator.collectIDsToExport);
+      $exporters.append($exporter);
+    });
+    $listbox.append($exporters);
+  },
+  collectIDsToExport: function(e){
+    var $form=$(e.delegateTarget);
+    var $listbox=$form.closest(".listbox");
+    var entryIDs=[];
+    $listbox.find("div.entry").each(function(){
+      var $entry=$(this);
+      var id=$entry.attr("data-id");
+      entryIDs.push(id);
+    });
+    $form.find("input").val(entryIDs.join(","));
+    return true;
   },
 
   previousCrit: null,

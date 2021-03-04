@@ -239,3 +239,8 @@ body.narrow #envelope #narrowToolbar {display: block; position: absolute; top: 0
 #statusbar label#chkNarrow {position: absolute; right: 10px; top: 0px; cursor: pointer;}
 #statusbar label#chkNarrow:hover {color: #333333;}
 #statusbar label#chkNarrow input {position: relative; top: 3px;}
+
+.listbox .exporters {margin: 20px 0px; text-align: center; font-size: 0.8em !important;}
+.listbox .exporters form {display: inline-block; margin: 0px 5px;}
+#envelope .listbox .exporters form button {border: 0px; background-color: #cccccc; color: #ffffff; font-weight: bold;}
+#envelope .listbox .exporters form button:hover {background-color: #999999;}

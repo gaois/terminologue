@@ -31,20 +31,20 @@ var spec={
       what: "domains",
       lang: "en",
     },
-    {
-      title: "Téarma Béarla",
-      what: "terms",
-      lang: "en",
-      includeAnnotations: true,
-      includeInflectedForms: true,
-      includeAcceptability: true,
-      includeClarification: true,
-    },
-    {
-      title: "Intreoir Béarla",
-      what: "intro",
-      lang: "en",
-    },
+    // {
+    //   title: "Téarma Béarla",
+    //   what: "terms",
+    //   lang: "en",
+    //   includeAnnotations: true,
+    //   includeInflectedForms: true,
+    //   includeAcceptability: true,
+    //   includeClarification: true,
+    // },
+    // {
+    //   title: "Intreoir Béarla",
+    //   what: "intro",
+    //   lang: "en",
+    // },
     {
       title: "Téarma Gaeilge",
       what: "terms",
@@ -59,26 +59,26 @@ var spec={
       what: "intro",
       lang: "ga",
     },
-    {
-      title: "Sainmhíniú Béarla",
-      what: "definitions",
-      lang: "en",
-    },
+    // {
+    //   title: "Sainmhíniú Béarla",
+    //   what: "definitions",
+    //   lang: "en",
+    // },
     {
       title: "Sainmhíniú Gaeilge",
       what: "definitions",
       lang: "ga",
     },
-    {
-      title: "Sampla Béarla",
-      what: "examples",
-      lang: "en",
-    },
-    {
-      title: "Sampla Gaeilge",
-      what: "examples",
-      lang: "ga",
-    },
+    // {
+    //   title: "Sampla Béarla",
+    //   what: "examples",
+    //   lang: "en",
+    // },
+    // {
+    //   title: "Sampla Gaeilge",
+    //   what: "examples",
+    //   lang: "ga",
+    // },
     {
       title: "Nóta Gaeilge de chineál 913502",
       what: "notes",
