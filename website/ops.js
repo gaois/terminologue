@@ -488,7 +488,8 @@ module.exports={
   },
 
   entryListById: function(db, termbaseID, ids, callnext){
-    var sql=`select *, (select count(*) from comments as c where c.entry_id=e.id) as commentCount from entries as e where e.id in(${ids})`;
+    ids=ids || [];
+    var sql=`select *, (select count(*) from comments as c where c.entry_id=e.id) as commentCount from entries as e where e.id in (${ids})`;
     db.all(sql, {}, function(err, rows){
       if(err) console.error(err);
       if(err || !rows) rows=[];
