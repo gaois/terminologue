@@ -1225,7 +1225,8 @@ app.post(siteconfig.rootPath+":termbaseID/edit/export.txt", function(req, res, n
       db.close();
     } else {
       var ids=req.body.ids.split(",");
-      ops.toTXTByIDs(db, termbaseID, ids, function(filename){
+      var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
+      ops.toTXTByIDs(db, termbaseID, ids, localizer[uilang].L, function(filename){
         db.close();
         res.download(siteconfig.dataDir+"downloads/"+filename, `${termbaseID}.txt`);
       });

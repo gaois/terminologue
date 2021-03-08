@@ -2330,7 +2330,7 @@ module.exports={
       });
     });
   },
-  toTXTByIDs: function(db, termbaseID, ids, callnext){
+  toTXTByIDs: function(db, termbaseID, ids, L, callnext){
     var stamp=(new Date()).toISOString().replace(/[^0-9]/g, "-");
     var filename=stamp+termbaseID+".txt";
     var path=module.exports.siteconfig.dataDir+"downloads/"+filename;
@@ -2357,67 +2357,53 @@ module.exports={
           openBracketEscape: "[OPENBRACKET]",
           closeBracketEscape: "[CLOSEBRACKET]",
           commaEscape: "[COMMA]",
-          columns: [
-            {
-              title: "ID",
-              what: "id",
-            },
-            {
-              title: "Réimse",
-              what: "domains",
-              lang: "en",
-            },
-            {
-              title: "Téarma Béarla",
-              what: "terms",
-              lang: "en",
-              includeAnnotations: true,
-              includeInflectedForms: true,
-              includeAcceptability: true,
-              includeClarification: true,
-            },
-            {
-              title: "Intreoir Béarla",
-              what: "intro",
-              lang: "en",
-            },
-            {
-              title: "Téarma Gaeilge",
-              what: "terms",
-              lang: "ga",
-              includeAnnotations: true,
-              includeInflectedForms: true,
-              includeAcceptability: true,
-              includeClarification: true,
-            },
-            {
-              title: "Sainmhíniú Béarla",
-              what: "definitions",
-              lang: "en",
-            },
-            {
-              title: "Sainmhíniú Gaeilge",
-              what: "definitions",
-              lang: "ga",
-            },
-            {
-              title: "Sampla Béarla",
-              what: "examples",
-              lang: "en",
-            },
-            {
-              title: "Sampla Gaeilge",
-              what: "examples",
-              lang: "ga",
-            },
-            // {
-            //   title: "Nóta Gaeilge de chineál 913502",
-            //   what: "notes",
-            //   type: "913502",
-            //   lang: "ga",
-            // },
-          ],
+          columns: [],
         };
+        spec.columns.push({
+          title: "ID",
+          what: "id",
+        });
+        spec.columns.push({
+          title: L("DOMAINS"),
+          what: "domains",
+          lang: termbaseLang,
+        });
+        lingo.languages.map(l => {
+          if(l.role=="major"){
+            spec.columns.push({
+              title: L("TERMS")+" "+l.abbr.toUpperCase(),
+              what: "terms",
+              lang: l.abbr,
+              includeAnnotations: true,
+              includeInflectedForms: true,
+              includeAcceptability: true,
+              includeClarification: true,
+            });
+            spec.columns.push({
+              title: L("INTROS")+" "+l.abbr.toUpperCase(),
+              what: "intro",
+              lang: l.abbr,
+            });
+          }
+        });
+        lingo.languages.map(l => {
+          if(l.role=="major"){
+            spec.columns.push({
+              title: L("DEFINITIONS")+" "+l.abbr.toUpperCase(),
+              what: "definitions",
+              lang: l.abbr,
+            });
+          }
+        });
+        lingo.languages.map(l => {
+          if(l.role=="major"){
+            spec.columns.push({
+              title: L("EXAMPLES")+" "+l.abbr.toUpperCase(),
+              what: "examples",
+              lang: l.abbr,
+            });
+          }
+        });
         entry2txt.setSpec(spec);
         fs.writeFileSync(path, ``, "utf8");
         spec.columns.map((col, i) => {
