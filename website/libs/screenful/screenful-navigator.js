@@ -841,6 +841,9 @@ Screenful.Navigator={
         data.entries.forEach(function(entry){
           Screenful.Navigator.printEntry(entry, $listbox, "", "");
         });
+        if(Screenful.Navigator.exporters && Screenful.Navigator.exporters.length>0){
+          Screenful.Navigator.printExporters($listbox, Screenful.Navigator.exporters);
+        }
         Screenful.Navigator.resetEntryAsCurrent();
         Screenful.Navigator.starList=[];
         data.entries.forEach(function(entry){
