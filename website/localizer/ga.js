@@ -103,7 +103,7 @@ function L(s, gloss){
   if(s=="any extranet or no extranet") return "eislíon ar bith nó gan eislíon";
   if(s=="any extranet") return "eislíon ar bith";
   if(s=="no extranet") return "gan eislíon";
-  if(s=="sorting language") return "teanga sortála";
+  if(s=="sorting language") return "teanga sórtála";
   if(s=="Create mutual cross-references") return "Cruthaigh crostagairtí eatarthu";
   if(s=="Remove mutual cross-references") return "Bris crostagairtí eatarthu";
   if(s=="Merge into a single entry") return "Cumaisc go hiontráil amháin";
@@ -294,11 +294,11 @@ function L(s, gloss){
   if(s=="Your termbase at a glance") return "Sracfhéachaint ar do chnuasach";
   if(s=="Number of entries") return "Líon iontrálacha";
   if(s=="Number of items in history log") return "Líon míreanna sa taifead staire";
-  if(s=="Your termbase is stored in the file %F") return "Tá do chunasach á stóráil sa chomhad %F";
+  if(s=="Your termbase is stored in the file %F") return "Tá do chnuasach á stóráil sa chomhad %F";
   if(s=="File size") return "Méid an chomhaid";
   if(s=="Download %F") return "Íoslódáil %F";
   if(s=="Upload %F") return "Uaslódáil %F";
-  if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Déan cinnte gur cnuasach bailí de chuid Terminologue atá sa chomhad atá á uaslódáil agat. Murab ea, déanfaidh tú damáiste do do chunasach agus ní bheidh tú ábalta dul ar ais.";
+  if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Déan cinnte gur cnuasach bailí de chuid Terminologue atá sa chomhad atá á uaslódáil agat. Murab ea, déanfaidh tú damáiste do do chnuasach agus ní bheidh tú ábalta dul ar ais.";
   if(s=="PARENT") return "TUISMITHEOIR";
   if(s=="no parent") return "gan tuismitheoir";
   if(s=="excluding subdomains") return "foréimsí as áireamh";
