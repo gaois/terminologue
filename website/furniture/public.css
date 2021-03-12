@@ -56,7 +56,7 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #randoms { margin-top: 60px; position: relative; min-height: 100px;}
 #randoms.short {}
 #randoms.hasMore {}
-#randoms > div.list {font-size: 1rem; line-height: 2em; text-align: center;}
+#randoms > div.list {font-size: 1rem; line-height: 2em; text-align: center; overflow-x: hidden;}
 #randoms.short div.list {margin: auto; max-width: 1100px;}
 #randoms.hasMore div.list {text-align: left; border-left: 1px solid #dddddd; padding-left: 10px; margin-left: 105px;}
 #randoms > div.list > a {color: #666666; text-decoration: none; white-space: nowrap; margin: 0px 0px; padding: 5px 10px; font-weight: bold; color: #000000;}

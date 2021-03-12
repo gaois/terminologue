@@ -57,7 +57,7 @@ div.prettyEntry div.prettyDesig div.inflects {font-size: 0.8em;}
 div.prettyEntry div.prettyDesig div.inflects span.inflect {}
 div.prettyEntry div.prettyDesig div.inflects span.inflect span.abbr {font-style: italic; color: #536d94;}
 div.prettyEntry div.prettyDesig div.inflects span.inflect span.wording {}
-div.prettyEntry div.prettyDesig a.prettyWording {font-weight: bold; color: #333333; text-decoration: none;}
+div.prettyEntry div.prettyDesig a.prettyWording {font-weight: bold; color: #333333; text-decoration: none; overflow-wrap: break-word;}
 div.prettyEntry div.prettyDesig a.prettyWording:hover {color: var(--link);}
 div.prettyEntry div.prettyDesig a.prettyWording span.char {}
 div.prettyEntry div.prettyDesig a.prettyWording span.char.on {background-color: #eff5ca; box-shadow: 0px 0px 5px #e4e3af;}

@@ -48,7 +48,7 @@
 						if(!data.more && data.entries.length<20) $("#randoms").addClass("short"); else $("#randoms").removeClass("short");
 						if(data.more) $("#randoms").addClass("hasMore"); else $("#randoms").removeClass("hasMore");
 						for(var i=0; i<data.entries.length; i++){
-							var html="<a href='./?q="+encodeURIComponent(data.entries[i])+"'>"+data.entries[i]+"</a> ";
+							var html="<a href='./?q="+encodeURIComponent(data.entries[i]).replace("'", "&apos;")+"'>"+data.entries[i]+"</a> ";
 							$("#randoms .list").append(html);
 						}
 						$("#randoms .randomizer").removeClass("animated");

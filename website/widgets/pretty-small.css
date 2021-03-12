@@ -17,7 +17,7 @@ div.prettyEntry.small div.prettyDesig div.inflects {font-size: 0.8em;}
 div.prettyEntry.small div.prettyDesig div.inflects span.inflect {}
 div.prettyEntry.small div.prettyDesig div.inflects span.inflect span.abbr {font-style: italic; color: #536d94;}
 div.prettyEntry.small div.prettyDesig div.inflects span.inflect span.wording {font-weight: bold;}
-div.prettyEntry.small div.prettyDesig span.prettyWording {font-weight: bold; color: #333333;}
+div.prettyEntry.small div.prettyDesig span.prettyWording {font-weight: bold; color: #333333; overflow-wrap: break-word;}
 div.prettyEntry.small div.prettyDesig span.prettyWording span.char {}
 div.prettyEntry.small div.prettyDesig span.prettyWording span.char.on {}
 div.prettyEntry.small div.prettyDesig span.prettyWording span.label.on {}

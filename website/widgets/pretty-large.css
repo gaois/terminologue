@@ -33,7 +33,7 @@ div.prettyEntry.large div.prettyDesig div.inflects {font-size: 0.8em;}
 div.prettyEntry.large div.prettyDesig div.inflects span.inflect {}
 div.prettyEntry.large div.prettyDesig div.inflects span.inflect span.abbr {font-style: italic; color: #536d94;}
 div.prettyEntry.large div.prettyDesig div.inflects span.inflect span.wording {}
-div.prettyEntry.large div.prettyDesig span.prettyWording {font-weight: bold; color: #333333;}
+div.prettyEntry.large div.prettyDesig span.prettyWording {font-weight: bold; color: #333333; overflow-wrap: break-word;}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.char {}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.char.on {background-color: #eff5ca; box-shadow: 0px 0px 5px #e4e3af;}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.label.on {background-color: #eff5ca;}
