@@ -8,7 +8,7 @@ const termbaseID="covid-19";
 const sqliteDB=new SqliteDatabase('../data/termbases/'+termbaseID+'.sqlite', { fileMustExist: true });
 
 const sql=require("mssql");
-const sqlConnectionString="Server=vm-fion-db-l01\\;Database=fion_gaois_terms;Uid=fiontechsql;Pwd=wdpNOfwe2341NOFIE$weq;";
+const sqlConnectionString="Server=SERVER_NAME;Database=DB_NAME;Uid=USER_ID;Pwd=USER_PASSWORD;";
 var pool=new sql.ConnectionPool(sqlConnectionString);
 console.log(`connecting to SQL Server...`);
 pool.connect(function(err){

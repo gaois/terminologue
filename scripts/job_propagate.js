@@ -12,7 +12,7 @@ console.log(`   done, we have ${histories.length} history items to propagate`);
 const selEntry=sqliteDB.prepare(`select * from entries where id=?`);
 
 const sql=require("mssql");
-const sqlConnectionString="Server=localhost\\sqlexpress;Database=tearma;Uid=sa;Pwd=triPEStri;";
+const sqlConnectionString="Server=SERVER_NAME;Database=DB_NAME;Uid=USER_ID;Pwd=USER_PASSWORD;";
 var pool=new sql.ConnectionPool(sqlConnectionString);
 console.log(`connecting to SQL Server...`);
 pool.connect(function(err){
