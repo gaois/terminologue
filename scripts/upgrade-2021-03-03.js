@@ -14,11 +14,16 @@ function migrateDBs(dirPath){
     filenames.map(filename => {
       console.log(`beginning ${filename}`);
       var filepath=path.join(dirPath, filename);
-      const db = new Database(filepath, { fileMustExist: true });
-  
-      db.prepare(`CREATE INDEX IF NOT EXISTS ix_words_term_id_word ON words (term_id, word);`).run();
-  
-      db.close();
-      console.log(` - done ${filename}, ${--count} databases remaining`);
+
+      try {
+        const db = new Database(filepath, { fileMustExist: true });
+    
+        db.prepare(`CREATE INDEX IF NOT EXISTS ix_words_term_id_word ON words (term_id, word);`).run();
+        db.close();
+
+        console.log(` - done ${filename}, ${--count} databases remaining`);
+      } catch (err) {
+        console.log(` - cound not open ${filename} or index already exists, ${--count} databases remaining`);
+      }
     });
   }
