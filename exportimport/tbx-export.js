@@ -1,5 +1,4 @@
 const SQLITEFILE="../data/termbases/rialacha.sqlite";
-const XCSFILE="_entries.xcs.xml";
 const TBXFILE="_entries.tbx.xml";
 const LIMIT=10000;
 
@@ -29,34 +28,6 @@ sqlSelectMetadata.all().map(row => {
 });
 entry2tbx.setTermbaseLang(termbaseLang);
 entry2tbx.setMetadata(metadata);
-
-//------
-//Export the termbase's configuration and metadata into an XCS file:
-//------
-
-fs.writeFileSync(XCSFILE, `<?xml version="1.0" encoding="UTF-8"?>
-<TBXXCS name="master" version="0.4" lang="${termbaseLang}">
-  <header>
-    <title>${clean4xml(ident.title[termbaseLang] || ident.title.$)}</title>
-  </header>
-  <languages>
-`, "utf8");
-console.log("exporting list of languages...");
-lingo.languages.map(lang => {
-  fs.appendFileSync(XCSFILE, "    "+doLang(lang)+"\n", "utf8");
-});
-fs.appendFileSync(XCSFILE, `  </languages>
-</TBXXCS>
-`, "utf8");
-
-function doLang(lang){
-  var name=""; lingo.languages.map(l => {
-    if(!name && lang.title[l.abbr]) name=lang.title[l.abbr];
-  });
-  var ret=`<langInfo><langCode>${lang.abbr}</langCode><langName>${clean4xml(name)}</langName></langInfo>`;
-  return ret;
-}
-
 
 //------
 //Export the termbase's entries into a TBX file:
