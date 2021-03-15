@@ -1,6 +1,8 @@
 const SQLITEFILE="../data/termbases/rialacha.sqlite";
+//const SQLITEFILE="bnt.sqlite";
 const TBXFILE="_entries.tbx.xml";
 const LIMIT=10000;
+//const LIMIT=200000;
 
 //TBX extensible constraint specification (XCS)
 //picklist values: ISO 12620
@@ -49,6 +51,7 @@ fs.writeFileSync(TBXFILE, `<?xml version="1.0" encoding="UTF-8"?>
     <body>
 `, "utf8");
 var sqlSelectEntries=db.prepare(`select * from entries limit ${LIMIT}`);
+//var sqlSelectEntries=db.prepare(`select * from entries where pStatus='1' limit ${LIMIT}`);
 console.log("getting list of entries...");
 sqlSelectEntries.all().map((row, iRow) => {
   console.log(`exporting entry number ${iRow}, ID ${row.id}...`);
