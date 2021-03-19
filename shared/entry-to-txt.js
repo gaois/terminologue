@@ -56,7 +56,7 @@ function doID(entry, colSpec){
 
 function doDomains(entry, colSpec){
   var ret="";
-  entry.domains.map(domainID => {
+  entry.domains.filter(x => x).map(domainID => {
     if(ret!="") ret+=spec.joiner;
     ret+=domainTitle(domainID, colSpec.lang).replace(/\r?\n/g, spec.linebreakEscape).replace(spec.joiner, spec.joinerEscape);
   });
