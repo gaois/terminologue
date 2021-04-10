@@ -36,7 +36,7 @@ Spec.templates["abbr"]={
     <div class="fy_box">
       <div class="fy_horizon">
         <span class="fy_label" style="width: 245px;">${L("abbreviation")}</span>
-        <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>
+        <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed()"/></span>
       </div>
     </div>
   </div>`,
@@ -69,7 +69,7 @@ Spec.templates["title"]={
 };
 Spec.templates["titleString"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed()"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },

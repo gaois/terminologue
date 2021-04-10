@@ -1,18 +1,21 @@
-body {background-image: url(header-back.gif); background-position: right top; background-repeat: no-repeat; font-family: sans-serif; background-color: #ffffff; margin: 0; padding: 0; line-height: 1.3em; font-size: 1rem;}
+[dir="ltr"] body {background-image: url(header-back-ltr.png); background-position: right top; background-repeat: no-repeat; font-family: sans-serif; background-color: #ffffff; margin: 0; padding: 0; line-height: 1.3em; font-size: 1rem;}
+[dir="rtl"] body {background-image: url(header-back-rtl.png); background-position: left top; background-repeat: no-repeat; font-family: sans-serif; background-color: #ffffff; margin: 0; padding: 0; line-height: 1.3em; font-size: 1rem;}
 
 #header {padding: 10px 10px; height: 38px;}
-#header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header.png); margin-top: 5px; margin-left: 4px; position: relative;}
+[dir="ltr"] #header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header-ltr.png); margin-top: 5px; margin-inline-start: 4px; position: relative;}
+[dir="rtl"] #header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header-rtl.png); margin-top: 5px; margin-inline-start: 4px; position: relative;}
 #header a.sitehome:hover {top: -1px;}
 #header a.sitehome span.readonly { display: inline-block; color: #bd6c73; font-size: 0.75rem; line-height: 1em; padding: 10px 2px; position: absolute; top: 18px; right: 0px; white-space: nowrap; text-shadow: 1px 1px 0px #ffffff;}
-#header div.topright {display: inline-block; position: absolute; top: 18px; right: 20px; color: #666666; z-index: 1;}
-#header div.topright > div.one {display: inline-block; margin-left: 1em;}
+[dir="ltr"] #header div.topright {display: inline-block; position: absolute; top: 18px; right: 20px; color: #666666; z-index: 1;}
+[dir="rtl"] #header div.topright {display: inline-block; position: absolute; top: 18px; left: 20px; color: #666666; z-index: 1;}
+#header div.topright > div.one {display: inline-block; margin-inline-start: 1em;}
 @media (max-width: 800px){
   #header a.sitehome span.readonly {display: none;}
 }
 
 .invelope {max-width: 1250px; margin: 0px auto; padding: 0px 10px; }
 .midlope {border-top: 1px solid #1e6bcf; padding-top: 30px; margin-top: 30px;}
-.invelope.bottom {margin-top: 100px; border-top: 1px dotted #999999;  }
+.invelope.bottom {margin-top: 100px; border-top: 1px dotted #999999;}
 .invelope > .clear {clear: both;}
 
 #dictheader {margin-bottom: 20px; z-index: 10; position: relative;}
@@ -36,9 +39,11 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 
 #dictheader form.searchContainer {margin-top: 20px;}
 @media (max-width: 800px) { body.entrypage #dictheader form.searchContainer {margin-top: 15px;} }
-#dictheader form.searchContainer span.searchbox {position: relative; display: inline-block; width: 90%; padding: 0px 10px; max-width: 400px; border: 1px inset #cccccc; box-shadow: 1px 1px 0px #aaaaaa; text-align: left;}
-#dictheader form.searchContainer span.searchbox input.searchbox {font: inherit; border: 0px; cursor: inline; border-radius: 4px; background-color: #ffffff; color: #333333; font-size: 1rem; padding: 10px 0px 10px 0px; display: inline-block; vertical-align: middle; width: 100%; }
-#dictheader form.searchContainer span.searchbox input.submit {font: inherit; border-width: 0px; cursor: pointer; background-color: #ffffff; color: #004f9b; display: inline-block; font-size: 1rem; padding: 8px 0px; background-image: url(zoom.png); background-position: center center; background-repeat: no-repeat; position: absolute; right: 4px; top: 4px; width: 30px; }
+#dictheader form.searchContainer span.searchbox {position: relative; display: inline-block; width: 90%; padding: 2px 2px; padding-inline-end: 60px; max-width: 400px; border: 1px inset #cccccc; box-shadow: 1px 1px 0px #aaaaaa; text-align: start; box-sizing: border-box;}
+#dictheader form.searchContainer span.searchbox input.searchbox {font: inherit; border: 0px; cursor: inline; border-radius: 4px; background-color: #ffffff; color: #333333; font-size: 1rem; padding: 10px 10px 10px 10px; display: inline-block; vertical-align: middle; width: 100%; }
+#dictheader form.searchContainer span.searchbox input.searchbox:focus {outline-width: 0px;}
+[dir="ltr"] #dictheader form.searchContainer span.searchbox input.submit {font: inherit; border-width: 0px; cursor: pointer; background-color: #ffffff; color: #004f9b; display: inline-block; font-size: 1rem; padding: 8px 0px; background-image: url(zoom.png); background-position: center center; background-repeat: no-repeat; position: absolute; right: 4px; top: 4px; width: 30px; }
+[dir="rtl"] #dictheader form.searchContainer span.searchbox input.submit {font: inherit; border-width: 0px; cursor: pointer; background-color: #ffffff; color: #004f9b; display: inline-block; font-size: 1rem; padding: 8px 0px; background-image: url(zoom.png); background-position: center center; background-repeat: no-repeat; position: absolute; left: 4px; top: 4px; width: 30px; }
 
 #dictblurb { font-size: 1rem; color: #333333; line-height: 1.75em; margin: 0px auto; max-width: 1000px;}
 #dictblurb.centered {text-align: center;}
@@ -73,7 +78,8 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 
 #dictfooter { padding: 10px 0px 50px 0px; color: #666666; font-size: 0.9rem; }
 #dictfooter > div {margin: 10px 0px;}
-#dictfooter > div.right {float: right;}
+[dir="ltr"] #dictfooter > div.right {float: right;}
+[dir="rtl"] #dictfooter > div.right {float: left;}
 #dictfooter a {text-decoration: none; color: inherit; }
 #dictfooter a:hover {color: var(--link); }
 #dictfooter a.lic {position: relative; top: 2px;}
@@ -81,12 +87,13 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 
 #sitefooter { padding: 10px 0px 50px 0px; color: #666666; font-size: 0.9rem; }
 #sitefooter > div {margin: 10px 0px;}
-#sitefooter > div.right {float: right;}
+[dir="ltr"] #sitefooter > div.right {float: right;}
+[dir="rtl"] #sitefooter > div.right {float: left;}
 #sitefooter a {text-decoration: none; color: #047063; }
 #sitefooter a:hover {color: #059080; }
 #sitefooter a.github {display: block; width: 20px; height: 19px; background-image: url(github.png);}
 #sitefooter div.logolint {margin-top: 20px;}
-#sitefooter div.logolint a {display: inline-block; vertical-align: middle; margin-right: 20px;}
+#sitefooter div.logolint a {display: inline-block; vertical-align: middle; margin-inline-end: 20px;}
 #sitefooter div.logolint a.dcu {background-image: url(logo_dcu.png); width: 76px; height: 83px;}
 
 #viewer {padding: 0px 0px !important; float: left; max-width: 930px; width: 100%}
@@ -97,9 +104,11 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 
 body.sitehome { overflow: auto !important;}
 body.sitehome .invelope.top {margin: 50px auto 25px auto; padding-top: 50px;}
-body.sitehome .invelope.top > div.clear {clear: left;}
-div.leftie {float: left; width: 50%; box-sizing: border-box; padding: 20px 40px 0px 0px; border-right: 1px solid #03A491;}
-div.rightie {float: left; width: 50%; box-sizing: border-box; border-left: 1px solid #03A491; padding: 20px 0px 20px 40px; position: relative; left: -1px;}
+body.sitehome .invelope.top > div.clear {clear: both;}
+[dir="ltr"] div.leftie {float: left; width: 50%; box-sizing: border-box; padding: 20px 40px 0px 0px; border-right: 1px solid #03A491;}
+[dir="rtl"] div.leftie {float: right; width: 50%; box-sizing: border-box; padding: 20px 0px 0px 40px; border-left: 1px solid #03A491;}
+[dir="ltr"] div.rightie {float: left; width: 50%; box-sizing: border-box; border-left: 1px solid #03A491; padding: 20px 0px 20px 40px; position: relative; right: 1px;}
+[dir="rtl"] div.rightie {float: right; width: 50%; box-sizing: border-box; border-right: 1px solid #03A491; padding: 20px 40px 20px 0px; position: relative; right: -1px;}
 @media (max-width: 800px){
   body.sitehome .invelope.top {margin-top: 50px;}
   div.leftie {float: none; width: auto; box-sizing: border-box; padding: 0px 0px 0px 0px; border-right: 0px}
@@ -110,18 +119,22 @@ div.welcome {font-size: 1.1rem; line-height: 1.5em; color: #666666; min-height: 
 div.welcome > div.intro {color: #333333;}
 div.welcome > div.point { margin: 20px 0px;}
 div.welcome > div.point > div.title {}
-div.welcome > div.point > div.title > a {font-weight: bold; background-image: url(signpost.png); background-position: 5px 0px; background-repeat: no-repeat; padding-left: 50px; display: block; min-height: 30px;}
-div.welcome > div.point > div.title > a:hover {background-image: url(signpost-on.png);}
+html[dir="ltr"] div.welcome > div.point > div.title > a {font-weight: bold; background-image: url(signpost-ltr.png); background-position: top left; background-repeat: no-repeat; padding-left: 50px; display: block; min-height: 30px;}
+html[dir="rtl"] div.welcome > div.point > div.title > a {font-weight: bold; background-image: url(signpost-rtl.png); background-position: top right; background-repeat: no-repeat; padding-right: 50px; display: block; min-height: 30px;}
+html[dir="ltr"]  div.welcome > div.point > div.title > a:hover {background-image: url(signpost-on-ltr.png);}
+html[dir="rtl"]  div.welcome > div.point > div.title > a:hover {background-image: url(signpost-on-rtl.png);}
 div.welcome > div.point.noblurb > div.title > a {padding-top: 3px;}
 div.welcome a {text-decoration: none; color: #047063;}
 div.welcome a:hover {color: #059080; }
 div.welcome > div.point > div.title > a > span.pdf {background-color: #bd6c73; color: #ffffff; padding: 2px 5px; font-size: 0.8rem; border-radius: 2px; position: relative; top: -2px;}
-div.welcome > div.point > div.blurb {margin-top: 5px; padding-left: 50px; }
+html[dir="ltr"] div.welcome > div.point > div.blurb {margin-top: 5px; padding-left: 50px; }
+html[dir="rtl"] div.welcome > div.point > div.blurb {margin-top: 5px; padding-right: 50px; }
 div.welcome > div.point > div.subtitle {margin: 20px 0px 0px 45px; background-color: #f3f3f3; border-radius: 4px 4px 0px 0px; padding: 10px 15px 0px 15px; text-shadow: 1px 1px 0px #ffffff; font-size: 0.95rem; width: 25%; font-weight: bold;}
 div.welcome > div.point > div.subblurb {margin: 0px 0px 0px 45px; background-color: #f3f3f3; border-radius: 0px 4px 4px 4px; padding: 15px 15px; text-shadow: 1px 1px 0px #ffffff; font-size: 0.95rem;}
 div.welcome > div.point > div.subblurb > div.add {margin-top: 10px; padding-top: 10px; border-top: 2px solid #ffffff; color: #999999; margin-left: -15px; margin-right: -15px; padding-left: 15px; padding-right: 15px;}
 
-div.usertop {background-image: url(user.png); background-position: left center; background-repeat: no-repeat; padding-left: 80px; min-height: 60px; margin-bottom: 20px;}
+html[dir="ltr"] div.usertop {background-image: url(user.png); background-position: left center; background-repeat: no-repeat; padding-left: 80px; min-height: 60px; margin-bottom: 20px;}
+html[dir="rtl"] div.usertop {background-image: url(user.png); background-position: right center; background-repeat: no-repeat; padding-right: 80px; min-height: 60px; margin-bottom: 20px;}
 div.usertop a {text-decoration: none; color: #047063;}
 div.usertop a:hover {color: #059080; }
 div.usertop > div.title {font-size: 1.5rem; padding-top: 10px;}
@@ -140,18 +153,21 @@ div.error {background-color: #ffcdcc; color: #99004d; font-weight: bold; text-al
 div.yourdicts {font-size: 1.2rem; color: #666666; padding-bottom: 5px; border-bottom: 1px dotted #999999; margin-top: 40px;}
 div.nodicts {margin-top: 15px; color: #999999; margin-bottom: -3px;}
 div.createdict {margin-top: 15px; color: #999999;}
-div.createdict a {text-decoration: none; color: #047063; background-image: url(lightning.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px;}
+html[dir="ltr"] div.createdict a {text-decoration: none; color: #047063; background-image: url(lightning.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px;}
+html[dir="rtl"] div.createdict a {text-decoration: none; color: #047063; background-image: url(lightning.png); background-position: right center; background-repeat: no-repeat; padding-right: 25px; display: inline-block; min-height: 16px;}
 div.createdict a:hover {color: #059080;}
 
 div.dict {margin-top: 13px;}
-div.dict a.dictTitle {display: inline-block; margin-right: 0.5em; font-size: 1.2rem; padding: 5px 10px; background-color: #03A491; color: #ffffff; border-radius: 4px; text-decoration: none; line-height: 1.5em;}
+html[dir="ltr"] div.dict a.dictTitle {display: inline-block; margin-right: 0.5em; font-size: 1.2rem; padding: 5px 10px; background-color: #03A491; color: #ffffff; border-radius: 4px; text-decoration: none; line-height: 1.5em;}
+html[dir="rtl"] div.dict a.dictTitle {display: inline-block; margin-left: 0.5em; font-size: 1.2rem; padding: 5px 10px; background-color: #03A491; color: #ffffff; border-radius: 4px; text-decoration: none; line-height: 1.5em;}
 div.dict a.dictTitle:hover {box-shadow: 0px 0px 2px #999999; color: #eeeeee;}
 div.dict a.dictAction {visibility: hidden; display: inline-block; color: #cccccc; text-decoration: none;}
 div.dict:hover a.dictAction {visibility: visible;}
 div.dict a.dictAction:hover {color: #2c7fba;}
 
 div.adminlink {margin-top: 15px; color: #999999;}
-div.adminlink a {text-decoration: none; color: #047063; background-image: url(cog.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px; margin-right: 0.75em;}
+html[dir="ltr"] div.adminlink a {text-decoration: none; color: #047063; background-image: url(cog.png); background-position: left center; background-repeat: no-repeat; padding-left: 25px; display: inline-block; min-height: 16px; margin-right: 0.75em;}
+html[dir="rtl"] div.adminlink a {text-decoration: none; color: #047063; background-image: url(cog.png); background-position: right center; background-repeat: no-repeat; padding-right: 25px; display: inline-block; min-height: 16px; margin-left: 0.75em;}
 div.adminlink a:hover {color: #059080;}
 
 body.doc {padding-top: 50px;}
@@ -159,6 +175,7 @@ body.doc div.markdown {max-width: 900px; margin-top: 70px; }
 body.doc div.markdown div.nouilang {color: #999999; margin-bottom: 10px;}
 @media (max-width: 800px){
   body.doc div.markdown {margin-top: 50px;}
+  html[dir="rtl"] body.doc div.markdown {margin-right: 0px;}
 }
 
 div.readonly { text-align: center; padding: 115px 0px 0px 0px; background-image: url(maintenance.png); background-position: center top; background-repeat: no-repeat; line-height: 1.5em; color: #666666;}

@@ -34,7 +34,7 @@ Spec.templates["title"]={
     <div class="fy_container">
       <div class="fy_box">
         <div class="fy_horizon">
-          <span class="fy_textbox" style="position: absolute; left: 0px; right: 0px;"><input onchange="Fy.changed()"/></span>
+          <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 0px;"><input onchange="Fy.changed()"/></span>
         </div>
       </div>
     </div>`;

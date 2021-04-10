@@ -1,4 +1,5 @@
-#header {padding: 10px 10px; height: 38px; border-bottom: 1px solid var(--border); background-image: url(header-back.gif); background-position: right top; background-repeat: no-repeat;}
+[dir="ltr"] #header {padding: 10px 10px; height: 38px; border-bottom: 1px solid var(--border); background-image: url(header-back-ltr.png); background-position: right top; background-repeat: no-repeat;}
+[dir="rtl"] #header {padding: 10px 10px; height: 38px; border-bottom: 1px solid var(--border); background-image: url(header-back-rtl.png); background-position: left top; background-repeat: no-repeat;}
 body.narrow #header {border-bottom: 0px;}
 #header * {vertical-align: middle;}
 #header a {text-decoration: none;}
@@ -9,12 +10,12 @@ body.narrow #header {border-bottom: 0px;}
 #header a.dicTitle {display: inline-block; font-size: 20px; padding: 8px 10px; background-color: #03A491; color: #ffffff; border-radius: 4px; white-space: nowrap; overflow-x: hidden;}
 #header a.dicTitle:hover {box-shadow: 0px 0px 2px #999999; color: #eeeeee;}
 
-#header span.dicLinks {margin-left: 10px;}
+#header span.dicLinks {margin-inline-start: 10px;}
 #header a.dicLink {font-size: 16px; color: #999999; border: 1px solid transparent; border-radius: 100px; padding: 5px 0px; margin: 0px 5px;}
 #header a.dicLink:hover { color: #666666; }
 #header a.dicLink.current {border-color: #666666; color: #666666; background-color: #ffffff; padding: 5px 10px; z-index: 1; position: relative;}
 #header a.dicLink.current:hover {box-shadow: 0px 0px 2px #999999; }
-#header a.dicLink.mergeleft {margin-left: -15px; z-index: 0; background-color: #eeeeee; padding: 4px 10px; position: relative; top: 1px;}
+#header a.dicLink.mergeleft {margin-inline-start: -15px; z-index: 0; background-color: #eeeeee; padding: 4px 10px; position: relative; top: 1px;}
 #header a.dicLink.disabled {cursor: not-allowed; color: #dddddd;}
 
 #header span.xnetTitleContainer {display: inline-block; font-size: 20px; margin: 0px 5px 0px 0px; border: 2px solid #03A491; border-radius: 4px; background-color: #c1f1ec;}
@@ -24,8 +25,9 @@ body.narrow #header {border-bottom: 0px;}
 #header span.xnetTitleContainer a.xnet span.label {display: inline-block; font-size: 16px; color: #999999; padding: 0px 5px; font-weight: bold; position: relative; top: -1px;}
 #header span.xnetTitleContainer a.xnet:hover {text-shadow: 0px 0px 2px #ffffff; color: #026c60;}
 
-#header div.topright {display: inline-block; position: absolute; top: 18px; right: 20px; color: #666666; z-index: 1;}
-#header div.topright > div.one {display: inline-block; margin-left: 1em;}
+[dir="ltr"] #header div.topright {display: inline-block; position: absolute; top: 18px; right: 20px; color: #666666; z-index: 1;}
+[dir="rtl"] #header div.topright {display: inline-block; position: absolute; top: 18px; left: 20px; color: #666666; z-index: 1;}
+#header div.topright > div.one {display: inline-block; margin-inline-start: 1em;}
 
 #header div.doctypes {height: 30px; position: absolute; top: 59px;}
 #header div.doctypes a.doctype {display: inline-block; height: 35px; float: left; margin-right: 10px; color: #999999}
@@ -49,18 +51,24 @@ div.notification a:hover {color: #006ed7;}
 
 #pagebody div.field {max-width: 1200px; margin: 150px auto 50px auto; font-size: 1rem; }
 @media(max-width: 1300px) {#pagebody div.field {margin: 30px 20px 50px 20px;}}
-div.signposts {float: left; margin-right: 70px; margin-bottom: 40px; min-width: 250px; max-width: 375px;}
-@media(max-width: 1300px) {div.signposts {margin-bottom: 20px; margin-right: 20px;}}
-div.signposts div.title {border-bottom: 1px dotted #cccccc; padding: 0px 0px 15px 0px; margin: 60px 0px 20px 0px; font-size: 1.25rem; color: #666666;}
+[dir="ltr"] div.signposts {float: left; margin-right: 70px; margin-bottom: 40px; min-width: 250px; max-width: 375px;}
+[dir="rtl"] div.signposts {float: right; margin-left: 70px; margin-bottom: 40px; min-width: 250px; max-width: 375px;}
+@media(max-width: 1300px) {div.signposts {margin-bottom: 20px; margin-inline-end: 20px;}}
+[dir="ltr"] div.signposts div.title {border-bottom: 1px dotted #cccccc; padding: 0px 0px 15px 0px; margin: 60px 0px 20px 0px; font-size: 1.25rem; color: #666666;}
+[dir="rtl"] div.signposts div.title {border-bottom: 1px dotted #cccccc; padding: 15px 0px 0px 0px; margin: 60px 0px 20px 0px; font-size: 1.25rem; color: #666666;}
 div.signposts div.title:first-child {margin-top: 0px;}
-@media(max-width: 1300px) {div.signposts div.title {padding-right: 0px;}}
-div.signposts div.signpost {background-image: url(signpost.png); background-position: 0px 0px; background-repeat: no-repeat; min-height: 30px; margin: 0px 30px 20px 0px;  }
-div.signposts div.signpost:hover {background-image: url(signpost-on.png);}
-div.signposts div.signpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: var(--link)}
+@media(max-width: 1300px) {div.signposts div.title {padding-inline-end: 0px;}}
+[dir="ltr"] div.signposts div.signpost {background-image: url(signpost-ltr.png); background-position: top left;  background-repeat: no-repeat; min-height: 30px; margin: 0px 30px 20px 0px;  }
+[dir="rtl"] div.signposts div.signpost {background-image: url(signpost-rtl.png); background-position: top right; background-repeat: no-repeat; min-height: 30px; margin: 0px 0px 20px 30px;  }
+[dir="ltr"] div.signposts div.signpost:hover {background-image: url(signpost-on-ltr.png);}
+[dir="rtl"] div.signposts div.signpost:hover {background-image: url(signpost-on-rtl.png);}
+[dir="ltr"] div.signposts div.signpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: var(--link)}
+[dir="rtl"] div.signposts div.signpost a {display: inline-block; padding: 7px 40px 7px 10px; text-decoration: none; color: var(--link)}
 div.signposts div.signpost a:hover {color: var(--link-hover);}
 div.signposts div.signpost.disabled a {color: #999999; cursor: not-allowed;}
 div.signposts div.signpost.disabled:hover {background-image: url(signpost.png);}
-div.field > div.clear {clear: left;}
+[dir="ltr"] div.field > div.clear {clear: left;}
+[dir="rtl"] div.field > div.clear {clear: right;}
 
 div.glance {background-color: #eeeeee; border-radius: 20px; padding: 20px; margin-top: -15px; text-shadow: 1px 1px 0px #ffffff; font-size: 0.95em;}
 div.glance > div.overtitle {color: #666666; font-size: 1.25em; border-bottom: 2px solid #ffffff; padding-bottom: 20px; font-weight: bold; margin-top: 10px;}
@@ -69,17 +77,21 @@ div.glance span.filename {font-weight: bold;}
 div.glance > table {width: 100%; margin: 0px 0px 15px 0px;}
 div.glance > table tr.stat {}
 div.glance > table tr.stat > td {border-bottom: 2px solid #ffffff; padding: 15px 0px;}
-div.glance > table tr.stat > td.caption {color: #333333; padding-right: 20px;}
-div.glance > table tr.stat > td.value {text-align: right; color: var(--link); font-size: 1.5em;}
-div.glance div.minisignpost {background-image: url(signpost.png); background-position: 0px 5px; background-repeat: no-repeat; background-size: 20px 20px; min-height: 25px; margin: 0px 30px 0px 0px;  }
-div.glance div.minisignpost:hover {background-image: url(signpost-on.png);}
-div.glance div.minisignpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: var(--link)}
+div.glance > table tr.stat > td.caption {color: #333333; padding-inline-end: 20px;}
+div.glance > table tr.stat > td.value {text-align: end; color: var(--link); font-size: 1.5em;}
+[dir="ltr"] div.glance div.minisignpost {background-image: url(signpost-ltr.png); background-position: top+5px left; background-repeat: no-repeat; background-size: 20px 20px; min-height: 25px; margin: 0px 30px 0px 0px;  }
+[dir="rtl"] div.glance div.minisignpost {background-image: url(signpost-rtl.png); background-position: top+5px right; background-repeat: no-repeat; background-size: 20px 20px; min-height: 25px; margin: 0px 0px 0px 30px;  }
+[dir="ltr"] div.glance div.minisignpost:hover {background-image: url(signpost-on-ltr.png);}
+[dir="rtl"] div.glance div.minisignpost:hover {background-image: url(signpost-on-rtl.png);}
+[dir="ltr"] div.glance div.minisignpost a {display: inline-block; padding: 7px 10px 7px 40px; text-decoration: none; color: var(--link)}
+[dir="rtl"] div.glance div.minisignpost a {display: inline-block; padding: 7px 40px 7px 10px; text-decoration: none; color: var(--link)}
 div.glance div.minisignpost a:hover {color: var(--link-hover);}
 
 div.dangerzone {position: absolute; bottom: 40px; left: 0px; right: 0px; color: #999999;}
 div.dangerzone > div.inside {max-width: 1200px; margin: 0px auto 0px auto; }
 @media(max-width: 1300px) {div.dangerzone {position: relative; bottom: auto; margin: 20px 20px;}}
-div.dangerzone a {text-decoration: none; color: var(--link); display: inline-block; background-position: left center; background-repeat: no-repeat; padding-left: 25px; min-height: 16px; background-color: #ffffff; margin-right: 1em;}
+[dir="ltr"] div.dangerzone a {text-decoration: none; color: var(--link); display: inline-block; background-position: left center;  background-repeat: no-repeat; padding-inline-start: 25px; min-height: 16px; background-color: #ffffff; margin-inline-end: 1em;}
+[dir="rtl"] div.dangerzone a {text-decoration: none; color: var(--link); display: inline-block; background-position: right center; background-repeat: no-repeat; padding-inline-start: 25px; min-height: 16px; background-color: #ffffff; margin-inline-end: 1em;}
 div.dangerzone a:hover {color: var(--link-hover);}
 div.dangerzone a.purge {background-image: url(bin_closed_bw.png); }
 div.dangerzone a.purge:hover {background-image: url(bin_closed.png);}

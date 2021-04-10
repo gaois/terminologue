@@ -97,7 +97,7 @@ Spec.templates["blurbStringUnlabelled"]={
 
 Spec.templates["when"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;">
     <input type="date" class="date" onchange="Fy.changed()" style="width: auto"/>
     <input type="time" class="time" onchange="Fy.changed()" style="width: auto"/>
   </span>`,

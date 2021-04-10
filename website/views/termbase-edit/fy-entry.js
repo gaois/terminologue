@@ -259,10 +259,10 @@ Spec.templates["dStatus"]={
 Spec.templates["dateStamp"]={
   type: "string",
   html: `<div class="fy_node" style="min-height: 2em;">
-    <div class="fy_horizon" style="width: 12em; display: inline-block; float: left;">
+    <div class="fy_horizon" style="width: 12em; display: inline-block; float: inline-start;">
       <span class="fy_textbox" style="width: 100%"><input class="date" type="date" onchange="Fy.changed('dateStampChange')"/></span>
     </div>
-    <button style="margin-top: 1px; margin-left: 1em;" onclick="$(this).closest('.fy_node').find('input').val((new Date()).toISOString().split('T')[0]); Fy.changed('dateStampChange')">${L("set to today")}</button>
+    <button style="margin-top: 1px; margin-inline-start: 1em;" onclick="$(this).closest('.fy_node').find('input').val((new Date()).toISOString().split('T')[0]); Fy.changed('dateStampChange')">${L("set to today")}</button>
   </div>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -274,10 +274,10 @@ Spec.templates["dateStamp"]={
 Spec.templates["tod"]={
   type: "string",
   html: `<div class="fy_node" style="min-height: 2em;">
-    <div class="fy_horizon" style="width: 12em; display: inline-block; float: left;">
+    <div class="fy_horizon" style="width: 12em; display: inline-block; float: inline-start;">
       <span class="fy_textbox" style="width: 100%"><input class="asterisk" type="date" onchange="Fy.changed('todChange')"/></span>
     </div>
-    <button style="margin-top: 1px; margin-left: 1em;" onclick="$(this).closest('.fy_node').find('input').val(todNextAvailableDate); todNextAvailableDateIncrement(); Fy.changed('todChange')">${L("set to next available date")}</button>
+    <button style="margin-top: 1px; margin-inline-start: 1em;" onclick="$(this).closest('.fy_node').find('input').val(todNextAvailableDate); todNextAvailableDateIncrement(); Fy.changed('todChange')">${L("set to next available date")}</button>
   </div>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -302,7 +302,7 @@ Spec.templates["domain"]={
         <span class="fy_remover" changeName="domainRemove"></span>
         <span class="fy_downer" changeName="domainReorder"></span>
         <span class="fy_upper" changeName="domainReorder"></span>
-        <span class="fy_textbox" style="display: block; margin-left: 5px; margin-right: 125px;">
+        <span class="fy_textbox" style="display: block; margin-inline-start: 5px; margin-inline-end: 125px;">
           <select onchange="Fy.changed('domainChange');" size="1" style="width: 100%" onfocus="this.size='10'; Spec.changeSelectTitles(this)" onblur="this.size='1'; Spec.changeSelectTitles(this)"></select>
         </span>
       </div>
@@ -467,7 +467,7 @@ Spec.templates["lang"]={
 };
 Spec.templates["wording"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;">
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 100px; inset-inline-end: 110px;">
     <input style="font-weight: bold;" onkeyup="Spec.templates.wording.changed(this, 'eager')" onchange="Fy.changed('termWordingChange'); Spec.templates.wording.changed(this, 'lazy')"/>
   </span>`,
   set: function($me, data){
@@ -488,7 +488,7 @@ Spec.templates["clarif"]={
   type: "string",
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">${L("clarification")}</span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed('desigClarifChange')"/></span>
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed('desigClarifChange')"/></span>
   </div>`,
   set: function($me, data){
     $me.find("input").val(data);
@@ -504,7 +504,7 @@ Spec.templates["accept"]={
   type: "string",
   html: `<div class="fy_horizon">
     <span class="fy_label" style="width: 245px;">${L("acceptability")}</span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;">
       <select onchange="Fy.changed('desigAcceptChange')"></select>
     </span>
   </div>`,
@@ -540,7 +540,7 @@ Spec.templates["source"]={
     <span class="fy_downer" changeName="sourceReorder"></span>
     <span class="fy_upper" changeName="sourceReorder"></span>
     <span class="fy_label" style="width: 245px;">${L("source")}</span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 110px;">
       <select onchange="Fy.changed('sourceChange')"></select>
     </span>
   </div>`,
@@ -613,7 +613,7 @@ Spec.templates["inflectLabel"]={
 };
 Spec.templates["inflectText"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 100px; right: 110px;"><input onchange="Fy.changed('termInflectTextChange')"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 100px; inset-inline-end: 110px;"><input onchange="Fy.changed('termInflectTextChange')"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },
@@ -795,7 +795,7 @@ Spec.templates["intros"]={
 };
 Spec.templates["intro"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed('introChange')"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed('introChange')"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },
@@ -907,7 +907,7 @@ Spec.templates["noteType"]={
   html: `<div class="fy_container">
     <span style="display: none;"></span>
     <div class="fy_horizon">
-      <span class="fy_textbox" style="position: absolute; left: 0px; right: 125px;">
+      <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 125px;">
         <select onchange="Fy.changed('noteTypeChange');"></select>
       </span>
       <span class="fy_remover" changeName="noteRemove"></span>
@@ -1021,7 +1021,7 @@ Spec.templates["exampleTextItem"]={
       <span class="fy_downer" changeName="exampleTextReorder"></span>
       <span class="fy_upper" changeName="exampleTextReorder"></span>
     </div>
-    <textarea onchange="Fy.changed('exampleTextChange')" style="padding-right: 125px;"/></textarea>
+    <textarea onchange="Fy.changed('exampleTextChange')" style="padding-inline-end: 125px;"/></textarea>
   </span>`,
   set: function($me, data){
     $me.find("textarea").val(data);
@@ -1047,7 +1047,7 @@ Spec.templates["collection"]={
         <span class="fy_remover" changeName="collectionRemove"></span>
         <span class="fy_downer" changeName="collectionReorder"></span>
         <span class="fy_upper" changeName="collectionReorder"></span>
-        <span class="fy_textbox" style="position: absolute; left: 0px; right: 125px;">
+        <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 125px;">
           <select onchange="Fy.changed('collectionChange');"></select>
         </span>
       </div>
@@ -1083,7 +1083,7 @@ Spec.templates["extranet"]={
         <span class="fy_remover" changeName="extranetRemove"></span>
         <span class="fy_downer" changeName="extranetReorder"></span>
         <span class="fy_upper" changeName="extranetReorder"></span>
-        <span class="fy_textbox" style="position: absolute; left: 0px; right: 125px;">
+        <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 125px;">
           <select onchange="Fy.changed('extranetChange');"></select>
         </span>
       </div>
@@ -1121,7 +1121,7 @@ Spec.templates["lingySource"]={
       <select class="hanger" onchange="Fy.changed('sourceLangChange')"></select>
       ${L("source")}
     </span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px;">
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 110px;">
       <select class="id" onchange="Fy.changed('sourceChange')"></select>
     </span>
   </div>`,

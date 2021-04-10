@@ -60,7 +60,7 @@ Spec.templates["lang"]={
     <span class="fy_remover" changeName='domainRemove'></span>
     <span class="fy_downer"  changeName='domainReorder'></span>
     <span class="fy_upper"   changeName='domainReorder'></span>
-    <span class="fy_textbox" style="position: absolute; left: 0px; right: 110px;">
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 110px;">
       <select style="font-weight: bold;" onchange="Fy.changed()"></select>
     </span>
   </div>`,

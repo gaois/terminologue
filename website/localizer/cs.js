@@ -295,7 +295,7 @@ function L(s, gloss){
   if(s=="Number of entries") return "Počet hesel";
   if(s=="Number of items in history log") return "Počet záznamů v historii";
   if(s=="Your termbase is stored in the file %F") return "Vaše databáze je uložena v souboru %F";
-  if(s=="File size") return "Velikost soubou";
+  if(s=="File size") return "Velikost souboru";
   if(s=="Download %F") return "Stáhnout %F";
   if(s=="Upload %F") return "Nahrát %F";
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Soubor, který nahráváte, musí být platná terminologická databáze pro Terminologue. Nahrajete-li něco jiného, nenávratně si svou databázi rozbijete.";

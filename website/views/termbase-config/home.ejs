@@ -35,7 +35,7 @@
 				$(".localizeme.number").each(function(){
 					var $this=$(this);
 					var num=new Number($this.html());
-					var str=num.toLocaleString("<%=uilang%>", {maximumFractionDigits: 2});
+					var str=num.toLocaleString("<%=uilang%>", {maximumFractionDigits: 2, numberingSystem: "latn"});
 					$this.html(str);
 				});
 			});

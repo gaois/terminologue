@@ -11,7 +11,7 @@
 #middlebox div.field div.instro { padding: 0px 5px; margin-bottom: 10px; margin-top: 7px; color: #999999; line-height: 1.5em;}
 
 
-#middlebox div.field div.url {position: relative; box-sizing: border-box; width: 100%; margin: 0px 0px 0px 0px; font: inherit; border-width: 0px; border-radius: 4px; background-color: #ffffff; box-shadow: inset 0px 0px 2px #666666; min-height: 1.3em; white-space: nowrap; }
+#middlebox div.field div.url {position: relative; box-sizing: border-box; width: 100%; margin: 0px 0px 0px 0px; font: inherit; border-width: 0px; border-radius: 4px; background-color: #ffffff; box-shadow: inset 0px 0px 2px #666666; min-height: 1.3em; white-space: nowrap; direction: ltr;}
 #middlebox div.field div.url span.pre {white-space: nowrap; display: inline-block; padding: 9px 0px 9px 8px; color: #999999; }
 #middlebox div.field div.url input.post {box-sizing: border-box; display: inline-block; width: auto; font: inherit; border: 0px; background-color: transparent; padding: 9px 8px 9px 0px; white-space: nowrap; padding: 6px 0px; }
 
@@ -21,6 +21,6 @@
 #middlebox div.error {background-color: #ffcdcc; color: #99004d; font-weight: bold; text-align: center; padding: 40px; margin: 30px -30px -40px -30px; text-shadow: 1px 1px 0px #eeeeee;}
 
 #middlebox div.two div.message {text-align: center; margin: 50px 0px 0px 0px;}
-#middlebox div.two div.url {text-align: center; margin: 10px 0px 50px 0px;}
+#middlebox div.two div.url {text-align: center; margin: 10px 0px 50px 0px; direction: ltr;}
 #middlebox div.two div.url a {text-decoration: none; color: #004f9b;}
 #middlebox div.two div.url a:hover {color: #006ed7;}

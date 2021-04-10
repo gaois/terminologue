@@ -38,7 +38,7 @@ Spec.templates["public"]={
   type: "bool",
   html: `<div class="fy_box">
     <div class="fy_horizon">
-      <span class="fy_textbox" style="position: absolute; left: 0px; right: 0px;">
+      <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 0px;">
         <select onchange="Fy.changed(); $(this).closest('.fy_onlybody').data('template').refresh( $(this).closest('.fy_onlybody') )">
           <option value="0">${L("private")}</option>
           <option value="1">${L("public")}</option>
@@ -62,7 +62,7 @@ Spec.templates["licence"]={
   },
   html: `<div class="fy_box">
     <div class="fy_horizon">
-      <span class="fy_textbox" style="position: absolute; left: 0px; right: 0px;">
+      <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 0px;">
         <select onchange="Fy.changed();">
         </select>
       </span>

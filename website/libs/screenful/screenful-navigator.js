@@ -240,14 +240,14 @@ Screenful.Navigator={
       $("body").css("user-select", "none");
       $resizer1.addClass("active");
       $(window).mousemove(function(e){
-        var newWidth=e.pageX;
+        var newWidth=e.pageX; if( $("html").attr("dir")=="rtl" ) newWidth=$(document).width()-e.pageX;
         if($("#envelope").hasClass("leftContainerExpanded")){
           newWidth=newWidth-($("#leftcontainer").width());
         }
         $("#navbox").css("width", newWidth);
         $("#listbox").css("width", newWidth);
         $("#starlist").css("width", newWidth);
-        $("#editbox").css("left", newWidth);
+        $("#editbox").css("inset-inline-start", newWidth);
       });
     });
 
@@ -262,9 +262,9 @@ Screenful.Navigator={
       $("body").css("user-select", "none");
       $resizer2.addClass("active");
       $(window).mousemove(function(e){
-        var newWidth=e.pageX;
+        var newWidth=e.pageX; if( $("html").attr("dir")=="rtl" ) newWidth=$(document).width()-e.pageX;
         $("#leftcontainer").css("width", newWidth);
-        $("#midcontainer").css("left", newWidth);
+        $("#midcontainer").css("inset-inline-start", newWidth);
       });
     });
 

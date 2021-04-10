@@ -55,7 +55,7 @@ Spec.templates["abbr"]={
     <span class="fy_remover"></span>
     <span class="fy_downer"></span>
     <span class="fy_upper"></span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px; font-weight: bold;"><input onchange="Fy.changed()"/></span>
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 110px; font-weight: bold;"><input onchange="Fy.changed()"/></span>
     <span class="fy_label" style="width: 245px;">${L("abbreviation")}</span>
   </div>`,
   set: function($me, data){
@@ -69,7 +69,7 @@ Spec.templates["abbr"]={
 Spec.templates["role"]={
   type: "string",
   html: `<div class="fy_horizon">
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;">
       <select onchange="Fy.changed()">
         <option value="major">${L("major")}</option>
         <option value="minor">${L("minor")}</option>
@@ -121,7 +121,7 @@ Spec.templates["title"]={
 };
 Spec.templates["titleString"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed()"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },

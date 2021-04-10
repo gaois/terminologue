@@ -1,6 +1,7 @@
 #middlebox {max-width: 600px; padding: 40px 30px; min-height: 100px; margin: 75px auto 50px auto; border: 1px solid var(--border); background-color: #ffffff; border-radius: 4px; box-shadow: 0px 0px 4px #666666; }
 
-#middlebox .one {background-image: url(upload.png); background-position: left+5px top+5px; background-repeat: no-repeat; padding-left: 70px;}
+[dir="ltr"] #middlebox .one {background-image: url(upload.png); background-position: left+5px top+5px; background-repeat: no-repeat; padding-left: 70px;}
+[dir="rtl"] #middlebox .one {background-image: url(upload.png); background-position: right+5px top+5px; background-repeat: no-repeat; padding-right: 70px;}
 
 #middlebox div.field {margin-top: 10px;}
 #middlebox div.field:first-child {margin-top: 0px;}

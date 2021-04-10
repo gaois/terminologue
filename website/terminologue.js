@@ -22,6 +22,7 @@ const localizer={
   nl: require("./localizer/nl.js"),
   ru: require("./localizer/ru.js"),
   es: require("./localizer/es.js"),
+  ar: require("./localizer/ar.js"),
 };
 
 //our uploader:

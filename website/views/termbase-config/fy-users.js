@@ -62,7 +62,7 @@ Spec.templates["email"]={
     <span class="fy_remover" xconfirm="Sure?"></span>
     <span class="fy_downer"></span>
     <span class="fy_upper"></span>
-    <span class="fy_textbox" style="position: absolute; left: 250px; right: 110px; font-weight: bold;"><input onchange="Fy.changed()"/></span>
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 110px; font-weight: bold;"><input onchange="Fy.changed()"/></span>
     <span class="fy_label" style="width: 245px;">${L("e-mail address")}</span>
   </div>`,
   set: function($me, data){
@@ -78,7 +78,7 @@ Spec.templates["level"]={
   type: "string",
   html: `<div class="fy_box">
     <div class="fy_horizon">
-      <span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;">
+      <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;">
         <select onchange="Fy.changed()">
           <option value="1">1 — ${L("reader")}</option>
           <option value="2">2 — ${L("editor")}</option>

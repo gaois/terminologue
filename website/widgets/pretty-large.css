@@ -8,11 +8,15 @@ div.prettyEntry.large .hintable {cursor: default;}
 div.prettyEntry.large .hintable:hover {border-bottom: 2px dotted #666666 !important;}
 
 div.prettyEntry.large div.prettyRow {}
-div.prettyEntry.large div.prettyRow > div.clear {clear: left;}
-div.prettyEntry.large div.prettyCell {float: left; box-sizing: border-box; padding-left: 15px; min-height: 1em;}
-div.prettyEntry.large div.prettyCell:first-child {padding-left: 0px;}
+[dir="ltr"] div.prettyEntry.large div.prettyRow > div.clear {clear: left;}
+[dir="rtl"] div.prettyEntry.large div.prettyRow > div.clear {clear: right;}
+[dir="ltr"] div.prettyEntry.large div.prettyCell {float: left; box-sizing: border-box; padding-left: 15px; min-height: 1em;}
+[dir="rtl"] div.prettyEntry.large div.prettyCell {float: right; box-sizing: border-box; padding-right: 15px; min-height: 1em;}
+[dir="ltr"] div.prettyEntry.large div.prettyCell:first-child {padding-left: 0px;}
+[dir="rtl"] div.prettyEntry.large div.prettyCell:first-child {padding-right: 0px;}
 
-div.prettyEntry.large div.prettyRow.domain {font-size: 0.8em; position: relative; background: linear-gradient(to right, #bbe2de 0%, transparent 100%); padding: 2px 6px; margin: 0px 0px 8px 0px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
+[dir="ltr"] div.prettyEntry.large div.prettyRow.domain {font-size: 0.8em; position: relative; background: linear-gradient(to right, #bbe2de 0%, transparent 100%); padding: 2px 6px; margin: 0px 0px 8px 0px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
+[dir="rtl"] div.prettyEntry.large div.prettyRow.domain {font-size: 0.8em; position: relative; background: linear-gradient(to left, #bbe2de 0%, transparent 100%); padding: 2px 6px; margin: 0px 0px 8px 0px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
 div.prettyEntry.large div.prettyRow.majorTerms {border-top: 1px solid #eeeeee; padding: 3px 0px;}
 div.prettyEntry.large div.prettyRow.minorTerms {border-top: 1px solid #eeeeee; padding: 13px 0px;}
 div.prettyEntry.large div.prettyRow.definition {border-top: 1px solid #eeeeee; padding: 13px 0px;}
@@ -25,8 +29,10 @@ div.prettyEntry.large div.bin {border-top: 1px solid #eeeeee; padding: 10px 5px;
 div.prettyEntry.large div.bin div.dateStamp {padding: 0px 0px 0px px; font-size: 0.75em; color: #999999; line-height: 2.5em;}
 div.prettyEntry.large div.bin div.prettyXrefs {padding: 0px 0px 0px 0px;}
 
-div.prettyEntry.large div.prettyDesig {position: relative; padding-left: 2.5em; margin: 10px 0px;}
-div.prettyEntry.large div.prettyDesig span.prettyLang {display: block; width: 2.5em; background-color: #eeeeee; text-align: center; position: absolute; top: 0px; left: 0px; text-shadow: 1px 1px 0px #ffffff; border-radius: 4px; font-size: 0.8em; border: 1px solid #86d1c9;}
+[dir="ltr"] div.prettyEntry.large div.prettyDesig {position: relative; padding-left: 2.5em; margin: 10px 0px;}
+[dir="rtl"] div.prettyEntry.large div.prettyDesig {position: relative; padding-right: 2.5em; margin: 10px 0px;}
+[dir="ltr"] div.prettyEntry.large div.prettyDesig span.prettyLang {display: block; width: 2.5em; background-color: #eeeeee; text-align: center; position: absolute; top: 0px; left: 0px; text-shadow: 1px 1px 0px #ffffff; border-radius: 4px; font-size: 0.8em; border: 1px solid #86d1c9;}
+[dir="rtl"] div.prettyEntry.large div.prettyDesig span.prettyLang {display: block; width: 2.5em; background-color: #eeeeee; text-align: center; position: absolute; top: 0px; right: 0px; text-shadow: 1px 1px 0px #ffffff; border-radius: 4px; font-size: 0.8em; border: 1px solid #86d1c9;}
 div.prettyEntry.large div.prettyDesig span.clarif {font-style: italic; font-size: 0.8em;}
 div.prettyEntry.large div.prettyDesig span.accept {font-style: italic; color: #947253; font-size: 0.8em;}
 div.prettyEntry.large div.prettyDesig div.inflects {font-size: 0.8em;}
@@ -37,7 +43,8 @@ div.prettyEntry.large div.prettyDesig span.prettyWording {font-weight: bold; col
 div.prettyEntry.large div.prettyDesig span.prettyWording span.char {}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.char.on {background-color: #eff5ca; box-shadow: 0px 0px 5px #e4e3af;}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.label.on {background-color: #eff5ca;}
-div.prettyEntry.large div.prettyDesig span.prettyWording span.label {font-style: italic; color: #536d94; font-weight: normal; padding-left: 0.4em; padding-right: 0.4em; margin-right: -0.3em; cursor: default;}
+[dir="ltr"] div.prettyEntry.large div.prettyDesig span.prettyWording span.label {font-style: italic; color: #536d94; font-weight: normal; padding-left: 0.4em; padding-right: 0.4em; margin-right: -0.3em; cursor: default;}
+[dir="rtl"] div.prettyEntry.large div.prettyDesig span.prettyWording span.label {font-style: italic; color: #536d94; font-weight: normal; padding-left: 0.4em; padding-right: 0.4em; margin-left: -0.3em; cursor: default;}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.label.posLabel {}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.label.inflectLabel {}
 div.prettyEntry.large div.prettyDesig span.prettyWording span.label.langLabel {}
@@ -55,31 +62,39 @@ div.prettyEntry.large .minorTerms div.prettyDesig {margin: 0px; margin-right: 0e
 div.prettyEntry.large .minorTerms div.prettyDesig span.prettyLang {font-size: 0.7em; width: 1.75em; padding: 0px 8px; border: 0px;}
 div.prettyEntry.large .minorTerms div.prettyDesig span.prettyWording {font-size: 0.8em; color: #666666; white-space: nowrap;}
 
-div.prettyEntry.large div.prettyIntro {position: relative; padding-left: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em; color: #666666;}
+[dir="ltr"] div.prettyEntry.large div.prettyIntro {position: relative; padding-left: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em; color: #666666;}
+[dir="rtl"] div.prettyEntry.large div.prettyIntro {position: relative; padding-right: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em; color: #666666;}
 
-div.prettyEntry.large span.prettyDefinition {display: block; font-size: 0.8em; padding-left: 5px;}
+[dir="ltr"] div.prettyEntry.large span.prettyDefinition {display: block; font-size: 0.8em; padding-left: 5px;}
+[dir="rtl"] div.prettyEntry.large span.prettyDefinition {display: block; font-size: 0.8em; padding-right: 5px;}
 div.prettyEntry.large span.prettyDefinition span.domain {display: inline-block; background-color: #d7edeb; padding: 2px 6px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
-div.prettyEntry.large span.prettyDefinition span.domain:first-child {margin-left: -5px;}
+[dir="ltr"] div.prettyEntry.large span.prettyDefinition span.domain:first-child {margin-left: -5px;}
+[dir="rtl"] div.prettyEntry.large span.prettyDefinition span.domain:first-child {margin-right: -5px;}
 div.prettyEntry.large span.prettyDefinition span.text {}
 
-div.prettyEntry.large span.prettyNote {display: block; font-size: 0.8em; padding-left: 5px;}
+[dir="ltr"] div.prettyEntry.large span.prettyNote {display: block; font-size: 0.8em; padding-left: 5px;}
+[dir="rtl"] div.prettyEntry.large span.prettyNote {display: block; font-size: 0.8em; padding-right: 5px;}
 div.prettyEntry.large span.prettyNote span.type {display: inline-block; background-color: #ececec; padding: 2px 6px; border-radius: 4px; text-shadow: 1px 1px 0px #ffffff;}
-div.prettyEntry.large span.prettyNote span.type:first-child {margin-left: -5px;}
+[dir="ltr"] div.prettyEntry.large span.prettyNote span.type:first-child {margin-left: -5px;}
+[dir="rtl"] div.prettyEntry.large span.prettyNote span.type:first-child {margin-right: -5px;}
 div.prettyEntry.large span.prettyNote span.text {}
 
-div.prettyEntry.large div.prettyExample {display: block; font-size: 0.8em; padding-left: 5px;}
+[dir="ltr"] div.prettyEntry.large div.prettyExample {display: block; font-size: 0.8em; padding-left: 5px;}
+[dir="rtl"] div.prettyEntry.large div.prettyExample {display: block; font-size: 0.8em; padding-right: 5px;}
 div.prettyEntry.large div.prettyExample div.sentence {font-weight: bold; color: #333333; margin-top: 5px;}
 div.prettyEntry.large div.prettyExample div.sentence:first-child {margin-top: 0px;}
 
 div.prettyEntry.large div.prettySources {padding: 5px 0px 0px 5px; font-size: 0.75em; color: #999999;}
-div.prettyEntry.large div.prettyDesig div.prettySources {padding-left: 0px;}
+[dir="ltr"] div.prettyEntry.large div.prettyDesig div.prettySources {padding-left: 0px;}
+[dir="rtl"] div.prettyEntry.large div.prettyDesig div.prettySources {padding-right: 0px;}
 div.prettyEntry.large div.prettySources div.source {}
 
 div.prettyEntry.large div.prettyXrefs > div.title {font-size: 0.75em;}
 div.prettyEntry.large div.prettyXrefs > div.title > span.title {color: #999999; font-weight: bold;}
 div.prettyEntry.large div.prettyXrefs > div.title > span.link {color: #aaaaaa; cursor: pointer; margin-left: 0.5em;}
 div.prettyEntry.large div.prettyXrefs > div.title > span.link:hover {color: var(--link);}
-div.prettyEntry.large div.prettyXrefs div.xref {margin-top: 5px; margin-left: 10px; background-image: url(../furniture/arrow_right.png); background-position: center left; padding-left: 30px; background-repeat: no-repeat;}
+[dir="ltr"] div.prettyEntry.large div.prettyXrefs div.xref {margin-top: 5px; margin-left: 10px; background-image: url(../furniture/arrow_right.png); background-position: center left; padding-left: 30px; background-repeat: no-repeat;}
+[dir="rtl"] div.prettyEntry.large div.prettyXrefs div.xref {margin-top: 5px; margin-right: 10px; background-image: url(../furniture/arrow_left.png); background-position: center right; padding-right: 30px; background-repeat: no-repeat;}
 div.prettyEntry.large div.prettyXrefs div.xref > span.id {color: #aaaaaa; cursor: pointer;}
 div.prettyEntry.large div.prettyXrefs div.xref > span.id:hover {color: var(--link);}
 body.printable div.prettyEntry.large div.prettyXrefs > div.title > span.link {display: none;}
@@ -93,13 +108,18 @@ div.prettyEntry.large span.prettyEntryOneliner:hover span.term {color: var(--lin
 div.prettyEntry.large span.prettyEntryOneliner:hover span.divider {color: #aaaaaa;}
 
 div.prettyEntry.large div.prettyDateStamp {color: #999999;}
-div.prettyEntry.large div.prettyDateStamp span.title {font-weight: bold; margin-left: 1em;}
-div.prettyEntry.large div.prettyDateStamp span.title:first-child {margin-left: 0;}
-div.prettyEntry.large div.prettyDateStamp span.title img {position: relative; top: 2px; margin-right: 0.25em;}
+[dir="ltr"] div.prettyEntry.large div.prettyDateStamp span.title {font-weight: bold; margin-left: 1em;}
+[dir="rtl"] div.prettyEntry.large div.prettyDateStamp span.title {font-weight: bold; margin-right: 1em;}
+[dir="ltr"] div.prettyEntry.large div.prettyDateStamp span.title:first-child {margin-left: 0;}
+[dir="rtl"] div.prettyEntry.large div.prettyDateStamp span.title:first-child {margin-right: 0;}
+[dir="ltr"] div.prettyEntry.large div.prettyDateStamp span.title img {position: relative; top: 2px; margin-right: 0.25em;}
+[dir="rtl"] div.prettyEntry.large div.prettyDateStamp span.title img {position: relative; top: 2px; margin-left: 0.25em;}
 div.prettyEntry.large div.prettyDateStamp span.date {}
 
-div.prettyEntry.large div.prettyExtranet {padding: 5px; margin-left: -10px; font-size: 90%;}
+[dir="ltr"] div.prettyEntry.large div.prettyExtranet {padding: 5px; margin-left: -10px; font-size: 90%;}
+[dir="rtl"] div.prettyEntry.large div.prettyExtranet {padding: 5px; margin-right: -10px; font-size: 90%;}
 div.prettyEntry.large div.prettyExtranet a {background-color: #c1f1ec; padding: 5px 10px; border-radius: 4px; text-decoration: none; color: var(--link);}
-div.prettyEntry.large div.prettyExtranet a strong {color: #888888; font-weight: bold; font-size: 100%; margin-right: 0.25em;}
+[dir="ltr"] div.prettyEntry.large div.prettyExtranet a strong {color: #888888; font-weight: bold; font-size: 100%; margin-right: 0.25em;}
+[dir="rtl"] div.prettyEntry.large div.prettyExtranet a strong {color: #888888; font-weight: bold; font-size: 100%; margin-left: 0.25em;}
 div.prettyEntry.large div.prettyExtranet a:hover {color: var(--link-hover);}
 div.prettyEntry.large div.prettyExtranet a:hover strong {color: #999999;}

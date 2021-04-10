@@ -702,3 +702,7 @@
 }
 
 .markdown-body h2 {font-weight: normal; margin-top: 2em;}
+
+.markdown-body code {
+  white-space: nowrap;
+}

@@ -49,7 +49,7 @@ Spec.templates[":top"]={
 Spec.templates["trigger"]={
   type: "object",
   html: `<div class="fy_horizon">
-      <span class="fy_textbox" style="position: absolute; left: 700px; right: 0px;">
+      <span class="fy_textbox" style="position: absolute; inset-inline-start: 700px; inset-inline-end: 0px;">
         <select onchange="Fy.changed()">
           <option value="">${L("no change")}</option>
           <option value="c">${L("change to 'not checked'")}</option>

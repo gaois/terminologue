@@ -70,7 +70,7 @@ Spec.templates["parentID"]={
           <span class="fy_remover" changeName="domainRemove"></span>
           <span class="fy_downer" changeName="domainReorder"></span>
           <span class="fy_upper" changeName="domainReorder"></span>
-          <span class="fy_textbox" style="display: block; margin-left: 5px; margin-right: 125px;">
+          <span class="fy_textbox" style="display: block; margin-inline-start: 5px; margin-inline-end: 125px;">
             <select onchange="Fy.changed();" size="1" style="width: 100%" onfocus="this.size='10'; Spec.changeSelectTitles(this)" onblur="this.size='1'; Spec.changeSelectTitles(this)"></select>
           </span>
         </div>
@@ -168,7 +168,7 @@ Spec.templates["title"]={
 };
 Spec.templates["titleString"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; left: 250px; right: 0px;"><input onchange="Fy.changed()"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed()"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },

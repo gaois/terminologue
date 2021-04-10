@@ -546,7 +546,7 @@ Screenful.Editor={
       $("body").css("user-select", "none");
       $resizer1.addClass("active");
       $(window).mousemove(function(e){
-        var newWidth=e.pageX-25;
+        var newWidth=e.pageX-25; if( $("html").attr("dir")=="rtl" ) newWidth=$(document).width()-e.pageX-25;
         $("#container").css("width", newWidth);
         $("#commenting").css("width", $(document).width()-newWidth-75);
         $("#history").css("width", $(document).width()-newWidth-45);

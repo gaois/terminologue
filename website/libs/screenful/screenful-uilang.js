@@ -1,5 +1,12 @@
 Screenful.Uilang={
   start: function(){
+
+    $("html").attr("lang", Screenful.Uilang.current);
+    if(Screenful.Uilang.current=="ar")
+      $("html").attr("dir", "rtl");
+    else
+      $("html").attr("dir", "ltr");
+
     var caption=Screenful.Uilang.current;
     for(var i=0; i<Screenful.Uilang.languages.length; i++){
       var lang=Screenful.Uilang.languages[i];
