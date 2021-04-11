@@ -3,7 +3,8 @@
 body.narrow #header {border-bottom: 0px;}
 #header * {vertical-align: middle;}
 #header a {text-decoration: none;}
-#header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header.png);; margin-top: 5px;}
+[dir="ltr"]  #header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header-ltr.png); margin-top: 5px;}
+[dir="rtl"]  #header a.sitehome {display: inline-block; width: 160px; height: 30px; background-image: url(terminologue-header-rtl.png); margin-top: 5px;}
 #header a.sitehome:hover {position: relative; top: -1px;}
 #envelope #container {overflow-y: visible;} /*override screenful*/
 
