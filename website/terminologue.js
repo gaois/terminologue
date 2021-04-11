@@ -416,7 +416,7 @@ app.post(siteconfig.rootPath+":termbaseID/edit/update.json", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!true) { //user.canEdit
+    if(user.level<=1) {
       db.close();
       res.json({success: false});
     } else {
@@ -433,7 +433,7 @@ app.post(siteconfig.rootPath+":termbaseID/edit/delete.json", function(req, res){
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
-    if(!true) { //user.canEdit
+    if(user.level<=1) {
       db.close();
       res.json({success: false});
     } else {

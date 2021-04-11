@@ -58,7 +58,7 @@
 				Screenful.Navigator.modifiers.push({position: "right", value: lang.abbr, abbr: lang.abbr.toUpperCase(), caption: "<%=L("sorting language")%>: "+Spec.title(lang.title, "<%=uilang%>")},);
 			}
 		});
-		Screenful.Navigator.entryDeleteUrl="./delete.json";
+		<%if(user.level>1){%>Screenful.Navigator.entryDeleteUrl="./delete.json";<%}%>
 		Screenful.Navigator.allowPrintable=true;
 		Screenful.Navigator.allowNarrow=true;
     Screenful.Navigator.exporters=[
