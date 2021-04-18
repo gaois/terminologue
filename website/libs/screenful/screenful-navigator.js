@@ -21,6 +21,9 @@ Screenful.Navigator={
         var checked=$("#statusbar label#chkNarrow input").prop("checked");
         if(checked) $("body").addClass("narrow"); else $("body").removeClass("narrow");
       });
+      if($(window).width()<800){
+        $("#statusbar label#chkNarrow input").prop("checked", true).trigger("change");
+      }
     }
 
     $("#envelope").append("<div id='printableToolbar'><button class='iconYes noborder' id='butPrintableOff'>"+Screenful.Loc.printableOff+"</button></div>");

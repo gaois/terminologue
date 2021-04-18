@@ -7,11 +7,15 @@ div#history div.revision:hover {color: var(--link-hover);}
 div#history div.revision span.label {display: inline-block; padding: 10px 0px; vertical-align: middle;}
 [dir="ltr"] div#history div.revision.current {background-color: #ffffff; margin-left: 0px; padding-left: 30px; box-shadow: 0px 0px 5px #666666; border-radius: 0px 4px 4px 0px; z-index: 10;}
 [dir="rtl"] div#history div.revision.current {background-color: #ffffff; margin-right: 0px; padding-right: 30px; box-shadow: 0px 0px 5px #666666; border-radius: 4px 0px 0px 4px; z-index: 10;}
+@media (max-width: 800px) {
+  [dir="ltr"] div#history div.revision.current {margin-left: 15px; padding-left: 15px; border-radius: 4px 4px 4px 4px;}
+  [dir="rtl"] div#history div.revision.current {margin-right: 15px; padding-right: 15px; border-radius: 4px 4px 4px 4px;}
+}
 div#history div.revision.unclickable {cursor: default;}
 div#history div.revision:hover {color: var(--link);}
 
 [dir="ltr"] div#history div.revision span.revive {display: none; padding: 5px 30px 5px 10px; margin: 0px 0px 0px 0px; vertical-align: middle; background-image: url(lightning.png); background-position: center right+5px; background-repeat: no-repeat; border-radius: 4px; position: absolute; top: 5px; right: 5px; background-color: #f0f0f0;}
-[dir="rtl"] div#history div.revision span.revive {display: none; padding: 5px 10px 5px 30px; margin: 0px 0px 0px 0px; vertical-align: middle; background-image: url(lightning.png); background-position: center right+5px; background-repeat: no-repeat; border-radius: 4px; position: absolute; top: 5px; left: 5px; background-color: #f0f0f0;}
+[dir="rtl"] div#history div.revision span.revive {display: none; padding: 5px 10px 5px 30px; margin: 0px 0px 0px 0px; vertical-align: middle; background-image: url(lightning.png); background-position: center left+5px; background-repeat: no-repeat; border-radius: 4px; position: absolute; top: 5px; left: 5px; background-color: #f0f0f0;}
 div#history div.revision:hover span.revive { display: block;}
 div#history div.revision:hover span.revive:hover { background-color: #eeeeee; box-shadow: 0px 0px 4px #aaaaaa;}
 div#history div.revision:hover span.revive:active { background-color: #ffffff; box-shadow: 0px 0px 4px #aaaaaa inset;}

@@ -1,5 +1,5 @@
-[dir="ltr"] #leftcontainer {position: absolute; top: 0px; left: 0px; width: 0px; bottom: 0px; background-color: #dddddd; color: #666666; overflow: hidden; box-shadow: 2px 0px 2px #999999; z-index: 5;}
-[dir="rtl"] #leftcontainer {position: absolute; top: 0px; right: 0px; width: 0px; bottom: 0px; background-color: #dddddd; color: #666666; overflow: hidden; box-shadow: 2px 0px 2px #999999; z-index: 5;}
+[dir="ltr"] #leftcontainer {position: absolute; top: 0px; left: 0px; width: 0px; bottom: 0px; background-color: #eeeeee; color: #666666; overflow: hidden; box-shadow: 2px 0px 2px #999999; z-index: 5;}
+[dir="rtl"] #leftcontainer {position: absolute; top: 0px; right: 0px; width: 0px; bottom: 0px; background-color: #eeeeee; color: #666666; overflow: hidden; box-shadow: 2px 0px 2px #999999; z-index: 5;}
 #midcontainer {position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
 
 [dir="ltr"] #envelope.leftContainerCollapsed > #midcontainer {left: 15px;}
@@ -17,6 +17,14 @@
 #envelope.leftContainerExpanded > #leftcontainer > .closer:hover {background-color: #eeeeee;}
 #envelope.leftContainerExpanded > #leftcontainer > #leftbox {display: block;}
 
+body.narrow #envelope.leftContainerCollapsed > #midcontainer {left: 0px; right: 0px; bottom: 15px;}
+body.narrow #envelope.leftContainerCollapsed > #leftcontainer {width: auto; top: auto; height: 15px; bottom: 0px; right: 0px; box-shadow: 0px -2px 2px #999999;}
+body.narrow.editorShown #envelope.leftContainerCollapsed > #midcontainer {bottom: 0px;}
+
+body.narrow #envelope.leftContainerExpanded > #midcontainer {left: 0px; right: 0px; bottom: 30%;}
+body.narrow #envelope.leftContainerExpanded > #leftcontainer {width: auto; right: 0px; top: 70%; box-shadow: 0px -2px 2px #999999;}
+body.narrow.editorShown #envelope.leftContainerExpanded > #midcontainer {bottom: 0px;}
+
 [dir="ltr"] #navbox { position: absolute; top: 0px; left: 0px; width: 30%; height: 100px; box-shadow: -2px 2px 2px #999999; x-z-index: 5;}
 [dir="rtl"] #navbox { position: absolute; top: 0px; right: 0px; width: 30%; height: 100px; box-shadow: -2px 2px 2px #999999; x-z-index: 5;}
 [dir="ltr"] #listbox { position: absolute; top: 100px; left: 0px; width: 30%; bottom: 0px; overflow-y: scroll; overflow-x: hidden; padding-top: 10px; }
@@ -30,6 +38,9 @@
 #starlist > div.inside > div.listbox {position: absolute; top: 40px; left: 10px; right: 10px; bottom: 10px; background-color: #ffffff; overflow-x: hidden; overflow-y: auto; padding-top: 10px;}
 #starlist > div.inside > div.title {position: absolute; top: 10px; left: 10px; right: 10px; height: 30px; padding: 0px 10px;}
 #starlist > div.inside > div.title > span.title {font-weight: bold; color: #666666; text-shadow: 1px 1px 0px #ffffff;}
+
+body.narrow #starlist { width: auto; right: 0px; left: 0px; }
+body.narrow.editorShown #starlist { display: none;}
 
 #navbox.hasSearchModifiers {height: 125px;}
 #listbox.hasSearchModifiers {top: 125px;}
@@ -45,6 +56,8 @@
 #editbox iframe { width: 100%; height: 100%; border: 0px; }
 [dir="ltr"] #critbox { position: absolute; top: 70px; left: 15px;  bottom: 30px; max-height: 600px; width: 60%; background-color: #ffffff; box-shadow: 0px 0px 5px #666666; border-radius: 4px; z-index: 10;}
 [dir="rtl"] #critbox { position: absolute; top: 70px; right: 15px; bottom: 30px; max-height: 600px; width: 60%; background-color: #ffffff; box-shadow: 0px 0px 5px #666666; border-radius: 4px; z-index: 10;}
+body.narrow #editbox { border-left: 0px; border-right: 0px; }
+
 
 [dir="ltr"] #starlist > div.inside > div.title > div.menuContainer { float: right; font-size: 0.9em; position: relative; z-index: 5;}
 [dir="rtl"] #starlist > div.inside > div.title > div.menuContainer { float: left; font-size: 0.9em; position: relative; z-index: 5;}
@@ -251,6 +264,8 @@ div.resizer.active {background-color: #a9c8cb; }
 [dir="ltr"] #midcontainer > div.resizer {top: 1px; bottom: 3px; left: 3px; display: none;}
 [dir="rtl"] #midcontainer > div.resizer {top: 1px; bottom: 3px; right: 3px; display: none;}
 #envelope.leftContainerExpanded #midcontainer > div.resizer {display: block;}
+
+body.narrow div.resizer {display: none !important}
 
 body.narrow {}
 body.narrow #navbox {width: 100%;}

@@ -43,6 +43,10 @@
 [dir="rtl"] #toolbar button.iconOnly#butStar {float: left;}
 #toolbar button.iconOnly#butStar.off {background-image: url(star_bw.png);}
 #toolbar button.iconOnly#butStar.on {background-image: url(star.png);}
+@media (max-width: 800px) {
+  [dir="ltr"] #envelope button.hasData span.bubble {top: -5px; left: 0px; font-size: 0.65em; line-height: 1.5em; padding: 1px 6px;}
+  [dir="rtl"] #envelope button.hasData span.bubble {top: -5px; right: 0px; font-size: 0.65em; line-height: 1.5em; padding: 1px 6px;}
+}
 
 [dir="ltr"] #toolbar a {color: var(--link); padding: 5px 0px; margin: 10px 5px; min-height: 1.3em; display: inline-block; padding-left: 35px; background-position: left+10px center; background-repeat: no-repeat; text-decoration: none;}
 [dir="rtl"] #toolbar a {color: var(--link); padding: 5px 0px; margin: 10px 5px; min-height: 1.3em; display: inline-block; padding-right: 35px; background-position: right+10px center; background-repeat: no-repeat; text-decoration: none;}
@@ -52,6 +56,17 @@
 [dir="rtl"] #toolbar label {color: var(--link); padding: 5px 0px; margin: 10px 5px 10px 10px; min-height: 1.3em; display: inline-block; background-position: right+10px center; background-repeat: no-repeat; text-decoration: none; cursor: pointer;}
 #toolbar label:hover {color: var(--link-hover)}
 #toolbar label input {position: relative; top: 2px;}
+
+@media (max-width: 800px) {
+  #envelope button {border-radius: 4px; box-shadow: 0px 0px 0px transparent; padding: 5px 5px; margin: 10px 0px;}
+
+  #toolbar span.divider {display: none; }
+  #toolbar span#idlabel {display: none;}
+  [dir="ltr"] #toolbar input#idbox {padding: 6px 12px 6px 12px; width: 2em; margin-left: 5px;}
+  [dir="rtl"] #toolbar input#idbox {font: inherit; border: 1px inset #cccccc; cursor: inline; border-radius: 4px; background-color: #ffffff; color: #333333; padding: 6px 50px 6px 35px; margin: 8px 5px; min-height: 1.3em; display: inline-block; width: 5em; vertical-align: middle; margin-right: -46px;}
+  [dir="ltr"] #toolbar button.iconOnly#butOpen {display: none;}
+  [dir="rtl"] #toolbar button.iconOnly#butOpen {display: none;}
+}
 
 #waiter {
   background-image: url(loader.gif); background-position: 30px 28px; background-repeat: no-repeat; padding: 30px 30px 30px 90px;
@@ -65,6 +80,19 @@
 [dir="ltr"] #commenting { position: absolute; top: 53px; bottom: 0px; right: 0px; width: 400px; background-color: #eeeeee; z-index: 0; }
 [dir="rtl"] #commenting { position: absolute; top: 53px; bottom: 0px; left: 0px; width: 400px; background-color: #eeeeee; z-index: 0; }
 
+@media (max-width: 800px) {
+  [dir="ltr"] #history { top: 50%; left: 0px; right: 0px; width: auto; box-shadow: 0px -2px 2px #999999; }
+  [dir="rtl"] #history { top: 50%; left: 0px; right: 0px; width: auto; box-shadow: 0px -2px 2px #999999; }
+
+  [dir="ltr"] #commenting { top: 50%; left: 0px; right: 0px; width: auto; box-shadow: 0px -2px 2px #999999; }
+  [dir="rtl"] #commenting { top: 50%; left: 0px; right: 0px; width: auto; box-shadow: 0px -2px 2px #999999; }
+
+  [dir="ltr"] #container.withHistory {right: 0px; margin-right: 0px; bottom: 50%;}
+  [dir="rtl"] #container.withHistory {left: 0px; margin-left: 0px; bottom: 50%;}
+  [dir="ltr"] #container.withCommenting {right: 0px; margin-right: 0px; bottom: 50%;}
+  [dir="rtl"] #container.withCommenting {left: 0px; margin-left: 0px; bottom: 50%;}
+}
+
 [dir="ltr"] #sourceCode {position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; padding: 20px 40px 40px 20px; background-color: #eeeeee;}
 [dir="rtl"] #sourceCode {position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; padding: 20px 20px 40px 40px; background-color: #eeeeee;}
 #sourceCode textarea {width: 100%; height: 100%; border: 1px solid #cccccc; box-shadow: inset 0px 0px 2px #666666; padding: 9px; resize: none; font-family: monospace; font-size: 0.85rem; border-radius: 4px; line-height: 1.5em; color: #666666; white-space: pre; direction: ltr;}
@@ -77,3 +105,6 @@ div.resizer.active {background-color: #a9c8cb; }
 [dir="rtl"] #container > div.resizer {top: 0px; bottom: 0px; left: 5px; }
 [dir="ltr"] #container.withCommenting > div.resizer {right: 15px; }
 [dir="rtl"] #container.withCommenting > div.resizer {left: 15px; }
+@media (max-width: 800px) {
+  div.resizer {display: none !important;}
+}
