@@ -1,4 +1,7 @@
-const TBXFILE="./_microsoft-irish.tbx";
+// const TBXFILE="/home/michmech/megastore/TBXSamples/terminologue.tbx.xml";
+// const TBXFILE="/home/michmech/megastore/TBXSamples/microsoft-irish.tbx";
+const TBXFILE="/home/michmech/megastore/TBXSamples/iTerm for SUSE_20200603-DE_TBX.xml";
+
 const SQLITEFILE="../data/termbases/test.sqlite";
 const LIMIT=100;
 //----------
@@ -12,7 +15,8 @@ const END="</termEntry>";
 var buffer="";
 
 var configs={};
-var db=saver.openDB(SQLITEFILE, configs);
+var metadata=[];
+var db=saver.openDB(SQLITEFILE, configs, metadata);
 
 const NRL=require('n-readlines');
 const liner=new NRL(TBXFILE);
@@ -31,8 +35,8 @@ while(textchunk=liner.next()) {
         if(entryCount<=LIMIT){
           console.log(`importing entry number ${entryCount}...`);
           var entry=tbx2entry(buffer);
-          // console.log(JSON.stringify(entry, null, "  "));
-          saver.saveEntry(db, configs, entry);
+          //console.log(JSON.stringify(entry, null, "  "));
+          saver.saveEntry(db, configs, metadata, entry);
           buffer="";
         }
       } else {
@@ -41,4 +45,6 @@ while(textchunk=liner.next()) {
     }
   }
 }
+
+db.close();
 console.log("finished");

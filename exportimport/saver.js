@@ -1,16 +1,29 @@
 const sqlite=require("better-sqlite3");
 
-function openDB(input, configs){
+function openDB(input, configs, metadata){
   var db=new sqlite(input, {fileMustExist: true});
   //Read the termbase configs:
   var sqlSelectConfigs=db.prepare("select * from configs");
   sqlSelectConfigs.all().map(row => {
     configs[row.id]=JSON.parse(row.json);
   });
+  //Read the termbase metadata:
+  var sqlSelectMetadata=db.prepare("select * from metadata");
+  sqlSelectMetadata.all().map(row => {
+    metadata.push({
+      id: row.id,
+      type: row.type,
+      sortkey: row.sortkey,
+      parent_id: row.parent_id,
+      json: JSON.parse(row.json),
+    });
+  });
   return db;
 }
 
-function saveEntry(db, configs, entry){
+function saveEntry(db, configs, metadata, entry){
+  //translate metadata in the entry:
+  entry=addMetadata(db, metadata, entry);
   //insert the entry:
   var insEntry=db.prepare("insert into entries(json, cStatus, pStatus, dStatus, dateStamp, tod) values(?, ?, ?, ?, ?, ?)");
   var insEntryInfo=insEntry.run(JSON.stringify(entry), entry.cStatus, entry.pStatus, entry.dStatus, entry.dateStamp, entry.tod);
@@ -31,11 +44,125 @@ function saveEntry(db, configs, entry){
       insSortkey.run(entryID, lang.abbr, sortkey);
     }
   });
+  //index domains:
+  entry.domains.map(domainID => {
+    var ins=db.prepare("insert into entry_domain(entry_id, domain) values(?, ?)");
+    var insInfo=ins.run(entryID, domainID);
+  });
+  //index definitions:
+  entry.definitions.map(def => {
+    for(var langCode in def.texts){
+      var ins=db.prepare("insert into entry_def(entry_id, text) values(?, ?)");
+      var insInfo=ins.run(entryID, def.texts[langCode]);
+    }
+  });
+  //index examples:
+  entry.examples.map(ex => {
+    for(var langCode in ex.texts){
+      ex.texts[langCode].map(text => {
+        var ins=db.prepare("insert into entry_xmpl(entry_id, text) values(?, ?)");
+        var insInfo=ins.run(entryID, text);
+      });
+    }
+  });
   //resave the entry:
   var updEntry=db.prepare('update entries set json=? where id=?');
   updEntry.run(JSON.stringify(entry), entryID);
 }
 
+function addMetadata(db, metadata, entry){
+  //find one language for metadata labels:
+  var lang="";
+  entry.desigs.map(desig => {
+    if(!lang) lang=desig.term.lang;
+  });
+  if(!lang) lang="xx";
+
+  var entryString=JSON.stringify(entry);
+  // console.log(entryString);
+
+  //part-of-speech labels:
+  entryString=entryString.replace(/\$POSLABEL\[([^\]]*)\]/g, function($0, val){
+    //find out of the such a metadatum already exists:
+    var metadatumID=0;
+    metadata.map(metadatum => { if(metadatum.type=="posLabel" && metadatum.json.abbr==val) metadatumID=metadatum.id; });
+    //if not, create it:
+    if(!metadatumID){
+      var metadatum={
+        id: 0,
+        type: "posLabel",
+        sortkey: toSortkey(val, defaultAbc),
+        parent_id: null,
+        json: {abbr: val, title: {}, isfor: ["_all"]},
+      };
+      var insMetadatum=db.prepare("insert into metadata(type, sortkey, parent_id, json) values(?, ?, ?, ?)");
+      var insMetadatumInfo=insMetadatum.run(metadatum.type, metadatum.sortkey, metadatum.parent_id, JSON.stringify(metadatum.json));
+      var metadatumID=insMetadatumInfo.lastInsertRowid;
+      metadatum.id=metadatumID;
+      metadata.push(metadatum);
+    }
+    return metadatumID;
+  });
+
+  //acceptability labels:
+  entryString=entryString.replace(/\$ACCEPTLABEL\[([^\]]*)\]/g, function($0, val){
+    //find out of the such a metadatum already exists:
+    var metadatumID=0;
+    metadata.map(metadatum => {
+      var hasTheTitle=false; for(var key in metadatum.json.title) if(metadatum.json.title[key]==val) hasTheTitle=true;
+      if(metadatum.type=="acceptLabel" && hasTheTitle) metadatumID=metadatum.id;
+    });
+    //if not, create it:
+    if(!metadatumID){
+      var title={}; title[lang]=val;
+      var metadatum={
+        id: 0,
+        type: "acceptLabel",
+        sortkey: toSortkey(val, defaultAbc),
+        parent_id: null,
+        json: {title: title, level: "0"},
+      };
+      var insMetadatum=db.prepare("insert into metadata(type, sortkey, parent_id, json) values(?, ?, ?, ?)");
+      var insMetadatumInfo=insMetadatum.run(metadatum.type, metadatum.sortkey, metadatum.parent_id, JSON.stringify(metadatum.json));
+      var metadatumID=insMetadatumInfo.lastInsertRowid;
+      metadatum.id=metadatumID;
+      metadata.push(metadatum);
+    }
+    return metadatumID;
+  });
+
+  //domains:
+  entryString=entryString.replace(/\$DOMAIN\[([^\]]*)\]/g, function($0, val){
+    //find out of the such a metadatum already exists:
+    var metadatumID=0;
+    metadata.map(metadatum => {
+      var hasTheTitle=false; for(var key in metadatum.json.title) if(metadatum.json.title[key]==val) hasTheTitle=true;
+      if(metadatum.type=="domain" && hasTheTitle) metadatumID=metadatum.id;
+    });
+    //if not, create it:
+    if(!metadatumID){
+      var title={}; title[lang]=val;
+      var metadatum={
+        id: 0,
+        type: "domain",
+        sortkey: toSortkey(val, defaultAbc),
+        parent_id: null,
+        json: {title: title, parentID: ""},
+      };
+      var insMetadatum=db.prepare("insert into metadata(type, sortkey, parent_id, json) values(?, ?, ?, ?)");
+      var insMetadatumInfo=insMetadatum.run(metadatum.type, metadatum.sortkey, metadatum.parent_id, JSON.stringify(metadatum.json));
+      var metadatumID=insMetadatumInfo.lastInsertRowid;
+      metadatum.id=metadatumID;
+      metadata.push(metadatum);
+    }
+    return metadatumID;
+  });
+
+  // console.log("------");
+  // console.log(entryString);
+  // console.log("======");
+  return JSON.parse(entryString);
+}
 function addLanguage(db, configs, langCode){
   //does this language exist in the termbase?
   var alreadyHas=false;
