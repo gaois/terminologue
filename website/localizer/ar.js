@@ -272,7 +272,7 @@ function L(s, gloss){
   if(s=="Prefabricated comments") return "تعليقات جاهزة";
   if(s=="NOTES") return "ملاحظات";
   if(s=="note") return "ملاحظة";
-  if(s=="NOT") return "لا";
+  if(s=="NOT") return "NOT";
   if(s=="with or without notes") return "مع أو بدون ملاحظات";
   if(s=="with a note") return "مع ملاحظة";
   if(s=="with a note containing...") return "مع ملاحظة تحتوي على...";
