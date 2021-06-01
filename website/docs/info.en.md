@@ -33,3 +33,4 @@ If you wish to localise the *Terminologue* user interface and documentation into
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
 - Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
+- Arabic: Hassane Darir (<h.darir@uca.ac.ma>)
