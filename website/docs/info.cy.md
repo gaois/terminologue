@@ -33,3 +33,4 @@ Os ydych am leoleiddio rhyngwyneb defnyddiwr a dogfennaeth *Terminologue* ar gyf
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
 - Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
+- Arabic: Hassane Darir (<h.darir@uca.ac.ma>)

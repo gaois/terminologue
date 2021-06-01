@@ -33,3 +33,4 @@ Si deseas localizar la documentación e interfaz de usuario de *Terminologue* a 
 - Neerlandés: Jeremy Sneyers
 - Ruso: Arina Klimina
 - Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
+- Arabic: Hassane Darir (<h.darir@uca.ac.ma>)
