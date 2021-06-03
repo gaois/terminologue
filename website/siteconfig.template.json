@@ -16,7 +16,8 @@
     {"abbr": "fi", "caption": "suomi"},
     {"abbr": "nl", "caption": "Nederlands"},
     {"abbr": "ru", "caption": "русский"},
-    {"abbr": "es", "caption": "español"}
+    {"abbr": "es", "caption": "español"},
+    {"abbr": "ar", "caption": "العربية"}
  ],
   "welcome": {
     "en": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.en/'>Gentle introduction to Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.en/'>About Terminologue</a></div></div>",
@@ -27,7 +28,8 @@
     "fi": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.fi/'>Terminologuen lyhyt esittely</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.fi/'>Tietoa Terminologuesta</a></div></div>",
     "nl": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.nl/'>Korte inleiding tot Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.nl/'>Over Terminologue</a></div></div>",
     "ru": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.ru/'>Знакомство с Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.ru/'>О Terminologue</a></div></div>",
-    "es": "<div class='intro'>Bienvenido/a a <strong>Terminologue</strong>, una herramienta de gestión terminológica de código abierto.</div><div class='point'><div class='title'><a href='docs/intro.es/'>Sencilla iniciación a Terminologue</a></div><div class='blurb'>Una breve y agradable visita guiada por Terminologue para principiantes.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.es/'>Acerca de Terminologue</a></div></div>"
+    "es": "<div class='intro'>Bienvenido/a a <strong>Terminologue</strong>, una herramienta de gestión terminológica de código abierto.</div><div class='point'><div class='title'><a href='docs/intro.es/'>Sencilla iniciación a Terminologue</a></div><div class='blurb'>Una breve y agradable visita guiada por Terminologue para principiantes.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.es/'>Acerca de Terminologue</a></div></div>",
+    "ar": "<div class='intro'>مرحبا بكم في <strong>Terminologue</strong>، أداة تدبير للمصطلحات، مفتوحة المصدر، وسحابية.</div><div class='point'><div class='title'><a href='docs/intro.ar/'>مقدمة لطيفة حول Terminologue</a></div><div class='blurb'>جولة قصيرة وحلوة حول Terminologue للمبتدئين.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.ar/'>حول Terminologue</a></div></div>"
   },
   "uilangDefault": "en",
   "mailconfig": {"host": "localhost", "port": 465, "secure": false, "from": "noreply@localhost"},
