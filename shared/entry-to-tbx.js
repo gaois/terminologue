@@ -19,13 +19,13 @@ function clean4xml(s){
 function metadataAbbr(id){
   var ret=id;
   if(metadata[id] && metadata[id].obj.abbr) ret=metadata[id].obj.abbr;
-  return ret;
+  return clean4xml(ret);
 }
 
 function metadataTitle(id, langCode){
   var ret="";
   if(metadata[id]) ret=(metadata[id].obj.title[langCode] || metadata[id].obj.title.$ || metadata[id].obj.title[termbaseLang]);
-  return (ret || id);
+  return clean4xml(ret || id);
 }
 
 function domainTitle(id){
@@ -36,7 +36,7 @@ function domainTitle(id){
       ret=domainTitle(metadata[id].obj.parentID)+" » "+ret;
     }
   }
-  return (ret || id);
+  return clean4xml(ret || id);
 }
 
 /*
