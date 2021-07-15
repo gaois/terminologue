@@ -112,7 +112,7 @@ function L(s, gloss){
   if(s=="Domains") return "Réimsí";
   if(s=="Part-of-speech labels") return "Ranna cainte";
   if(s=="Inflection labels") return "Lipéid infhillte";
-  if(s=="Acceptability labels") return "Lipéid inghacthachta";
+  if(s=="Acceptability labels") return "Lipéid inghlacthachta";
   if(s=="Sources") return "Foinsí";
   if(s=="Collections") return "Bailiúcháin";
   if(s=="Tags") return "Clibeanna";
