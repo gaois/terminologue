@@ -28,10 +28,10 @@ function L(s, gloss){
   if(s=="search in all languages") return "pretraživanje na svim jezicima";
   if(s=="Configuration") return "Konfiguracija";
   if(s=="ADMIN") return "ADMIN";
-  if(s=="TRM") return "TRM";
+  if(s=="TRM") return "NAZ";
   if(s=="DOM") return "DOM";
   if(s=="DEF") return "DEF";
-  if(s=="XMPL") return "XMPL"
+  if(s=="XMPL") return "PRIM"
   if(s=="CHECKING STATUS") return "STATUS PROVJERE";
   if(s=="PUBLISHING STATUS") return "STATUS OBJAVLJIVANJA";
   if(s=="TERMS") return "NAZIVI";
@@ -226,9 +226,9 @@ function L(s, gloss){
   if(s=="trigger_exampleAdd") return "dodan primjer";
   if(s=="trigger_exampleRemove") return "uklonjen primjer";
   if(s=="trigger_exampleReorder") return "promijenjen redoslijed primjera";
-  if(s=="trigger_exampleTextAdd") return "dodan primjer rečenice";
-  if(s=="trigger_exampleTextRemove") return "uklonjen primjer rečenice";
-  if(s=="trigger_exampleTextReorder") return "promijenjen redoslijed primjera rečenica";
+  if(s=="trigger_exampleTextAdd") return "dodana rečenica za primjer";
+  if(s=="trigger_exampleTextRemove") return "uklonjena rečenica za primjer";
+  if(s=="trigger_exampleTextReorder") return "promijenjen redoslijed rečenica za primjer";
   if(s=="trigger_exampleTextChange") return "promijenjen tekst rečenice za primjer";
   if(s=="trigger_collectionAdd") return "dodana zbirka";
   if(s=="trigger_collectionRemove") return "uklonjena zbirka";
@@ -272,7 +272,7 @@ function L(s, gloss){
   if(s=="Prefabricated comments") return "Ponuđeni komentari";
   if(s=="NOTES") return "BILJEŠKE";
   if(s=="note") return "bilješka";
-  if(s=="NOT") return "NAP";
+  if(s=="NOT") return "BILJ";
   if(s=="with or without notes") return "sa ili bez bilježaka";
   if(s=="with a note") return "s bilješkom";
   if(s=="with a note containing...") return "s bilješkom koja sadrži...";
