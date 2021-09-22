@@ -1,5 +1,10 @@
 //A script to migrate all SQLite databases when the database schema has changed.
 
+//This script upgrades the database schema from our "old" domain-subdomain schema
+//to our "new" domain-subdomain schema, and migrates data.
+
+//Updated 2021-09-22. The previous version had some leaks and left some databases partially unmigrated sometimes.
+
 const path=require("path");
 const fs=require("fs");
 const Database = require('better-sqlite3');
@@ -19,7 +24,9 @@ function migrateDBs(dirPath){
       try{
 
         //add parent_id column to metadata table:
-        db.prepare(`alter table metadata add column "parent_id" INTEGER`).run();
+        try{
+          db.prepare(`alter table metadata add column "parent_id" INTEGER`).run();
+        } catch (e){}
 
         //for each domain, get its subdomains and insert them as separate domains, and remember their new IDs:
         var idMap={}; //domain ID => local ID => new ID
@@ -41,10 +48,17 @@ function migrateDBs(dirPath){
           if(entry.domains){
             var newie=[];
             entry.domains.map(oldie => {
-              var newID=oldie.superdomain;
-              if(idMap[newID] && idMap[newID][oldie.subdomain]) newID=idMap[newID][oldie.subdomain].toString();
-              newie.push(newID);
-              db.prepare(`insert into entry_domain(entry_id, domain) values(?, ?)`).run(row.id, newID);
+              if(oldie){
+                if(oldie.superdomain){
+                  var newID=oldie.superdomain;
+                  if(idMap[newID] && idMap[newID][oldie.subdomain]) newID=idMap[newID][oldie.subdomain].toString();
+                  newie.push(newID);
+                  db.prepare(`insert into entry_domain(entry_id, domain) values(?, ?)`).run(row.id, newID);
+                } else {
+                  newie.push(oldie);
+                  db.prepare(`insert into entry_domain(entry_id, domain) values(?, ?)`).run(row.id, oldie);
+                }
+              }
             });
             entry.domains=newie;
           }
@@ -52,9 +66,15 @@ function migrateDBs(dirPath){
             if(def.domains){
               var newie=[];
               def.domains.map(oldie => {
-                var newID=oldie.superdomain;
-                if(idMap[newID] && idMap[newID][oldie.subdomain]) newID=idMap[newID][oldie.subdomain].toString();
-                newie.push(newID);
+                if(oldie){
+                  if(oldie.superdomain){
+                    var newID=oldie.superdomain;
+                    if(idMap[newID] && idMap[newID][oldie.subdomain]) newID=idMap[newID][oldie.subdomain].toString();
+                    newie.push(newID);
+                  } else {
+                    newie.push(oldie);
+                  }
+                }
               });
               def.domains=newie;
             }
