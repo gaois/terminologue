@@ -14,7 +14,7 @@ function L(s){
   if(s=="trigger_desigAcceptChange") return "acceptability changed";
   if(s=="trigger_termLangChange") return "term language changed";
   if(s=="trigger_termWordingChange") return "term wording changed";
-  if(s=="trigger_termInflectAdd") return "inlected form added";
+  if(s=="trigger_termInflectAdd") return "inflected form added";
   if(s=="trigger_termInflectRemove") return "inflected form removed";
   if(s=="trigger_termInflectReorder") return "inflected forms reordered";
   if(s=="trigger_termInflectLabelChange") return "inflected form label changed";

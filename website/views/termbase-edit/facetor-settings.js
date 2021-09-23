@@ -343,7 +343,7 @@ Screenful.Facetor.panes=[{
     var $select=$(`<select class="fullwidth" id="facComments"></select>`).appendTo($inme);
     $select.append(`<option value="">(${L("with or without comments")})</option>`);
     $select.append(`<option value="1">${L("with a comment")}</option>`);
-    $select.append(`<option value="txt">${L("with a comment contaning...")}</option>`);
+    $select.append(`<option value="txt">${L("with a comment containing...")}</option>`);
     $select.append(`<option value="0">${L("without comments")}</option>`);
     $select.on("change", Screenful.Facetor.change);
     $select.on("change", function(){

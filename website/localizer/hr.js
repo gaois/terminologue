@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "Vrste bilježaka";
   if(s=="LEVEL") return "RAZINA";
   if(s=="with a comment") return "s komentarom";
-  if(s=="with a comment contaning...") return "s komentarom koji sadrži...";
+  if(s=="with a comment containing...") return "s komentarom koji sadrži...";
   if(s=="TBX export") return "izvezi kao TBX";
   if(s=="TBX import") return "uvezi kao TBX";
   if(s=="Empty the termbase") return "Isprazni terminološku bazu";

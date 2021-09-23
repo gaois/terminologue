@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "Muistiinpanotyypit";
   if(s=="LEVEL") return "TASO";
   if(s=="with a comment") return "kommentilla";
-  if(s=="with a comment contaning...") return "kommentilla, joka sisältää...";
+  if(s=="with a comment containing...") return "kommentilla, joka sisältää...";
   if(s=="TBX export") return "TBX vienti";
   if(s=="TBX import") return "TBX tuonti";
   if(s=="Empty the termbase") return "Tyhjennä termitietokanta";

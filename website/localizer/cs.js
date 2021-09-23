@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "Typy poznámek";
   if(s=="LEVEL") return "ÚROVEŇ";
   if(s=="with a comment") return "nemá komentář";
-  if(s=="with a comment contaning...") return "má komentář obsahující...";
+  if(s=="with a comment containing...") return "má komentář obsahující...";
   if(s=="TBX export") return "Export TBX";
   if(s=="TBX import") return "Import TBX";
   if(s=="Empty the termbase") return "Vyprázdnit databázi";

@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "Mathau o nodiadau";
   if(s=="LEVEL") return "LEFEL";
   if(s=="with a comment") return "gyda sylw";
-  if(s=="with a comment contaning...") return "gyda sylw sy'n cynnwys...";
+  if(s=="with a comment containing...") return "gyda sylw sy'n cynnwys...";
   if(s=="TBX export") return "Allgludo i TBX";
   if(s=="TBX import") return "Mewngludo o TBX";
   if(s=="Empty the termbase") return "Gwagio'r gronfa dermau";

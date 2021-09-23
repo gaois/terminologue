@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "виды примечаний";
   if(s=="LEVEL") return "УРОВЕНЬ";
   if(s=="with a comment") return "с комментарием";
-  if(s=="with a comment contaning...") return "с комментарием, содержащим...";
+  if(s=="with a comment containing...") return "с комментарием, содержащим...";
   if(s=="TBX export") return "экспорт TBX";
   if(s=="TBX import") return "импорт TBX";
   if(s=="Empty the termbase") return "Опустошить термбазу";

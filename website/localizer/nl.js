@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "Opmerkingstypes";
   if(s=="LEVEL") return "NIVEAU";
   if(s=="with a comment") return "met een opmerking";
-  if(s=="with a comment contaning...") return "met een opmerking over...";
+  if(s=="with a comment containing...") return "met een opmerking over...";
   if(s=="TBX export") return "TBX-export";
   if(s=="TBX import") return "TBX-import";
   if(s=="Empty the termbase") return "De termenbank leegmaken";

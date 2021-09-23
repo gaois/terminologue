@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "أنواع الملاحظة";
   if(s=="LEVEL") return "المستوى";
   if(s=="with a comment") return "مع تعليق";
-  if(s=="with a comment contaning...") return "مع تعليق يتضمن...";
+  if(s=="with a comment containing...") return "مع تعليق يتضمن...";
   if(s=="TBX export") return "تصدير TBX";
   if(s=="TBX import") return "استيراد TBX";
   if(s=="Empty the termbase") return "إفراغ قاعدة المصطلحات";

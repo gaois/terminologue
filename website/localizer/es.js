@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "Tipos de nota";
   if(s=="LEVEL") return "NIVEL";
   if(s=="with a comment") return "con un comentario";
-  if(s=="with a comment contaning...") return "con un comentario que contenga...";
+  if(s=="with a comment containing...") return "con un comentario que contenga...";
   if(s=="TBX export") return "Exportar TBX";
   if(s=="TBX import") return "Importar TBX";
   if(s=="Empty the termbase") return "Vaciar la base de datos terminológica";

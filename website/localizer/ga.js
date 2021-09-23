@@ -284,7 +284,7 @@ function L(s, gloss){
   if(s=="Note types") return "Cineálacha nótaí eolais";
   if(s=="LEVEL") return "LEIBHÉAL";
   if(s=="with a comment") return "le nóta tráchta";
-  if(s=="with a comment contaning...") return "le nóta tráchta ina bhfuil...";
+  if(s=="with a comment containing...") return "le nóta tráchta ina bhfuil...";
   if(s=="TBX export") return "Easpórtáil TBX";
   if(s=="TBX import") return "Iompórtáil TBX";
   if(s=="Empty the termbase") return "Folmhaigh an cnuasach";
