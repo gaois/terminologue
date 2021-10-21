@@ -2,8 +2,8 @@ function L(s, gloss){
   if(s=="only") return function(s){
     return "Nur "+s;
   };
-  if(s=="READ-ONLY") return "Redaktion";
-  if(s=="Editing") return "SCHREIBGESCHÜTZT";
+  if(s=="READ-ONLY") return "SCHREIBGESCHÜTZT";
+  if(s=="Editing") return "Bearbeiten";
   if(s=="Dublin City University") return "Dublin City University";
   if(s=="Log out") return "Logout";
   if(s=="Change your password") return "Passwort ändern";
@@ -41,7 +41,7 @@ function L(s, gloss){
   if(s=="acceptability") return "Akzeptanz";
   if(s=="source") return "Quelle";
   if(s=="inflected form") return "flektierte Form";
-  if(s=="annotation") return "Bemerkung";
+  if(s=="annotation") return "Annotation";
   if(s=="domain") return "Domain";
   if(s=="part of speech") return "Wortart";
   if(s=="inflection") return "Flexion";
@@ -296,7 +296,7 @@ function L(s, gloss){
   if(s=="Number of items in history log") return "Anzahl der Einträge im Verlaufsprotokoll";
   if(s=="Your termbase is stored in the file %F") return "Ihre Termbank ist in der Datei %F gespeichert";
   if(s=="File size") return "Dateigröße";
-  if(s=="Download %F") return "Download %F";
+  if(s=="Download %F") return "Herunterladen %F";
   if(s=="Upload %F") return "Hochladen %F";
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Vergewissern Sie sich, dass die Datei, die Sie hochladen, eine gültige Terminologue-Datenbank ist. Wenn Sie etwas anderes hochladen, wird Ihre Termbank unwiderruflich beschädigt.";
   if(s=="PARENT") return "PARENT";
