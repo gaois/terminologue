@@ -34,3 +34,5 @@ Terminologue أداة للتدبير المصطلحي مفتوحة المصدر.
 - الروسية: (أرينا كليمينا)
 - الإسبانية: [فيكتور لوبيز مارتينيز](https://www.linkedin.com/in/translatorvictorlopez/)
 - العربية: حسن درير
+- hrvatski: translation students of the Faculty of Humanities and Social Sciences, University of Osijek: Jelena Bungić, Dunja Dernej, Irena Iličević, Iris Koščević, Katarina Mandarić, Lea Maras, Anamarija Pezer, Sonja Skrletović, Tomislav Stojanović, Valentina Jelić, Lorena Šeda, Matej Šibalić, Mihaela Šmehil, Vedrana Vestić.
+- Deutsch: Mohammed Aqalqol.

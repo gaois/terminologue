@@ -35,4 +35,4 @@ Wenn Sie die *Terminologue*-Benutzeroberfläche und die Dokumentation in Ihre Sp
 - Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
 - Arabic: Hassane Darir (<h.darir@uca.ac.ma>).
 - hrvatski: Übersetzungsstudenten der Fakultät für Geistes- und Sozialwissenschaften der Universität Osijek: Jelena Bungić, Dunja Dernej, Irena Iličević, Iris Koščević, Katarina Mandarić, Lea Maras, Anamarija Pezer, Sonja Skrletović, Tomislav Stojanović, Valentina Jelić, Lorena Šeda, Matej Šibalić, Mihaela Šmehil, Vedrana Vestić.
-- Deutsch: Mohammed Aqalqol
+- Deutsch: Mohammed Aqalqol.
