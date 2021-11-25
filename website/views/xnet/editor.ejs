@@ -64,6 +64,14 @@
 		});
 		</script>
 
+		<script type="text/javascript" src="../../libs/screenful/screenful-uilang.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-uilang.css" />
+		<script type="text/javascript">
+		Screenful.Uilang.url="../../uilang?lang=$",
+		Screenful.Uilang.languages=<%-JSON.stringify(uilangs)%>;
+		Screenful.Uilang.current="<%-uilang%>";
+		</script>
+
 		<link type="text/css" rel="stylesheet" href="../../furniture/ui.css" />
 
 	</head>
