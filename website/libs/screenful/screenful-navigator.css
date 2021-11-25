@@ -1,6 +1,7 @@
-[dir="ltr"] #leftcontainer {position: absolute; top: 0px; left: 0px; width: 0px; bottom: 0px; background-color: #eeeeee; color: #666666; overflow: hidden; box-shadow: 2px 0px 2px #999999; z-index: 5;}
-[dir="rtl"] #leftcontainer {position: absolute; top: 0px; right: 0px; width: 0px; bottom: 0px; background-color: #eeeeee; color: #666666; overflow: hidden; box-shadow: 2px 0px 2px #999999; z-index: 5;}
+[dir="ltr"] #leftcontainer {position: absolute; top: 0px; left: 0px; width: 0px; bottom: 0px; background-color: #eeeeee; color: #666666; box-shadow: 2px 0px 2px #999999; z-index: 5;}
+[dir="rtl"] #leftcontainer {position: absolute; top: 0px; right: 0px; width: 0px; bottom: 0px; background-color: #eeeeee; color: #666666; box-shadow: 2px 0px 2px #999999; z-index: 5;}
 #midcontainer {position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
+#leftcontainer > .closer {display: none;}
 
 [dir="ltr"] #envelope.leftContainerCollapsed > #midcontainer {left: 15px;}
 [dir="rtl"] #envelope.leftContainerCollapsed > #midcontainer {right: 15px;}
@@ -12,9 +13,11 @@
 [dir="ltr"] #envelope.leftContainerExpanded > #midcontainer {left: 17%;}
 [dir="rtl"] #envelope.leftContainerExpanded > #midcontainer {right: 17%;}
 #envelope.leftContainerExpanded > #leftcontainer {width: 17%; }
-[dir="ltr"] #envelope.leftContainerExpanded > #leftcontainer > .closer {color: #8e0404; font-weight: bold; position: absolute; top: 0px; right: 0px; box-sizing: border-box; height: 30px; width: 30px; text-align: center; padding-top: 5px; border-radius: 2px; cursor: pointer; z-index: 1;}
-[dir="rtl"] #envelope.leftContainerExpanded > #leftcontainer > .closer {color: #8e0404; font-weight: bold; position: absolute; top: 0px; left: 0px;  box-sizing: border-box; height: 30px; width: 30px; text-align: center; padding-top: 5px; border-radius: 2px; cursor: pointer; z-index: 1;}
-#envelope.leftContainerExpanded > #leftcontainer > .closer:hover {background-color: #eeeeee;}
+#envelope.leftContainerExpanded > #leftcontainer > .closer {display: block; box-shadow: 2px 0px 2px #999999, -2px 0px 2px #999999, 0px -2px 2px #999999; border-radius: 4px 4px 0px 0px; }
+[dir="ltr"] #envelope.leftContainerExpanded > #leftcontainer > .closer {background-color: #eeeeee; color: #cb1e1e; font-weight: bold; position: absolute; top: -31px; right: 0px; box-sizing: border-box; height: 30px; width: 30px; text-align: center; padding-top: 5px; cursor: pointer; z-index: 1;}
+[dir="rtl"] #envelope.leftContainerExpanded > #leftcontainer > .closer {background-color: #eeeeee; color: #cb1e1e; font-weight: bold; position: absolute; top: -31px; left: 0px;  box-sizing: border-box; height: 30px; width: 30px; text-align: center; padding-top: 5px; cursor: pointer; z-index: 1;}
+#envelope.leftContainerExpanded > #leftcontainer > .closer:hover {background-color: #e6e6e6; color: #8e0404}
+#envelope.leftContainerExpanded > #leftcontainer > .closer:active {box-shadow: inset 0px 0px 4px #999999;}
 #envelope.leftContainerExpanded > #leftcontainer > #leftbox {display: block;}
 
 body.narrow #envelope.leftContainerCollapsed > #midcontainer {left: 0px; right: 0px; bottom: 15px;}

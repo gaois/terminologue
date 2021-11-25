@@ -10,10 +10,11 @@ Screenful.History={
           var hist=data[i];
           if(!Screenful.History.isDeletion(hist)) {
             var $div=$("<div class='revision'></div>").appendTo($("#history"));
-            Screenful.History.drawRevision($div, hist, data.length-i, (i==0));
-            if(i==0) Screenful.History.zoomRevision(Screenful.History.getRevisionID(hist), true);
+            if(!Screenful.History.timelineOnly) Screenful.History.drawRevision($div, hist, data.length-i, (i==0));
+            if(i==0 && !Screenful.History.timelineOnly) Screenful.History.zoomRevision(Screenful.History.getRevisionID(hist), true);
           }
           var $div=$("<div class='interRevision'></div>").appendTo($("#history"));
+          if(Screenful.History.timelineOnly) $div.addClass("timelineOnly");
           Screenful.History.drawInterRevision($div, hist);
         }
       }

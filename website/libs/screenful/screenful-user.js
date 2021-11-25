@@ -5,6 +5,8 @@ Screenful.User={
       if(Screenful.User.homeUrl) $(".ScreenfulUser .menu").append("<a href='"+Screenful.User.homeUrl+"'>"+Screenful.Loc.home+"</a>");
       if(Screenful.User.logoutUrl) $(".ScreenfulUser .menu").append("<a href='"+Screenful.User.logoutUrl+"'>"+Screenful.Loc.logout+"</a>");
       if(Screenful.User.changePwdUrl) $(".ScreenfulUser .menu").append("<a href='"+Screenful.User.changePwdUrl+"'>"+Screenful.Loc.changePwd+"</a>");
+    } else if(Screenful.User.verifyLoginUrl) {
+      Screenful.User.verifyLogin();
     } else {
       $(".ScreenfulUser").html("<div class='clickable'><span class='bigscreen'>"+Screenful.Loc.anonymous+"</span><span class='smallscreen'>@</span> <span class='arrow'>▼</span></div><div class='menu' style='display: none'></div>");
       if(Screenful.User.homeUrl) $(".ScreenfulUser .menu").append("<a href='"+Screenful.User.homeUrl+"'>"+Screenful.Loc.home+"</a>");
@@ -22,5 +24,19 @@ Screenful.User={
       $(".menu:visible").not("#xonomyBubble .menu").slideUp();
     });
   },
+  verifyLogin: function(){
+    $.ajax({url: Screenful.User.verifyLoginUrl, dataType: "json", method: "POST", data: {}}).done(function(data){
+      if(data.success){
+        Screenful.User.loggedin=true;
+        Screenful.User.username=data.username;
+        Screenful.User.userData=data;
+      } else {
+        Screenful.User.loggedin=false;
+        window.location=Screenful.User.loginUrl;
+      }
+      Screenful.User.verifyLoginUrl="";
+      Screenful.User.start();
+    });
+  }
 };
 $(window).ready(Screenful.User.start);

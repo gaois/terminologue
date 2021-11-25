@@ -24,8 +24,8 @@ div#history div.revision span.pretty {background-image: url(page_white_text.png)
 div#history div.revision span.pretty:hover {background-color: #b4daff;}
 div#history div.revision.current.pretty span.pretty {background-color: #d0e6fb;}
 
-[dir="ltr"] div#history div.interRevision {padding: 15px 0px 15px 20px; margin: 3px 0px 3px 30px; border-left: 1px solid var(--border, #666666); text-shadow: 1px 1px 0px #ffffff; color: #666666; position: relative; z-index: 11;}
-[dir="rtl"] div#history div.interRevision {padding: 15px 20px 15px 0px; margin: 3px 30px 3px 0px; border-right: 1px solid var(--border, #666666); text-shadow: 1px 1px 0px #ffffff; color: #666666; position: relative; z-index: 11;}
+[dir="ltr"] div#history div.interRevision {padding: 15px 10px 15px 20px; margin: 3px 0px 3px 30px; border-left: 1px solid var(--border, #666666); text-shadow: 1px 1px 0px #ffffff; color: #666666; position: relative; z-index: 11;}
+[dir="rtl"] div#history div.interRevision {padding: 15px 20px 15px 10px; margin: 3px 30px 3px 0px; border-right: 1px solid var(--border, #666666); text-shadow: 1px 1px 0px #ffffff; color: #666666; position: relative; z-index: 11;}
 [dir="ltr"] div#history div.interRevision > div.arrowTop {width: 16px; height: 16px; position: absolute; top: -9px; left: -8px; background-image: url(control_stop_blue.png);}
 [dir="rtl"] div#history div.interRevision > div.arrowTop {width: 16px; height: 16px; position: absolute; top: -9px; right: -8px; background-image: url(control_stop_blue.png);}
 [dir="ltr"] div#history div.interRevision > div.arrowMiddle {width: 16px; position: absolute; top: 0px; bottom: 0px; left: -8px; background-image: url(resultset_up.png); background-position: center center; background-repeat: no-repeat;}
@@ -36,3 +36,4 @@ div#history div.revision.current.pretty span.pretty {background-color: #d0e6fb;}
 [dir="rtl"] div#history div.interRevision > div.arrowBottom {width: 16px; height: 16px; position: absolute; bottom: -9px; right: -8px; background-image: url(control_stop_blue.png);}
 div#history div.interRevision a {color: var(--link); text-decoration: none;}
 div#history div.interRevision a:hover {color: var(--link-hover)}
+div#history div.interRevision.timelineOnly > div.arrowTop {top: -13px;}

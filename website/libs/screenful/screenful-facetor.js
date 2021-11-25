@@ -7,6 +7,7 @@ Screenful.Facetor={
     Screenful.Facetor.greyOrNot();
   },
   hide: function(){
+    if(Screenful.Facetor.panes[0].close) Screenful.Facetor.panes[0].close();
     //console.log("Facetor is hiding itself.");
   },
   report: function(){

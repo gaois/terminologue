@@ -71,7 +71,9 @@ Screenful.Editor={
   		$("<button id='butOpen' class='iconOnly mergeLeft noborder'>&nbsp;</button>").appendTo($toolbar).on("click", Screenful.Editor.open);
   		$("<span class='divider'></span>").appendTo($toolbar);
   	}
-    $("<button id='butSave' title='"+Screenful.Loc.save+" [Ctrl + Shift + S]' class='iconYes'><span>"+Screenful.Loc.save+"</span><span class='star' style='display: none'>*</span></button>").appendTo($toolbar).on("click", Screenful.Editor.save);
+    if(Screenful.Editor.harvester) {
+      $("<button id='butSave' title='"+Screenful.Loc.save+" [Ctrl + Shift + S]' class='iconYes'><span>"+Screenful.Loc.save+"</span><span class='star' style='display: none'>*</span></button>").appendTo($toolbar).on("click", Screenful.Editor.save);
+    }
     if(Screenful.Editor.viewer) {
   		if(Screenful.Editor.editor) $("<button id='butEdit' title='"+Screenful.Loc.edit+" [Ctrl + Shift + E]' class='iconYes'><span>"+Screenful.Loc.edit+"</span></button>").appendTo($toolbar).on("click", Screenful.Editor.edit);
   		$("<button id='butView' class='iconYes' title='"+Screenful.Loc.cancel+" [Ctrl + Shift + E]'><span>"+Screenful.Loc.cancel+"</span></button>").appendTo($toolbar).on("click", Screenful.Editor.view);
@@ -79,7 +81,7 @@ Screenful.Editor={
     if(!Screenful.Editor.singleton) $("<button id='butNonew' class='iconYes' title='"+Screenful.Loc.cancel+"'><span>"+Screenful.Loc.cancel+"</span></button>").appendTo($toolbar).on("click", Screenful.Editor.nonew);
     if(Screenful.Editor.leaveUrl) $("<button id='butLeave' class='iconYes' title='"+Screenful.Loc.cancel+"'><span>"+Screenful.Loc.cancel+"</span></button>").appendTo($toolbar).on("click", function(){window.location=Screenful.Editor.leaveUrl});
     if(!Screenful.Editor.singleton) {
-      if(Screenful.Editor.createUrl) {
+      if(Screenful.Editor.createUrl && Screenful.Editor.harvester) {
     		$("<button id='butClone' class='iconYes' title='"+Screenful.Loc.clone+"'><span>"+Screenful.Loc.clone+"</span></button>").appendTo($toolbar).on("click", Screenful.Editor.clone);
       }
     }
@@ -428,11 +430,14 @@ Screenful.Editor={
       Screenful.Editor.needsSaving=false;
       if($("#container").hasClass("withHistory")) {
         Screenful.Editor.hideHistory();
-        var id=Screenful.Editor.entryID || $("#idbox").val();;
-        Screenful.Editor.view(null, id);
+        if(!Screenful.History.timelineOnly){
+          var id=Screenful.Editor.entryID || $("#idbox").val();;
+          Screenful.Editor.view(null, id);
+        }
       } else {
         var id=Screenful.Editor.entryID || $("#idbox").val();;
-        $("#container").html("").removeClass("withSourceCode").removeClass("withCommenting").addClass("withHistory");
+        if(!Screenful.History.timelineOnly) $("#container").html("");
+        $("#container").removeClass("withSourceCode").removeClass("withCommenting").addClass("withHistory");
         $("#history").show();
         Screenful.Editor.updateToolbar();
         $("#container .xonomy .layby").remove();
@@ -442,7 +447,10 @@ Screenful.Editor={
   },
   hideHistory: function(){
     $("#history").hide();
-    if($("#container").hasClass("withHistory")) $("#container").removeClass("withHistory").html("<div id='viewer'></div>");
+    if($("#container").hasClass("withHistory")){
+      $("#container").removeClass("withHistory");
+      if(!Screenful.History.timelineOnly) $("#container").html("<div id='viewer'></div>");
+    }
     Screenful.Editor.updateToolbar();
     Screenful.Editor.makeUnresizable();
   },
@@ -528,6 +536,12 @@ Screenful.Editor={
     if(window.parent && window.parent.Screenful && window.parent.Screenful.Navigator){
       window.parent.Screenful.Navigator.addToStarlist(list);
     }
+  },
+  getStarlist: function(){
+    if(window.parent && window.parent.Screenful && window.parent.Screenful.Navigator){
+      return window.parent.Screenful.Navigator.starList;
+    }
+    return [];
   },
 
   makeResizable: function(){

@@ -1,6 +1,7 @@
 Screenful.Navigator={
   regime: "stepped",
   stepSize: 10,
+  stats: [], //the stats that came with the latest list
   start: function(){
     Screenful.createEnvelope();
 
@@ -302,16 +303,23 @@ Screenful.Navigator={
     return ret;
   },
   lastListFuncName: "list", //list | listHierarchy
-  list: function(event, howmanyOrPage, noSFX){
+  list: function(event, howmanyOrPage, noSFX, facetsOverride){
     Screenful.Navigator.lastListFuncName="list";
     var howmany=howmanyOrPage || Screenful.Navigator.lastStepSize || Screenful.Navigator.stepSize;
     var page=howmanyOrPage || 1;
     Screenful.Navigator.lastStepSize=howmany;
     Screenful.status(Screenful.Loc.listing, "wait"); //"getting list of entries"
     var url=Screenful.Navigator.listUrl;
+    if(facetsOverride){
+      $("#searchbox").val("");
+    }
     var listParams=Screenful.Navigator.harvestListParams();
-    var facets=listParams.facets;
     var criteria=listParams.criteria;
+    if(facetsOverride){
+      var facets=facetsOverride;
+    } else {
+      var facets=listParams.facets;
+    }
     var searchtext=listParams.searchtext;
     var modifier=listParams.modifier;
     if(criteria!=Screenful.Navigator.critTemplate) {
@@ -333,6 +341,13 @@ Screenful.Navigator={
       if(!data.success) {
         Screenful.status(Screenful.Loc.listingFailed, "warn"); //"failed to get list of entries"
       } else {
+        Screenful.Navigator.stats=data.stats || [];
+        if(facetsOverride){ //show facetor if the application wanted facets
+          if($("#envelope").hasClass("leftContainerCollapsed")) {
+            $("#envelope").removeClass("leftContainerCollapsed").addClass("leftContainerExpanded");
+          }
+        }
+        if(data.stats) Screenful.Facetor.show(); //redraw facetor if there are statistics
         Screenful.Navigator.pageSize=data.pageSize;
         $("#countcaption").html(data.total);
         var $listbox=$("#listbox").hide().html("");
