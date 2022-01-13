@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "better-sqlite3": "^6.0.1",
+    "better-sqlite3": "^7.4.6",
     "mssql": "^5.1.0",
     "xml-formatter": "^1.2.1"
   }
