@@ -8,6 +8,7 @@ module.exports={
 }
 
 function clean4xml(s){
+  s=(s||"").toString();
   s=s.replace(/\&/g, "&amp;");
   s=s.replace(/\"/g, "&quot;");
   s=s.replace(/\'/g, "&apos;");
@@ -25,6 +26,7 @@ function metadataAbbr(id){
 function metadataTitle(id, langCode){
   var ret="";
   if(metadata[id]) ret=(metadata[id].obj.title[langCode] || metadata[id].obj.title.$ || metadata[id].obj.title[termbaseLang]);
+  if(!ret) for(var lang in metadata[id].obj.title){ if(!ret) ret=metadata[id].obj.title[lang]; }
   return clean4xml(ret || id);
 }
 
@@ -32,6 +34,7 @@ function domainTitle(id){
   var ret="";
   if(metadata[id]){
     ret=(metadata[id].obj.title.$ || metadata[id].obj.title[termbaseLang]);
+    if(!ret) for(var lang in metadata[id].obj.title){ if(!ret) ret=metadata[id].obj.title[lang]; }
     if(metadata[id].obj.parentID && metadata[metadata[id].obj.parentID]){
       ret=domainTitle(metadata[id].obj.parentID)+" » "+ret;
     }

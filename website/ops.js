@@ -2312,7 +2312,7 @@ module.exports={
   <text>
     <body>
         `, "utf8");
-        db.all(`select id, json from entries where id in (${ids})`, {$ids: ids}, function(err, rows){
+        db.all(`select id, json from entries where id in (${ids})`, {}, function(err, rows){
           if(err) console.error(err);
           rows.map(row => {
             var entry=JSON.parse(row.json);
