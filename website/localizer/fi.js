@@ -7,7 +7,7 @@ function L(s, gloss){
   if(s=="Dublin City University") return "Dublin City University";
   if(s=="Log out") return "Kirjaudu ulos";
   if(s=="Change your password") return "Vaihda salasana";
-  if(s=="Registered user login") return "Rekisteröity käyttäjän kirjautuminen";
+  if(s=="Registered user login") return "Kirjautuminen rekisteröidyille käyttäjille";
   if(s=="Get an account") return "Luo käyttäjätili";
   if(s=="Forgot your password?") return "Unohditko salasanasi?";
   if(s=="E-mail address") return "Sähköpostiosoite";
