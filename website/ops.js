@@ -1555,7 +1555,7 @@ module.exports={
   getSpellsuggs: function(db, termbaseID, want, searchtext, callnext){
     if(!want) callnext(null); else {
       var si=module.exports.getSpellindex(searchtext);
-      var sql="select distinct wording from spelling";
+      var sql="select distinct wording from spelling as sp inner join entry_term as et on et.term_id=sp.term_id";
       var orderby="";
       for(var key in si){
         if(orderby!="") orderby+="+";
@@ -2058,7 +2058,13 @@ module.exports={
 
   readRandoms: function(db, termbaseID, callnext){
     var limit=30;
-    var sql_randoms="select wording from terms where id in (select id from terms order by random() limit $limit)"
+    var sql_randoms=`select wording from terms
+    where id in (
+      select id from terms as t
+      inner join entry_term as et on et.term_id=t.id
+      where id is not null
+      order by random() limit $limit
+    )`;
     var sql_total="select count(*) as total from terms";
     var randoms=[];
     var more=false;
