@@ -61,10 +61,10 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #randoms { margin-top: 60px; position: relative; min-height: 100px;}
 #randoms.short {}
 #randoms.hasMore {}
-#randoms > div.list {font-size: 1rem; line-height: 2em; text-align: center; overflow-x: hidden;}
+#randoms > div.list {font-size: 1rem; line-height: 2em; text-align: center; overflow-x: hidden; padding-top: 5px; padding-bottom: 5px;}
 #randoms.short div.list {margin: auto; max-width: 1100px;}
 #randoms.hasMore div.list {text-align: left; border-left: 1px solid #dddddd; padding-left: 10px; margin-left: 105px;}
-#randoms > div.list > a {color: #666666; text-decoration: none; white-space: nowrap; margin: 0px 0px; padding: 5px 10px; font-weight: bold; color: #000000;}
+#randoms > div.list > a {text-decoration: none; white-space: nowrap; margin: 0px 0px; padding: 5px 10px; color: #000000;}
 #randoms > div.list > a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 #randoms > div.randomizer {display: none; }
 #randoms.hasMore > div.randomizer {display: block; position: absolute; top: 0px; left: 45px; background-image: url(refresh-static.gif); width: 40px; height: 40px; background-position: center center; background-repeat: no-repeat; cursor: pointer;}
@@ -75,6 +75,12 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
   #randoms.hasMore > div.randomizer {display: block; position: relative; top: 0px; left: 0px;}
 
 }
+
+#abc { position: relative; margin-top: 50px; }
+#abc div.lingo {position: relative; margin-top: 10px; border: 1px solid #cccccc; border-radius: 4px; padding: 5px 5px 0px 5px; padding-left: 105px; text-align: center;}
+#abc div.lingo span.title {display: block; position: absolute; top: 11px; left: 10px; width: 40px; color: #333333; text-align: left; font-size: 0.9em;}
+#abc div.lingo a.letter {text-decoration: none; color: #000000; font-weight: bold; display: inline-block; width: 1.25em; text-align: center; border-radius: 2px; padding: 5px; margin-bottom: 5px;}
+#abc div.lingo a.letter:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 
 #dictfooter { padding: 10px 0px 50px 0px; color: #666666; font-size: 0.9rem; }
 #dictfooter > div {margin: 10px 0px;}

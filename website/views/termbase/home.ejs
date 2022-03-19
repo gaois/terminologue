@@ -100,6 +100,18 @@
 					<div class="randomizer" onclick="random()"></div>
 					<div class="list"></div>
 				</div>
+        <div id="abc">
+          <%termbaseConfigs.lingo.languages.map(function(language, iL){%>
+            <%if(language.role=="major" && termbaseConfigs.abc[language.abbr]){%>
+              <div class="lingo">
+                <span class="title"><%=language.title[uilang] || language.abbr.toUpperCase()%></span>
+                <%termbaseConfigs.abc[language.abbr].map(chars => { if(chars.length>0){%>
+                  <a class="letter" href="?lang=<%-language.abbr%>&amp;abc=<%-encodeURIComponent(chars[0])%>"><%=chars[0].toUpperCase()%></a>
+                <%}})%>
+              </div>
+            <%}%>
+          <%})%>
+        </div>
 			<%}%>
 		</div>
 
