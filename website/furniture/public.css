@@ -18,7 +18,7 @@
 .invelope.bottom {margin-top: 100px; border-top: 1px dotted #999999;}
 .invelope > .clear {clear: both;}
 
-#dictheader {margin-bottom: 20px; z-index: 10; position: relative;}
+#dictheader {margin-bottom: 20px; position: relative;}
 body.homepage { overflow: auto !important;}
 body.homepage .invelope.top { padding-top: 50px;}
 body.homepage #dictheader {text-align: center; margin-top: 100px; margin-bottom: 50px;}
