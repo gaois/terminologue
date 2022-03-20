@@ -933,9 +933,11 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
         //termbase home page:
         configs.ident.blurb=ops.markdown(configs.ident.blurb[uilang] || configs.ident.blurb.$);
         ops.readExtranetsByUser(db, req.params.termbaseID, user.email, function(_extranets){
-          db.close();
-          var extranets=[]; _extranets.map(obj => { if(obj.live=="1") extranets.push(obj); });
-          res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets});
+          ops.pubTopDomains(db, req.params.termbaseID, function(topDomains){
+            db.close();
+            var extranets=[]; _extranets.map(obj => { if(obj.live=="1") extranets.push(obj); });
+            res.render("termbase/home.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, extranets: extranets, topDomains: topDomains});
+          });
         });
       }
     });

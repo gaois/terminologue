@@ -112,6 +112,11 @@
             <%}%>
           <%})%>
         </div>
+        <div id="topDomains">
+          <%topDomains.map(domain => {%>
+            <div class="domain"><a href="?dom=<%-domain.id%>"><%-domain.titleSmart%></a></div>
+          <%})%>
+        </div>
 			<%}%>
 		</div>
 

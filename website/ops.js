@@ -2226,6 +2226,20 @@ module.exports={
       }
     });
   },
+  pubTopDomains: function(db, termbaseID, callnext){
+    db.all("select * from metadata as m where m.type='domain' and (m.parent_id is null or not exists(select * from metadata as x where x.id=m.parent_id)) order by m.sortkey", {}, function(err, rows){
+      if(err) console.error(err);
+      if(err || !rows) rows=[];
+      var ret=[];
+      rows.map(row => {
+        var obj=JSON.parse(row.json);
+        obj.id=row.id;
+        obj.titleSmart=pp.renderTitleSmart(obj.title, db.termbaseConfigs);
+        ret.push(obj)
+      });
+      callnext(ret);
+    });
+  },
 
   toTBX: function(db, termbaseID, offset, limit, callnext){
     var stamp=(new Date()).toISOString().replace(/[^0-9]/g, "-");
