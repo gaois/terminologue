@@ -241,7 +241,7 @@ function Domain(domainID, lang, md){
   var ret=`<span>`;
   var domain=GetMetadatum(md, "domain", domainID);
   if(domain){
-    ret+=`<span class='step'>${TitleInLang(domain.title, lang)}</span>`;
+    ret+=`<a href="?dom=${domain.id}" class='step'>${TitleInLang(domain.title, lang)}</a>`;
     var parentID=domain.parentID;
     var depth=0;
     while(parentID && depth<10){
@@ -250,7 +250,7 @@ function Domain(domainID, lang, md){
       depth++;
       if(domain){
         ret="&nbsp; »&nbsp; "+ret;
-        ret=`<span class='step'>${TitleInLang(domain.title, lang)}</span>`+ret;
+        ret=`<a href="?dom=${domain.id}" class='step'>${TitleInLang(domain.title, lang)}</a>`+ret;
         parentID=domain.parentID;
       }
     }

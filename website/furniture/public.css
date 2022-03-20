@@ -75,17 +75,39 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 }
 
 #abc { position: relative; margin-top: 50px; }
-#abc div.lingo {position: relative; margin-top: 10px; border: 1px solid #cccccc; border-radius: 4px; padding: 5px 5px 0px 5px; padding-left: 105px; text-align: center;}
-#abc div.lingo span.title {display: block; position: absolute; top: 11px; left: 10px; width: 40px; color: #333333; text-align: left; font-size: 0.9em;}
+#abc div.lingo {position: relative; margin-top: 10px; border: 1px solid #cccccc; border-radius: 4px; padding: 10px 10px 0px 10px; padding-left: 105px; text-align: center;}
+#abc div.lingo span.title {display: block; position: absolute; top: 13px; left: 10px; width: 40px; color: #333333; text-align: left; font-size: 0.9em;}
 #abc div.lingo a.letter {text-decoration: none; color: #000000; font-weight: bold; display: inline-block; width: 1.25em; text-align: center; border-radius: 2px; padding: 5px; margin-bottom: 5px;}
 #abc div.lingo a.letter:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
+#abc div.lingo a.letter.current { background-color: #333333; color: #ffffff; }
 
-#topDomains {position: relative; columns: 2; margin: 0px 105px; margin-top: 50px; }
+#topDomains {position: relative; columns: 2; margin: 0px 120px; margin-top: 50px; }
 #topDomains div.domain {margin-bottom: 10px;}
 #topDomains div.domain a {text-decoration: none; color: #000000;}
 #topDomains div.domain a b {color: #333333;}
 #topDomains div.domain a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 #topDomains div.domain a:hover b {color: rgb(0, 76, 131);}
+
+.titleDomain {position: relative; margin-bottom: 10px; margin-top: 50px; border: 1px solid #cccccc; border-radius: 4px; padding: 10px 10px 10px 10px; font-size: 1.15em;}
+.titleDomain a {text-decoration: none; color: #000000;}
+.titleDomain a b {color: #333333;}
+.titleDomain a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
+.titleDomain a:hover b {color: rgb(0, 76, 131);}
+.titleDomain span.divider {margin: 0 0.25em;}
+
+.childDomains {position: relative; columns: 2; margin: 0px; padding: 0px 120px; margin-top: 50px; padding-bottom: 50px; border-bottom: 1px solid #eeeeee; margin-bottom: 10px; }
+.childDomains div.domain {margin-bottom: 10px;}
+.childDomains div.domain a {text-decoration: none; color: #000000;}
+.childDomains div.domain a b {color: #333333;}
+.childDomains div.domain a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
+.childDomains div.domain a:hover b {color: rgb(0, 76, 131);}
+
+.pager {margin: 0px -20px; margin-top: 5px; margin-bottom: -50px; overflow-x: auto; padding: 5px 5px; background-color: #eeeeee; border-radius: 40px;}
+.pager a {border: 1px solid #336699; text-decoration: none; color: #333333; background-color: #eeeeee; border-radius: 40px; display: inline-block; text-align: center; padding: 5px; width: 1.35em; font-size: 1.35em; line-height: 1.35em;}
+.pager a.back {float: left;}
+.pager a.forward {float: right;}
+.pager a:hover {background-color: #dddddd; color: #336699;}
+.pager div.line {margin: 1em 10px; height: 20px; background-color: #999999;}
 
 #dictfooter { padding: 10px 0px 50px 0px; color: #666666; font-size: 0.9rem; }
 #dictfooter > div {margin: 10px 0px;}
@@ -197,5 +219,6 @@ div.suggestions a {color: #999999; text-decoration: none; margin-right: 0.5em;}
 div.suggestions a:hover {color: var(--link)}
 
 div.entries {margin-top: 75px;}
-div.entries > div.nojoy {color: #999999; font-size: 2em;}
+div.entries > div.nojoy {color: #999999; font-size: 2em; margin: 50px 0 200px 0;}
+div.entries > div.nojoy.centered {text-align: center; margin: 200px 0;}
 div.entries > div.hr {color: #999999; margin: 50px 0px 20px 0px; font-weight: bold;}

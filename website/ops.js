@@ -558,6 +558,21 @@ module.exports={
       }
     }
   },
+  getSuperdomainIDs: function(db, domainID, callnext){
+    var ret=[];
+    db.get("select * from metadata where type='domain' and id=$id", {$id: domainID}, function(err, row){
+      if(err) console.log(err);
+      if(row && row.parent_id) {
+        ret.push(row.parent_id);
+        module.exports.getSuperdomainIDs(db, row.parent_id, function(others){
+          ret=ret.concat(others);
+          callnext(ret);
+        });
+      } else {
+        callnext(ret);
+      }
+    });
+  },
   composeSqlQueries: function(db, facets, searchtext, modifier, howmany, callnext){
     var domainIDs=[facets.domain];
     if(facets.domain && facets.domain!="*" && facets.domain!="-1" && facets.domainDrilldown && facets.domainDrilldown=="incl"){
@@ -2166,6 +2181,122 @@ module.exports={
     }
   },
 
+  pubDomain: function(db, termbaseID, domainID, page, callnext){
+    page=parseInt(page);
+    var perPage=25;
+    var howmany=page*perPage;
+    var startAt=(page-1)*perPage;
+    module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
+      module.exports.getSubdomainIDs(db, domainID, function(subdomainIDs){
+        subdomainIDs.push(domainID);
+        var sql=`select *
+          from entries as e
+          inner join entry_domain as ed on ed.entry_id=e.id
+          left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$langCode
+          where ed.domain in (${subdomainIDs.join(",")}) and e.pStatus=1
+          order by sk.key
+          limit $howmany`;
+        var params={$langCode: termbaseConfigs.lingo.languages[0].abbr, $howmany: howmany+1};
+        db.all(sql, params, function(err, rows){
+          if(err) console.error(err);
+          if(err || !rows) rows=[];
+          module.exports.readTermbaseMetadata(db, termbaseID, function(metadata){
+            var entries=[];
+            var thereIsMore=false;
+            for(var i=0; i<rows.length; i++){
+              if(i>=startAt){
+                if(entries.length<perPage){
+                  var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs)};
+                  entries.push(item);
+                } else {
+                  thereIsMore=true;
+                }
+              }
+            }
+            module.exports.getSuperdomainIDs(db, domainID, function(superdomainIDs){
+              superdomainIDs.push(domainID);
+              var sql=`select * from metadata where type='domain' and (id in (${superdomainIDs.join(",")}) or parent_id=${domainID}) order by sortkey`;
+              db.all(sql, {}, function(err, rows){
+                if(err) console.error(err);
+                if(err || !rows) rows=[];
+                var titleDomains=[]; {
+                  rows.map(row => {
+                    if(row.id==domainID){
+                      var obj=JSON.parse(row.json);
+                      obj.id=row.id;
+                      obj.titleSmart=pp.renderTitleSmart(obj.title, db.termbaseConfigs);
+                      titleDomains.unshift(obj);
+                    }
+                  });
+                  var topReached;
+                  do {
+                    var dom=titleDomains[0];
+                    topReached=true;
+                    rows.map(row => {
+                      if(row.id==parseInt(dom.parentID)){
+                        var obj=JSON.parse(row.json);
+                        obj.id=row.id;
+                        obj.titleSmart=pp.renderTitleSmart(obj.title, db.termbaseConfigs);
+                        titleDomains.unshift(obj);
+                        topReached=false;
+                      }
+                    });
+                  } while(!topReached);
+                }
+                var childDomains=[]; {
+                  rows.map(row => {
+                    if(parseInt(row.parent_id)==domainID){
+                      var obj=JSON.parse(row.json);
+                      obj.id=row.id;
+                      obj.titleSmart=pp.renderTitleSmart(obj.title, db.termbaseConfigs);
+                      childDomains.push(obj);
+                    }
+                  });
+                }
+                callnext(entries, thereIsMore, titleDomains, childDomains);
+              });
+            });
+          });
+        });
+      });
+    });
+  },
+  pubAbc: function(db, termbaseID, langCode, letter, page, callnext){
+    page=parseInt(page);
+    var perPage=25;
+    var howmany=page*perPage;
+    var startAt=(page-1)*perPage;
+    module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
+      var abc=termbaseConfigs.abc[langCode] || module.exports.siteconfig.defaultAbc;
+      var sortkeyStart=toSortkey(letter, abc);
+      var sql=`select *
+        from entries as e
+        inner join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$langCode
+        where sk.key like $like and e.pStatus=1
+        order by sk.key
+        limit $howmany`;
+      var params={$langCode: langCode, $like: sortkeyStart+"%", $howmany: howmany+1};
+      db.all(sql, params, function(err, rows){
+        if(err) console.error(err);
+        if(err || !rows) rows=[];
+        module.exports.readTermbaseMetadata(db, termbaseID, function(metadata){
+          var entries=[];
+          var thereIsMore=false;
+          for(var i=0; i<rows.length; i++){
+            if(i>=startAt){
+              if(entries.length<perPage){
+                var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs)};
+                entries.push(item);
+              } else {
+                thereIsMore=true;
+              }
+            }
+          }
+          callnext(entries, thereIsMore);
+        });
+      });
+    });
+  },
   pubSearch: function(db, termbaseID, searchtext, page, callnext){
     page=parseInt(page);
     var howmany=page*100;

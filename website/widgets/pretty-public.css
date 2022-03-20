@@ -94,3 +94,6 @@ div.prettyEntry .minorTerms div.prettyDesig a.prettyWording {font-size: 0.8em; c
 
 [dir="ltr"] div.prettyEntry div.prettyIntro {position: relative; padding-left: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em; color: #666666;}
 [dir="rtl"] div.prettyEntry div.prettyIntro {position: relative; padding-right: 3em; margin: 5px 0px; font-style: italic; text-transform: uppercase; font-size: 0.8em; color: #666666;}
+
+a.step {text-decoration: none; color: inherit;}
+a.step:hover {color: #336699;}

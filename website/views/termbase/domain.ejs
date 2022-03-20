@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link rel="icon" type="image/x-icon" href="../furniture/favicon.ico"/>
+		<title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
+		<meta property="og:title" content="<%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%>" />
+		<meta property="og:site_name" content="<%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%>"/>
+		<meta property="og:url" content="<%=termbaseConfigs.siteconfig.baseUrl%><%=termbaseID%>/" />
+		<meta name="twitter:url" content="<%=termbaseConfigs.siteconfig.baseUrl%><%=termbaseID%>/" />
+		<meta property="og:image" content="<%=termbaseConfigs.siteconfig.baseUrl%>furniture/preview.gif" />
+		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../libs/screenful/screenful.js"></script>
+		<link type="text/css" rel="stylesheet" href="../libs/screenful/screenful.css" />
+		<script type="text/javascript" src="../libs/screenful/screenful-loc-<%-uilang%>.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-theme-green.css" />
+		<script type="text/javascript">var rootPath="../";</script>
+
+		<script type="text/javascript" src="../libs/screenful/screenful-uilang.js"></script>
+		<link type="text/css" rel="stylesheet" href="../libs/screenful/screenful-uilang.css" />
+		<script type="text/javascript">
+		Screenful.Uilang.url="../uilang?lang=$",
+		Screenful.Uilang.languages=<%-JSON.stringify(uilangs)%>;
+		Screenful.Uilang.current="<%-uilang%>";
+		</script>
+
+		<script type="text/javascript" src="../libs/screenful/screenful-user.js"></script>
+		<link type="text/css" rel="stylesheet" href="../libs/screenful/screenful-user.css" />
+		<script type="text/javascript">
+		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;
+		Screenful.User.username="<%=user.email%>";
+		</script>
+		<script type="text/javascript" src="../furniture/screenful-user-config.js"></script>
+
+		<script src="../furniture/public.js"></script>
+		<link type="text/css" rel="stylesheet" href="../furniture/public.css" />
+		<link type="text/css" rel="stylesheet" href="../widgets/pretty-public.css" />
+	</head>
+	<body class="entrypage">
+		<div id="header">
+			<a class="sitehome" href="../"><%if(termbaseConfigs.siteconfig.readonly){%><span class="readonly"><%=L("READ-ONLY")%></span><%}%></a>
+			<div class="topright">
+		    <div class="one ScreenfulUilang"></div>
+		    <div class="one ScreenfulUser"></div>
+		  </div>
+		</div>
+
+		<div class="invelope top">
+			<div id="dictheader">
+				<div class="titleContainer">
+					<span class="dictTitle">
+						<a class="dictTitle" href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a>
+					</span>
+				</div>
+        <div class="titleDomain">
+          <%titleDomains.map((dom, i) => {%>
+            <%if(i>0){%><span class="divider">»</span><%}%>
+            <a href="?dom=<%-dom.id%>"><%-dom.titleSmart%></a>
+          <%})%>
+        </div>
+        <%if(childDomains.length>0){%>
+          <div class="childDomains">
+            <%childDomains.map(domain => {%>
+              <div class="domain"><a href="?dom=<%-domain.id%>"><%-domain.titleSmart%></a></div>
+            <%})%>
+          </div>
+        <%}%>
+        <%if(page>1 || thereIsMore){%>
+          <div class="pager">
+            <%if(page>1){%>
+              <a class="back" href="?dom=<%-dom%>&amp;page=<%-page-1%>">«</a>
+            <%}%>
+            <%if(thereIsMore){%>
+              <a class="forward" href="?dom=<%-dom%>&amp;page=<%-page+1%>">»</a>
+            <%}%>
+          </div>
+        <%}%>
+			</div>
+		</div>
+
+		<div class="invelope">
+
+			<div class="entries">
+				<%if(entries.length==0){%>
+					<div class="nojoy centered">Ø</div>
+				<%}%>
+				<%for(var i=0; i<(entries||[]).length; i++){%>
+					<%-entries[i].html%>
+				<%}%>
+			</div>
+
+      <%if(page>1 || thereIsMore){%>
+        <div class="pager">
+          <%if(page>1){%>
+            <a class="back" href="?dom=<%-dom%>&amp;page=<%-page-1%>">«</a>
+          <%}%>
+          <%if(thereIsMore){%>
+            <a class="forward" href="?dom=<%-dom%>&amp;page=<%-page+1%>">»</a>
+          <%}%>
+        </div>
+      <%}%>
+
+		</div>
+
+
+		<div class="invelope bottom">
+			<div id="dictfooter">
+				<div class="right"><a href="../">Terminologue</a></div>
+				<div><a href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a></div>
+				<%if(termbaseConfigs.siteconfig.licences[termbaseConfigs.publico.licence]){ var lic=termbaseConfigs.siteconfig.licences[termbaseConfigs.publico.licence];%>
+					<a href="<%-lic.url%>" target="_blank"><img src="../<%-lic.icon%>" alt="<%=lic.title%>"/></a>
+				<%}%>
+			</div>
+		</div>
+
+		<%-termbaseConfigs.siteconfig.trackingCode%>
+	</body>
+</html>
