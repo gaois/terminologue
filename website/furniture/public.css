@@ -61,25 +61,36 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #randoms.hasMore {}
 #randoms > div.list {font-size: 1rem; line-height: 2em; text-align: center; overflow-x: hidden; padding-top: 5px; padding-bottom: 5px;}
 #randoms.short div.list {margin: auto; max-width: 1100px;}
-#randoms.hasMore div.list {text-align: left; border-left: 1px solid #dddddd; padding-left: 10px; margin-left: 105px;}
+[dir="ltr"] #randoms.hasMore div.list {text-align: left; border-left: 1px solid #dddddd; padding-left: 10px; margin-left: 105px;}
+[dir="rtl"] #randoms.hasMore div.list {text-align: right; border-right: 1px solid #dddddd; padding-right: 10px; margin-right: 105px;}
 #randoms > div.list > a {text-decoration: none; white-space: nowrap; margin: 0px 0px; padding: 5px 10px; color: #333333; font-weight: bold;}
 #randoms > div.list > a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 #randoms > div.randomizer {display: none; }
-#randoms.hasMore > div.randomizer {display: block; position: absolute; top: 0px; left: 45px; background-image: url(refresh-static.gif); width: 40px; height: 40px; background-position: center center; background-repeat: no-repeat; cursor: pointer;}
+[dir="ltr"] #randoms.hasMore > div.randomizer {display: block; position: absolute; top: 0px; left: 45px; background-image: url(refresh-static.gif); width: 40px; height: 40px; background-position: center center; background-repeat: no-repeat; cursor: pointer;}
+[dir="rtl"] #randoms.hasMore > div.randomizer {display: block; position: absolute; top: 0px; right: 45px; background-image: url(refresh-static.gif); width: 40px; height: 40px; background-position: center center; background-repeat: no-repeat; cursor: pointer;}
 #randoms.hasMore > div.randomizer:hover {background-color: #f7f9ea;}
 #randoms.hasMore > div.randomizer.animated {background-image: url(refresh-animated.gif);}
 @media (max-width: 800px){
-  #randoms.hasMore div.list {border-left: 0px; padding-left: 0px; margin-left: 0px; border-top: 1px solid #dddddd; padding-top: 10px; margin-top: 10px;}
-  #randoms.hasMore > div.randomizer {display: block; position: relative; top: 0px; left: 0px;}
-
+  [dir="ltr"] #randoms.hasMore div.list {border-left: 0px; padding-left: 0px; margin-left: 0px; border-top: 1px solid #dddddd; padding-top: 10px; margin-top: 10px;}
+  [dir="rtl"] #randoms.hasMore div.list {border-right: 0px; padding-right: 0px; margin-right: 0px; border-top: 1px solid #dddddd; padding-top: 10px; margin-top: 10px;}
+  [dir="ltr"] #randoms.hasMore > div.randomizer {display: block; position: relative; top: 0px; left: 0px;}
+  [dir="rtl"] #randoms.hasMore > div.randomizer {display: block; position: relative; top: 0px; right: 0px;}
 }
 
 #abc { position: relative; margin-top: 50px; }
-#abc div.lingo {position: relative; margin-top: 10px; border: 1px solid #cccccc; border-radius: 4px; padding: 10px 10px 0px 10px; padding-left: 105px; text-align: center;}
-#abc div.lingo span.title {display: block; position: absolute; top: 13px; left: 10px; width: 40px; color: #333333; text-align: left; font-size: 0.9em;}
+[dir="ltr"] #abc div.lingo {position: relative; margin-top: 10px; border: 1px solid #cccccc; border-radius: 4px; padding: 10px 10px 0px 10px; padding-left: 105px; text-align: center;}
+[dir="rtl"] #abc div.lingo {position: relative; margin-top: 10px; border: 1px solid #cccccc; border-radius: 4px; padding: 10px 10px 0px 10px; padding-right: 105px; text-align: center;}
+[dir="ltr"] #abc div.lingo span.title {display: block; position: absolute; top: 13px; left: 10px; width: 40px; color: #333333; text-align: left; font-size: 0.9em;}
+[dir="rtl"] #abc div.lingo span.title {display: block; position: absolute; top: 13px; right: 10px; width: 40px; color: #333333; text-align: right; font-size: 0.9em;}
 #abc div.lingo a.letter {text-decoration: none; color: #000000; font-weight: bold; display: inline-block; width: 1.25em; text-align: center; border-radius: 2px; padding: 5px; margin-bottom: 5px;}
 #abc div.lingo a.letter:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 #abc div.lingo a.letter.current { background-color: #333333; color: #ffffff; }
+@media (max-width: 800px){
+  [dir="ltr"] #abc div.lingo {padding-left: 10px; text-align: center;}
+  [dir="rtl"] #abc div.lingo {padding-right: 10px; text-align: center;}
+  [dir="ltr"] #abc div.lingo span.title {position: relative; top: 0px; left: 0px; width: auto; text-align: center; margin-bottom: 10px;}
+  [dir="rtl"] #abc div.lingo span.title {position: relative; top: 0px; right: 0px; width: auto; text-align: center; margin-bottom: 10px;}
+}
 
 #topDomains {position: relative; columns: 2; margin: 0px 120px; margin-top: 50px; }
 #topDomains div.domain {margin-bottom: 10px;}
@@ -87,6 +98,9 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 #topDomains div.domain a b {color: #333333;}
 #topDomains div.domain a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 #topDomains div.domain a:hover b {color: rgb(0, 76, 131);}
+@media (max-width: 800px){
+  #topDomains {columns: 1; margin-left: 0px; margin-right: 0px;}
+}
 
 .titleDomain {position: relative; margin-bottom: 10px; margin-top: 50px; border: 1px solid #cccccc; border-radius: 4px; padding: 10px 10px 10px 10px; font-size: 1.15em;}
 .titleDomain a {text-decoration: none; color: #000000;}
@@ -101,6 +115,9 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 .childDomains div.domain a b {color: #333333;}
 .childDomains div.domain a:hover {background-color: #f7f9ea; text-shadow: 1px 1px 0px #ffffff; color: rgb(0, 76, 131);}
 .childDomains div.domain a:hover b {color: rgb(0, 76, 131);}
+@media (max-width: 800px){
+  .childDomains {columns: 1; padding-left: 10px; padding-right: 10px; margin-top: 20px;}
+}
 
 .pager {margin: 0px -20px; margin-top: 5px; margin-bottom: -50px; overflow-x: auto; padding: 5px 5px; background-color: #eeeeee; border-radius: 40px;}
 .pager a {border: 1px solid #336699; text-decoration: none; color: #333333; background-color: #eeeeee; border-radius: 40px; display: inline-block; text-align: center; padding: 5px; width: 1.35em; font-size: 1.35em; line-height: 1.35em;}
@@ -108,6 +125,9 @@ body.entrypage #dictheader div.titleContainer span.dictTitle a.dictTitle {font-s
 .pager a.forward {float: right;}
 .pager a:hover {background-color: #dddddd; color: #336699;}
 .pager div.line {margin: 1em 10px; height: 20px; background-color: #999999;}
+@media (max-width: 800px){
+  .pager {margin-left: 0px; margin-right: 0px; margin-top: 20px; border-radius: 4px;}
+}
 
 #dictfooter { padding: 10px 0px 50px 0px; color: #666666; font-size: 0.9rem; }
 #dictfooter > div {margin: 10px 0px;}
