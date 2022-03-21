@@ -8,8 +8,6 @@
 		<title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
 		<meta property="og:title" content="<%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%>" />
 		<meta property="og:site_name" content="<%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%>"/>
-		<meta name="description" content="<%=termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "")%>" />
-		<meta property="og:description" content="<%=termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "")%>" />
 		<meta property="og:url" content="<%=termbaseConfigs.siteconfig.baseUrl%><%=termbaseID%>/" />
 		<meta name="twitter:url" content="<%=termbaseConfigs.siteconfig.baseUrl%><%=termbaseID%>/" />
 		<meta property="og:image" content="<%=termbaseConfigs.siteconfig.baseUrl%>furniture/preview.gif" />
@@ -36,29 +34,11 @@
 		</script>
 		<script type="text/javascript" src="../furniture/screenful-user-config.js"></script>
 
+		<script src="../furniture/public.js"></script>
 		<link type="text/css" rel="stylesheet" href="../furniture/public.css" />
-
-		<%if(termbaseConfigs.publico.public){%>
-			<script type="text/javascript">
-				$(window).ready(random);
-				function random(){
-					$("#randoms .randomizer").addClass("animated");
-					$.ajax({url: "./random.json", dataType: "json", method: "POST"}).done(function(data){
-						$("#randoms .list").html("");
-						if(!data.more && data.entries.length<20) $("#randoms").addClass("short"); else $("#randoms").removeClass("short");
-						if(data.more) $("#randoms").addClass("hasMore"); else $("#randoms").removeClass("hasMore");
-						for(var i=0; i<data.entries.length; i++){
-							var html="<a href='./?q="+encodeURIComponent(data.entries[i]).replace("'", "&apos;")+"'>"+data.entries[i]+"</a> ";
-							$("#randoms .list").append(html);
-						}
-						$("#randoms .randomizer").removeClass("animated");
-						$("#randoms").hide().fadeIn();
-					});
-				}
-			</script>
-		<%}%>
+		<link type="text/css" rel="stylesheet" href="../widgets/pretty-public.css" />
 	</head>
-	<body class="homepage">
+	<body class="entrypage">
 		<div id="header">
 			<a class="sitehome" href="../"><%if(termbaseConfigs.siteconfig.readonly){%><span class="readonly"><%=L("READ-ONLY")%></span><%}%></a>
 			<div class="topright">
@@ -73,52 +53,57 @@
 					<span class="dictTitle">
 						<a class="dictTitle" href="../<%=termbaseID%>/"><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></a>
 					</span>
-					<%if(user.termbaseAccess){%>
-						<div class="editLinks">
-							<a href="../<%=termbaseID%>/edit/" class="editLink <%if(user.level<1 && !user.isAdmin){%>disabled<%}%>"><%=L("Editing")%></a>
-							<a href="../<%=termbaseID%>/admin/" class="editLink <%if(user.level<4 && !user.isAdmin){%>disabled<%}%>"><%=L("Administration")%></a>
-							<a href="../<%=termbaseID%>/config/" class="editLink <%if(user.level<5 && !user.isAdmin){%>disabled<%}%>"><%=L("Configuration")%></a>
-						</div>
-					<%}%>
 				</div>
-				<%if(termbaseConfigs.publico.public){%>
-					<form class="searchContainer" action="./" method="GET"><span class="searchbox"><input class="searchbox" name="q"/><input type="submit" class="submit" value="&nbsp;"/></span></form>
-				<%}%>
-			</div>
-			<div id="dictblurb" class="<%if(termbaseConfigs.ident.blurb.replace(/\<[^\<\>]+\>/g, "").length<200 && termbaseConfigs.ident.blurb.indexOf("\n")==-1){%>centered<%}%>">
-				<%-termbaseConfigs.ident.blurb%>
-				<%if(extranets.length>0){%>
-					<div id="xnets">
-						<%for(var i=0; i<extranets.length; i++){ var xnet=extranets[i]; %>
-							<div class="xnet"><a class="xnetTitle" href="./x<%-xnet.id%>/"><span class="label"><%=L("EXTRANET")%></span> <%-xnet.title[uilang] || xnet.title.$%>%> &nbsp;»</a></div>
-						<%}%>
-					</div>
-				<%}%>
-			</div>
-			<%if(termbaseConfigs.publico.public){%>
-				<div id="randoms">
-					<div class="randomizer" onclick="random()"></div>
-					<div class="list"></div>
-				</div>
-        <div id="abc">
-          <%termbaseConfigs.lingo.languages.map(function(language, iL){%>
-            <%if(language.role=="major" && termbaseConfigs.abc[language.abbr]){%>
-              <div class="lingo">
-                <span class="title"><%=language.title[uilang] || language.abbr.toUpperCase()%></span>
-                <%termbaseConfigs.abc[language.abbr].map(chars => { if(chars.length>0){%>
-                  <a class="letter" href="?lang=<%-language.abbr%>&amp;abc=<%-encodeURIComponent(chars[0])%>"><%=chars[0].toUpperCase()%></a>
-                <%}})%>
-              </div>
+        <div class="titleDomain">
+          <%titleDomains.map((dom, i) => {%>
+            <%if(i>0){%><span class="divider">»</span><%}%>
+            <a href="?dom=<%-dom.id%>"><%-dom.titleSmart%></a>
+          <%})%>
+        </div>
+        <%if(childDomains.length>0){%>
+          <div class="childDomains">
+            <%childDomains.map(domain => {%>
+              <div class="domain"><a href="?dom=<%-domain.id%>"><%-domain.titleSmart%></a></div>
+            <%})%>
+          </div>
+        <%}%>
+        <%if(page>1 || thereIsMore){%>
+          <div class="pager">
+            <%if(page>1){%>
+              <a class="back" href="?dom=<%-dom%>&amp;page=<%-page-1%>">«</a>
             <%}%>
-          <%})%>
-        </div>
-        <div id="topDomains">
-          <%topDomains.map(domain => {%>
-            <div class="domain"><a href="?dom=<%-domain.id%>"><%-domain.titleSmart%></a></div>
-          <%})%>
-        </div>
-			<%}%>
+            <%if(thereIsMore){%>
+              <a class="forward" href="?dom=<%-dom%>&amp;page=<%-page+1%>">»</a>
+            <%}%>
+          </div>
+        <%}%>
+			</div>
 		</div>
+
+		<div class="invelope">
+
+			<div class="entries">
+				<%if(entries.length==0){%>
+					<div class="nojoy centered">Ø</div>
+				<%}%>
+				<%for(var i=0; i<(entries||[]).length; i++){%>
+					<%-entries[i].html%>
+				<%}%>
+			</div>
+
+      <%if(page>1 || thereIsMore){%>
+        <div class="pager">
+          <%if(page>1){%>
+            <a class="back" href="?dom=<%-dom%>&amp;page=<%-page-1%>">«</a>
+          <%}%>
+          <%if(thereIsMore){%>
+            <a class="forward" href="?dom=<%-dom%>&amp;page=<%-page+1%>">»</a>
+          <%}%>
+        </div>
+      <%}%>
+
+		</div>
+
 
 		<div class="invelope bottom">
 			<div id="dictfooter">

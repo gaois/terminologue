@@ -430,7 +430,7 @@ PrettyLarge.domain=function(domainID, lang){
       depth++;
       if(domain){
         $ret.prepend("&nbsp; »&nbsp; ");
-        $ret.prepend("<span class='step'>"+PrettyLarge.title(domain.title, lang)+"</span>");
+        $ret.prepend("<span class='step'>"+PrettyLarge.titleInLang(domain.title, lang)+"</span>");
         parentID=domain.parentID;
       }
     }

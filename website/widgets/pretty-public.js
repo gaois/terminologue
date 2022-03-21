@@ -2,6 +2,9 @@ module.exports={
   renderEntry: function(entryID, json, md, cg){
     return Entry(entryID, json, md, cg);
   },
+  renderTitleSmart: function(title, cg){
+    return TitleSmart(title, cg);
+  }
 };
 
 //---
@@ -20,6 +23,20 @@ function Title(title, cg){
     if(lang.role=="major" && title[lang.abbr] && done.indexOf(title[lang.abbr])==-1) {
       if(ret+="") ret+="/";
       ret+=title[lang.abbr];
+      done.push(title[lang.abbr]);
+    }
+  });
+  return ret;
+};
+function TitleSmart(title, cg){
+  var ret="";
+  var done=[];
+  cg.lingo.languages.map(lang => {
+    if(lang.role=="major" && title[lang.abbr] && done.indexOf(title[lang.abbr])==-1) {
+      if(ret+="") ret+="/";
+      if(done.length==0) ret+="<b>";
+      ret+=title[lang.abbr];
+      if(done.length==0) ret+="</b>";
       done.push(title[lang.abbr]);
     }
   });
@@ -224,7 +241,7 @@ function Domain(domainID, lang, md){
   var ret=`<span>`;
   var domain=GetMetadatum(md, "domain", domainID);
   if(domain){
-    ret+=`<span class='step'>${TitleInLang(domain.title, lang)}</span>`;
+    ret+=`<a href="?dom=${domain.id}" class='step'>${TitleInLang(domain.title, lang)}</a>`;
     var parentID=domain.parentID;
     var depth=0;
     while(parentID && depth<10){
@@ -233,7 +250,7 @@ function Domain(domainID, lang, md){
       depth++;
       if(domain){
         ret="&nbsp; »&nbsp; "+ret;
-        ret=`<span class='step'>${TitleInLang(domain.title, lang)}</span>`+ret;
+        ret=`<a href="?dom=${domain.id}" class='step'>${TitleInLang(domain.title, lang)}</a>`+ret;
         parentID=domain.parentID;
       }
     }
