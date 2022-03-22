@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "unrhyw statws gwirio";
   if(s=="any publishing status") return "unrhyw statws cyhoeddi";
   if(s=="any language") return "unrhyw iaith";
-  if(s=="any acceptabilty or no acceptability") return "unrhyw statws derbynioldeb neu heb statws derbynioldeb";
-  if(s=="any acceptabilty") return "unrhyw statws derbynioldeb";
+  if(s=="any acceptability or no acceptability") return "unrhyw statws derbynioldeb neu heb statws derbynioldeb";
+  if(s=="any acceptability") return "unrhyw statws derbynioldeb";
   if(s=="no acceptability") return "heb statws derbynioldeb";
   if(s=="any domain or no domain") return "unrhyw faes neu heb faes";
   if(s=="any domain") return "unrhyw faes";

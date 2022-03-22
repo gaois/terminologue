@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "جميع حالات التحقق";
   if(s=="any publishing status") return "جميع حالات النشر";
   if(s=="any language") return "أية لغة";
-  if(s=="any acceptabilty or no acceptability") return "أية مقبولية أو لا مقبولية";
-  if(s=="any acceptabilty") return "أية مقبولية";
+  if(s=="any acceptability or no acceptability") return "أية مقبولية أو لا مقبولية";
+  if(s=="any acceptability") return "أية مقبولية";
   if(s=="no acceptability") return "لا مقبولية";
   if(s=="any domain or no domain") return "أي مجال أو لا مجال";
   if(s=="any domain") return "أي مجال";

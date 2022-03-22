@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "bilo koji status provjere";
   if(s=="any publishing status") return "bilo koji status objave";
   if(s=="any language") return "bilo koji jezik";
-  if(s=="any acceptabilty or no acceptability") return "bilo koji normativni status ili bez statusa";
-  if(s=="any acceptabilty") return "bilo koji normativni status";
+  if(s=="any acceptability or no acceptability") return "bilo koji normativni status ili bez statusa";
+  if(s=="any acceptability") return "bilo koji normativni status";
   if(s=="no acceptability") return "bez oznake normativnog statusa";
   if(s=="any domain or no domain") return "bilo koja domena ili bez domene";
   if(s=="any domain") return "bilo koja domena";

@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "jakýkoliv stav zkontrolovanosti";
   if(s=="any publishing status") return "jakýkoliv stav publikovatelnosti";
   if(s=="any language") return "jakýkoliv jazyk";
-  if(s=="any acceptabilty or no acceptability") return "jakákoliv přijatelnost nebo žádná";
-  if(s=="any acceptabilty") return "jakákoliv přijatelnost";
+  if(s=="any acceptability or no acceptability") return "jakákoliv přijatelnost nebo žádná";
+  if(s=="any acceptability") return "jakákoliv přijatelnost";
   if(s=="no acceptability") return "žádná přijatelnost";
   if(s=="any domain or no domain") return "jakákoliv doména nebo žádná";
   if(s=="any domain") return "jakákoliv doména";

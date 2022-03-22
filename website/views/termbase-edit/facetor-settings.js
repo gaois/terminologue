@@ -176,8 +176,8 @@ Screenful.Facetor.panes=[{
       if(termbaseMetadata.acceptLabel.length>0){
         //acceptability:
         var $select=$(`<select class="fullwidth" id="facAccept"></select>`).appendTo($inme);
-        $select.append(`<option value="">(${L("any acceptabilty or no acceptability")})</option>`);
-        $select.append(`<option value="*">(${L("any acceptabilty")})</option>`);
+        $select.append(`<option value="">(${L("any acceptability or no acceptability")})</option>`);
+        $select.append(`<option value="*">(${L("any acceptability")})</option>`);
         $select.append(`<option value="-1">(${L("no acceptability")})</option>`);
         termbaseMetadata.acceptLabel=(termbaseMetadata.acceptLabel || []);
         termbaseMetadata.acceptLabel.map(datum => {

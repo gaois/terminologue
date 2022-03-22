@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "beliebiger Prüfstatus";
   if(s=="any publishing status") return "beliebiger Veröffentlichungsstatus";
   if(s=="any language") return "beliebige Sprache";
-  if(s=="any acceptabilty or no acceptability") return "beliebige Akzeptanz oder keine Akzeptanz";
-  if(s=="any acceptabilty") return "beliebige Akzeptanz";
+  if(s=="any acceptability or no acceptability") return "beliebige Akzeptanz oder keine Akzeptanz";
+  if(s=="any acceptability") return "beliebige Akzeptanz";
   if(s=="no acceptability") return "keine Akzeptanz";
   if(s=="any domain or no domain") return "beliebige Domain oder keine Domain";
   if(s=="any domain") return "beliebige Domain";

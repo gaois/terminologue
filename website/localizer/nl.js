@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "elke controlestatus";
   if(s=="any publishing status") return "elke publicatiestatus";
   if(s=="any language") return "elke taal";
-  if(s=="any acceptabilty or no acceptability") return "elke aanvaardbaarheid of geen aanvaardbaarheid";
-  if(s=="any acceptabilty") return "elke aanvaardbaarheid";
+  if(s=="any acceptability or no acceptability") return "elke aanvaardbaarheid of geen aanvaardbaarheid";
+  if(s=="any acceptability") return "elke aanvaardbaarheid";
   if(s=="no acceptability") return "geen aanvaardbaarheid";
   if(s=="any domain or no domain") return "elk domein of geen domein";
   if(s=="any domain") return "elk domein";

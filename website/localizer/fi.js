@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "mikä tahansa tarkistusstatus";
   if(s=="any publishing status") return "mikä tahansa julkaisustatus";
   if(s=="any language") return "mikä tahansa kieli";
-  if(s=="any acceptabilty or no acceptability") return "mikä tahansa hyväksyttävyys tai ei hyväksyttävyyttä";
-  if(s=="any acceptabilty") return "mikä tahansa hyväksyttävyys";
+  if(s=="any acceptability or no acceptability") return "mikä tahansa hyväksyttävyys tai ei hyväksyttävyyttä";
+  if(s=="any acceptability") return "mikä tahansa hyväksyttävyys";
   if(s=="no acceptability") return "ei hyväksyttävyyttä";
   if(s=="any domain or no domain") return "mikä tahansa aihealue tai ei aihealuetta";
   if(s=="any domain") return "mikä tahansa aihealue";

@@ -62,8 +62,8 @@ function L(s, gloss){
   if(s=="any checking status") return "stádas seiceála ar bith";
   if(s=="any publishing status") return "stádas foilsithe ar bith";
   if(s=="any language") return "teanga ar bith";
-  if(s=="any acceptabilty or no acceptability") return "inghlacthacht ar bith nó gan inghlacthacht";
-  if(s=="any acceptabilty") return "inghlacthacht ar bith";
+  if(s=="any acceptability or no acceptability") return "inghlacthacht ar bith nó gan inghlacthacht";
+  if(s=="any acceptability") return "inghlacthacht ar bith";
   if(s=="no acceptability") return "gan inghlacthacht";
   if(s=="any domain or no domain") return "réimse ar bith nó gan réimse";
   if(s=="any domain") return "réimse ar bith";
