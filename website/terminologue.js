@@ -23,6 +23,8 @@ const localizer={
   ru: require("./localizer/ru.js"),
   es: require("./localizer/es.js"),
   ar: require("./localizer/ar.js"),
+  hr: require("./localizer/hr.js"),
+  de: require("./localizer/de.js"),
 };
 
 //our uploader:
