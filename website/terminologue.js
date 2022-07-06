@@ -921,27 +921,27 @@ app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
       var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
       if(req.query.q){
         //search results page:
-        ops.pubSearch(db, req.params.termbaseID, req.query.q, (req.query.p || 1), function(results){
+        ops.pubSearch(db, req.params.termbaseID, req.query.q, (req.query.p || 1), localizer[uilang].L, function(results){
           db.close();
           res.render("termbase/search.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, results: results});
         });
       } else if(req.query.id) {
         //individual entry page:
-        ops.pubEntry(db, req.params.termbaseID, req.query.id, function(entry){
+        ops.pubEntry(db, req.params.termbaseID, req.query.id, localizer[uilang].L, function(entry){
           db.close();
           res.render("termbase/entry.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, entry: entry});
         });
       } else if(req.query.abc) {
         //alphabetical list
         req.query.page=parseInt(req.query.page);
-        ops.pubAbc(db, req.params.termbaseID, req.query.lang, req.query.abc, req.query.page || 1, function(entries, thereIsMore){
+        ops.pubAbc(db, req.params.termbaseID, req.query.lang, req.query.abc, req.query.page || 1, localizer[uilang].L, function(entries, thereIsMore){
           res.render("termbase/abc.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, entries: entries, abcLetter: req.query.abc, abcLang: req.query.lang, page: req.query.page || 1, thereIsMore: thereIsMore});
         });
       } else if(req.query.dom) {
         //entries by domain
         req.query.dom=parseInt(req.query.dom);
         req.query.page=parseInt(req.query.page);
-        ops.pubDomain(db, req.params.termbaseID, req.query.dom, req.query.page || 1, function(entries, thereIsMore, titleDomains, childDomains){
+        ops.pubDomain(db, req.params.termbaseID, req.query.dom, req.query.page || 1, localizer[uilang].L, function(entries, thereIsMore, titleDomains, childDomains){
           res.render("termbase/domain.ejs", {user: user, termbaseID: req.params.termbaseID, termbaseConfigs: configs, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, entries: entries, dom: req.query.dom, page: req.query.page || 1, thereIsMore: thereIsMore, titleDomains: titleDomains, childDomains: childDomains});
         });
       } else {

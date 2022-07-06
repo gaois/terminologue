@@ -97,3 +97,15 @@ div.prettyEntry .minorTerms div.prettyDesig a.prettyWording {font-size: 0.8em; c
 
 a.step {text-decoration: none; color: inherit;}
 a.step:hover {color: #336699;}
+
+div.prettyEntry div.xrefs > div.title {font-size: 0.75em; color: #999999; font-weight: bold;}
+[dir="ltr"] div.prettyEntry div.xrefs div.xref {margin-top: 5px; margin-left: 10px; background-image: url(../furniture/arrow_right.png); background-position: center left; padding-left: 30px; background-repeat: no-repeat;}
+[dir="rtl"] div.prettyEntry div.xrefs div.xref {margin-top: 5px; margin-right: 10px; background-image: url(../furniture/arrow_left.png); background-position: center right; padding-right: 30px; background-repeat: no-repeat;}
+div.prettyEntry div.xrefs div.xref > a {color: #aaaaaa; cursor: pointer;}
+div.prettyEntry div.xrefs div.xref > a:hover {color: var(--link);}
+
+div.prettyEntry span.prettyEntryOneliner {font-size: 0.8em;}
+div.prettyEntry span.prettyEntryOneliner span.term {font-weight: bold; color: #333333;}
+div.prettyEntry span.prettyEntryOneliner span.divider {margin: 0px 0.25em; color: #aaaaaa;}
+div.prettyEntry span.prettyEntryOneliner:hover span.term {color: var(--link);}
+div.prettyEntry span.prettyEntryOneliner:hover span.divider {color: #aaaaaa;}
