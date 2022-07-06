@@ -25,6 +25,7 @@ const localizer={
   ar: require("./localizer/ar.js"),
   hr: require("./localizer/hr.js"),
   de: require("./localizer/de.js"),
+  lt: require("./localizer/lt.js"),
 };
 
 //our uploader:
