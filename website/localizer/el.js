@@ -179,7 +179,7 @@ function L(s, gloss){
   if(s=="editor") return "συντάκτης";
   if(s=="creator") return "δημιουργός";
   if(s=="administrator") return "διαχειριστής";
-  if(s=="configurator") return "διαμορφωτή";
+  if(s=="configurator") return "διαμορφωτής";
   if(s=="no change") return "καμία αλλαγή";
   if(s=="change to 'not checked'") return "αλλαγή σε 'μη ελεγμένο'";
   if(s=="change to 'hidden'") return "αλλαγή σε 'κρυφό'";

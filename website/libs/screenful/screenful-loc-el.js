@@ -6,7 +6,7 @@ Screenful.Loc={
   more: "Περισσότερα",
   new: "Νέο",
   edit: "Επεξεργασία",
-  save: "Σώσει",
+  save: "Αποθήκευση",
   delete: "Διαγράφη",
   listing: "Λήψη λίστας...",
   listingFailed: "Αποτυχία λήψης λίστας.",
