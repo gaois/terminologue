@@ -24,17 +24,18 @@ Terminologue.org - это облачный сервис программного
 
 Если вы хотите перевести пользовательский интерфейс *Terminologue* и документацию на ваш язык, пожалуйста, свяжитесь с нами по адресу . В настоящее время Terminologue доступен на следующих языках:
 
-- Английский: Михал Болеслав Мехура.
-- Ирландский: Михал Болеслав Мехура; Fiontar & Scoil na Gaeilge.
-- Чешский: Михал Болеслав Мехура.
-- Шведский: Хенрик Нильссон.
+- English: Michal Boleslav Měchura.
+- Gaeilge: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
+- čeština: Michal Boleslav Měchura.
+- svenska: Henrik Nilsson.
 - Cymraeg: n/a
 - suomi: Heini Nurminen.
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
-- Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
-- Arabic: Hassane Darir (<h.darir@uca.ac.ma>).
+- español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
+- العربية: Hassane Darir (<h.darir@uca.ac.ma>).
 - hrvatski: translation students of the Faculty of Humanities and Social Sciences, University of Osijek: Jelena Bungić, Dunja Dernej, Irena Iličević, Iris Koščević, Katarina Mandarić, Lea Maras, Anamarija Pezer, Sonja Skrletović, Tomislav Stojanović, Valentina Jelić, Lorena Šeda, Matej Šibalić, Mihaela Šmehil, Vedrana Vestić.
 - Deutsch: Mohammed Aqalqol.
-- lietuvių: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
-- Elliniká: George Sarlas.
+- lietuvių kalba: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
+- norsk bokmål: Pia Vinkki, Idar Wilsgård.
+- Ελληνικά: George Sarlas.

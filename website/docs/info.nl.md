@@ -24,17 +24,18 @@ U kunt [hier ](/signup/)een account aanmaken. Als u uw wachtwoord bent vergeten,
 
 Als u de gebruikersinterface en de documentatie van de *Terminologue *in uw taal wilt lokaliseren, neem dan contact met ons op via <gaois@dcu.ie>. *Terminologue *is momenteel beschikbaar in de volgende talen:
 
-- Engels: Michal Boleslav Měchura.
-- Iers: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
-- Tsjechisch: Michal Boleslav Měchura.
-- Zweeds: Henrik Nilsson.
+- English: Michal Boleslav Měchura.
+- Gaeilge: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
+- čeština: Michal Boleslav Měchura.
+- svenska: Henrik Nilsson.
 - Cymraeg: n/a
 - suomi: Heini Nurminen.
 - Nederlands: Jeremy Sneyers.
 - русский: Arina Klimina.
-- Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
-- Arabic: Hassane Darir (<h.darir@uca.ac.ma>).
+- español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
+- العربية: Hassane Darir (<h.darir@uca.ac.ma>).
 - hrvatski: translation students of the Faculty of Humanities and Social Sciences, University of Osijek: Jelena Bungić, Dunja Dernej, Irena Iličević, Iris Koščević, Katarina Mandarić, Lea Maras, Anamarija Pezer, Sonja Skrletović, Tomislav Stojanović, Valentina Jelić, Lorena Šeda, Matej Šibalić, Mihaela Šmehil, Vedrana Vestić.
 - Deutsch: Mohammed Aqalqol.
-- lietuvių: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
-- Elliniká: George Sarlas.
+- lietuvių kalba: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
+- norsk bokmål: Pia Vinkki, Idar Wilsgård.
+- Ελληνικά: George Sarlas.
