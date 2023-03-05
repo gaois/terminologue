@@ -37,6 +37,7 @@ Screenful.Navigator={
         if($("#envelope").hasClass("leftContainerCollapsed")) {
           $("#envelope").removeClass("leftContainerCollapsed").addClass("leftContainerExpanded");
           if(Screenful.Facetor) Screenful.Facetor.show();
+          Screenful.Navigator.list(e);
         }
       });
       $("#leftcontainer > .closer").on("click", function(e){
@@ -49,7 +50,7 @@ Screenful.Navigator={
         e.stopPropagation();
         if(needReload) Screenful.Navigator.list(e);
         $("#leftcontainer").css("width", "");
-        $("#midcontainer").css("left", "");
+        $("#midcontainer").css("inset-inline-start", "");
       });
     }
 
@@ -90,11 +91,13 @@ Screenful.Navigator={
     }
     if(Screenful.Navigator.actions && Screenful.Navigator.actions.length>0){
       Screenful.Navigator.populateActionMenu();
-      $("#countContainer").addClass("clickable").on("click", function(e){
-        var $mymenu=$(e.delegateTarget).closest(".menuContainer").find(".menu");
-        $(".menu:visible").not($mymenu).slideUp();
-        $mymenu.hide().slideDown();
-        e.stopPropagation();
+      $("#countContainer").on("click", function(e){
+        if($(e.delegateTarget).hasClass("clickable")){
+          var $mymenu=$(e.delegateTarget).closest(".menuContainer").find(".menu");
+          $(".menu:visible").not($mymenu).slideUp();
+          $mymenu.hide().slideDown();
+          e.stopPropagation();
+        }
       });
     }
     $("#starbox").on("click", Screenful.Navigator.clickStarbox);
@@ -350,6 +353,11 @@ Screenful.Navigator={
         if(data.stats) Screenful.Facetor.show(); //redraw facetor if there are statistics
         Screenful.Navigator.pageSize=data.pageSize;
         $("#countcaption").html(data.total);
+        if((data.primeEntries && data.primeEntries.length>0) || data.entries.length>0){
+          $("#countContainer").addClass("clickable");
+        } else {
+          $("#countContainer").removeClass("clickable");
+        }
         var $listbox=$("#listbox").hide().html("");
 
         var $suggs=$("#suggs").html("");
@@ -365,8 +373,10 @@ Screenful.Navigator={
           });
         }
 
-        if(Screenful.Navigator.regime=="paged"){
-          Screenful.Navigator.printPager($listbox, data.page, data.pages);
+        if((data.primeEntries && data.primeEntries.length>0) || data.entries.length>0){
+          if(Screenful.Navigator.regime=="paged"){
+            Screenful.Navigator.printPager($listbox, data.page, data.pages);
+          }
         }
 
         if(data.primeEntries && data.primeEntries.length>0 && data.entries.length>0){
@@ -379,14 +389,16 @@ Screenful.Navigator={
         if(data.entries) data.entries.forEach(function(entry){ Screenful.Navigator.printEntry(entry, $listbox, searchtext, modifier); });
         if(!noSFX) $listbox.fadeIn(); else $listbox.show();
 
-        if(Screenful.Navigator.regime=="stepped"){
-          if(data.entries.length+(data.primeEntries?data.primeEntries.length:0)<data.total){
-            $listbox.append("<div id='divMore'><button class='iconYes' id='butMore'>"+Screenful.Loc.more+"</button></div>");
-            $("#butMore").on("click", Screenful.Navigator.more);
+        if((data.primeEntries && data.primeEntries.length>0) || data.entries.length>0){
+          if(Screenful.Navigator.regime=="stepped"){
+            if(data.entries.length+(data.primeEntries?data.primeEntries.length:0)<data.total){
+              $listbox.append("<div id='divMore'><button class='iconYes' id='butMore'>"+Screenful.Loc.more+"</button></div>");
+              $("#butMore").on("click", Screenful.Navigator.more);
+            }
+          } else if(Screenful.Navigator.regime=="paged"){
+            Screenful.Navigator.printPager($listbox, data.page, data.pages);
+            Screenful.Navigator.printPagerSizer($listbox, data.pageSize);
           }
-        } else if(Screenful.Navigator.regime=="paged"){
-          Screenful.Navigator.printPager($listbox, data.page, data.pages);
-          Screenful.Navigator.printPagerSizer($listbox, data.pageSize);
         }
 
         if(Screenful.Navigator.exporters && Screenful.Navigator.exporters.length>0){
