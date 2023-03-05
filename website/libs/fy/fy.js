@@ -194,3 +194,26 @@ Fy.showPopup=function($anchor){
 Fy.hidePopup=function(){
   $("#fy_popup").remove();
 };
+
+Fy.doMetadata=function(templateName, url, el){
+  window.parent.Screenful.Curtain.open(url, function(){
+    //remember the state of $me:
+    var $oldMe=$(el).closest(".fy_horizon");
+    var data=Spec.templates[templateName].get($oldMe);
+    //reload metadata:
+    $.getJSON("./termbaseMetadata.json", function(metadata){
+      if(metadata){
+        termbaseMetadata=metadata;
+        if(window.parent && window.parent.termbaseMetadata) window.parent.termbaseMetadata=metadata;
+        //replace the old horizon with the new one, populate it, set its value:
+        $me=Fy.renderNode(data, Spec.templates[templateName], Spec, false);
+        if($me.find(".fy_remover").toArray().length>0) $me.data("jsonName", ":item").addClass("jsonName_item");
+        $oldMe.replaceWith($me);
+        //flash the horizon as a visual clue to the user:
+        $me.fadeOut("fast", function(){
+          $me.fadeIn("fast");
+        });
+      }
+    });
+  });
+}

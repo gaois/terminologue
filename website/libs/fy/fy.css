@@ -163,3 +163,12 @@ div.fy label.fy_noness input {position: relative; top: 2px;}
 
 [dir="ltr"] div.fy_node {clear: left;}
 [dir="rtl"] div.fy_node {clear: right;}
+
+.fy_label button.metadataOpener {
+  background-image: url(../../furniture/pencil.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 0px 10px !important;
+  margin: 0px !important;
+  float: right;
+}

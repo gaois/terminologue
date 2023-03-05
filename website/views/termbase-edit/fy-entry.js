@@ -539,7 +539,7 @@ Spec.templates["source"]={
     <span class="fy_remover" changeName="sourceRemove"></span>
     <span class="fy_downer" changeName="sourceReorder"></span>
     <span class="fy_upper" changeName="sourceReorder"></span>
-    <span class="fy_label" style="width: 245px;">${L("source")}</span>
+    <span class="fy_label" style="width: 245px;">${L("source")}<button class="metadataOpener" onclick="Fy.doMetadata('source', '../admin/source/?hideHeader=yes', this)">&nbsp;</button></span>
     <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 110px;">
       <select onchange="Fy.changed('sourceChange')"></select>
     </span>
@@ -551,6 +551,7 @@ Spec.templates["source"]={
     return $me.find("select").val();
   },
   populate: function($me){
+    if(user.level<4 && !user.isAdmin) $me.find(".metadataOpener").hide();
     var $select=$me.find("select");
     termbaseMetadata.source.map(datum => {
       $select.append(`<option value="${datum.id}" data-langs='${JSON.stringify(datum.langs)}'>${Spec.title(datum.title)}</option>`)
