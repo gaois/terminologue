@@ -195,25 +195,42 @@ Fy.hidePopup=function(){
   $("#fy_popup").remove();
 };
 
-Fy.doMetadata=function(templateName, url, el){
+Fy.doMetadata=function(url){
   window.parent.Screenful.Curtain.open(url, function(){
-    //remember the state of $me:
-    var $oldMe=$(el).closest(".fy_horizon");
-    var data=Spec.templates[templateName].get($oldMe);
     //reload metadata:
     $.getJSON("./termbaseMetadata.json", function(metadata){
       if(metadata){
         termbaseMetadata=metadata;
         if(window.parent && window.parent.termbaseMetadata) window.parent.termbaseMetadata=metadata;
-        //replace the old horizon with the new one, populate it, set its value:
-        $me=Fy.renderNode(data, Spec.templates[templateName], Spec, false);
-        if($me.find(".fy_remover").toArray().length>0) $me.data("jsonName", ":item").addClass("jsonName_item");
-        $oldMe.replaceWith($me);
-        //flash the horizon as a visual clue to the user:
-        $me.fadeOut("fast", function(){
-          $me.fadeIn("fast");
+        $.getJSON("./termbaseConfigs.json", function(configs){
+            termbaseConfigs=configs;
+            if(window.parent && window.parent.termbaseConfigs) window.parent.termbaseConfigs=configs;
+            Fy.refreshMetadata();
         });
       }
     });
   });
 }
+Fy.refreshMetadata=function(){
+  $(".refreshable").each(function(){
+    //remember the state of $me:
+    $oldMe=$(this);
+    var classAttr=$oldMe.attr("class");
+    var styleAttr=$oldMe.attr("style") || "";
+    var templateName=$oldMe.attr("data-templateName");
+    var jsonName=$oldMe.data("jsonName");
+    var data=Spec.templates[templateName].get($oldMe);
+    //replace the old horizon with the new one, populate it, set its value:
+    $me=Fy.renderNode(data, Spec.templates[templateName], Spec, false);
+    $me.data("jsonName", jsonName);
+    $me.attr("class", classAttr);
+    $me.attr("style", styleAttr);
+    $oldMe.replaceWith($me);
+    if(styleAttr.indexOf("display")==-1){
+      //flash the horizon as a visual clue to the user:
+      $me.fadeOut("fast", function(){
+        $(this).fadeIn("fast");
+      });
+    }
+  });
+};

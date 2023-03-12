@@ -124,12 +124,18 @@ Spec.templates[":top"]={
       <div class="title">${L("TERM OF THE DAY")}</div>
       <div class="fy_replace" templateName="tod" jsonName="tod"></div>
     </div>
-    <div class="fy_body" data-name="domains">
-      <div class="title">${L("DOMAINS")}</div>
+    <div class="fy_body domains" data-name="domains">
+      <div class="title">
+        ${L("DOMAINS")}
+        <button class="metadataOpener" onclick="Fy.doMetadata('../admin/domain/?hideHeader=yes')">${L("Domains")}</button>
+      </div>
       <div class="fy_replace" templateName="domains" jsonName="domains"></div>
     </div>
     <div class="fy_body" data-name="terms">
-      <div class="title">${L("TERMS")}</div>
+      <div class="title">
+        ${L("TERMS")}
+        <button class="metadataOpener" onclick="Fy.doMetadata('../config/lingo/?hideHeader=yes')">${L("Languages")}</button>
+      </div>
       <div class="fy_replace" templateName="desigs" jsonName="desigs"></div>
     </div>
     <div class="fy_body" data-name="intros">
@@ -145,15 +151,24 @@ Spec.templates[":top"]={
       <div class="fy_replace" templateName="examples" jsonName="examples"></div>
     </div>
     <div class="fy_body" data-name="notes">
-      <div class="title">${L("NOTES")}</div>
+      <div class="title">
+        ${L("NOTES")}
+        <button class="metadataOpener" onclick="Fy.doMetadata('../admin/noteType/?hideHeader=yes')">${L("Note types")}</button>
+      </div>
       <div class="fy_replace" templateName="notes" jsonName="notes"></div>
     </div>
     <div class="fy_body" data-name="collections">
-      <div class="title">${L("COLLECTIONS")}</div>
+      <div class="title">
+        ${L("COLLECTIONS")}
+        <button class="metadataOpener" onclick="Fy.doMetadata('../admin/collection/?hideHeader=yes')">${L("Collections")}</button>
+      </div>
       <div class="fy_replace" templateName="collections" jsonName="collections"></div>
     </div>
     <div class="fy_body" data-name="extranets">
-      <div class="title">${L("EXTRANETS")}</div>
+      <div class="title">
+        ${L("EXTRANETS")}
+        <button class="metadataOpener" onclick="Fy.doMetadata('../admin/extranet/?hideHeader=yes')">${L("Extranets")}</button>
+      </div>
       <div class="fy_replace" templateName="extranets" jsonName="extranets"></div>
     </div>
     <div class="fy_replace" templateName="xrefs" jsonName="xrefs"></div>
@@ -289,14 +304,15 @@ Spec.templates["tod"]={
 
 Spec.templates["domains"]={
   type: "array",
-  html: `<div>
+  html: `<div class="fy_nolineabove">
     <div class="fy_replace" templateName="domain" jsonName=":item"></div>
     <span class="fy_adder" templateName="domain" changeName="domainAdd">+ ${L("domain")}</span>
+    <button class="metadataOpener" onclick="Fy.doMetadata('../admin/domain/?hideHeader=yes')">${L("Domains")}</button>
   </div>`,
 };
 Spec.templates["domain"]={
   type: "string",
-  html: `<div class="fy_container">
+  html: `<div class="fy_container refreshable" data-templateName="domain">
     <div class="fy_box">
       <div class="fy_horizon">
         <span class="fy_remover" changeName="domainRemove"></span>
@@ -442,7 +458,7 @@ Spec.templates["term"]={
 };
 Spec.templates["lang"]={
   type: "string",
-  html: `<span class="fy_textbox" style="width: 95px;">
+  html: `<span class="fy_textbox refreshable" data-templateName="lang" style="width: 95px;">
     <select style="font-weight: bold;" onchange="Fy.changed('termLangChange'); Spec.templates.lang.changed(this)"></select>
   </span>`,
   set: function($me, data){
@@ -502,8 +518,8 @@ Spec.templates["clarif"]={
 };
 Spec.templates["accept"]={
   type: "string",
-  html: `<div class="fy_horizon">
-    <span class="fy_label" style="width: 245px;">${L("acceptability")}</span>
+  html: `<div class="fy_horizon refreshable" data-templateName="accept">
+    <span class="fy_label" style="width: 245px;">${L("acceptability")}<button title="${L("Acceptability labels")}" class="metadataOpener" onclick="Fy.doMetadata('../admin/acceptLabel/?hideHeader=yes')">&nbsp;</button></span>
     <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;">
       <select onchange="Fy.changed('desigAcceptChange')"></select>
     </span>
@@ -535,11 +551,11 @@ Spec.templates["sources"]={
 Spec.templates["source"]={
   type: "string",
   blank: "",
-  html: `<div class="fy_horizon">
+  html: `<div class="fy_horizon refreshable" data-templateName="source">
     <span class="fy_remover" changeName="sourceRemove"></span>
     <span class="fy_downer" changeName="sourceReorder"></span>
     <span class="fy_upper" changeName="sourceReorder"></span>
-    <span class="fy_label" style="width: 245px;">${L("source")}<button class="metadataOpener" onclick="Fy.doMetadata('source', '../admin/source/?hideHeader=yes', this)">&nbsp;</button></span>
+    <span class="fy_label" style="width: 245px;">${L("source")}<button title="${L("Sources")}" class="metadataOpener" onclick="Fy.doMetadata('../admin/source/?hideHeader=yes')">&nbsp;</button></span>
     <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 110px;">
       <select onchange="Fy.changed('sourceChange')"></select>
     </span>
@@ -563,6 +579,7 @@ Spec.templates["inflects"]={
   html: `<div class="fy_lineabove">
     <div class="fy_replace" templateName="inflect" jsonName=":item"></div>
     <span class="fy_adder" templateName="inflect" changeName="termInflectAdd">+ ${L("inflected form")}</span>
+    <button class="metadataOpener" onclick="Fy.doMetadata('../admin/inflectLabel/?hideHeader=yes')">${L("Inflection labels")}</button>
   </div>`,
 };
 Spec.templates["inflect"]={
@@ -578,7 +595,7 @@ Spec.templates["inflect"]={
 };
 Spec.templates["inflectLabel"]={
   type: "string",
-  html: `<span class="fy_textbox" style="width: 95px;">
+  html: `<span class="fy_textbox refreshable" data-templateName="inflectLabel" style="width: 95px">
     <select onchange="Fy.changed('termInflectLabelChange')"></select>
   </span>`,
   set: function($me, data){
@@ -614,7 +631,7 @@ Spec.templates["inflectLabel"]={
 };
 Spec.templates["inflectText"]={
   type: "string",
-  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 100px; inset-inline-end: 110px;"><input onchange="Fy.changed('termInflectTextChange')"/></span>`,
+  html: `<span class="fy_textbox" style="position: absolute; inset-inline-start: 100px; inset-inline-end: 150px;"><input onchange="Fy.changed('termInflectTextChange')"/></span>`,
   set: function($me, data){
     $me.find("input").val(data);
   },
@@ -627,6 +644,7 @@ Spec.templates["annots"]={
   html: `<div class="fy_lineabove">
     <div class="fy_replace" templateName="annot" jsonName=":item"></div>
     <span class="fy_adder" templateName="annot" changeName="termAnnotAdd">+ ${L("annotation")}</span>
+    <button class="metadataOpener" onclick="Fy.doMetadata('../admin/posLabel/?hideHeader=yes')">${L("Part-of-speech labels")}</button>
   </div>`,
 };
 Spec.templates["annot"]={
@@ -636,11 +654,11 @@ Spec.templates["annot"]={
     <span class="fy_remover" changeName="termAnnotRemove"></span>
     <span class="fy_downer" changeName="termAnnotReorder"></span>
     <span class="fy_upper" changeName="termAnnotReorder"></span>
-    <span class="fy_replace" templateName="annotPosition" jsonName="start"/>
+  <span class="fy_replace" templateName="annotPosition" jsonName="start"/>
     <span class="fy_replace" templateName="annotPosition" jsonName="stop"/>
     <span class="fy_textbox fy_preview" style="margin-left: 10px;"></span>
     <span class="fy_replace" templateName="annotLabel" jsonName="label"/>
-  </div>`,
+    </div>`,
   refresh: function($me){
     var wording=$me.closest(".jsonName_term").find(".jsonName_wording input").val();
     var start=parseInt($me.find(".jsonName_start").find("input").val()) || 1;
@@ -708,8 +726,8 @@ Spec.templates["annotPosition"]={
 Spec.templates["annotLabel"]={
   type: "object",
   blank: {type: "", value: ""},
-  html: `<span class="fy_textbox" style="width: 95px;">
-    <select onchange="Fy.changed('termAnnotLabelChange')"></select>
+  html: `<span class="fy_textbox refreshable" data-templateName="annotLabel" style="width: 95px">
+      <select onchange="Fy.changed('termAnnotLabelChange')"></select>
   </span>`,
   set: function($me, data){
     if(data) $me.find("select").val(data.value);
@@ -815,7 +833,7 @@ Spec.templates["definitions"]={
 Spec.templates["definition"]={
   type: "object",
   blank: {texts: {}, domains: [], sources: []},
-  html: `<div class="fy_container">
+  html: `<div class="fy_container nonessentialOutside">
     <div class="fy_box">
       <div class="fy_replace" templateName="defTexts" jsonName="texts"></div>
       <div class="fy_box">
@@ -827,8 +845,8 @@ Spec.templates["definition"]={
         <span class="fy_downer" changeName="definitionReorder"></span>
         <span class="fy_upper" changeName="definitionReorder"></span>
       </div>
-      <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
+    <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
   </div>`,
   refresh: function($me){
     if(termbaseMetadata.source.length==0){
@@ -905,7 +923,7 @@ Spec.templates["note"]={
 Spec.templates["noteType"]={
   type: "object",
   blank: "",
-  html: `<div class="fy_container">
+  html: `<div class="fy_container refreshable" data-templateName="noteType">
     <span style="display: none;"></span>
     <div class="fy_horizon">
       <span class="fy_textbox" style="position: absolute; inset-inline-start: 0px; inset-inline-end: 125px;">
@@ -971,7 +989,7 @@ Spec.templates["examples"]={
 Spec.templates["example"]={
   type: "object",
   blank: {texts: {}, sources: []},
-  html: `<div class="fy_container">
+  html: `<div class="fy_container nonessentialOutside">
     <div class="fy_box">
       <div class="fy_replace" templateName="exampleTexts" jsonName="texts"></div>
       <div class="fy_box">
@@ -982,8 +1000,8 @@ Spec.templates["example"]={
         <span class="fy_downer" changeName="exampleReorder"></span>
         <span class="fy_upper" changeName="exampleReorder"></span>
       </div>
-      <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
     </div>
+    <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
   </div>`,
   refresh: function($me){
     if(termbaseMetadata.source.length==0){
@@ -1042,7 +1060,7 @@ Spec.templates["collections"]={
 Spec.templates["collection"]={
   type: "object",
   blank: "",
-  html: `<div class="fy_container">
+  html: `<div class="fy_container refreshable" data-templateName="collection">
     <div class="fy_box">
       <div class="fy_horizon">
         <span class="fy_remover" changeName="collectionRemove"></span>
@@ -1078,7 +1096,7 @@ Spec.templates["extranets"]={
 Spec.templates["extranet"]={
   type: "object",
   blank: "",
-  html: `<div class="fy_container">
+  html: `<div class="fy_container refreshable" data-templateName="extranet">
     <div class="fy_box">
       <div class="fy_horizon">
         <span class="fy_remover" changeName="extranetRemove"></span>
@@ -1106,15 +1124,16 @@ Spec.templates["extranet"]={
 
 Spec.templates["lingySources"]={
   type: "array",
-  html: `<div>
+  html: `<div class="fy_nolineabove">
     <div class="fy_replace" templateName="lingySource" jsonName=":item"></div>
     <span class="fy_adder" templateName="lingySource" changeName="sourceAdd">+ ${L("source")}</span>
+    <button class="metadataOpener" onclick="Fy.doMetadata('../admin/source/?hideHeader=yes')">${L("Sources")}</button>
   </div>`,
 };
 Spec.templates["lingySource"]={
   type: "object",
   blank: {id: "", lang: ""},
-  html: `<div class="fy_horizon">
+  html: `<div class="fy_horizon refreshable" data-templateName="lingySource">
     <span class="fy_remover" changeName="sourceRemove"></span>
     <span class="fy_downer" changeName="sourceReorder"></span>
     <span class="fy_upper" changeName="sourceReorder"></span>

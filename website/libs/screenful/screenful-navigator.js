@@ -695,6 +695,7 @@ Screenful.Navigator={
   },
 
   refresh: function(entryID, action){
+    if($("#curtainframe").toArray().length>0) return;
     if(entryID && action=="delete"){
       var $entry=$("div.entry[data-id=\""+entryID+"\"]");
       $entry.remove();
