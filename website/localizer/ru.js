@@ -307,6 +307,7 @@ function L(s, gloss){
   if(s=="the entry has only this domain") return "translation required";
   if(s=="the entry has not only this domain") return "translation required";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "translation required";
+  if(s=="Leave this termbase") return "Покинуть эту термбазу";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

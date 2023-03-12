@@ -1226,6 +1226,25 @@ app.post(siteconfig.rootPath+":termbaseID/config/purge.json", function(req, res)
     }
   });
 });
+app.post(siteconfig.rootPath+":termbaseID/leaveTermbase.json", function(req, res){
+  if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(req.params.termbaseID);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.termbaseID, function(user){
+    if(!user.termbaseAccess) {
+      db.close();
+      res.json({success: false});
+    } else {
+      ops.readTermbaseConfigs(db, req.params.termbaseID, function(configs){
+        var users=configs.users;
+        delete users[req.cookies.email];
+        ops.configUpdate(db, req.params.termbaseID, "users", JSON.stringify(users), function(adjustedJson, resaveNeeded){
+          db.close();
+          res.json({success: true});
+        });
+      });
+    }
+  });
+});
 
 app.get(siteconfig.rootPath+":termbaseID/config/tbxout/:termbaseID-:min-:max.tbx", function(req, res, next){
   var termbaseID=req.params.termbaseID;

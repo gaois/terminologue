@@ -308,6 +308,9 @@ function L(s, gloss){
   if(s=="the entry has not only this domain") return "η καταχώρηση δεν έχει μόνο αυτόν τον τομέα";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Προσοχή! Εάν καταργήσετε τον εαυτό σας από αυτήν τη βάση όρων, θα χάσετε την πρόσβαση σε αυτήν.";
 
+  //New strings, need translation:
+  if(s=="Leave this termbase") return s;
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

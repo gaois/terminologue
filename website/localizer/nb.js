@@ -308,6 +308,9 @@ function L(s, gloss){
   if(s=="the entry has not only this domain") return "oppføringen hører kun til dette domenet";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Pass på! Hvis du fjerner deg selv fra denne termbasen, mister du tilgangen til den.";
 
+  //New strings, need translation:
+  if(s=="Leave this termbase") return s;
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

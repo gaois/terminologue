@@ -308,6 +308,9 @@ function L(s, gloss){
   if(s=="the entry has not only this domain") return "natuknica ima više domena";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Oprez! Ako se uklonite iz ove terminološke baze, nećete joj više moći pristupiti.";
 
+  //New strings, need translation:
+  if(s=="Leave this termbase") return s;
+
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
   //if(s=="") return s;

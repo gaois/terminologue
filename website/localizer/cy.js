@@ -309,6 +309,7 @@ function L(s, gloss){
 
   //New strings, need translation:
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Careful! If you remove yourself from this termbase you will lose access to it.";
+  if(s=="Leave this termbase") return s;
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
