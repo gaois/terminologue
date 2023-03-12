@@ -306,7 +306,7 @@ function L(s, gloss){
   if(s=="the entry has this domain") return "der Eintrag hat diese Domain";
   if(s=="the entry has only this domain") return "der Eintrag hat nur diese Domain";
   if(s=="the entry has not only this domain") return "der Eintrag hat nicht nur diese Domain";
-  if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Oprez! Ako se uklonite iz ove terminološke baze, nećete joj više moći pristupiti.";"Vorsicht! Wenn Sie sich aus dieser Datenbank entfernen, verlieren Sie den Zugang zu ihr.";
+  if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Vorsicht! Wenn Sie sich aus dieser Datenbank entfernen, verlieren Sie den Zugang zu ihr.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
