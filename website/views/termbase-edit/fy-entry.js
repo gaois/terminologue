@@ -107,6 +107,7 @@ Spec.templates[":top"]={
       <span class="fy_tab" data-name="intros">${L("INTR")}</span>
       <span class="fy_tab" data-name="definitions">${L("DEF")}</span>
       <span class="fy_tab" data-name="examples">${L("XMPL")}</span>
+      <span class="fy_tab" data-name="images">${L("IMG")}</span>
       <span class="fy_tab" data-name="notes">${L("NOT")}</span>
       <span class="fy_tab" data-name="collections">${L("COLL")}</span>
       <span class="fy_tab" data-name="extranets">${L("EXT")}</span>
@@ -149,6 +150,10 @@ Spec.templates[":top"]={
     <div class="fy_body" data-name="examples">
       <div class="title">${L("EXAMPLES")}</div>
       <div class="fy_replace" templateName="examples" jsonName="examples"></div>
+    </div>
+    <div class="fy_body" data-name="images">
+      <div class="title">${L("IMAGES")}</div>
+      <div class="fy_replace" templateName="images" jsonName="images"></div>
     </div>
     <div class="fy_body" data-name="notes">
       <div class="title">
@@ -1047,6 +1052,66 @@ Spec.templates["exampleTextItem"]={
   },
   get: function($me){
     return $me.find("textarea").val();
+  },
+};
+
+Spec.templates["images"]={
+  type: "array",
+  html: `<div>
+    <div class="fy_replace" templateName="image" jsonName=":item"></div>
+    <span class="fy_adder" templateName="image" changeName="imageAdd">+ ${L("image")}</span>
+  </div>`,
+};
+Spec.templates["image"]={
+  type: "object",
+  blank: {texts: {}, sources: []},
+  html: `<div class="fy_container nonessentialOutside">
+    <div class="fy_box">
+      <div class="fy_replace" templateName="imageContent" jsonName="content"></div>
+    </div>
+    <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
+  </div>`,
+  refresh: function($me){
+  },
+};
+Spec.templates["imageContent"]={
+  type: "string",
+  html: `<div class="fy_container">
+    <div class="fy_horizon">
+      <span class="fy_remover" changeName="imageRemove"></span>
+      <span class="fy_downer" changeName="imageReorder"></span>
+      <span class="fy_upper" changeName="imageReorder"></span>
+      <span class="fy_textbox" style="display: block; margin-inline-start: 5px; margin-inline-end: 125px;">
+        <input type="file" onchange="Fy.changed('imageContentChange'); Spec.templates.imageContent.changed(this)" />
+        <span class="img" style="display: none; margin: 5px 0px 0px 5px;">
+          <img style=" max-height: 200px; max-width: 200px; border: 1px solid #999999"/>
+        </span>
+      </span>
+    </div>
+  </div>`,
+  set: function($me, data){
+    //$me.find("img").attr("src", "http://beo.ie/pics/14447.jpg");
+    $me.find("img").attr("src", data);
+    if(typeof(data)=="string" && data!=""){
+      $me.find("span.img").css("display", "block");
+    } else {
+      $me.find("span.img").css("display", "none");
+    }
+  },
+  get: function($me){
+    return $me.find("img").attr("src");
+  },
+  changed: function(input){
+    const file=input.files[0];
+    const reader=new FileReader();
+    reader.addEventListener("load", () => {
+        // convert image file to base64 string
+        const dataURL=reader.result; //type: string
+        $(input).closest(".fy_textbox").find("span.img").css("display", "block");
+        $(input).closest(".fy_textbox").find("img").attr("src", dataURL);
+      }, false
+    );
+    if(file) reader.readAsDataURL(file);
   },
 };
 
