@@ -308,6 +308,12 @@ function L(s, gloss){
   if(s=="the entry has not only this domain") return "der Eintrag hat nicht nur diese Domain";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Vorsicht! Wenn Sie sich aus dieser Datenbank entfernen, verlieren Sie den Zugang zu ihr.";
   if(s=="Leave this termbase") return "Termbank verlassen";
+  if(s=="IMG") return "BILD";
+  if(s=="IMAGES") return "BILDER";
+  if(s=="image") return "Bild";
+  if(s=="credits") return "Author/Quelle";
+  if(s=="link to source") return "Link zur Quelle";
+  if(s=="The file is too large. The maximum allowed size is $1 bytes.") return "Diese Datei ist zu groß. Die maximal zulässige Größe ist $1 Bytes.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

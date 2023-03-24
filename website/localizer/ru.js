@@ -308,6 +308,12 @@ function L(s, gloss){
   if(s=="the entry has not only this domain") return "translation required";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "translation required";
   if(s=="Leave this termbase") return "Покинуть эту термбазу";
+  if(s=="IMG") return "IMG";
+  if(s=="IMAGES") return "ИЗОБРАЖЕНИЯ";
+  if(s=="image") return "изображение";
+  if(s=="credits") return "автор/источник";
+  if(s=="link to source") return "ссылка на источник";
+  if(s=="The file is too large. The maximum allowed size is $1 bytes.") return "Этот файл слишком большой. Максимально допустимый размер составляет $1 байт.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

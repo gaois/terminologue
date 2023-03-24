@@ -308,6 +308,12 @@ function L(s, gloss){
   if(s=="the entry has not only this domain") return "heslo má nejen tuto doménu";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Pozor! Odstraňujete sami sebe a přijedete tím o přístup do této databáze.";
   if(s=="Leave this termbase") return "Odejít z databáze";
+  if(s=="IMG") return "OBR";
+  if(s=="IMAGES") return "OBRÁZKY";
+  if(s=="image") return "obrázek";
+  if(s=="credits") return "autor/zdroj";
+  if(s=="link to source") return "odkaz na zdroj";
+  if(s=="The file is too large. The maximum allowed size is $1 bytes.") return "Tento soubor je přiliš velký. Nejvyšší povolená velikost souboru je $1 bajtů.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

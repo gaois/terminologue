@@ -107,6 +107,7 @@ Spec.templates[":top"]={
       <span class="fy_tab" data-name="intros">${L("INTR")}</span>
       <span class="fy_tab" data-name="definitions">${L("DEF")}</span>
       <span class="fy_tab" data-name="examples">${L("XMPL")}</span>
+      <span class="fy_tab" data-name="images">${L("IMG")}</span>
       <span class="fy_tab" data-name="notes">${L("NOT")}</span>
       <span class="fy_tab" data-name="collections">${L("COLL")}</span>
       <span class="fy_tab" data-name="extranets">${L("EXT")}</span>
@@ -149,6 +150,10 @@ Spec.templates[":top"]={
     <div class="fy_body" data-name="examples">
       <div class="title">${L("EXAMPLES")}</div>
       <div class="fy_replace" templateName="examples" jsonName="examples"></div>
+    </div>
+    <div class="fy_body" data-name="images">
+      <div class="title">${L("IMAGES")}</div>
+      <div class="fy_replace" templateName="images" jsonName="images"></div>
     </div>
     <div class="fy_body" data-name="notes">
       <div class="title">
@@ -1049,6 +1054,100 @@ Spec.templates["exampleTextItem"]={
     return $me.find("textarea").val();
   },
 };
+
+Spec.templates["images"]={
+  type: "array",
+  html: `<div>
+    <div class="fy_replace" templateName="image" jsonName=":item"></div>
+    <span class="fy_adder" templateName="image" changeName="imageAdd">+ ${L("image")}</span>
+  </div>`,
+};
+Spec.templates["image"]={
+  type: "object",
+  blank: {texts: {}, sources: []},
+  html: `<div class="fy_container nonessentialOutside">
+    <div class="fy_box">
+      <div class="fy_replace" templateName="imageContent" jsonName="content"></div>
+      <div class="fy_replace" templateName="imageCredits" jsonName="credits"></div>
+      <div class="fy_replace" templateName="imageLink" jsonName="link"></div>
+    </div>
+    <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
+  </div>`,
+  refresh: function($me){
+  },
+};
+Spec.templates["imageContent"]={
+  type: "string",
+  html: `<div class="fy_container">
+    <div class="fy_horizon">
+      <span class="fy_remover" changeName="imageRemove"></span>
+      <span class="fy_downer" changeName="imageReorder"></span>
+      <span class="fy_upper" changeName="imageReorder"></span>
+      <span class="fy_textbox" style="display: block; border: 2px dashed #cccccc; background-color: #f9f9f9; margin: -2px 3px;">
+        <label class="img" style="display: block; min-height: 100px; cursor: pointer; padding: 3px; margin: 0px;">
+          <input type="file" accept="image/*" onchange="Fy.changed('imageContentChange'); Spec.templates.imageContent.changed(this)" style="display: none" />
+          <img style="display: none; max-height: 250px; max-width: 500px; top: 0px; margin: 0px auto; border: 1px solid #cccccc; background-color: #ffffff"/>
+        </label>
+      </span>
+    </div>
+  </div>`,
+  set: function($me, data){
+    $me.find("img").attr("src", data);
+    if(typeof(data)=="string" && data!=""){
+      $me.find("img").css("display", "block");
+    } else {
+      $me.find("img").css("display", "none");
+    }
+  },
+  get: function($me){
+    return $me.find("img").attr("src");
+  },
+  changed: function(input){
+    const MAX_SIZE=250000; //250,000 bytes
+    const file=input.files[0];
+    if(file){
+      if(file.size>MAX_SIZE){
+        alert(L("The file is too large. The maximum allowed size is $1 bytes.").replace("$1", MAX_SIZE.toLocaleString(uilang)));
+      } else {
+        const reader=new FileReader();
+        reader.addEventListener("load", () => {
+            // convert image file to base64 string
+            const dataURL=reader.result; //type: string
+            $(input).closest(".fy_textbox").find("img").attr("src", dataURL).css("display", "block");
+          }, false
+        );
+        reader.readAsDataURL(file);
+      }
+    }
+  },
+};
+Spec.templates["imageCredits"]={
+  type: "string",
+  html: `<div class="fy_horizon">
+    <span class="fy_label" style="width: 245px;">${L("credits")}</span>
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed('imageCreditsChange')"/></span>
+  </div>`,
+  set: function($me, data){
+    $me.find("input").val(data);
+  },
+  get: function($me){
+    return $me.find("input").val();
+  },
+};
+Spec.templates["imageLink"]={
+  type: "string",
+  html: `<div class="fy_horizon">
+    <span class="fy_label" style="width: 245px;">${L("link to source")}</span>
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed('imageLinkChange')" placeholder="https://"/></span>
+  </div>`,
+  set: function($me, data){
+    $me.find("input").val(data);
+  },
+  get: function($me){
+    return $me.find("input").val();
+  },
+};
+
 
 Spec.templates["collections"]={
   type: "array",
