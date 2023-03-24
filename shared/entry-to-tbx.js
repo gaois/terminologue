@@ -17,6 +17,12 @@ function clean4xml(s){
   return s;
 }
 
+function isNotePublic(id){
+  var ret=false;
+  if(metadata[id] && metadata[id].type=="noteType" && metadata[id].obj.level=="2") ret=true;
+  return ret;
+}
+
 function metadataAbbr(id){
   var ret=id;
   if(metadata[id] && metadata[id].obj.abbr) ret=metadata[id].obj.abbr;
@@ -25,8 +31,10 @@ function metadataAbbr(id){
 
 function metadataTitle(id, langCode){
   var ret="";
-  if(metadata[id]) ret=(metadata[id].obj.title[langCode] || metadata[id].obj.title.$ || metadata[id].obj.title[termbaseLang]);
-  if(!ret) for(var lang in metadata[id].obj.title){ if(!ret) ret=metadata[id].obj.title[lang]; }
+  if(metadata[id]) {
+    ret=(metadata[id].obj.title[langCode] || metadata[id].obj.title.$ || metadata[id].obj.title[termbaseLang]);
+    if(!ret) for(var lang in metadata[id].obj.title){ if(!ret) ret=metadata[id].obj.title[lang]; }
+  }
   return clean4xml(ret || id);
 }
 
@@ -41,19 +49,6 @@ function domainTitle(id){
   }
   return clean4xml(ret || id);
 }
-
-/*
-<termEntry>
-  <descrip type="subjectField"> = domain
-    <langSet>
-      <ntig>
-        <termGrp>
-          <term>
-          <termNote>
-      <descrip type="explanation"> = intro
-      <descrip type="definition">
-      <descrip type="example">
-*/
 
 function doEntry(entry){
   var langCodes=discoverLangs(entry);
@@ -104,17 +99,49 @@ function doLangset(entry, langCode){
   });
   if(entry.intros[langCode]){
     ret+=`<descrip type="explanation">${clean4xml(entry.intros[langCode])}</descrip>`;
+    empty=false;
   }
   entry.definitions.map(def => {
     if(def.texts[langCode]){
-      ret+=`<descrip type="definition">${clean4xml(def.texts[langCode])}</descrip>`;
+      ret+=`<descripGrp>`;
+        ret+=`<descrip type="definition">${clean4xml(def.texts[langCode])}</descrip>`;
+        empty=false;
+        def.sources.map(assig => {
+          if(!assig.lang || assig.lang==langCode){
+            ret+=`<admin type="source">${clean4xml(metadataTitle(assig.id, langCode))}</admin>`;
+          }
+        });
+      ret+=`</descripGrp>`;
     }
   });
   entry.examples.map(ex => {
     if(ex.texts[langCode]){
       ex.texts[langCode].map(txt => {
-        ret+=`<descrip type="example">${clean4xml(txt)}</descrip>`;
+        ret+=`<descripGrp>`;
+          ret+=`<descrip type="example">${clean4xml(txt)}</descrip>`;
+          empty=false;
+          ex.sources.map(assig => {
+            if(!assig.lang || assig.lang==langCode){
+              ret+=`<admin type="source">${clean4xml(metadataTitle(assig.id, langCode))}</admin>`;
+            }
+          });
+        ret+=`</descripGrp>`;
       });
+    }
+  });
+  entry.notes.map(note => {
+    if(isNotePublic(note.type) && note.texts[langCode]){
+      var txt=note.texts[langCode];
+      ret+=`<descripGrp>`;
+        ret+=`<admin type="noteType">${clean4xml(metadataTitle(note.type, langCode))}</admin>`;
+        ret+=`<descrip type="note">${clean4xml(txt)}</descrip>`;
+        empty=false;
+        note.sources.map(assig => {
+          if(!assig.lang || assig.lang==langCode){
+            ret+=`<admin type="source">${clean4xml(metadataTitle(assig.id, langCode))}</admin>`;
+          }
+        });
+      ret+=`</descripGrp>`;
     }
   });
   ret+=`</langSet>`;
@@ -156,6 +183,11 @@ function doDesig(desig){
       if(desig.accept){
         ret+=`<termNote type="normativeAuthorization">${metadataTitle(desig.accept, desig.term.lang)}</termNote>`;
       }
+      //the desig's sources:
+      desig.sources.map(sourceID => {
+        ret+=`<admin type="source">${clean4xml(metadataTitle(sourceID, desig.term.lang))}</admin>`;
+      });
+
     ret+=`</termGrp>`;
   ret+=`</ntig>`;
   return ret;
