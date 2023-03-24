@@ -1068,6 +1068,8 @@ Spec.templates["image"]={
   html: `<div class="fy_container nonessentialOutside">
     <div class="fy_box">
       <div class="fy_replace" templateName="imageContent" jsonName="content"></div>
+      <div class="fy_replace" templateName="imageCredits" jsonName="credits"></div>
+      <div class="fy_replace" templateName="imageLink" jsonName="link"></div>
     </div>
     <div class="fy_replace" templateName="nonessential" jsonName="nonessential"></div>
   </div>`,
@@ -1081,39 +1083,71 @@ Spec.templates["imageContent"]={
       <span class="fy_remover" changeName="imageRemove"></span>
       <span class="fy_downer" changeName="imageReorder"></span>
       <span class="fy_upper" changeName="imageReorder"></span>
-      <span class="fy_textbox" style="display: block; margin-inline-start: 5px; margin-inline-end: 125px;">
-        <input type="file" onchange="Fy.changed('imageContentChange'); Spec.templates.imageContent.changed(this)" />
-        <span class="img" style="display: none; margin: 5px 0px 0px 5px;">
-          <img style=" max-height: 200px; max-width: 200px; border: 1px solid #999999"/>
-        </span>
+      <span class="fy_textbox" style="display: block; border: 2px dashed #cccccc; background-color: #f9f9f9; margin: -2px 3px;">
+        <label class="img" style="display: block; min-height: 100px; cursor: pointer; padding: 3px; margin: 0px;">
+          <input type="file" accept="image/*" onchange="Fy.changed('imageContentChange'); Spec.templates.imageContent.changed(this)" style="display: none" />
+          <img style="display: none; max-height: 250px; max-width: 500px; top: 0px; margin: 0px auto; border: 1px solid #cccccc; background-color: #ffffff"/>
+        </label>
       </span>
     </div>
   </div>`,
   set: function($me, data){
-    //$me.find("img").attr("src", "http://beo.ie/pics/14447.jpg");
     $me.find("img").attr("src", data);
     if(typeof(data)=="string" && data!=""){
-      $me.find("span.img").css("display", "block");
+      $me.find("img").css("display", "block");
     } else {
-      $me.find("span.img").css("display", "none");
+      $me.find("img").css("display", "none");
     }
   },
   get: function($me){
     return $me.find("img").attr("src");
   },
   changed: function(input){
+    const MAX_SIZE=250000; //250,000 bytes
     const file=input.files[0];
-    const reader=new FileReader();
-    reader.addEventListener("load", () => {
-        // convert image file to base64 string
-        const dataURL=reader.result; //type: string
-        $(input).closest(".fy_textbox").find("span.img").css("display", "block");
-        $(input).closest(".fy_textbox").find("img").attr("src", dataURL);
-      }, false
-    );
-    if(file) reader.readAsDataURL(file);
+    if(file){
+      if(file.size>MAX_SIZE){
+        alert(L("The file is too large. The maximum allowed size is $1 bytes.").replace("$1", MAX_SIZE.toLocaleString(uilang)));
+      } else {
+        const reader=new FileReader();
+        reader.addEventListener("load", () => {
+            // convert image file to base64 string
+            const dataURL=reader.result; //type: string
+            $(input).closest(".fy_textbox").find("img").attr("src", dataURL).css("display", "block");
+          }, false
+        );
+        reader.readAsDataURL(file);
+      }
+    }
   },
 };
+Spec.templates["imageCredits"]={
+  type: "string",
+  html: `<div class="fy_horizon">
+    <span class="fy_label" style="width: 245px;">${L("credits")}</span>
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed('imageCreditsChange')"/></span>
+  </div>`,
+  set: function($me, data){
+    $me.find("input").val(data);
+  },
+  get: function($me){
+    return $me.find("input").val();
+  },
+};
+Spec.templates["imageLink"]={
+  type: "string",
+  html: `<div class="fy_horizon">
+    <span class="fy_label" style="width: 245px;">${L("link to source")}</span>
+    <span class="fy_textbox" style="position: absolute; inset-inline-start: 250px; inset-inline-end: 0px;"><input onchange="Fy.changed('imageLinkChange')" placeholder="https://"/></span>
+  </div>`,
+  set: function($me, data){
+    $me.find("input").val(data);
+  },
+  get: function($me){
+    return $me.find("input").val();
+  },
+};
+
 
 Spec.templates["collections"]={
   type: "array",
