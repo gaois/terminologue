@@ -799,7 +799,10 @@ module.exports={
       }
 
       var params1={}; for(var key in params) params1[key]=params[key];
-      var sql1=`select e.id, e.json, (select count(*) from comments as c where c.entry_id=e.id) as commentCount`;
+      var sql1=`
+        select e.id, e.json, (select count(*) from comments as c where c.entry_id=e.id) as commentCount,
+        '[' || group_concat(xr_e.json, ', ') || ']' as xref_targets, '[' || group_concat(xr_e.id, ', ') || ']' as xref_target_ids
+      `;
       if(searchtext!=""){
         sql1+=`, max(case when t.wording=$searchtext_matchquality then 1 else 0 end)`;
         params1.$searchtext_matchquality=searchtext;
@@ -807,7 +810,11 @@ module.exports={
         sql1+=", 0";
       }
       sql1+=` as match_quality\n`;
-      sql1+=` from entries as e\n`;
+      sql1+=`
+        from entries as e
+        left outer join entry_xref as xr on xr.entry_id=e.id
+        left outer join entries as xr_e on xr_e.id=xr.target_entry_id and xr_e.pStatus=1
+      `;
       joins.map(s => {sql1+=" "+s+"\n"});
       if(modifiers[2]){
         sql1+=` left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$sortlang\n`;
@@ -2181,7 +2188,7 @@ module.exports={
     }
   },
 
-  pubDomain: function(db, termbaseID, domainID, page, callnext){
+  pubDomain: function(db, termbaseID, domainID, page, L, callnext){
     page=parseInt(page);
     var perPage=25;
     var howmany=page*perPage;
@@ -2189,11 +2196,14 @@ module.exports={
     module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
       module.exports.getSubdomainIDs(db, domainID, function(subdomainIDs){
         subdomainIDs.push(domainID);
-        var sql=`select *
+        var sql=`select e.*, '[' || group_concat(xr_e.json, ', ') || ']' as xref_targets, '[' || group_concat(xr_e.id, ', ') || ']' as xref_target_ids
           from entries as e
           inner join entry_domain as ed on ed.entry_id=e.id
+          left outer join entry_xref as xr on xr.entry_id=e.id
+          left outer join entries as xr_e on xr_e.id=xr.target_entry_id and xr_e.pStatus=1
           left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$langCode
           where ed.domain in (${subdomainIDs.join(",")}) and e.pStatus=1
+          group by e.id
           order by sk.key
           limit $howmany`;
         var params={$langCode: termbaseConfigs.lingo.languages[0].abbr, $howmany: howmany+1};
@@ -2206,8 +2216,7 @@ module.exports={
             for(var i=0; i<rows.length; i++){
               if(i>=startAt){
                 if(entries.length<perPage){
-                  var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs)};
-                  entries.push(item);
+                  var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs, rows[i].xref_targets, rows[i].xref_target_ids, L)};                  entries.push(item);
                 } else {
                   thereIsMore=true;
                 }
@@ -2261,7 +2270,7 @@ module.exports={
       });
     });
   },
-  pubAbc: function(db, termbaseID, langCode, letter, page, callnext){
+  pubAbc: function(db, termbaseID, langCode, letter, page, L, callnext){
     page=parseInt(page);
     var perPage=25;
     var howmany=page*perPage;
@@ -2269,10 +2278,13 @@ module.exports={
     module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
       var abc=termbaseConfigs.abc[langCode] || module.exports.siteconfig.defaultAbc;
       var sortkeyStart=toSortkey(letter, abc);
-      var sql=`select *
+      var sql=`select e.*, '[' || group_concat(xr_e.json, ', ') || ']' as xref_targets, '[' || group_concat(xr_e.id, ', ') || ']' as xref_target_ids
         from entries as e
         inner join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$langCode
+        left outer join entry_xref as xr on xr.entry_id=e.id
+        left outer join entries as xr_e on xr_e.id=xr.target_entry_id and xr_e.pStatus=1
         where sk.key like $like and e.pStatus=1
+        group by e.id
         order by sk.key
         limit $howmany`;
       var params={$langCode: langCode, $like: sortkeyStart+"%", $howmany: howmany+1};
@@ -2285,7 +2297,7 @@ module.exports={
           for(var i=0; i<rows.length; i++){
             if(i>=startAt){
               if(entries.length<perPage){
-                var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs)};
+                var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs, rows[i].xref_targets, rows[i].xref_target_ids, L)};
                 entries.push(item);
               } else {
                 thereIsMore=true;
@@ -2297,7 +2309,7 @@ module.exports={
       });
     });
   },
-  pubSearch: function(db, termbaseID, searchtext, page, callnext){
+  pubSearch: function(db, termbaseID, searchtext, page, L, callnext){
     page=parseInt(page);
     var howmany=page*100;
     var startAt=(page-1)*100;
@@ -2315,7 +2327,7 @@ module.exports={
             var entries=[];
             for(var i=0; i<rows.length; i++){
               if(i>=startAt){
-                var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs)};
+                var item={id: rows[i].id, json: rows[i].json, html: pp.renderEntry(rows[i].id, rows[i].json, metadata, db.termbaseConfigs, rows[i].xref_targets, rows[i].xref_target_ids, L)};
                 if(rows[i].match_quality>0) {
                   if(!primeEntries) primeEntries=[];
                   primeEntries.push(item);
@@ -2345,14 +2357,20 @@ module.exports={
       });
     });
   },
-  pubEntry: function(db, termbaseID, entryID, callnext){
-    db.get("select * from entries where id=$id and pStatus=1", {$id: entryID}, function(err, row){
+  pubEntry: function(db, termbaseID, entryID, L, callnext){
+    db.get(`select e.*, '[' || group_concat(xr_e.json, ', ') || ']' as xref_targets, '[' || group_concat(xr_e.id, ', ') || ']' as xref_target_ids
+      from entries as e
+      left outer join entry_xref as xr on xr.entry_id=e.id
+      left outer join entries as xr_e on xr_e.id=xr.target_entry_id and xr_e.pStatus=1
+      where e.id=$id and e.pStatus=1
+      group by e.id
+    `, {$id: entryID}, function(err, row){
       if(err) console.error(err);
       if(!row) {
         callnext({id: 0, json: "", html: ""});
       } else {
         module.exports.readTermbaseMetadata(db, termbaseID, function(metadata){
-          callnext({id: row.id, json: row.json, html: pp.renderEntry(row.id, row.json, metadata, db.termbaseConfigs)});
+          callnext({id: row.id, json: row.json, html: pp.renderEntry(row.id, row.json, metadata, db.termbaseConfigs, row.xref_targets, row.xref_target_ids, L)});
         });
       }
     });
@@ -2563,7 +2581,7 @@ module.exports={
           fs.appendFileSync(path, col.title, "utf8");
         });
         fs.appendFileSync(path, `\n`, "utf8");
-        db.all(`select id, json from entries where id in (${ids})`, {$ids: ids}, function(err, rows){
+        db.all(`select id, json from entries where id in (${ids})`, {}, function(err, rows){
           if(err) console.error(err);
           rows.map(row => {
             var entry=JSON.parse(row.json);

@@ -307,6 +307,13 @@ function L(s, gloss){
   if(s=="the entry has only this domain") return "níl ach an réimse seo san iontráil";
   if(s=="the entry has not only this domain") return "níl an réimse seo san iontráil leis féin";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Cúramach! Má bhaineann tú tú féin den chnuasach, ni bheidh rochtain agat air feasta.";
+  if(s=="Leave this termbase") return "Imigh as an chnuasach";
+  if(s=="IMG") return "ÍOMH";
+  if(s=="IMAGES") return "ÍOMHÁNNA";
+  if(s=="image") return "íomhá";
+  if(s=="credits") return "creidiúintí";
+  if(s=="link to source") return "nasc chuig foinse";
+  if(s=="The file is too large. The maximum allowed size is $1 bytes.") return "Tá an comhad rómhór. Ní cheadaítear comhaid thar $1 beart.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);

@@ -1,6 +1,6 @@
 module.exports={
-  renderEntry: function(entryID, json, md, cg){
-    return Entry(entryID, json, md, cg);
+  renderEntry: function(entryID, json, md, cg, xref_targets, xref_target_ids, L){
+    return Entry(entryID, json, md, cg, xref_targets, xref_target_ids, L);
   },
   renderTitleSmart: function(title, cg){
     return TitleSmart(title, cg);
@@ -93,7 +93,9 @@ function Type(obj, lang){
 };
 //---
 
-function Entry(entryID, json, md, cg){
+function Entry(entryID, json, md, cg, xref_targets, xref_target_ids, L){
+  xref_targets=JSON.parse(xref_targets || "[]");
+  xref_target_ids=JSON.parse(xref_target_ids || "[]");
   var entry=JSON.parse(json);
   var ret=`<div class='prettyEntry large'>`;
 
@@ -233,7 +235,38 @@ function Entry(entryID, json, md, cg){
     ret+=`</div>`;
   }
 
+  if(xref_targets.length>0){
+    ret+=`<div class="xrefs">`;
+    ret+=`<div class='title'>${L("SEE ALSO")}</div>`;
+    xref_target_ids.map((id, i) => {
+      ret+=`<div class="xref">`;
+      ret+=`<a href="?id=${id}">${EntryOneLiner(xref_targets[i], cg) || id}</a>`;
+      ret+="</div>";
+    });
+    ret+="</div>";
+  }
+
   ret+=`</div>`;
+  return ret;
+}
+
+function EntryOneLiner(entry, cg){
+  var ret=`<span class="prettyEntryOneliner">`;
+  //terms in major languages:
+  var majorlangs=[]; cg.lingo.languages.map(lang => { if(lang.role=="major" && majorlangs.indexOf(lang.abbr)==-1) majorlangs.push(lang.abbr); });
+  var langsDone=[];
+  var count=0;
+  majorlangs.map(lang => {
+    entry.desigs.map(desig => {
+      if(desig.term.lang==lang && langsDone.indexOf(lang)==-1) {
+        if(count>0) ret+="<span class='divider'>/</span>";
+        ret+="<span class='term'>"+Clean4Html(desig.term.wording)+"</span>";
+        langsDone.push(lang);
+        count++;
+      }
+    });
+  });
+  ret+="</span>";
   return ret;
 }
 

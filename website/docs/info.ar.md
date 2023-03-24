@@ -24,15 +24,18 @@ Terminologue أداة للتدبير المصطلحي مفتوحة المصدر.
 
 إذا كنت ترغب في توطين واجهة المستخدم لبرنامج Terminologue والوثائق الخاصة به في لغتك، يرجى الاتصال بنا على <gaois@dcu.ie>. تطبيق Terminologue متاح حالياً باللغات التالية:
 
-- الإنجليزية: (ميشال بوليسلاف متشورا)
-- الارلندية: (ميشال بوليسلاف ميتشورا؛ فيونتار سكويل نا غايلج).
-- اللغة التشيكية: (ميشال بوليسلاف متشورا)
-- اللغة السويدية: (هنريك نيلسون)
-- اللغة الويلزية: لا يوجد
-- اللغة الفنلندية: (هايني نورمينن)
-- الهولندية: (جيريمي سنييوز)
-- الروسية: (أرينا كليمينا)
-- الإسبانية: [فيكتور لوبيز مارتينيز](https://www.linkedin.com/in/translatorvictorlopez/)
-- العربية: حسن درير
+- English: Michal Boleslav Měchura.
+- Gaeilge: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
+- čeština: Michal Boleslav Měchura.
+- svenska: Henrik Nilsson
+- Cymraeg: n/a
+- suomi: Heini Nurminen.
+- Nederlands: Jeremy Sneyers.
+- русский: Arina Klimina.
+- español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
+- العربية: Hassane Darir (<h.darir@uca.ac.ma>).
 - hrvatski: translation students of the Faculty of Humanities and Social Sciences, University of Osijek: Jelena Bungić, Dunja Dernej, Irena Iličević, Iris Koščević, Katarina Mandarić, Lea Maras, Anamarija Pezer, Sonja Skrletović, Tomislav Stojanović, Valentina Jelić, Lorena Šeda, Matej Šibalić, Mihaela Šmehil, Vedrana Vestić.
 - Deutsch: Mohammed Aqalqol.
+- lietuvių kalba: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
+- norsk bokmål: Pia Vinkki, Idar Wilsgård.
+- Ελληνικά: George Sarlas.

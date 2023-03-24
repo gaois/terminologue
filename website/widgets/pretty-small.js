@@ -53,6 +53,7 @@ PrettySmall.entry=function(entry){
   var $bin=$("<div class='prettyBin'></div>").appendTo($ret);
   if(entry.definitions && entry.definitions.length>0) $("<span class='boxick'>"+L("DEF")+"</span>").appendTo($bin);
   if(entry.examples && entry.examples.length>0) $("<span class='boxick'>"+L("XMPL")+"</span>").appendTo($bin);
+  if(entry.images && entry.images.length>0) $("<span class='boxick'>"+L("IMG")+"</span>").appendTo($bin);
   if(entry.notes && entry.notes.length>0) $("<span class='boxick'>"+L("NOT")+"</span>").appendTo($bin);
   if(entry.collections && entry.collections.length>0) $("<span class='boxick'>"+L("COLL")+"</span>").appendTo($bin);
   if(entry.extranets && entry.extranets.length>0) $("<span class='boxick'>"+L("EXT")+"</span>").appendTo($bin);

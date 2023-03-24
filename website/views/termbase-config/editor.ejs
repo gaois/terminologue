@@ -90,6 +90,8 @@
 		<link type="text/css" rel="stylesheet" href="../../../furniture/ui.css" />
 	</head>
 	<body>
-    <%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "config", subsectionID: configType, rootPath: "../../../"})%>
+		<%if(!hideHeader){%>
+    	<%-include("../header.ejs", {user: user, termbaseID: termbaseID, termbaseConfigs: termbaseConfigs, sectionID: "config", subsectionID: configType, rootPath: "../../../"})%>
+		<%}%>
 	</body>
 </html>

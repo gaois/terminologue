@@ -24,15 +24,18 @@ Crea una cuenta [aquí](/signup/). Si has olvidado tu contraseña, haz clic [aqu
 
 Si deseas localizar la documentación e interfaz de usuario de *Terminologue* a tu idioma, ponte en contacto con nosotros en <gaois@dcu.ie>. Actualmente, *Terminologue* está disponible en los siguientes idiomas:
 
-- Inglés: Michal Boleslav Měchura
-- Irlandés: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge
-- Checo: Michal Boleslav Měchura
-- Sueco: Henrik Nilsson
-- Galés: n/a
-- Finés: Heini Nurminen
-- Neerlandés: Jeremy Sneyers
-- Ruso: Arina Klimina
-- Español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
-- Arabic: Hassane Darir (<h.darir@uca.ac.ma>).
+- English: Michal Boleslav Měchura.
+- Gaeilge: Michal Boleslav Měchura; Fiontar & Scoil na Gaeilge.
+- čeština: Michal Boleslav Měchura.
+- svenska: Henrik Nilsson.
+- Cymraeg: n/a
+- suomi: Heini Nurminen.
+- Nederlands: Jeremy Sneyers.
+- русский: Arina Klimina.
+- español: [Víctor López Martínez](https://www.linkedin.com/in/translatorvictorlopez/)
+- العربية: Hassane Darir (<h.darir@uca.ac.ma>).
 - hrvatski: translation students of the Faculty of Humanities and Social Sciences, University of Osijek: Jelena Bungić, Dunja Dernej, Irena Iličević, Iris Koščević, Katarina Mandarić, Lea Maras, Anamarija Pezer, Sonja Skrletović, Tomislav Stojanović, Valentina Jelić, Lorena Šeda, Matej Šibalić, Mihaela Šmehil, Vedrana Vestić.
 - Deutsch: Mohammed Aqalqol.
+- lietuvių kalba: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
+- norsk bokmål: Pia Vinkki, Idar Wilsgård.
+- Ελληνικά: George Sarlas.
