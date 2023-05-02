@@ -123,3 +123,31 @@ div.prettyEntry.large div.prettyExtranet a {background-color: #c1f1ec; padding: 
 [dir="rtl"] div.prettyEntry.large div.prettyExtranet a strong {color: #888888; font-weight: bold; font-size: 100%; margin-left: 0.25em;}
 div.prettyEntry.large div.prettyExtranet a:hover {color: var(--link-hover);}
 div.prettyEntry.large div.prettyExtranet a:hover strong {color: #999999;}
+
+div.prettyEntry.large div.image {
+  margin: 0px 10px 10px 0px;
+  float: left;
+}
+div.prettyEntry.large div.image > a {
+  display: inline-block;
+  line-height: 0px;
+}
+div.prettyEntry.large div.image a img {
+  max-height: 250px;
+  max-width: 500px;
+  border-radius: 2px;
+  border: 1px solid #999999;
+  background-color: #ffffff;
+}
+div.prettyEntry.large div.image div.credits {
+  font-size: 0.75em;
+  color: #999999;
+  margin-top: 5px;
+}
+div.prettyEntry.large div.image div.credits a {
+  color: #999999;
+  text-decoration: none;
+}
+div.prettyEntry.large div.image div.credits a:hover {
+  color: #336699;
+}

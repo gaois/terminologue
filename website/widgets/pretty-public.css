@@ -109,3 +109,31 @@ div.prettyEntry span.prettyEntryOneliner span.term {font-weight: bold; color: #3
 div.prettyEntry span.prettyEntryOneliner span.divider {margin: 0px 0.25em; color: #aaaaaa;}
 div.prettyEntry span.prettyEntryOneliner:hover span.term {color: var(--link);}
 div.prettyEntry span.prettyEntryOneliner:hover span.divider {color: #aaaaaa;}
+
+div.prettyEntry div.image {
+  margin: 0px 10px 10px 0px;
+  float: left;
+}
+div.prettyEntry div.image > a {
+  display: inline-block;
+  line-height: 0px;
+}
+div.prettyEntry div.image a img {
+  max-height: 250px;
+  max-width: 500px;
+  border-radius: 2px;
+  border: 1px solid #999999;
+  background-color: #ffffff;
+}
+div.prettyEntry div.image div.credits {
+  font-size: 0.75em;
+  color: #999999;
+  margin-top: 5px;
+}
+div.prettyEntry div.image div.credits a {
+  color: #999999;
+  text-decoration: none;
+}
+div.prettyEntry div.image div.credits a:hover {
+  color: #336699;
+}

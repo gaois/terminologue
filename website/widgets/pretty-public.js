@@ -246,6 +246,22 @@ function Entry(entryID, json, md, cg, xref_targets, xref_target_ids, L){
     ret+="</div>";
   }
 
+  //images:
+  if(entry.images && entry.images.length>0) {
+    entry.images.map(obj => {
+      ret+="<div class='image'>";
+      ret+=`<a href="${obj.content}" target="_blank"><img src="${obj.content}"></a>`;
+      if(obj.link){
+        ret+=`<div class="credits">—&nbsp;<a href="${obj.link}" target="_blank">${obj.credits || obj.link}</a></div>`;
+      } else if(obj.credits) {
+        ret+=`<div class="credits">—&nbsp;${obj.credits}</div>`;
+      }
+      ret+="</div>";
+    });
+    ret+=`<div style="clear: left"></div>`
+  }
+
+
   ret+=`</div>`;
   return ret;
 }

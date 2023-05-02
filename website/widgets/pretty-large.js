@@ -104,7 +104,7 @@ PrettyLarge.entry=function(entry){
       $("<div class='clear'></div>").appendTo($row);
     });
   }
-
+  
   //notes:
   if(entry.notes && entry.notes.length>0) {
     entry.notes.map(obj => {
@@ -221,6 +221,19 @@ PrettyLarge.entry=function(entry){
       $title.append(" ");
       $("<span class='date'>"+entry.tod+"</span>").appendTo($title);
     }
+  }
+
+  //images:
+  if(entry.images && entry.images.length>0) {
+    entry.images.map(obj => {
+      var $row=$("<div class='image'></div>").appendTo($ret);
+      $row.append(`<a href="${obj.content}" target="_blank"><img src="${obj.content}"></a>`);
+      if(obj.link){
+        $row.append(`<div class="credits">—&nbsp;<a href="${obj.link}" target="_blank">${obj.credits || obj.link}</a></div>`);
+      } else if(obj.credits) {
+        $row.append(`<div class="credits">—&nbsp;${obj.credits}</div>`);
+      }
+    });
   }
 
   return $ret;
