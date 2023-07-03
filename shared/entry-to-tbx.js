@@ -129,21 +129,23 @@ function doLangset(entry, langCode){
       });
     }
   });
-  entry.notes.map(note => {
-    if(isNotePublic(note.type) && note.texts[langCode]){
-      var txt=note.texts[langCode];
-      ret+=`<descripGrp>`;
-        ret+=`<admin type="noteType">${clean4xml(metadataTitle(note.type, langCode))}</admin>`;
-        ret+=`<descrip type="note">${clean4xml(txt)}</descrip>`;
-        empty=false;
-        note.sources.map(assig => {
-          if(!assig.lang || assig.lang==langCode){
-            ret+=`<admin type="source">${clean4xml(metadataTitle(assig.id, langCode))}</admin>`;
-          }
-        });
-      ret+=`</descripGrp>`;
-    }
-  });
+  if (entry.notes){
+    entry.notes.map(note => {
+      if(isNotePublic(note.type) && note.texts[langCode]){
+        var txt=note.texts[langCode];
+        ret+=`<descripGrp>`;
+          ret+=`<admin type="noteType">${clean4xml(metadataTitle(note.type, langCode))}</admin>`;
+          ret+=`<descrip type="note">${clean4xml(txt)}</descrip>`;
+          empty=false;
+          note.sources.map(assig => {
+            if(!assig.lang || assig.lang==langCode){
+              ret+=`<admin type="source">${clean4xml(metadataTitle(assig.id, langCode))}</admin>`;
+            }
+          });
+        ret+=`</descripGrp>`;
+      }
+    });
+  }
   ret+=`</langSet>`;
   if(!empty) return ret;
   return "";
