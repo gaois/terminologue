@@ -483,7 +483,15 @@ module.exports={
   },
 
   wordSplit: function(wording, langOrNull){
-    var words=[]; wording.split(/[\s\.\,\(\)\[\]\{\}\'\-0-9]/).map(w => { if(w) words.push(w); });
+    //var words=[]; wording.split(/[\s\.\,\(\)\[\]\{\}\'\-0-9]/).map(w => { if(w) words.push(w); });
+      //naive word split, we don't do it like this any more
+    var words=[]; wording.split(/[\p{Z}\p{S}\p{N}\p{P}\p{P}]/u).map(w => { if(w) words.push(w); });
+      //word split on any character which belongs to one of these Unicode categories:
+      // - Z = Separator
+      // - S = Symbol
+      // - N = Number
+      // - P = Punctuation
+      // - C = Other
     return words;
   },
 
