@@ -18,9 +18,9 @@ What you see here is a formatted rendering of the entry. This is what the entry 
 
 ![An entry open for editing.](/docs/intro04.png)
 
-Each entry in Terminologue represents a concept, and each concept consists of elements such as terms, definitions, domain labels and so on. The tabs at the top allow you to edit these: you can edit the entry’s terms under the TRM tab, its definitions under the DEF tab and so on. For example, to add a new term to the entry, click the plus sign under the TRM tab and fill in the wording of the term. Once the term has been added you can add more information to it, for example a part-of-speech label, a transfer comment, or one or more inflected forms. Once you have finished editing the entry, do not forget to click the *Save* button at the top (or use the *Ctrl + Shift + S* keyboard shortcut).
+Each entry in Terminologue represents a concept, and each concept consists of elements such as terms, definitions, domain labels and so on. The tabs at the top allow you to edit these: you can edit the entry’s terms under the TRM tab, its definitions under the DEF tab, add images under the IMG tab and so on. For example, to add a new term to the entry, click the plus sign under the TRM tab and fill in the wording of the term. Once the term has been added you can add more information to it, for example a part-of-speech label, a transfer comment, or one or more inflected forms. Once you have finished editing the entry, do not forget to click the *Save* button at the top (or use the *Ctrl + Shift + S* keyboard shortcut).
 
-Editing an entry basically means typing text into boxes and selecting values from lists. Many of the lists of values, such as part-of-speech labels, domain labels and so on, constitute the termbase’s metadata and can be configured individually for each termbase in the *Administration* section. If you started your termbase from a template, then you will already have some metadata preconfigured here.
+Editing an entry basically means typing text into boxes and selecting values from lists. Many of the lists of values, such as part-of-speech labels, domain labels and so on, constitute the termbase’s metadata and can be configured individually for each termbase both here in the *Editing* section as well as in the *Administration* section. If you started your termbase from a template, then you will already have some metadata preconfigured here.
 
 ![The Administration section where you can configure various lists for your termbase, such as part-of-speech labels (shown here).](/docs/intro05.png)
 
@@ -28,7 +28,7 @@ Other properties of your termbase can be configured in the *Configuration* secti
 
 ![Configuring who can access your termbase.](/docs/intro06.png)
 
-Terminologue is not just a tool for editing termbases, it is a tool for making termbases publicly available on the web, too. To make a termbase publicly viewable, go into *Publising* in the *Configuration* section and change the setting from *Private* to *Public*. You can also change the termbase back to *private* any time. You can even decide which entries are publicly visible and which not: any entry can be labelled as *hidden* in the editing interface and it will then not be visible publicly, even if the termbase as a whole is public.
+Terminologue is not just a tool for editing termbases, it is a tool for making termbases publicly available on the web, too. To make a termbase publicly viewable, go into *Publishing* in the *Configuration* section and change the setting from *Private* to *Public*. You can also change the termbase back to *private* any time. You can even decide which entries are publicly visible and which are not: any entry can be labelled as *hidden* in the editing interface and it will then not be visible publicly, even if the termbase as a whole is public.
 
 ![Making a termbase publicly viewable.](/docs/intro07.png)
 
@@ -52,7 +52,7 @@ Searching is not the only way to navigate around a termbase. Terminologue also o
 
 ## Inline grammatical annotations
 
-It will surprise no-one that, in Terminologue, you can attach part-of speech label and other grammatical labels to terms. But what's really special about Terminologue is that it lets you attach grammatical labels to individual words in multi-word terms. When attaching a grammatical label to a term, you can optionally tell Terminologue which substring of the term it applies to. Then, when Terminologue is displaying the term in the formatted rendering of the entry, it will insert the label into the term at the correct location. The user can mouse-over the label and Terminologue will highlight the substring it applies to.
+It will surprise no-one that, in Terminologue, you can attach part-of-speech label and other grammatical labels to terms. But what's really special about Terminologue is that it lets you attach grammatical labels to individual words in multi-word terms. When attaching a grammatical label to a term, you can optionally tell Terminologue which substring of the term it applies to. Then, when Terminologue is displaying the term in the formatted rendering of the entry, it will insert the label into the term at the correct location. The user can mouse-over the label and Terminologue will highlight the substring it applies to.
 
 ![Highlighting tells the user which part of the multi-word term the label applies to.](/docs/intro12.png)
 
@@ -88,7 +88,7 @@ Terminologue keeps a log of every change to every entry and it is possible to se
 
 ## Notes and comments
 
-Entries in Terminologue can contain *notes*. *Note types*, which can be configured in the termbase’s *Administration* section, can have one of three access levels:
+Entries in Terminologue can contain *notes*. *Note types*, which can be configured in the termbase’s *Editing* section as well as the *Administration* section, can have one of three access levels:
 
 1. private note, not shown on extranets
 2. private note, shown on extranets
@@ -97,6 +97,10 @@ Entries in Terminologue can contain *notes*. *Note types*, which can be configur
 Entries in Terminologue can also be annotated with arbitrary *prefabricated comments* and *comments*. These are for internal purposes and will never be visible publicly. The difference between *prefabricated comments* and *comments* is that there is a fixed list of *prefabricated comments* which a user can choose from in a drop-down list (these can be configured in the termbase’s *Administration* section) while *comments* can be any text. *Comments* and *prefabricated comments* can be paired, so the *prefabricated comments* can give the *comments* a type (saying what kind of comment it is).
 
 ![An entry with a few tags and notes.](/docs/intro11.png)
+
+## Exporting
+
+At the end of the displayed list of term entries in the *Editing* section, you have the option to export your termbase either in TBX or TXT format. You can click on either of these buttons to export the termbase in the format you desire. Exporting in TBX format can also be carried out under the *Configuration* section by clicking *TBX Export*.
 
 ## Extranets
 
