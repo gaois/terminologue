@@ -8,7 +8,7 @@ Is féidir an oiread bunachar agus is mian leat a chruthú agus ar ndóigh, is f
 
 ![Creating a new termbase in Terminologue.](/docs/intro02.png)
 
-Más beag taithí atá agat ar Terminologue, moltar duit teimpléad a roghnú ón liosta anuas,  mar shampla, *Bunachar Téarmaíochta Dátheangach Simplí*. Beidh do bhunachar réamhchumraithe le socruithe áirithe (féadfar iad a athrú tráth ar bith ar ball), chomh maith le cúpla iontráil shamplach (rud is féidir a scriosadh).
+Más beag taithí atá agat ar Terminologue, moltar duit teimpléad a roghnú ón liosta anuas, mar shampla, *Bunachar Téarmaíochta Dátheangach Simplí*. Beidh do bhunachar réamhchumraithe le socruithe áirithe (féadfar iad a athrú tráth ar bith ar ball), chomh maith le cúpla iontráil shamplach (rud is féidir a scriosadh).
 
 Agus do bhunachar téarmaíochta cruthaithe agat, is féidir leat dul chuig a leathanach baile agus dul uaidh sin chuig an gcomhéadan eagarthóireachta. Is é seo an áit ar féidir leat iontrálacha téarmaíochta a chruthú agus a chur in eagar. Tá liosta iontrálacha ar thaobh na láimhe clé. Is féidir leat na hiontrálacha samplacha a scriosadh má theastaíonn sin uait agus is féidir leat an oiread iontrálacha nua agus is mian leat a chruthú. Níl uasteorainn le líon na n-iontrálacha is féidir a choinneáil i do bhunachar. Chun iontráil a oscailt, cliceáil uirthi agus léireofar í sa spás ar thaobh na láimhe deise.
 
@@ -18,9 +18,9 @@ Is éard atá le feiceáil anseo ná rindreáil fhormáidithe den iontráil. Bei
 
 ![An entry open for editing.](/docs/intro04.png)
 
-Is ionann gach iontráil in Terminologue agus coincheap, agus cuimsítear i ngach coincheap míreanna éagsúla ar nós téarmaí, sainmhínithe, lipéid réimse agus mar sin de. Ligeann na táib ag barr an leathanaigh duit na nithe seo a athrú: is féidir leat téarmaí na hiontrála a athrú faoin táb TRM, a sainmhínithe a athrú faoin táb SAIN agus mar sin de. Chun téarma nua a chur leis an iontráil mar shampla, cliceáil ar an gcomhartha ‘‘+’ faoin táb TRM agus déan foclaíocht an téarma a ionchur. Nuair atá an téarma cláraithe sa bhunachar, is féidir breis faisnéise a chur leis, amhail lipéad roinnecainte, nóta tráchta nó foirm(eacha) infhillte. Agus an eagarthóireacht ar an iontráil curtha i gcrích agat, ná dearmad cliceáil ar an gcnaipe *Sábháil* ar barr (nó bain úsáid as an aicearra méarchláir *Ctrl + Shift + S*).
+Is ionann gach iontráil in Terminologue agus coincheap, agus cuimsítear i ngach coincheap míreanna éagsúla ar nós téarmaí, sainmhínithe, lipéid réimse agus mar sin de. Ligeann na táib ag barr an leathanaigh duit na nithe seo a athrú: is féidir leat téarmaí na hiontrála a athrú faoin táb TRM, a sainmhínithe a athrú faoin táb SAIN, íomhánna a chur leis faoin táb ÍOMH agus mar sin de. Chun téarma nua a chur leis an iontráil mar shampla, cliceáil ar an gcomhartha ‘+’ faoin táb TRM agus déan foclaíocht an téarma a ionchur. Nuair atá an téarma cláraithe sa bhunachar, is féidir breis faisnéise a chur leis, amhail lipéad roinne cainte, nóta tráchta nó foirm(eacha) infhillte. Agus an eagarthóireacht ar an iontráil curtha i gcrích agat, ná dearmad cliceáil ar an gcnaipe *Sábháil* ar barr (nó bain úsáid as an aicearra méarchláir *Ctrl + Shift + S*).
 
-Is éard atá i gceist le heagarthóireacht a dhéanamh ar iontráil ná téacs a ionchur i mboscaí agus luachanna a roghnú ó liostaí. Is ionann an-chuid de liostaí na luachanna, ar nós lipéid roinnecainte, lipéid réimse agus mar sin de, agus meiteashonraí an bhunachair téarmaíochta. Is féidir na meiteashonraí a chumrú astu féin le haghaidh gach bunachar sa rannán *Riarachán*. Más ó theimpléad a chruthaigh tú do bhunachar téarmaíochta, beidh roinnt meiteashonraí réamhchumraithe anseo duit cheana.
+Is éard atá i gceist le heagarthóireacht a dhéanamh ar iontráil ná téacs a ionchur i mboscaí agus luachanna a roghnú ó liostaí. Is ionann an-chuid de liostaí na luachanna, amhail lipéid roinne cainte, lipéid réimse agus mar sin de, agus meiteashonraí an bhunachair téarmaíochta. Is féidir na meiteashonraí a chumrú astu féin le haghaidh gach bunachair sa rannán seo *Eagarthoireacht* nó sa rannán *Riarachán*. Más ó theimpléad a chruthaigh tú do bhunachar téarmaíochta, beidh roinnt meiteashonraí réamhchumraithe anseo duit cheana.
 
 ![The Administration section where you can configure various lists for your termbase, such as part-of-speech labels (shown here).](/docs/intro05.png)
 
@@ -52,13 +52,13 @@ Ní hé gurb é an cuardach an t-aon bhealach le breathnú thart sa bhunachar. T
 
 ## Noda gramadaí inlíne
 
-Ní ionadh é gur féidir leat lipéid roinne cainte agus lipéid ghramadaí eile a chur le téarmaí in Terminologue. Ach ceann de na gnéithe is speisialta atá ag Terminologue ná go ligeann sé duit lipéid ghramadaí a chur le focail aonair i dtéarmaí ilfhoclacha. Agus lipéad gramadaí á cheangal agat le téarma, bíonn sé de rogha agat anfotheaghrán a mbaineann an nod leis a chur in iúl do Terminologue. Agus an téarma á léiriú ag Terminologue ar an scáileán i rindreáil fhormáidithe na hiontrála, cuirfidh Terminologue an lipéad leis an téarma san áit chuí. Is féidir leis an úsáideoir an luchóg a ailíniú ar an lipéad agus aibhseoidh Terminologue an fotheaghrán lena mbaineann sé.
+Ní ionadh é gur féidir leat lipéid roinne cainte agus lipéid ghramadaí eile a chur le téarmaí in Terminologue. Ach ceann de na gnéithe is speisialta atá ag Terminologue ná go ligeann sé duit lipéid ghramadaí a chur le focail aonair i dtéarmaí ilfhoclacha. Agus lipéad gramadaí á cheangal agat le téarma, bíonn sé de rogha agat an fotheaghrán a mbaineann an nod leis a chur in iúl do Terminologue. Agus an téarma á léiriú ag Terminologue ar an scáileán i rindreáil fhormáidithe na hiontrála, cuirfidh Terminologue an lipéad leis an téarma san áit chuí. Is féidir leis an úsáideoir an luchóg a ailíniú ar an lipéad agus aibhseoidh Terminologue an fotheaghrán lena mbaineann sé.
 
 ![Highlighting tells the user which part of the multi-word term the label applies to.](/docs/intro12.png)
 
 ## Ag comhroinnt téarmaí
 
-Gné nuálach agus neamhghnách eile de chuid Terminologue ná gur féidir téarma a roinnt leis an iliomad iontrálacha. Nuair a roinntear téarma, cuireann Terminologue é seo in iúl don úsáideoir trí íocón a chur in aice leis an téarma. Is féidir leat cliceáil ar an íocón chun féachaint cé na hiontrálacha eile a roinneann an téarma seo. Níos tábhachtaí fós, cuireann an íocón ar do shúile duit má dhéanann tú aon athrú ar an téarma go gcuirfear na hathruithe céanna i bhfeidhm go huathoibríoch ar na hiontrálacha eile chomh maith.
+Gné nuálach agus neamhghnách eile de chuid Terminologue ná gur féidir téarma a roinnt leis an iliomad iontrálacha. Nuair a roinntear téarma, cuireann Terminologue é seo in iúl don úsáideoir trí íocón a chur in aice leis an téarma. Is féidir leat cliceáil ar an íocón chun féachaint ar cé na hiontrálacha eile a roinneann an téarma seo. Níos tábhachtaí fós, cuireann an t-íocón ar do shúile duit má dhéanann tú aon athrú ar an téarma go gcuirfear na hathruithe céanna i bhfeidhm go huathoibríoch ar na hiontrálacha eile chomh maith.
 
 ![This entry contains two terms, one of which is shared with one other entry.](/docs/intro13.png)
 
@@ -68,11 +68,11 @@ Is é is cúis le téarmaí a roinnt ná am eagarthóirí daonna a shábháil ag
 
 Tá lipéad stádais ag gach iontráil in Terminologue atá ‘seiceáilte’ nó ‘neamhsheiceáilte’. Nuair a chruthaítear iontráil den chéad uair, bíonn sé ‘neamhsheiceáilte’ agus ní féidir ach le húsáideoirí a bhfuil pribhléidí riarthóra (féach thíos) acu an stádas a athrú go ‘seiceáilte’. Chomh maith leis sin, nuair a dhéantar athruithe ar iontráil sa bhunachar, amhail litriú an téarma a athrú nó sainmhíniú a chur isteach, athrófar stádas an téarma sin go díreach go ‘neamhsheiceáilte’. Is féidir na cineálacha leasuithe a spreagann an t-athrú seo a chumrú ceann ar cheann do gach bunachar téarmaíochta (faoi *Cumrú → Athruithe uathoibríocha*).
 
-Is féidir le húsáideoirí a bhfuil pribhléidí riarthóra acu úsáid a bhaint as cuardach ilghnéitheach Terminologue chun liosta na n-iontrálacha neamhsheiceáilte a fháil agus iad a athbhreithniú go tréimhsiúil. An sprioc atá leis an ngné seo ná cabhrú le rialú cáilíochta i mbunachair mhóra a n-oibríonn líon mór daoine iontu.
+Is féidir le húsáideoirí a bhfuil pribhléidí riarthóra acu úsáid a bhaint as cuardach ilghnéitheach Terminologue chun liosta na n-iontrálacha neamhsheiceáilte a fháil agus iad ag athbhreithniú go tréimhsiúil. An sprioc atá leis an ngné seo ná cabhrú le rialú cáilíochta i mbunachair mhóra a n-oibríonn líon mór daoine iontu.
 
 ## Pribhléidí úsáideora
 
-Sanntar ceann amháin de chúig leibhéal rochtana do gach úsáideoir, rud a chinneann cé na gníomhartha is féidir leis an úsáideoir a dhéanamh sa bhunachar téarmaíochta. Is féidir leibhéil a shannadh d’úsáideoir faoi *Cumrú ➝ Úsáideoirí*. Is iad na leibhéil ná:
+Sanntar ceann amháin de chúig leibhéal rochtana do gach úsáideoir, rud a chinneann cé na gníomhartha is féidir leis an úsáideoir a dhéanamh sa bhunachar téarmaíochta. Is féidir leibhéal a shannadh d’úsáideoir faoi *Cumrú ➝ Úsáideoirí*. Is iad na leibhéil ná:
 
 1. ‘Léitheoir’: rochtain inléite amháin, is féidir leo breathnú ar iontrálacha ach ní féidir leo athruithe a dhéanamh.
 2. ‘Eagarthóir’: is féidir leo iontrálacha a athrú ach ní féidir leo iontráil a scriosadh ná iontráil a chruthú.
@@ -88,15 +88,21 @@ Coinníonn Terminologue taifead ar na hiontrálacha go léir agus na hathruithe 
 
 ## Nótaí eolais agus nótaí tráchta
 
-Is féidir *nótaí* a chur le hiontrálacha in Terminologue. Déantar sin faoin táb NÓT. Tá trí leibhéal rochtana ag *cineálacha Notaí eolais*, ar féidir iad a chumrú sa rannán *Riarachán*:
+Is féidir *nótaí* a chur le hiontrálacha in Terminologue. Déantar sin faoin táb NÓT. Tá trí leibhéal rochtana ag *cineálacha Notaí eolais*, ar féidir iad a chumrú anseo sa rannán *Eagarthóireacht* nó sa rannán *Riarachán*:
 
 1. nóta príobháideach nach léirítear ar eislíonta
 2. nóta príobháideach a léirítear ar eislíonta
 3. nóta poiblí
 
-Is féidir freisin iontrálacha in Terminologue a anótáil le *nótaí tráchta réamhdhéanta* agus *nótaí tráchta*. Ní bheidh na nótaí seo ar fáil go poiblí choíche agus is chun críocha inmheánacha amháin atá siad. Is í an difríocht idir na *nótaí tráchta réamhdhéanta* agus na *nótaí tráchta* ná go bhfuil liosta seasta de *nótaí tráchta réamhdhéanta* ar féidir le húsáideoir iad a roghnú ó liosta anuas (is féidir sin a chumrú sa rannán *Riarachán*) ach is féidir téacs ar bith a bheith i *nótaí tráchta*. Is féidir *nótaí tráchta* agus *nótaí tráchta réamhdhéanta* a phéireáil ionas gur féidir leis na *nótaí réamhdhéanta* lipéad a thabhairt do na *nótaí tráchta* (rud a chuireann in iúl cén saghas nóta tráchta é).
+Chomh maith leis sin, is féidir iontrálacha in Terminologue a anótáil le *nótaí tráchta réamhdhéanta* agus *nótaí tráchta*. Ní bheidh na nótaí seo ar fáil go poiblí choíche agus is chun críocha inmheánacha amháin atá siad. Is í an difríocht idir na *nótaí tráchta réamhdhéanta* agus na *nótaí tráchta* ná go bhfuil liosta seasta de *nótaí tráchta réamhdhéanta* ar féidir le húsáideoir iad a roghnú ó liosta anuas (is féidir sin a chumrú anseo sa rannán *Eagarthóireacht* nó sa rannán *Riarachán*) ach is féidir téacs ar bith a bheith i *nótaí tráchta*. Is féidir *nótaí tráchta* agus *nótaí tráchta réamhdhéanta* a phéireáil ionas gur féidir leis na *nótaí réamhdhéanta* lipéad a thabhairt do na *nótaí tráchta* (rud a chuireann in iúl cén saghas nóta tráchta é).
 
 ![An entry with a few tags and notes.](/docs/intro11.png)
+
+## Easpórtáil
+
+Is féidir liostaí téarmaí a easpórtáil sa rannán *Eagarthóireacht*. Téigh go dtí deireadh an cholúin téarmaí agus roghnaigh an fhormáid atá uait. Tá formáidí TXT nó TBX ar fáil. Is féidir an cnuasach téarmaí ar fad a easpórtáil chomh maith i bhformáid TBX sa rannán *Cumrú* agus *easpórtáil TBX* a chliceáil.
+
+(íomhá le cur isteach)
 
 ## Eislíonta
 
