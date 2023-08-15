@@ -100,7 +100,7 @@ Entries in Terminologue can also be annotated with arbitrary *prefabricated comm
 
 ## Exporting
 
-At the end of the displayed list of term entries in the *Editing* section, you have the option to export your termbase either in TBX or TXT format. You can click on either of these buttons to export the termbase in the format you desire. Exporting in TBX format can also be carried out under the *Configuration* section by clicking *TBX Export*.
+At the end of the displayed list of term entries in the *Editing* section, you have the option to export a list of terms either in TBX or TXT format. You can click on either of these buttons to export your desired list of terms in either format. To specify the terms you want, select the number of terms to be displayed per page just above the TBX and TXT options. Exporting a termbase in TBX format can also be carried out under the *Configuration* section by clicking *TBX Export*.
 
 ## Extranets
 
