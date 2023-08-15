@@ -100,7 +100,7 @@ Chomh maith leis sin, is féidir iontrálacha in Terminologue a anótáil le *n�
 
 ## Easpórtáil
 
-Is féidir liostaí téarmaí a easpórtáil sa rannán *Eagarthóireacht*. Téigh go dtí deireadh an cholúin téarmaí agus roghnaigh an fhormáid atá uait. Tá formáidí TXT nó TBX ar fáil. Is féidir an cnuasach téarmaí ar fad a easpórtáil chomh maith i bhformáid TBX sa rannán *Cumrú* agus *easpórtáil TBX* a chliceáil.
+Is féidir liostaí téarmaí a easpórtáil sa rannán *Eagarthóireacht*. Téigh go dtí deireadh an cholúin téarmaí agus roghnaigh líon na dtéarmaí agus an fhormáid atá uait. Tá formáidí TXT nó TBX ar fáil. Is féidir an cnuasach téarmaí ar fad a easpórtáil chomh maith i bhformáid TBX sa rannán *Cumrú* agus *easpórtáil TBX* a chliceáil.
 
 (íomhá le cur isteach)
 
