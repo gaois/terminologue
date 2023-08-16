@@ -102,8 +102,6 @@ Chomh maith leis sin, is féidir iontrálacha in Terminologue a anótáil le *n�
 
 Is féidir liostaí téarmaí a easpórtáil sa rannán *Eagarthóireacht*. Téigh go dtí deireadh an cholúin téarmaí agus roghnaigh líon na dtéarmaí agus an fhormáid atá uait. Tá formáidí TXT nó TBX ar fáil. Is féidir an cnuasach téarmaí ar fad a easpórtáil chomh maith i bhformáid TBX sa rannán *Cumrú* agus *easpórtáil TBX* a chliceáil.
 
-(íomhá le cur isteach)
-
 ## Eislíonta
 
 Is éard is eislíon ann ná rannóg ar leith ar shuíomh gréasáin Terminologue ina gcuirtear fochuid de bhunachar ar fáil do ghrúpa iata úsáideoirí seachtracha atá ábalta nótaí tráchta a fhágáil. Is féidir le húsáideoirí an bhunachair téarmaíochta a bhfuil pribhléidí riarthóra acu eislíonta nua a chruthú, cinneadh a dhéanamh faoi na hiontrálacha a chuirfear ar eislíon agus cinneadh a dhéanamh maidir le cé na húsáideoirí a mbeidh rochtain acu air. Bíonn úsáideoirí eislín go hiomlán neamhspleách ar úsáideoirí eile an bhunachair. Is gá dóibh cuntas Terminologue a bheith acu ach seachas sin, níl rochtain acu ar an mbunachar téarmaíochta féin toisc nach bhfuil sé sin ag teastáil. Bíonn na nótaí tráchta a fhágann úsáideoirí eislín le feiceáil sa chomhéadan eagarthóireachta d’eagarthóirí an bhunachair agus cinntí á nglacadh acu.
