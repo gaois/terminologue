@@ -22,6 +22,8 @@ Is ionann gach iontráil in Terminologue agus coincheap, agus cuimsítear i ngac
 
 Is éard atá i gceist le heagarthóireacht a dhéanamh ar iontráil ná téacs a ionchur i mboscaí agus luachanna a roghnú ó liostaí. Is ionann an-chuid de liostaí na luachanna, amhail lipéid roinne cainte, lipéid réimse agus mar sin de, agus meiteashonraí an bhunachair téarmaíochta. Is féidir na meiteashonraí a chumrú astu féin le haghaidh gach bunachair sa rannán *Eagarthóireacht* nó sa rannán *Riarachán*. Más ó theimpléad a chruthaigh tú do bhunachar téarmaíochta, beidh roinnt meiteashonraí réamhchumraithe anseo duit cheana.
 
+![Configuring metadata lists from the editing interface.](/docs/intro045.png)
+
 ![The Administration section where you can configure various lists for your termbase, such as part-of-speech labels (shown here).](/docs/intro05.png)
 
 Féadtar airíonna eile de chuid do bhunachair a chumrú sa rannán *Cumrú*. Ceann de na nithe tábhachtacha a bhfuil smacht agat orthu ná rochtain ar an mbunachar agus cé na daoine ar féidir leo athruithe a chur i bhfeidhm ann, chomh maith leat féin. Gheobhaidh tú seo faoi *Úsáideoirí*. Feicfidh tú do sheoladh ríomhphoist féin liostaithe ansin. Ciallaíonn sé seo go bhfuil rochtain agat ar an mbunachar téarmaíochta seo. Féadfaidh tú úsáideoirí eile a chur leis an mbunachar anseo agus a gcuid rochtana a chumrú (mar shampla: féadfaidh úsáideoirí áirithe eagarthóireacht a dhéanamh ar iontrálacha agus ní féidir le húsáideoirí eile, féadfaidh úsáideoirí áirithe eagarthóireacht a dhéanamh ar iontrálacha amháin ach ní fhéadfaidh siad iad a scriosadh ná a chruthú, ní fhéadfaidh roinnt úsáideoirí eagarthóireacht a dhéanamh ar mheiteashonraí agus mar sin de). Beidh rochtain ag aon úsáideoir ar an liosta seo ar do bhunachar téarmaíochta más rud é go bhfuil cuntas Terminologue acu. An chéad uair eile a logálfaidh siad isteach, feicfidh siad an bunachar téarmaíochta liostaithe faoi *Do chuid cnuasach* ar leathanach baile Terminologue.
@@ -101,6 +103,8 @@ Chomh maith leis sin, is féidir iontrálacha in Terminologue a anótáil le *n�
 ## Easpórtáil
 
 Is féidir liostaí téarmaí a easpórtáil sa rannán *Eagarthóireacht*. Téigh go dtí deireadh an cholúin téarmaí agus roghnaigh líon na dtéarmaí agus an fhormáid atá uait. Tá formáidí TXT nó TBX ar fáil. Is féidir an cnuasach téarmaí ar fad a easpórtáil chomh maith i bhformáid TBX sa rannán *Cumrú* agus *easpórtáil TBX* a chliceáil.
+
+![Exporting to TBX or TXT from the editing interface.](/docs/intro145.png)
 
 ## Eislíonta
 

@@ -22,6 +22,8 @@ Each entry in Terminologue represents a concept, and each concept consists of el
 
 Editing an entry basically means typing text into boxes and selecting values from lists. Many of the lists of values, such as part-of-speech labels, domain labels and so on, constitute the termbase’s metadata and can be configured individually for each termbase both here in the *Editing* section as well as in the *Administration* section. If you started your termbase from a template, then you will already have some metadata preconfigured here.
 
+![Configuring metadata lists from the editing interface.](/docs/intro045.png)
+
 ![The Administration section where you can configure various lists for your termbase, such as part-of-speech labels (shown here).](/docs/intro05.png)
 
 Other properties of your termbase can be configured in the *Configuration* section. One important thing you have control over is who has access to the termbase and who can make changes there, besides yourself. This can be found under *Users*. You will see your own e-mail address listed there. This means that you have access to this termbase. You can add other users here and configure their access privileges (for example: some users can edit entries and other cannot, some users can only edit entries but cannot delete or create them, some users cannot edit metadata, and so on). Any user on this list will have access to your termbase – provided they have a Terminologue account. The next time they log in, they will see the termbase listed under *Your termbases* on the Terminologue homepage.
@@ -101,6 +103,8 @@ Entries in Terminologue can also be annotated with arbitrary *prefabricated comm
 ## Exporting
 
 At the end of the displayed list of term entries in the *Editing* section, you have the option to export a list of terms either in TBX or TXT format. You can click on either of these buttons to export your desired list of terms in either format. To specify the terms you want, select the number of terms to be displayed per page just above the TBX and TXT options. Exporting a termbase in TBX format can also be carried out under the *Configuration* section by clicking *TBX Export*.
+
+![Exporting to TBX or TXT from the editing interface.](/docs/intro145.png)
 
 ## Extranets
 
