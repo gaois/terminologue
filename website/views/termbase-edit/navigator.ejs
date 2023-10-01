@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<%-termbaseConfigs.siteconfig.trackingCode%>
+
 		<meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />		<script type="text/javascript">var uilang="<%=uilang%>";</script>
@@ -26,8 +28,8 @@
 		<script type="text/javascript" src="../../libs/screenful/screenful-user.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../libs/screenful/screenful-user.css" />
 		<script type="text/javascript">
-		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
-		var termbaseMetadata=<%-JSON.stringify(termbaseMetadata)%>;
+		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs).replace(/</g, "&lt;")%>;
+		var termbaseMetadata=<%-JSON.stringify(termbaseMetadata).replace(/</g, "&lt;")%>;
 		</script>
 		<script type="text/javascript">
 		Screenful.User.loggedin=<%=(user.loggedin ? "true" : "false")%>;

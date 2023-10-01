@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<%-termbaseConfigs.siteconfig.trackingCode%>
+
 		<meta charset="UTF-8"/>
 		<title>Screenful Editor</title>
 		<script type="text/javascript">var rootPath="/../../../";</script>
     <script type="text/javascript">var metadataType="<%-metadataType%>";</script>
-		<script type="text/javascript">var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;</script>
+		<script type="text/javascript">var termbaseConfigs=<%-JSON.stringify(termbaseConfigs).replace(/</g, "&lt;")%>;</script>
 
 		<script type="text/javascript" src="../../../libs/jquery.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../../libs/screenful/screenful-theme-green.css" />
