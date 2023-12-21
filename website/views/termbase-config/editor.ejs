@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<%-termbaseConfigs.siteconfig.trackingCode%>
-		
 		<meta charset="UTF-8"/>
 		<link rel="icon" type="image/x-icon" href="../../../furniture/favicon.ico"/>
     <title><%=termbaseConfigs.ident.title[uilang] || termbaseConfigs.ident.title.$%></title>
@@ -43,7 +41,7 @@
 
 		<script type="text/javascript">
 		uilangs=<%-JSON.stringify(uilangs)%>;
-		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs).replace(/</g, "&lt;")%>;
+		var termbaseConfigs=<%-JSON.stringify(termbaseConfigs)%>;
 		var defaultAbc=<%-JSON.stringify(defaultAbc)%>;
 		var licences=<%-JSON.stringify(licences)%>;
 		</script>
