@@ -1,4 +1,4 @@
-const DOMParser=require("xmldom").DOMParser;
+const DOMParser=require("@xmldom/xmldom").DOMParser;
 const domParser=new DOMParser();
 
 module.exports=function(tbx){

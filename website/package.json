@@ -13,6 +13,6 @@
     "sha1": "^1.1.1",
     "sqlite3": "^5.1.6",
     "xml-formatter": "^3.6.0",
-    "xmldom": "^0.6.0"
+    "@xmldom/xmldom": "^0.8.10"
   }
 }
