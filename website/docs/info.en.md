@@ -14,7 +14,9 @@ The *Terminologue* software was originally developed by Fiontar & Scoil na Gaeil
 
 ## Data protection information
 
-We do not collect any usage data. When you sign up for an account on *Terminologue.org*, you supply us with an email address and a password. We will not share your email address with anyone, but we reserve the right to contact you occasionally with regard to the *Terminologue.org* service. Your password is sent over a secure connection and hashed before being saved to the database. This means that no one has access to your password, not even us. You can configure your termbases to be public or private.
+We collect certain usage data with the aid of services such as [Plausible](https://plausible.io) while users browse the public sections of the *Terminologue.org* website (i.e. those sections of the website which are not password-protected). We use Plausible to record information about where our users come from and what they do while on this site. Plausible collects and stores technical details about the browser and the computer used to visit the site. We use the data collected by Plausible to construct aggregate reports on user numbers, location and behaviour. These reports inform our future development plans. This data is not personal data, as defined by EU GDPR, and it does not allow us identify individual users. We reserve the right to report and/or publish aggregated usage metrics. 
+
+No tracking or analytics scripts are embedded in the private editing, administration or configuration interfaces associated with individual termbases. When you sign up for an account on *Terminologue.org*, you supply us with an email address and a password. We will not share your email address with anyone, but we reserve the right to contact you occasionally with regard to the *Terminologue.org* service. Your password is sent over a secure connection and hashed before being saved to the database. This means that no one has access to your password, not even us. You can configure your termbases to be public or private.
 
 ## Contact
 
