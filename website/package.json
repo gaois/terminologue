@@ -1,4 +1,15 @@
 {
+  "name": "terminologue",
+  "displayName": "Terminologue",
+  "version": "1.0.0",
+  "description": "Open-source terminology management tool",
+  "author": "Gaois Research Group, Fiontar & Scoil na Gaeilge, Dublin City University",
+  "license": "MIT",
+  "homepage": "https://www.terminologue.org",
+  "main": "terminologue.js",
+  "scripts": {
+    "start": "node terminologue.js"
+  },
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
     "cookie-parser": "^1.4.6",

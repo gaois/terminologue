@@ -88,7 +88,11 @@ app.get(siteconfig.rootPath, function(req, res){
   ops.verifyLogin(req.cookies.email, req.cookies.sessionkey, function(user){
     ops.getTermbasesByUser(user.email, function(termbases){
       var uilang=user.uilang || req.cookies.uilang || siteconfig.uilangDefault;
-      res.render("sitewide/home.ejs", {siteconfig: siteconfig, user: user, termbases: termbases, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+      fs.readFile(path.join(__dirname, "package.json"), "utf8", function(err, packageJson){
+        packageJson=JSON.parse(packageJson);
+        packageJson.version = packageJson.version || "0.0.0";
+        res.render("sitewide/home.ejs", {siteconfig: siteconfig, user: user, termbases: termbases, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, version: packageJson.version});
+      });
     });
   });
 });
@@ -243,7 +247,11 @@ app.get(siteconfig.rootPath+"docs/:docID.:uilang/", function(req, res){
     if(user.loggedin) ops.saveUilang(req.cookies.email, uilang, function(){});
 
     ops.getDoc(req.params.docID, uilang, function(doc){
-      res.render("sitewide/doc.ejs", {doc: doc, siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L});
+      fs.readFile(path.join(__dirname, "package.json"), "utf8", function(err, packageJson){
+        packageJson=JSON.parse(packageJson);
+        packageJson.version = packageJson.version || "0.0.0";
+        res.render("sitewide/doc.ejs", {doc: doc, siteconfig: siteconfig, user: user, uilang: uilang, uilangs: siteconfig.uilangs, L: localizer[uilang].L, version: packageJson.version});
+      });
     });
   });
 });
