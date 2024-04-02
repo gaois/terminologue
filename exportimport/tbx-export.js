@@ -1,8 +1,10 @@
-const SQLITEFILE="../data/termbases/rialacha.sqlite";
+//const SQLITEFILE="../data/termbases/rialacha.sqlite";
 //const SQLITEFILE="bnt.sqlite";
-const TBXFILE="_entries.tbx.xml";
-const LIMIT=10000;
-//const LIMIT=200000;
+const SQLITEFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/bnt-2024-04-01_1954.sqlite";
+//const TBXFILE="_entries.tbx.xml";
+const TBXFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/24.04.01-tearma.ie-concepts.tbx";
+//const LIMIT=10000;
+const LIMIT=200000;
 
 //TBX extensible constraint specification (XCS)
 //picklist values: ISO 12620
