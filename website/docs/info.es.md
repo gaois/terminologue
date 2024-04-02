@@ -39,3 +39,4 @@ Si deseas localizar la documentación e interfaz de usuario de *Terminologue* a 
 - lietuvių kalba: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
 - norsk bokmål: Pia Vinkki, Idar Wilsgård.
 - Ελληνικά: George Sarlas.
+- Türkçe: Ender Ateşman (<atesman@gmail.com>).

@@ -39,3 +39,4 @@ Jos haluat lokalisoida *Terminologuen* käyttäjäsivuston ja asiakirjat omalle 
 - lietuvių kalba: Sigita Rackevičienė, Andrius Utka, Agnė Bielinskienė.
 - norsk bokmål: Pia Vinkki, Idar Wilsgård.
 - Ελληνικά: George Sarlas.
+- Türkçe: Ender Ateşman (<atesman@gmail.com>).

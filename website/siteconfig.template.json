@@ -20,7 +20,10 @@
     {"abbr": "ar", "caption": "العربية"},
     {"abbr": "hr", "caption": "hrvatski"},
     {"abbr": "de", "caption": "Deutsch"},
-    {"abbr": "lt", "caption": "lietuvių"}
+    {"abbr": "lt", "caption": "lietuvių kalba"},
+    {"abbr": "nb", "caption": "norsk bokmål"},
+    {"abbr": "el", "caption": "Ελληνικά"},
+    {"abbr": "tr", "caption": "Türkçe"}
  ],
   "welcome": {
     "en": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.en/'>Gentle introduction to Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.en/'>About Terminologue</a></div></div>",
@@ -35,7 +38,10 @@
     "ar": "<div class='intro'>مرحبا بكم في <strong>Terminologue</strong>، أداة تدبير للمصطلحات، مفتوحة المصدر، وسحابية.</div><div class='point'><div class='title'><a href='docs/intro.ar/'>مقدمة لطيفة حول Terminologue</a></div><div class='blurb'>جولة قصيرة وحلوة حول Terminologue للمبتدئين.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.ar/'>حول Terminologue</a></div></div>",
     "hr": "<div class='intro'>Dobrodošli u <strong>Terminologue</strong>, alat otvorenog koda za upravljanje nazivljem u oblaku.</div><div class='point'><div class='title'><a href='docs/intro.hr/'>Uvod u Terminologue</a></div><div class='blurb'>Kratak vodič kroz Terminologue za početnike.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.hr/'>O Terminologue</a></div></div>",
     "de": "<div class='intro'>Willkommen bei <strong>Terminologue</strong>, einem cloudbasierten Open-Source-Terminologie-Management-Tool.</div><div class='point'><div class='title'><a href='docs/intro.de/'>Behutsame Einführung in Terminologue</a></div><div class='blurb'>Eine kurze und leichte Einführung in Terminologue für Anfänger.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.de/'>Über Terminologue</a></div></div>",
-	"lt": "<div class='intro'>Sveiki prisijungę prie <strong>Terminologue</strong>, debesijos pagrindu veikiančio atvirojo kodo terminologijos tvarkybos įrankio.</div><div class='point'><div class='title'><a href='docs/intro.lt/'>Trumpas įvadas į Terminologue</a></div><div class='blurb'>Trumpas Terminologue pristatymas, skirtas pradedantiesiems.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.lt/'>Apie Terminologue</a></div></div>"
+    "lt": "<div class='intro'>Sveiki prisijungę prie <strong>Terminologue</strong>, debesijos pagrindu veikiančio atvirojo kodo terminologijos tvarkybos įrankio.</div><div class='point'><div class='title'><a href='docs/intro.lt/'>Trumpas įvadas į Terminologue</a></div><div class='blurb'>Trumpas Terminologue pristatymas, skirtas pradedantiesiems.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.lt/'>Apie Terminologue</a></div></div>",
+    "nb": "<div class='intro'>Velkommen til <strong>Terminologue</strong>, et nettbasert open-source-verktøy for terminologiforvaltning.</div><div class='point'><div class='title'><a href='docs/intro.nb/'>Kjapp innføring i Terminologue</a></div><div class='blurb'>En liten og kjapp guidet tur i Terminologue for nybegynnere.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.nb/'>Info om Terminologue</a></div></div>",
+    "el": "<div class='intro'>Καλώς ήρθατε στο <strong>Terminologue</strong>, ένα εργαλείο διαχείρισης ορολογίας ανοιχτού κώδικα που βασίζεται σε σύννεφο.</div><div class='point'><div class='title'><a href='docs/intro.el/'>Ευγενική εισαγωγή στο Terminologue</a></div><div class='blurb'>Μια σύντομη και γλυκιά ξενάγηση στο Terminologue για αρχάριους.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.el/'>Σχετικά με τον Ορολογία</a></div></div>",
+    "tr": "<div class='intro'>Bulut tabanlı ve açık kaynak kodlu bir terminoloji yönetim aracı olan <strong>Terminologue</strong>'a hoş geldiniz. </div><div class='point'><div class='title'><a href='docs/intro.tr/'>Terminologue'a kısa bir giriş </a></div><div class='blurb'> Yeni başlayanlar için kısa ve öğretici bir Terminologue turu. </div></div><div class='point noblurb'><div class='title'><a href='docs/info.tr/'>Terminologue hakkında</a></div></div>"
   },
   "uilangDefault": "en",
   "mailconfig": {"host": "localhost", "port": 465, "secure": false, "from": "noreply@localhost"},
