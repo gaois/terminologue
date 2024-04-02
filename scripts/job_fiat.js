@@ -10,7 +10,7 @@
   where con.CategoryNickname='fiatga.concept'
   and (usr.ID is not null or com.ID is null)
   and exists (select * from tblIndex as i where i.EntryID=con.ID and i.Path='concept/note' and i.Attribute='type' and i.ValueNumber in (4156812, 4156811))
-  and con.XmlContent.exist('/concept/note[(@type="4156812" or @type="4156811") and @dateTime>="2023-10-01" and @dateTime<"2024-01-01"]')=1
+  and con.XmlContent.exist('/concept/note[(@type="4156812" or @type="4156811") and @dateTime>="2024-01-01" and @dateTime<"2024-02-01"]')=1
   order by con.ID desc, com.ID desc, usr.ID desc
 
 2. Cópeáil agus greamaigh an t-inneachar go comhad fiat.txt san fhilleán seo (= an fillteán céanna ina bhfuil an comhad seo, job_fiat.js)
@@ -20,7 +20,7 @@
    node job_fiat.js
 */
 
-const BNT_EXTRANET_ID="4642108"; //an eislíon in BNT (Terminologue) air ar cheart na hiontrálacha a chur, mar shampla "Liosta IATE, Feabhra 2024"
+const BNT_EXTRANET_ID="4642115"; //an eislíon in BNT (Terminologue) air ar cheart na hiontrálacha a chur, mar shampla "Liosta IATE, Feabhra 2024"
 const BNT_SOURCE_ID="4424027"; //foinse in BNT (Terminologue) atá le lua le samplaí úsáide a chruthófar as an sonra 'context', mar shampla "Reachtaíocht an AE"
 const HISTORIOGRAPHY={"diff":[{"desc":"iompórtáil as Fiat"}]};
 const HISTORY_EMAIL="brian.oraghallaigh@dcu.ie";
@@ -31,7 +31,7 @@ const domParser=new xmldom.DOMParser();
 //starts here
 var concepts={}; //conceptID --> {}
 var lineReader=require('readline').createInterface({
-  input: require('fs').createReadStream('./24.02.06-fiat.txt')
+  input: require('fs').createReadStream('./24.03.21-fiat.txt')
 });
 lineReader.on('line', function(line) {
   var columns=line.split("\t");
