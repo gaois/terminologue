@@ -42,3 +42,5 @@ If you wish to localise the *Terminologue* user interface and documentation into
 - norsk bokmål: Pia Vinkki, Idar Wilsgård.
 - Ελληνικά: George Sarlas.
 - Türkçe: Ender Ateşman (<atesman@gmail.com>).
+- català: Aitana Rufete Sala.
+- euskara: Leire Irusta Aldama.

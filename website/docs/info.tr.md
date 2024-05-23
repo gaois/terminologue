@@ -40,3 +40,5 @@ Hesabınızı [buradan](/signup/) oluşturabilirsiniz. Şifrenizi unutacak olurs
 - norsk bokmål: Pia Vinkki, Idar Wilsgård.
 - Ελληνικά: George Sarlas.
 - Türkçe: Ender Ateşman (<atesman@gmail.com>).
+- català: Aitana Rufete Sala.
+- euskara: Leire Irusta Aldama.

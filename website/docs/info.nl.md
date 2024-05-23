@@ -40,3 +40,5 @@ Als u de gebruikersinterface en de documentatie van de *Terminologue *in uw taal
 - norsk bokmål: Pia Vinkki, Idar Wilsgård.
 - Ελληνικά: George Sarlas.
 - Türkçe: Ender Ateşman (<atesman@gmail.com>).
+- català: Aitana Rufete Sala.
+- euskara: Leire Irusta Aldama.

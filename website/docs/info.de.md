@@ -40,3 +40,5 @@ Wenn Sie die *Terminologue*-Benutzeroberfläche und die Dokumentation in Ihre Sp
 - norsk bokmål: Pia Vinkki, Idar Wilsgård.
 - Ελληνικά: George Sarlas.
 - Türkçe: Ender Ateşman (<atesman@gmail.com>).
+- català: Aitana Rufete Sala.
+- euskara: Leire Irusta Aldama.

@@ -29,6 +29,8 @@ const localizer={
   nb: require("./localizer/nb.js"),
   el: require("./localizer/el.js"),
   tr: require("./localizer/tr.js"),
+  ca: require("./localizer/ca.js"),
+  eu: require("./localizer/eu.js"),
 };
 
 //our uploader:
