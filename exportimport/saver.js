@@ -104,6 +104,29 @@ function addMetadata(db, metadata, entry){
     return metadatumID;
   });
 
+  //inflect labels:
+  entryString=entryString.replace(/\$INFLECTLABEL\[([^\]]*)\]/g, function($0, val){
+    //find out of the such a metadatum already exists:
+    var metadatumID=0;
+    metadata.map(metadatum => { if(metadatum.type=="inflectLabel" && metadatum.json.abbr==val) metadatumID=metadatum.id; });
+    //if not, create it:
+    if(!metadatumID){
+      var metadatum={
+        id: 0,
+        type: "inflectLabel",
+        sortkey: toSortkey(val, defaultAbc),
+        parent_id: null,
+        json: {abbr: val, title: {}, isfor: ["_all"]},
+      };
+      var insMetadatum=db.prepare("insert into metadata(type, sortkey, parent_id, json) values(?, ?, ?, ?)");
+      var insMetadatumInfo=insMetadatum.run(metadatum.type, metadatum.sortkey, metadatum.parent_id, JSON.stringify(metadatum.json));
+      var metadatumID=insMetadatumInfo.lastInsertRowid;
+      metadatum.id=metadatumID;
+      metadata.push(metadatum);
+    }
+    return metadatumID;
+  });
+
   //acceptability labels:
   entryString=entryString.replace(/\$ACCEPTLABEL\[([^\]]*)\]/g, function($0, val){
     //find out of the such a metadatum already exists:
@@ -157,6 +180,88 @@ function addMetadata(db, metadata, entry){
     }
     return metadatumID;
   });
+
+  //sources:
+  entryString=entryString.replace(/\$SOURCE\[([^\]]*)\]/g, function($0, val){
+    //find out of the such a metadatum already exists:
+    var metadatumID=0;
+    metadata.map(metadatum => {
+      var hasTheTitle=false; for(var key in metadatum.json.title) if(metadatum.json.title[key]==val) hasTheTitle=true;
+      if(metadatum.type=="source" && hasTheTitle) metadatumID=metadatum.id;
+    });
+    //if not, create it:
+    if(!metadatumID){
+      var title={}; title[lang]=val;
+      var metadatum={
+        id: 0,
+        type: "source",
+        sortkey: toSortkey(val, defaultAbc),
+        parent_id: null,
+        json: {title: title, level: "0"},
+      };
+      var insMetadatum=db.prepare("insert into metadata(type, sortkey, parent_id, json) values(?, ?, ?, ?)");
+      var insMetadatumInfo=insMetadatum.run(metadatum.type, metadatum.sortkey, metadatum.parent_id, JSON.stringify(metadatum.json));
+      var metadatumID=insMetadatumInfo.lastInsertRowid;
+      metadatum.id=metadatumID;
+      metadata.push(metadatum);
+    }
+    return metadatumID;
+  });
+
+  //note types:
+  entryString=entryString.replace(/\$NOTETYPE\[([^\]]*)\]/g, function($0, val){
+    //find out of the such a metadatum already exists:
+    var metadatumID=0;
+    metadata.map(metadatum => {
+      var hasTheTitle=false; for(var key in metadatum.json.title) if(metadatum.json.title[key]==val) hasTheTitle=true;
+      if(metadatum.type=="noteType" && hasTheTitle) metadatumID=metadatum.id;
+    });
+    //if not, create it:
+    if(!metadatumID){
+      var title={}; title[lang]=val;
+      var metadatum={
+        id: 0,
+        type: "noteType",
+        sortkey: toSortkey(val, defaultAbc),
+        parent_id: null,
+        json: {title: title, level: "0"},
+      };
+      var insMetadatum=db.prepare("insert into metadata(type, sortkey, parent_id, json) values(?, ?, ?, ?)");
+      var insMetadatumInfo=insMetadatum.run(metadatum.type, metadatum.sortkey, metadatum.parent_id, JSON.stringify(metadatum.json));
+      var metadatumID=insMetadatumInfo.lastInsertRowid;
+      metadatum.id=metadatumID;
+      metadata.push(metadatum);
+    }
+    return metadatumID;
+  });
+
+  //collections:
+  entryString=entryString.replace(/\$COLLECTION\[([^\]]*)\]/g, function($0, val){
+    //find out of the such a metadatum already exists:
+    var metadatumID=0;
+    metadata.map(metadatum => {
+      var hasTheTitle=false; for(var key in metadatum.json.title) if(metadatum.json.title[key]==val) hasTheTitle=true;
+      if(metadatum.type=="collection" && hasTheTitle) metadatumID=metadatum.id;
+    });
+    //if not, create it:
+    if(!metadatumID){
+      var title={}; title[lang]=val;
+      var metadatum={
+        id: 0,
+        type: "collection",
+        sortkey: toSortkey(val, defaultAbc),
+        parent_id: null,
+        json: {title: title, level: "0"},
+      };
+      var insMetadatum=db.prepare("insert into metadata(type, sortkey, parent_id, json) values(?, ?, ?, ?)");
+      var insMetadatumInfo=insMetadatum.run(metadatum.type, metadatum.sortkey, metadatum.parent_id, JSON.stringify(metadatum.json));
+      var metadatumID=insMetadatumInfo.lastInsertRowid;
+      metadatum.id=metadatumID;
+      metadata.push(metadatum);
+    }
+    return metadatumID;
+  });
+
 
   // console.log("------");
   // console.log(entryString);

@@ -1294,6 +1294,23 @@ app.post(siteconfig.rootPath+":termbaseID/edit/export.tbx", function(req, res, n
     }
   });
 });
+app.post(siteconfig.rootPath+":termbaseID/edit/export.json", function(req, res, next){
+  var termbaseID=req.params.termbaseID;
+  if(!ops.termbaseExists(termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
+  var db=ops.getDB(termbaseID, false);
+  ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, termbaseID, function(user){
+    if(!user.termbaseAccess || user.level<1) {
+      res.status(404).render("404.ejs", {siteconfig: siteconfig});
+      db.close();
+    } else {
+      var ids=req.body.ids.split(",");
+      ops.toJSONByIDs(db, termbaseID, ids, function(filename){
+        db.close();
+        res.download(siteconfig.dataDir+"downloads/"+filename, `${termbaseID}.json`);
+      });
+    }
+  });
+});
 app.post(siteconfig.rootPath+":termbaseID/edit/export.txt", function(req, res, next){
   var termbaseID=req.params.termbaseID;
   if(!ops.termbaseExists(termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }

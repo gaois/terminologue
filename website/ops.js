@@ -2602,6 +2602,40 @@ module.exports={
       });
     });
   },
+  toJSONByIDs: function(db, termbaseID, ids, callnext){
+    var stamp=(new Date()).toISOString().replace(/[^0-9]/g, "-");
+    var filename=stamp+termbaseID+".json";
+    var path=module.exports.siteconfig.dataDir+"downloads/"+filename;
+    var lingo=null;
+    var ident=null;
+    module.exports.readTermbaseConfigs(db, termbaseID, function(configs){
+      var lingo=configs.lingo;
+      var ident=configs.ident;
+      var termbaseLang=""; lingo.languages.map(l => {if(!termbaseLang) termbaseLang=l.abbr});
+      module.exports.readTermbaseMetadata(db, termbaseID, function(obj){
+        var metadata={};
+        for(var type in obj){
+          obj[type].map(datum => {
+            metadata[datum.id]={type: type, obj: datum};
+          });
+        }
+        var entry2ijson=require(module.exports.siteconfig.sharedDir+"/entry-to-interjson.js");
+        entry2ijson.setTermbaseLang(termbaseLang);
+        entry2ijson.setMetadata(metadata);
+
+        var arr=[];
+        db.all(`select id, json from entries where id in (${ids})`, {}, function(err, rows){
+          if(err) console.error(err);
+          rows.map(row => {
+            var entry=JSON.parse(row.json);
+            arr.push(entry2ijson.doEntry(entry));
+          });
+          fs.writeFileSync(path, JSON.stringify(arr, null, "  "), "utf8");
+          callnext(filename);
+        });
+      });
+    });
+  },
 }
 
 function generateKey(){
