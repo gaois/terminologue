@@ -1001,6 +1001,12 @@ module.exports={
     }
   },
 
+  moveComments: function(db, termbaseID, fromEntryID, toEntryID, callnext){
+    db.run("update comments set entry_id=$toEntryID where entry_id=$fromEntryID", {$fromEntryID: fromEntryID, $toEntryID: toEntryID}, function(err){
+      if(err) console.error(err);
+      callnext();
+    });
+  },
   entryDelete: function(db, termbaseID, entryID, email, historiography, callnext){
     db.run("delete from entries where id=$id", {$id: entryID}, function(err){
       if(err) console.error(err);
@@ -1293,7 +1299,7 @@ module.exports={
     }
   },
   saveDomains: function(db, termbaseID, entryID, entry, callnext){
-    var assigs=[]; entry.domains.map(domainID => {
+    var assigs=[]; (entry.domains||[]).map(domainID => {
       if(domainID) assigs.push(domainID);
     });
     db.run("delete from entry_domain where entry_id=$entryID", {$entryID: entryID}, function(err){
@@ -1313,7 +1319,7 @@ module.exports={
     }
   },
   saveCollections: function(db, termbaseID, entryID, entry, callnext){
-    var assigs=[]; entry.collections.map(obj => {
+    var assigs=[]; (entry.collections||[]).map(obj => {
       assigs.push(parseInt(obj));
     });
     db.run("delete from entry_collection where entry_id=$entryID", {$entryID: entryID}, function(err){
@@ -1333,7 +1339,7 @@ module.exports={
     }
   },
   saveExtranets: function(db, termbaseID, entryID, entry, callnext){
-    var assigs=[]; entry.extranets.map(obj => {
+    var assigs=[]; (entry.extranets||[]).map(obj => {
       assigs.push(parseInt(obj));
     });
     db.run("delete from entry_extranet where entry_id=$entryID", {$entryID: entryID}, function(err){
@@ -1371,7 +1377,7 @@ module.exports={
     }
   },
   saveDefinitions: function(db, termbaseID, entryID, entry, callnext){
-    var assigs=[]; entry.definitions.map(def => {
+    var assigs=[]; (entry.definitions||[]).map(def => {
       for(var key in def.texts){
         if(def.texts[key]) assigs.push(def.texts[key]);
       }
@@ -1393,7 +1399,7 @@ module.exports={
     }
   },
   saveExamples: function(db, termbaseID, entryID, entry, callnext){
-    var assigs=[]; entry.examples.map(ex => {
+    var assigs=[]; (entry.examples||[]).map(ex => {
       for(var key in ex.texts){
         ex.texts[key].map(text => {
           if(text) assigs.push(text);
@@ -1417,7 +1423,7 @@ module.exports={
     }
   },
   saveXrefs: function(db, termbaseID, entryID, entry, callnext){
-    var assigs=[]; entry.xrefs.map(targetID => {
+    var assigs=[]; (entry.xrefs||[]).map(targetID => {
       assigs.push(targetID);
     });
     db.run("delete from entry_xref where entry_id=$entryID", {$entryID: entryID}, function(err){
@@ -1437,7 +1443,7 @@ module.exports={
     }
   },
   saveNotes: function(db, termbaseID, entryID, entry, callnext){
-    var objs=[]; entry.notes.map(note => {
+    var objs=[]; (entry.notes||[]).map(note => {
       for(var lang in note.texts){
         objs.push({typeID: note.type, lang: lang, text: note.texts[lang]});
       }
@@ -1751,8 +1757,10 @@ module.exports={
     function del(){
       if(ids.length>0){
         var entryID=ids.pop();
-        module.exports.entryDelete(db, termbaseID, entryID, email, historiography, function(){
-          del();
+        module.exports.moveComments(db, termbaseID, entryID, motherID, function(){
+          module.exports.entryDelete(db, termbaseID, entryID, email, historiography, function(){
+            del();
+          });
         });
       } else {
         module.exports.entrySave(db, termbaseID, motherID, JSON.stringify(motherEntry), email, historiography, function(){
