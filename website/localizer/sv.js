@@ -1,4 +1,4 @@
-﻿function L(s, gloss){
+function L(s, gloss){
   if(s=="only") return function(s){
     return s+" endast";
   };
@@ -299,25 +299,21 @@
   if(s=="Download %F") return "Ladda ned %F";
   if(s=="Upload %F") return "Ladda upp %F";
   if(s=="Make sure that the file you are uploading is a valid Terminologue termbase. If you upload something else you will do irreparable damage to your termbase.") return "Kontrollera att filen du laddar upp är en giltig Terminologue-termbank. Om du laddar upp något annat kommer du att skada termbanken på ett oåterkalleligt sätt.";
-
-  //new strings, machine-translated, in need of proofreading:
   if(s=="PARENT") return "FÖRÄLDER";
   if(s=="no parent") return "ingen förälder";
   if(s=="excluding subdomains") return "utan underdomäner";
   if(s=="including subdomains") return "underdomäner ingår";
-  if(s=="the entry has this domain") return "begreppsposten har den här domänen";
-  if(s=="the entry has only this domain") return "begreppsposten har bara den här domänen";
-  if(s=="the entry has not only this domain") return "begreppsposten har inte bara den här domänen";
+  if(s=="the entry has this domain") return "begreppsposten tillhör den här domänen";
+  if(s=="the entry has only this domain") return "begreppsposten tillhör enbart den här domänen";
+  if(s=="the entry has not only this domain") return "begreppsposten tillhör inte bara den här domänen";
   if(s=="Careful! If you remove yourself from this termbase you will lose access to it.") return "Försiktig! Om du tar bort dig själv från den här termbasen förlorar du åtkomsten till den.";
-
-  //New strings, need translation:
-  if(s=="Leave this termbase") return s;
-  if(s=="IMG") return s;
-  if(s=="IMAGES") return s;
-  if(s=="image") return s;
-  if(s=="credits") return s;
-  if(s=="link to source") return s;
-  if(s=="The file is too large. The maximum allowed size is $1 bytes.") return s;
+  if(s=="Leave this termbase") return "Lämna denna termbank";
+  if(s=="IMG") return "BLD";
+  if(s=="IMAGES") return "BILDER";
+  if(s=="image") return "bild";
+  if(s=="credits") return "rättigheter";
+  if(s=="link to source") return "länk till källa";
+  if(s=="The file is too large. The maximum allowed size is $1 bytes.") return "Filen är för stor. Den största tillåtna filstorleken är $1 byte.";
 
   if(!gloss) console.log(`if(s=="${s}") return "";`);
   else console.log(`if(s=="${s}", "${gloss}") return "";`);
