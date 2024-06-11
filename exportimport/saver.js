@@ -49,6 +49,11 @@ function saveEntry(db, configs, metadata, entry){
     var ins=db.prepare("insert into entry_domain(entry_id, domain) values(?, ?)");
     var insInfo=ins.run(entryID, domainID);
   });
+  //index collections:
+  entry.collections.map(collectionID => {
+    var ins=db.prepare("insert into entry_collection(entry_id, collection) values(?, ?)");
+    var insInfo=ins.run(entryID, collectionID);
+  });
   //index definitions:
   entry.definitions.map(def => {
     for(var langCode in def.texts){
