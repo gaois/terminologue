@@ -1,5 +1,5 @@
-const JSONFILE="/home/michmech/Downloads/inniu(13).json";
-const SQLITEFILE="../data/termbases/amarach.sqlite";
+const JSONFILE="drigaois.json";
+const SQLITEFILE="../data/termbases/bnt.sqlite";
 
 const fs=require("fs");
 const saver=require("./saver.js");
