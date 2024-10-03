@@ -2,7 +2,7 @@
 
 ## Terminologue
 
-*Terminologue* is an open-source terminology management tool. The software is developed and maintained by the [Gaois research group](https://www.gaois.ie/en/) in [Fiontar & Scoil na Gaeilge](https://www.dcu.ie/fiontar_scoilnagaeilge/gaeilge/index.shtml), [Dublin City University](https://www.dcu.ie/). The software is copyright of [Dublin City University](https://www.dcu.ie/) and is available under the open-source [MIT license](https://opensource.org/licenses/MIT). The lead developer is [Michal Boleslav Měchura](https://michmech.github.io/). Download the software from [here](https://github.com/gaois/terminologue) if you wish to install your own instance of *Terminologue*.
+*Terminologue* is an open-source terminology management tool. The software is developed and maintained by the [Gaois research group](https://www.gaois.ie/en/) in [Fiontar & Scoil na Gaeilge](https://www.dcu.ie/fiontarscoilnagaeilge/fiontar-scoil-na-gaeilge), [Dublin City University](https://www.dcu.ie/). The software is copyright of [Dublin City University](https://www.dcu.ie/) and is available under the open-source [MIT license](https://opensource.org/licenses/MIT). The lead developer is [Michal Boleslav Měchura](https://michmech.github.io/). Download the software from [here](https://github.com/gaois/terminologue) if you wish to install your own instance of *Terminologue*.
 
 ## Terminologue.org
 
@@ -44,3 +44,5 @@ If you wish to localise the *Terminologue* user interface and documentation into
 - Türkçe: Ender Ateşman (<atesman@gmail.com>).
 - català: Aitana Rufete Sala.
 - euskara: Leire Irusta Aldama.
+- 正體中文: Hsinwei Tseng.
+- français : Alexandre Perreault et Aline Francoeur (Université Laval, Québec).

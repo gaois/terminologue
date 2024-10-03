@@ -42,3 +42,5 @@ Terminologue.org - это облачный сервис программного
 - Türkçe: Ender Ateşman (<atesman@gmail.com>).
 - català: Aitana Rufete Sala.
 - euskara: Leire Irusta Aldama.
+- 正體中文: Hsinwei Tseng.
+- français : Alexandre Perreault et Aline Francoeur (Université Laval, Québec).

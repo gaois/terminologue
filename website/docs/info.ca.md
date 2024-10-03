@@ -41,3 +41,5 @@ Si desitges localitzar la interfície d'usuari i la documentació de *Terminolog
 - Ελληνικά: George Sarlas.
 - català: Aitana Rufete Sala.
 - euskara: Leire Irusta Aldama.
+- 正體中文: Hsinwei Tseng.
+- français : Alexandre Perreault et Aline Francoeur (Université Laval, Québec).

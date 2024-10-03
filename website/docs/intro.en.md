@@ -26,7 +26,7 @@ Editing an entry basically means typing text into boxes and selecting values fro
 
 ![The Administration section where you can configure various lists for your termbase, such as part-of-speech labels (shown here).](/docs/intro05.png)
 
-Other properties of your termbase can be configured in the *Configuration* section. One important thing you have control over is who has access to the termbase and who can make changes there, besides yourself. This can be found under *Users*. You will see your own e-mail address listed there. This means that you have access to this termbase. You can add other users here and configure their access privileges (for example: some users can edit entries and other cannot, some users can only edit entries but cannot delete or create them, some users cannot edit metadata, and so on). Any user on this list will have access to your termbase – provided they have a Terminologue account. The next time they log in, they will see the termbase listed under *Your termbases* on the Terminologue homepage.
+Other properties of your termbase can be configured in the *Configuration* section. One important thing you have control over is who has access to the termbase and who can make changes there, besides yourself. This can be found under *Users*. You will see your own e-mail address listed there. This means that you have access to this termbase. You can add other users here and configure their access privileges (for example: some users can edit entries and others cannot, some users can only edit entries but cannot delete or create them, some users cannot edit metadata, and so on). Any user on this list will have access to your termbase – provided they have a Terminologue account. The next time they log in, they will see the termbase listed under *Your termbases* on the Terminologue homepage.
 
 ![Configuring who can access your termbase.](/docs/intro06.png)
 
@@ -44,7 +44,7 @@ Now that we have seen how to use Terminologue to create, edit and eventually pub
 
 As we have seen, the editing screen is divided into two halves: a list of entries on the left-hand side and a space for viewing and editing an entry in the right-hand side. The search box at the top of the entry list allows you to search the termbase.
 
-A drop-down list underneath the search box allows you select the search mode. The options are *complete term*, *start of term*, *end of term* and a few others. These modes perform simple character-by-character matching. But the default option in the drop-down list is *smart search* which performs a linguistically intelligent search. The list of entries you obtain from *smart search* is ordered in such a way that entries which match your search text more or less completely and exactly are at the top, followed by multi-word entries which contain the search text as a word. This matching is inflection-aware. Terminologue has access to a large database of inflected forms of words in many different languages, so for example, a search for ‘walk’ will find terms containing ‘walking’, ‘walked’, ‘walks’ and so on. Another feature of *smart search* is that it performs spelling correction and offers spelling suggestions on the right-hand side the text box.
+A drop-down list underneath the search box allows you to select the search mode. The options are *complete term*, *start of term*, *end of term* and a few others. These modes perform simple character-by-character matching. But the default option in the drop-down list is *smart search* which performs a linguistically intelligent search. The list of entries you obtain from *smart search* is ordered in such a way that entries which match your search text more or less completely and exactly are at the top, followed by multi-word entries which contain the search text as a word. This matching is inflection-aware. Terminologue has access to a large database of inflected forms of words in many different languages, so for example, a search for ‘walk’ will find terms containing ‘walking’, ‘walked’, ‘walks’ and so on. Another feature of *smart search* is that it performs spelling correction and offers spelling suggestions on the right-hand side of the text box.
 
 ![Smart search in action.](/docs/intro09.png)
 
@@ -60,7 +60,7 @@ It will surprise no-one that, in Terminologue, you can attach part-of-speech lab
 
 ## Term sharing
 
-Another innovative and unusual feature of Terminologue is that a term can be shared among multiple entries. When a term is shared, Terminologue communicates that fact to the user with an icon beside the term. You can click the icon to see which other entries share this term. But most importantly, the icon is there to warn you that if you make any changes to the term here, the same changes will automatically propagate the other entries too.
+Another innovative and unusual feature of Terminologue is that a term can be shared among multiple entries. When a term is shared, Terminologue communicates that fact to the user with an icon beside the term. You can click the icon to see which other entries share this term. But most importantly, the icon is there to warn you that if you make any changes to the term here, the same changes will automatically apply the other entries too.
 
 ![This entry contains two terms, one of which is shared with one other entry.](/docs/intro13.png)
 

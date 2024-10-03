@@ -20,7 +20,7 @@ function L(s){
   if(s=="trigger_termInflectLabelChange") return "inflected form label changed";
   if(s=="trigger_termInflectTextChange") return "inflected form wording changed";
   if(s=="trigger_termAnnotAdd") return "term annotation added";
-  if(s=="trigger_termAnnotRemove") return "term annotaion removed";
+  if(s=="trigger_termAnnotRemove") return "term annotation removed";
   if(s=="trigger_termAnnotReorder") return "term annotations reordered";
   if(s=="trigger_termAnnotPositionChange") return "term annotation position changed";
   if(s=="trigger_termAnnotLabelChange") return "term annotation label changed";
