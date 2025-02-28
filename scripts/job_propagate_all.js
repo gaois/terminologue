@@ -4,7 +4,8 @@
 */
 
 const SqliteDatabase=require('better-sqlite3');
-const termbaseID="covid-19";
+//const termbaseID="covid-19";
+const termbaseID="drigaois";
 const sqliteDB=new SqliteDatabase('../data/termbases/'+termbaseID+'.sqlite', { fileMustExist: true });
 
 const sql=require("mssql");
@@ -19,7 +20,8 @@ pool.connect(function(err){
 
 function doEntries(){
 	var entries=[];
-	sqliteDB.prepare(`select * from entries`).all().map(row => { entries.push({id: row.id, json: row.json}); });
+	//sqliteDB.prepare(`select * from entries`).all().map(row => { entries.push({id: row.id, json: row.json}); });
+	sqliteDB.prepare(`select * from entries as e inner join entry_extranet as ee on ee.entry_id=e.id where ee.extranet=311`).all().map(row => { entries.push({id: row.id, json: row.json}); });
 	const transaction = new sql.Transaction(/* [pool] */);
 	go();
 	function go(){
