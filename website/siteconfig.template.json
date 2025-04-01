@@ -25,7 +25,9 @@
     {"abbr": "el", "caption": "Ελληνικά"},
     {"abbr": "tr", "caption": "Türkçe"},
     {"abbr": "ca", "caption": "català"},
-    {"abbr": "eu", "caption": "euskara"}
+    {"abbr": "eu", "caption": "euskara"},
+    {"abbr": "zh", "caption": "正體中文"},
+    {"abbr": "fr", "caption": "français"}
  ],
   "welcome": {
     "en": "<div class='intro'>Welcome to <strong>Terminologue</strong>, a cloud-based, open-source terminology management tool.</div><div class='point'><div class='title'><a href='docs/intro.en/'>Gentle introduction to Terminologue</a></div><div class='blurb'>A short and sweet guided tour of Terminologue for beginners.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.en/'>About Terminologue</a></div></div>",
@@ -45,7 +47,9 @@
     "el": "<div class='intro'>Καλώς ήρθατε στο <strong>Terminologue</strong>, ένα εργαλείο διαχείρισης ορολογίας ανοιχτού κώδικα που βασίζεται σε σύννεφο.</div><div class='point'><div class='title'><a href='docs/intro.el/'>Ευγενική εισαγωγή στο Terminologue</a></div><div class='blurb'>Μια σύντομη και γλυκιά ξενάγηση στο Terminologue για αρχάριους.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.el/'>Σχετικά με τον Ορολογία</a></div></div>",
     "tr": "<div class='intro'>Bulut tabanlı ve açık kaynak kodlu bir terminoloji yönetim aracı olan <strong>Terminologue</strong>'a hoş geldiniz. </div><div class='point'><div class='title'><a href='docs/intro.tr/'>Terminologue'a kısa bir giriş </a></div><div class='blurb'> Yeni başlayanlar için kısa ve öğretici bir Terminologue turu. </div></div><div class='point noblurb'><div class='title'><a href='docs/info.tr/'>Terminologue hakkında</a></div></div>",
     "ca": "<div class='intro'>Et donem la benvinguda a <strong>Terminologue</strong>, una eina de gestió terminològica de codi obert basada en el núvol.</div><div class='point'><div class='title'><a href='docs/intro.ca/'>Introducció senzilla a Terminologue</a></div><div class='blurb'>Un recorregut breu i concís de Terminologue per a principiants.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.ca/'>Sobre Terminologue</a></div></div>",
-    "eu": "<div class='intro'>Ongi etorri <strong>Terminologuera</strong>, hodeian oinarritutako kode irekiko terminologia kudeatzeko tresna.</div><div class='point'><div class='title'><a href='docs/intro.eu/'>Terminologuerako sarrera leuna</a></div><div class='blurb'>Hasiberrientzako Terminologueko bisita gidatu labur eta gozoa.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.eu/'>Terminologueri buruz</a></div></div>"
+    "eu": "<div class='intro'>Ongi etorri <strong>Terminologuera</strong>, hodeian oinarritutako kode irekiko terminologia kudeatzeko tresna.</div><div class='point'><div class='title'><a href='docs/intro.eu/'>Terminologuerako sarrera leuna</a></div><div class='blurb'>Hasiberrientzako Terminologueko bisita gidatu labur eta gozoa.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.eu/'>Terminologueri buruz</a></div></div>",
+    "zh": "<div class='intro'>歡迎使用<strong>Terminologue</strong>，基於雲端且開源的術語管理工具。</div><div class='point'><div class='title'><a href='docs/intro.zh/'>Terminologue的簡易介紹</a></div><div class='blurb'>新手友善的簡短指南</div></div><div class='point noblurb'><div class='title'><a href='docs/info.zh/'>關於Terminologue</a></div></div>",
+    "fr": "<div class='intro'>Bienvenue dans <strong>Terminologue</strong>, un outil de gestion terminologique à code source libre basé sur l’infonuagique.</div><div class='point'><div class='title'><a href='docs/intro.fr/'>Brève introduction à Terminologue</a></div><div class='blurb'>Une courte présentation de Terminologue conçue pour les débutants.</div></div><div class='point noblurb'><div class='title'><a href='docs/info.fr/'>À propos de Terminologue</a></div></div>"
   },
   "uilangDefault": "en",
   "mailconfig": {"host": "localhost", "port": 465, "secure": false, "from": "noreply@localhost"},
