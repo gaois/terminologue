@@ -1,8 +1,8 @@
 //const SQLITEFILE="../data/termbases/rialacha.sqlite";
 //const SQLITEFILE="bnt.sqlite";
-const SQLITEFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/bnt-2024-07-01_1419.sqlite";
+const SQLITEFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/bnt-2025-04-01_1557.sqlite";
 //const TBXFILE="_entries.tbx.xml";
-const TBXFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/24.07.01-tearma.ie-concepts.tbx";
+const TBXFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/25.04.01-tearma.ie-concepts.tbx";
 //const LIMIT=10000;
 const LIMIT=300000;
 
@@ -52,8 +52,8 @@ fs.writeFileSync(TBXFILE, `<?xml version="1.0" encoding="UTF-8"?>
   <text>
     <body>
 `, "utf8");
-var sqlSelectEntries=db.prepare(`select * from entries limit ${LIMIT}`);
-//var sqlSelectEntries=db.prepare(`select * from entries where pStatus='1' limit ${LIMIT}`);
+//var sqlSelectEntries=db.prepare(`select * from entries limit ${LIMIT}`);
+var sqlSelectEntries=db.prepare(`select * from entries where pStatus='1' limit ${LIMIT}`);
 console.log("getting list of entries...");
 sqlSelectEntries.all().map((row, iRow) => {
   console.log(`exporting entry number ${iRow}, ID ${row.id}...`);
