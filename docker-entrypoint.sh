@@ -1,17 +1,19 @@
 #!/bin/bash
 set -e
 
-# Copy template DB if missing in volume
+# Ensure persistent database exists
 if [ ! -f /app/data/terminologue.sqlite ]; then
+    echo "Initializing SQLite database from template"
     cp /app/templates/terminologue.template.sqlite /app/data/terminologue.sqlite
 fi
 
-# Copy config template if missing
+# Ensure persistent config exists
 if [ ! -f /app/website/siteconfig.json ]; then
-    cp /app/templates/siteconfig.template.json /app/website/siteconfig.json
+    echo "Initializing siteconfig from template"
+    cp /app/templates/siteconfig.template.json /app/data/siteconfig.json
 fi
 
-# Run init.js on first launch
+# Only run init.js if .initialized is missing
 if [ ! -f /app/data/.initialized ]; then
     cd /app/website
     node init.js

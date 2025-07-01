@@ -205,7 +205,7 @@ function cleanWording(str){
 const ops=require("../website/ops");
 ops.propagator=require("../website/propagator.js");
 const fs=require("fs");
-ops.siteconfig=JSON.parse(fs.readFileSync("../website/siteconfig.json", "utf8"));
+ops.siteconfig=JSON.parse(fs.readFileSync("../data/siteconfig.json", "utf8"));
 var entries=[];
 function saveAll(){
   for(conceptID in concepts) entries.push(concepts[conceptID]);

@@ -2,7 +2,7 @@ const express=require("express");
 const app=express();
 const path=require("path");
 const fs=require("fs-extra");
-var siteconfig=JSON.parse(fs.readFileSync(path.join(__dirname, "siteconfig.json"), "utf8").trim());
+var siteconfig=JSON.parse(fs.readFileSync(path.join(__dirname, "../data/siteconfig.json"), "utf8").trim());
 const https=require("https");
 const bodyParser = require('body-parser');
   app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' })); // for parsing application/x-www-form-urlencoded
