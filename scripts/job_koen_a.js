@@ -2,7 +2,7 @@
 
 const fs=require("fs");
 const ops=require("../website/ops.js");
-ops.siteconfig=JSON.parse(fs.readFileSync("../website/siteconfig.json", "utf8"));
+ops.siteconfig=JSON.parse(fs.readFileSync("../data/siteconfig.json", "utf8"));
 const propagator=require("../website/propagator.js");
 ops.propagator=propagator.withMsSqlConnectionStrings(ops.siteconfig.propagatorMsSqlConnectionStrings);
 
