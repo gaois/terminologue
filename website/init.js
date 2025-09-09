@@ -2,7 +2,7 @@ const path=require("path");
 const fs=require("fs-extra");
 const sqlite3 = require('sqlite3').verbose(); //https://www.npmjs.com/package/sqlite3
 const sha1 = require('sha1'); //https://www.npmjs.com/package/sha1
-var siteconfig=JSON.parse(fs.readFileSync("siteconfig.json", "utf8"));
+var siteconfig=JSON.parse(fs.readFileSync("../data/siteconfig.json", "utf8"));
 var dbFile = path.join(siteconfig.dataDir, "terminologue.sqlite");
 
 var db=new sqlite3.Database(dbFile, function(err){

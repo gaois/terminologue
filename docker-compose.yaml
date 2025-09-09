@@ -1,0 +1,11 @@
+services:
+  terminologue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: terminologue
+    ports:
+      - "80:80"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
