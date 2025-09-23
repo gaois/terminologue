@@ -4,8 +4,10 @@ module.exports=function(spec, columns){
 
 const ENTRY={
   "cStatus": "0",
-  "pStatus": "1",
-  "dStatus": "1",
+//  "pStatus": "1",
+//  "dStatus": "1",
+  "pStatus": "0",
+  "dStatus": "0",
   "dateStamp": "",
   "tod": "",
   "domains": [],
