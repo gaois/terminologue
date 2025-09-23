@@ -1,5 +1,7 @@
-const SQLITEFILE="../data/termbases/rialacha.sqlite";
-const TXTFILE="_entries.txt";
+//const SQLITEFILE="../data/termbases/rialacha.sqlite";
+const SQLITEFILE="C:/Users/oraghab/Documents/BOR/zzz/dspace-ga/dspaceasgaeilge.sqlite";
+//const TXTFILE="_entries.txt";
+const TXTFILE="C:/Users/oraghab/Documents/BOR/zzz/dspace-ga/dspaceasgaeilge.txt";
 const LIMIT=10000;
 
 var spec={
@@ -26,20 +28,20 @@ var spec={
       title: "ID",
       what: "id",
     },
-    {
-      title: "Réimse",
-      what: "domains",
-      lang: "en",
-    },
     // {
-    //   title: "Téarma Béarla",
-    //   what: "terms",
+    //   title: "Réimse",
+    //   what: "domains",
     //   lang: "en",
-    //   includeAnnotations: true,
-    //   includeInflectedForms: true,
-    //   includeAcceptability: true,
-    //   includeClarification: true,
     // },
+    {
+      title: "Téarma Béarla",
+      what: "terms",
+      lang: "en",
+      includeAnnotations: true,
+      includeInflectedForms: true,
+      includeAcceptability: true,
+      includeClarification: true,
+    },
     // {
     //   title: "Intreoir Béarla",
     //   what: "intro",
@@ -54,21 +56,21 @@ var spec={
       includeAcceptability: true,
       includeClarification: true,
     },
-    {
-      title: "Téarma Gaeilge",
-      what: "intro",
-      lang: "ga",
-    },
+    // {
+    //   title: "Téarma Gaeilge",
+    //   what: "intro",
+    //   lang: "ga",
+    // },
     // {
     //   title: "Sainmhíniú Béarla",
     //   what: "definitions",
     //   lang: "en",
     // },
-    {
-      title: "Sainmhíniú Gaeilge",
-      what: "definitions",
-      lang: "ga",
-    },
+    // {
+    //   title: "Sainmhíniú Gaeilge",
+    //   what: "definitions",
+    //   lang: "ga",
+    // },
     // {
     //   title: "Sampla Béarla",
     //   what: "examples",
@@ -79,11 +81,17 @@ var spec={
     //   what: "examples",
     //   lang: "ga",
     // },
-    {
-      title: "Nóta Gaeilge de chineál 913502",
+    // {
+    //   title: "Nóta Gaeilge de chineál 913502",
+    //   what: "notes",
+    //   type: "913502",
+    //   lang: "ga",
+    // },
+	{
+      title: "Message Key",
       what: "notes",
-      type: "913502",
-      lang: "ga",
+      type: "30",
+      lang: "en",
     },
   ],
 };
