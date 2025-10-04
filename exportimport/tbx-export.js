@@ -1,8 +1,8 @@
 //const SQLITEFILE="../data/termbases/rialacha.sqlite";
 //const SQLITEFILE="bnt.sqlite";
-const SQLITEFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/bnt-2025-04-01_1557.sqlite";
+const SQLITEFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/bnt-2025-10-03_2037.sqlite";
 //const TBXFILE="_entries.tbx.xml";
-const TBXFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/25.04.01-tearma.ie-concepts.tbx";
+const TBXFILE="C:/Users/oraghab/Documents/BOR/zzz/bnt/25.10.01-tearma.ie-concepts.tbx";
 //const LIMIT=10000;
 const LIMIT=300000;
 
