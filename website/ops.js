@@ -2659,6 +2659,7 @@ function generateKey(){
 function toSortkey(s, abc){
   const keylength=5;
   var ret=s.replace(/\<[\<\>]+>/g, "").toLowerCase();
+  ret = ret.replace(/_/g, "");
   //replace any numerals:
   var pat=new RegExp("[0-9]{1,"+keylength+"}", "g");
   ret=ret.replace(pat, function(x){while(x.length<keylength+1) x="0"+x; return x;});
