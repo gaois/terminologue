@@ -1,13 +1,13 @@
-var FROM="2025-12-01"; //on or after this date
-var TILL="2026-01-01"; //before this date
-const WRITE_TO="2026-01-01_entrylist.txt";
+var FROM="2026-01-01"; //on or after this date
+var TILL="2026-02-01"; //before this date
+const WRITE_TO="2026-02-01_entrylist.txt";
 
 //------
 
 const fs=require("fs");
 const Database = require('better-sqlite3');
 //const db = new Database('../data/termbases/bnt.sqlite', { fileMustExist: true });
-const db = new Database('C:/Users/oraghab/Documents/BOR/zzz/bnt/bnt-2026-01-09_1819.sqlite', { fileMustExist: true });
+const db = new Database('C:/Users/oraghab/Documents/BOR/zzz/bnt/bnt-2026-02-09_1759.sqlite', { fileMustExist: true });
 
 fs.writeFileSync(WRITE_TO, "");
 db.prepare(`select h.id, h.[when], h.email, h.entry_id, h.json as json_new, (
