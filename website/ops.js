@@ -335,6 +335,11 @@ module.exports={
     });
     if(!readonly) db.run('PRAGMA journal_mode=WAL');
     db.run('PRAGMA foreign_keys=on');
+    db.on('profile', (sql, time) => {
+      if(time > 5_000_000) { // > 5 seconds
+        console.log(`IARRATAS MALL (${time/1e6}s) ${termbaseID}.sqlite:`, sql);
+      }
+    });
     return db;
   },
   verifyLoginAndTermbaseAccess: function(email, sessionkey, termbaseDB, termbaseID, callnext){
