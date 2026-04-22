@@ -2217,16 +2217,21 @@ module.exports={
     module.exports.readTermbaseConfigs(db, termbaseID, function(termbaseConfigs){
       module.exports.getSubdomainIDs(db, domainID, function(subdomainIDs){
         subdomainIDs.push(domainID);
-        var sql=`select e.*, '[' || group_concat(xr_e.json, ', ') || ']' as xref_targets, '[' || group_concat(xr_e.id, ', ') || ']' as xref_target_ids
-          from entries as e
-          inner join entry_domain as ed on ed.entry_id=e.id
-          left outer join entry_xref as xr on xr.entry_id=e.id
-          left outer join entries as xr_e on xr_e.id=xr.target_entry_id and xr_e.pStatus=1
-          left outer join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$langCode
-          where ed.domain in (${subdomainIDs.join(",")}) and e.pStatus=1
-          group by e.id
-          order by sk.key
-          limit $howmany`;
+        var sql=`
+          select * from (
+            select e.*, sk.key, '[' || group_concat(xr_e.json, ', ') || ']' as xref_targets, '[' || group_concat(xr_e.id, ', ') || ']' as xref_target_ids
+            from entries as e
+            inner join entry_domain as ed on ed.entry_id=e.id
+            left outer join entry_xref as xr on xr.entry_id=e.id
+            left outer join entries as xr_e on xr_e.id=xr.target_entry_id and xr_e.pStatus=1
+            inner join entry_sortkey as sk on sk.entry_id=e.id and sk.lang=$langCode
+            where ed.domain in (${subdomainIDs.join(",")}) and e.pStatus=1
+            group by e.id
+          ) as x
+          where x.pStatus=1
+          order by x.key
+          limit $howmany
+        `;
         var params={$langCode: termbaseConfigs.lingo.languages[0].abbr, $howmany: howmany+1};
         db.all(sql, params, function(err, rows){
           if(err) console.error(err);
