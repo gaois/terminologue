@@ -103,13 +103,13 @@ function L(s, gloss){
   if(s=="any extranet or no extranet") return "任何外部網路或無外部網路";
   if(s=="any extranet") return "任何外部網路";
   if(s=="no extranet") return "無外部網路";
-  if(s=="sorting language") return "排序語言中";
+  if(s=="sorting language") return "排序語言";
   if(s=="Create mutual cross-references") return "建立相互交叉參考";
   if(s=="Remove mutual cross-references") return "移除相互交叉參考";
   if(s=="Merge into a single entry") return "合併為一個條目";
   if(s=="SEE ALSO") return "參見";
   if(s=="add to worklist") return "加進工作清單";
-  if(s=="Domains") return "無語";
+  if(s=="Domains") return "語域";
   if(s=="Part-of-speech labels") return "詞性標籤";
   if(s=="Inflection labels") return "屈折標籤";
   if(s=="Acceptability labels") return "接受度標籤";
@@ -135,7 +135,7 @@ function L(s, gloss){
   if(s=="USERS") return "使用者";
   if(s=="e-mail address") return "電子郵件地址";
   if(s=="user") return "使用者";
-  if(s=="Alphabetical order") return "依字母順序";
+  if(s=="Alphabetical order") return "字母順序";
   if(s=="Similar terms (click to insert)") return "類似術語（點選插入）";
   if(s=="Other entries that share this term") return "共用此術語的其他條目";
   if(s=="stop sharing") return "停止共用";

@@ -91,7 +91,7 @@ Screenful.Loc={
   batchConfirm: "注意！所有在此列出的項目都將採用這個變更（共$X個）。確定要變更？",
   narrow: "窄螢幕",
   narrowList: "清單",
-  narrowEditor: "檢視者/編輯者",
+  narrowEditor: "檢視器/編輯器",
   emailInUseError: "此電子郵件地址已被使用。",
   perPage: "每頁項目數",
 };
