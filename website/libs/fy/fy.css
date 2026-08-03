@@ -212,3 +212,19 @@ button.metadataOpener {
 .fy_body.domains .fy_nolineabove button.metadataOpener {
   display: none !important;
 }
+
+@media(max-width: 500px) {
+  .fy_label {
+    width: 100% !important;
+  }
+  .fy_textbox {
+    position: relative !important;
+    inset-inline: 0 !important;
+    display: block !important;
+  }
+  .fy_textbox > select {
+    /* Like fy_label */
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
