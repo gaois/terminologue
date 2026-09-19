@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script async defer src="https://cdn.jsdelivr.net/gh/altcha-org/altcha/dist/main/altcha.min.js" type="module"></script>
+    <script async defer src="https://cdn.jsdelivr.net/gh/altcha-org/altcha/dist/i18n/all.min.js" type="module"></script>
+
+		<link type="text/css" rel="stylesheet" href="/libs/screenful/screenful.css" />
+
+    <script src="/altcha/scripts.js"></script>
+    <link rel="stylesheet" href="/altcha/styles.css"/>
+  </head>
+  <body>
+
+    <altcha-widget challenge="/altcha/challenge.json" auto="onload" configuration='{"setCookie": {"name": "altcha", "path": "/"}}'></altcha-widget>
+    <script>const returnUrl = "<%=returnUrl%>";</script>
+
+  </body>
+</html>

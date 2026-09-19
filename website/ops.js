@@ -416,10 +416,9 @@ module.exports={
         db.termbaseConfigs=configs;
 
         //temporarily make public termbases non-public because bot traffic is killing us:
-        if(db.termbaseConfigs.publico && db.termbaseConfigs.publico.public){
-          db.termbaseConfigs.publico = {public: false, becauseBots: true};
-
-        }
+        // if(db.termbaseConfigs.publico && db.termbaseConfigs.publico.public){
+        //   db.termbaseConfigs.publico = {public: false, becauseBots: true};
+        // }
         
         callnext(configs);
       });

@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
+    "@xmldom/xmldom": "^0.9.8",
+    "altcha-lib": "^2.5.0",
     "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
@@ -23,7 +25,6 @@
     "nodemailer": "^6.10.1",
     "sha1": "^1.1.1",
     "sqlite3": "^5.1.7",
-    "xml-formatter": "^3.6.6",
-    "@xmldom/xmldom": "^0.9.8"
+    "xml-formatter": "^3.6.6"
   }
 }

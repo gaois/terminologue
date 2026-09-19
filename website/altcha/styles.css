@@ -1,0 +1,10 @@
+body {
+  background-color: #eeeeee;
+}
+
+altcha-widget {
+  display: block;
+  max-width: 300px;
+  margin: 0px auto;
+  margin-top: 30vh;
+}

@@ -64,6 +64,11 @@ if (!!siteconfig.mailconfig && !!siteconfig.mailconfig.provider && siteconfig.ma
    ops.mailtransporter=nodemailer.createTransport(siteconfig.mailconfig);
 }
 
+//configure altcha:
+require("./altcha/server.js")(app);
+app.use(siteconfig.rootPath+"altcha", express.static(path.join(__dirname, "altcha")));
+app.all("/altcha/server.js", (req, res) => { res.status(404).render("404.ejs", {siteconfig: siteconfig}); });
+
 //Paths to our static files:
 app.use(siteconfig.rootPath+"views", express.static(path.join(__dirname, "views")));
 app.use(siteconfig.rootPath+"widgets", express.static(path.join(__dirname, "widgets")));
@@ -957,7 +962,8 @@ app.post(siteconfig.rootPath+":termbaseID/edit/commentDelete.json", function(req
 });
 
 //Termbase home (and search):
-app.get(siteconfig.rootPath+":termbaseID/", function(req, res){
+app.get(siteconfig.rootPath+":termbaseID/", async function(req, res){
+  if(!await app.verifyAltcha(req, res)) return;
   if(!ops.termbaseExists(req.params.termbaseID)) {res.status(404).render("404.ejs", {siteconfig: siteconfig}); return; }
   var db=ops.getDB(req.params.termbaseID, true);
   ops.verifyLoginAndTermbaseAccess(req.cookies.email, req.cookies.sessionkey, db, req.params.dictID, function(user){

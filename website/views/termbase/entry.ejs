@@ -80,6 +80,10 @@
 				<%if(termbaseConfigs.siteconfig.licences[termbaseConfigs.publico.licence]){ var lic=termbaseConfigs.siteconfig.licences[termbaseConfigs.publico.licence];%>
 					<a href="<%-lic.url%>" target="_blank"><img src="../<%-lic.icon%>" alt="<%=lic.title%>"/></a>
 				<%}%>
+				<div class="altcha_footer">
+					<script async defer src="https://cdn.jsdelivr.net/gh/altcha-org/altcha/dist/main/altcha.min.js" type="module"></script>
+					<altcha-widget display="invisible" challenge="/altcha/challenge.json" auto="onload" configuration='{"setCookie": {"name": "altcha", "path": "/"}}'></altcha-widget>
+				</div>
 			</div>
 		</div>
 

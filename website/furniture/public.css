@@ -265,3 +265,12 @@ div.entries {margin-top: 75px;}
 div.entries > div.nojoy {color: #999999; font-size: 2em; margin: 50px 0 200px 0;}
 div.entries > div.nojoy.centered {text-align: center; margin: 200px 0;}
 div.entries > div.hr {color: #999999; margin: 50px 0px 20px 0px; font-weight: bold;}
+
+div.altcha_footer {
+  margin-top: 100px;
+}
+div.altcha_footer altcha-widget {
+  display: block;
+  max-width: 300px;
+  margin: 0px auto;
+}
