@@ -16,7 +16,7 @@
     "altcha-lib": "^2.5.0",
     "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "fs-extra": "^11.3.1",
     "js-levenshtein": "^1.1.6",
     "markdown": "^0.5.0",
